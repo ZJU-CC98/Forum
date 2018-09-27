@@ -111,8 +111,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
 
                     <FormItem label="理由">
                         {getFieldDecorator('reason', {
-                            rules: [{ required: true, message: '请输入理由' }],
-                            initialValue:"好文章"
+                            rules: [{ required: true, message: '请输入理由' }]
                         })(
                             <Select mode={"tags"}  style={{ width: 120 }} onChange={this.handleChange}>
                                 <Option value="好文章">好文章</Option>
@@ -137,8 +136,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                     </FormItem>
                     <FormItem label="理由">
                         {getFieldDecorator('reason', {
-                            rules: [{ required: true, message: '请输入理由' }],
-                            initialValue:"好文章"
+                            rules: [{ required: true, message: '请输入理由' }]
                         })(
                             <Select mode={"tags"} style={{ width: 120 }} onChange={this.handleChange}>
                                 <Option value="好文章">好文章</Option>
@@ -166,8 +164,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
 
                     <FormItem label="理由">
                         {getFieldDecorator('reason', {
-                            rules: [{ required: true, message: '请输入理由' }],
-                            initialValue:"人身攻击"
+                            rules: [{ required: true, message: '请输入理由' }]
                         })(
                             <Select mode={"tags"}  style={{ width: 120 }} onChange={this.handleChange}>
                                 <Option value="人身攻击">人身攻击</Option>
@@ -194,8 +191,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                     </FormItem>
                     <FormItem label="理由">
                         {getFieldDecorator('reason', {
-                            rules: [{ required: true, message: '请输入理由' }],
-                            initialValue:"人身攻击"
+                            rules: [{ required: true, message: '请输入理由' }]
                         })(
                             <Select mode={"tags"} defaultValue="人身攻击" style={{ width: 120 }} onChange={this.handleChange}>
                                 <Option value="人身攻击">人身攻击</Option>
