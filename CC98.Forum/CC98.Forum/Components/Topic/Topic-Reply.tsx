@@ -130,14 +130,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
     handleJudgeCancel=()=>{
         this.setState({ judgeVisible: false });
     }
-    handleCreate = () => {
-        // const form = this.formRef.props.form;
-        // form.validateFields(async (err, values) => {
-        //     if (err) {
-        //         return;
-        //     }
-        // }
-    }
+
     private generateContents(item) {
       
       
@@ -214,7 +207,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             }
             return <div className="center" style={{ width: "71rem", marginRight:"1px" }}>
                 {this.state.contents.map(this.generateContents.bind(this))}
-                <PostManagement  m_wealth={this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName}  update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} item={this.state.item} visible={this.state.pmVisible} onCreate={this.handleCreate} onCancel={this.handleCancel} />
+                <PostManagement  m_wealth={this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName}  update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} item={this.state.item} visible={this.state.pmVisible} onCancel={this.handleCancel} />
                 <Judge item={this.state.item} update={this.update} onCancel={this.handleJudgeCancel} visible={this.state.judgeVisible} />                     
             </div>
                 ;

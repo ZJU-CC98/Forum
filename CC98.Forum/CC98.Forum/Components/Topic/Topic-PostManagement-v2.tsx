@@ -22,7 +22,6 @@ interface Props {
     m_wealth;
     boardName;
     visible;
-    onCreate;
     onCancel;
 }
 
@@ -90,7 +89,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
     render() {
         console.log(this.props.item.id);
         const { getFieldDecorator } = this.props.form;
-        const { visible, onCancel, onCreate } = this.props;
+        const { visible, onCancel } = this.props;
         let rcForm = null;
         let m_wealth:any = 0;
         if (!this.props.m_wealth) m_wealth = '不限';
@@ -190,7 +189,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                         )}
                     </FormItem>
                     <FormItem label="理由">
-                        {getFieldDecorator('reason', {
+                        {getFieldDecorator('reason', {  
                             rules: [{ required: true, message: '请输入理由' }]
                         })(
                             <Select mode={"tags"} defaultValue="人身攻击" style={{ width: 120 }} onChange={this.handleChange}>
