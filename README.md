@@ -74,7 +74,6 @@ react-redux的异步action（用户中心）
 * /LogOn.tsx 登录组件
 * /MainPage.tsx 网站主页
 * /NoticeMessage.tsx 消息提醒
-* /PageModel.tsx 翻页器模板
 * /Pager.tsx 翻页器
 * /RouteComponent.tsx 路由组件基类
 * /SignIn.tsx 签到

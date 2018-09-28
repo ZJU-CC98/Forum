@@ -26,7 +26,7 @@ export class UbbContainerProps {
 /**
  * 提供用于解析 UBB 的核心组件。
  */
-export class UbbContainer extends React.Component<UbbContainerProps, {}> {
+export class UbbContainer extends React.PureComponent<UbbContainerProps, {}> {
 
 	render() {
 
