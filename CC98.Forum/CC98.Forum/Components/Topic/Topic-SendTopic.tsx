@@ -4,18 +4,19 @@ import * as $ from 'jquery';
 import { UbbContainer } from '.././UbbContainer';
 import { Constants } from '../Constant';
 import { UbbEditor } from '../UbbEditor';
-import { TopicManagement } from './Topic-TopicManagement';
+import  TopicManagement  from './Topic-TopicManagement-v2';
 import { NoticeMessage } from '../NoticeMessage';
 import { Prompt } from 'react-router-dom';
+import Button from 'antd/es/button';
 import * as moment from 'moment';
 declare let editormd: any;
 interface Props {
     boardInfo;
     onChange;
     content;
-    topicInfo;
+	topicInfo;
 }
-export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[],buttonInfo,buttonDisabled }>{
+export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[],buttonInfo,buttonDisabled,manageVisible }>{
     constructor(props) {
 		super(props);
 		this.sendUbbTopic = this.sendUbbTopic.bind(this);
@@ -29,17 +30,23 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
             initContent = Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id);
             console.log("use cache content");
         }
-        this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复" });
+        this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复",manageVisible:false });
 	}
+	showManageUI=(v)=>{
+        this.setState({manageVisible:v});
+    }
+    handleCancel=()=>{
+        this.setState({manageVisible:false});
+    }
 	update(value) {
 		this.setState({ content: value });
 	}
+
 	onChange() {
 		this.props.onChange();
 	}
 	showManagement() {
-		const UIId = `#manage${this.props.topicInfo.id}`;
-		$(UIId).css('display', '');
+		this.setState({manageVisible:true});
 	}
 	close() {
 		const UIId = `#manage${this.props.topicInfo.id}`;
@@ -363,6 +370,8 @@ ${newProps.content.content}[/quote]
 		this.setState({ content: event.target.value });
 	}
 	render() {
+		console.log("rerender");
+		console.log(this.props.topicInfo);
 		let mode, editor;
 		if (this.state.mode === 0) {
 			mode = '使用UBB模式编辑';
@@ -398,7 +407,7 @@ ${newProps.content.content}[/quote]
         }
         let manageBTN = null;
         if (Utility.isMaster(this.props.boardInfo.boardMasters))
-            manageBTN = <div><button className="topicManageBTN" id="topicManagementBTN" style={{ width: '5rem' }} onClick={this.showManagement}>管理</button>
+            manageBTN = <div><Button type="primary" onClick={this.showManagement}>管理</Button>
                </div>;
         
 		return <div id="sendTopicInfo" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -408,7 +417,7 @@ ${newProps.content.content}[/quote]
 				</div></div>
             {editor}
             {manageBTN}
-            <TopicManagement update={this.onChange} boardId={this.props.boardInfo.id} updateTime={Date.now()} topicInfo={this.props.topicInfo} />
+            <TopicManagement update={this.onChange} boardId={this.props.boardInfo.id} topicInfo={this.props.topicInfo} onCancel={this.handleCancel} visible={this.state.manageVisible}/>
             <NoticeMessage text="回复失败, 10s之内仅可进行一次回帖，请稍作休息" id="postFast" top="26%" left="38%" />
             <NoticeMessage text="回复失败, 请输入内容" id="postNone" top="26%" left="44%" />
             <NoticeMessage text="操作成功" id="operationSuccess" top="26%" left="44%" />

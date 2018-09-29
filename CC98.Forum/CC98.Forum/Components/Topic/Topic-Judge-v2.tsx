@@ -115,9 +115,9 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                     mode="horizontal"
                     style={{display:"flex",marginBottom:"1rem",justifyContent:"space-around"}}
                 >
-                    <Item key="1"><img style={{ width: "2rem" }} src="/static/images/j-plus1.png"></img></Item>
+                    <Item key="1"><img style={{ width: "2rem" }} src="/static/images/j-plus1.png"></img><span style={{fontWeight:"bold",marginLeft:"10px",fontSize:"16px"}}>+1</span></Item>
                     <Item disabled>|</Item>
-                    <Item key="2"><img style={{ width: "2rem" }} src="/static/images/j-minus1.png"></img></Item>
+                    <Item key="2"><img style={{ width: "2rem" }} src="/static/images/j-minus1.png"></img><span style={{fontWeight:"bold",marginLeft:"10px",fontSize:"16px"}}>-1</span></Item>
                 </Menu>
                 <Tag color="blue">500贴以上的用户可以进行评分（每日一次）</Tag>
                 {rcForm}

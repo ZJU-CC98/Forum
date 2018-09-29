@@ -50,6 +50,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             page = parseInt(this.match.params.page);
         }
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        this.setState({topicInfo:topicInfo});
         const newPage = (topicInfo.replyCount+1) % 10 === 0 ? (topicInfo.replyCount+1) / 10 : ((topicInfo.replyCount+1) - (topicInfo.replyCount+1) % 10) / 10 + 1;  
         const totalPage = await this.getTotalPage(topicInfo.replyCount);
         const userName = this.match.params.userName;

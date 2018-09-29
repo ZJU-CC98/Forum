@@ -26,6 +26,7 @@
     "msgpack5": "4.2.0",
     "react": "16.4.2",
     "react-bootstrap": "0.32.3",
+    "react-color": "^2.14.1",
     "react-dom": "16.4.2",
     "react-lazyload": "^2.3.0",
     "react-redux": "5.0.7",
