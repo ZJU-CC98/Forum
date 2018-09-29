@@ -4,6 +4,8 @@ import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
 import * as moment from 'moment';
+import  Popover from 'antd/es/popover';
+import Button from 'antd/es/button';
 interface Props{
     postInfo;
     topicInfo;
@@ -15,6 +17,13 @@ interface Props{
     changePmVisible;
     changeJudgeVisible;
 }
+const content = (
+    <div>
+      <p><a href="https://www.github.com/Dearkano">Github: https://www.github.com/Dearkano</a></p>
+      <p>微博：<a href="https://weibo.com/vaynetian">VayneTian</a></p>
+      <p>厨代码 写币 炒偶像 (扑哧)</p>
+    </div>
+  );
 export class ReplierSignature extends React.Component<Props, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
@@ -128,6 +137,11 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         let signature = <div className="signature" ><UbbContainer code={this.props.userInfo.signatureCode} options={{ ...new UbbCodeOptions(), allowExternalImage: false }} /></div>;
         if (!this.props.userInfo.signatureCode) {
             signature = null;
+        }
+        if(this.props.userInfo.name==='Dearkano'){
+            signature= <Popover content={content} title={<a href="https://www.github.com/ZJU-CC98/Forum">CC98 Durian</a>}>
+            <Button style={{width:"300px",background:"pink"}} type="dashed">Yooooo~</Button>
+          </Popover>;
         }
         let editIcon = null;
         const editUrl = `/editor/edit/${this.props.postInfo.id}`;
