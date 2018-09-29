@@ -65,16 +65,21 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
                 let thisUserInfo = Utility.getThisUserInfobyName(award[i].operatorName, usersInfo);
                 award[i].portraitUrl = thisUserInfo.portraitUrl;
                 console.log(award[i]);
-                shortInfo[i] =this.generateAwardInfo(award[i]);
+                shortInfo[i] = this.generateAwardInfo(award[i]);
             }
         }
         const info = award.map(this.generateAwardInfo.bind(this));
         this.setState({ info: info, shortInfo: shortInfo, count: award.length });
     }
-     generateAwardInfo(item) {
- 
-        return <AwardInfo postId={this.props.postId} portraitUrl={item.portraitUrl} content={item.content} reason={item.reason} userName={item.operatorName} />;
-
+    
+    generateAwardInfo(item) {
+        return <AwardInfo
+            postId={this.props.postId} 
+            portraitUrl={item.portraitUrl} 
+            content={item.content} 
+            reason={item.reason} 
+            userName={item.operatorName} 
+        />;
     }
     render() {
         const awardInfoJQID = `#awardInfo${this.props.postId}`;

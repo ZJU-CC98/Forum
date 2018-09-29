@@ -475,7 +475,7 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
 
     convertButton(value: number, index: number, array: number[]) {
         let className: string = value ? "adButtonSelected" : "adButton";
-        return <div className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
+        return <div key={index} className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
     }
 
     render() {

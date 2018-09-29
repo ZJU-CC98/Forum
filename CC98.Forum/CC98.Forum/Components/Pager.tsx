@@ -104,6 +104,7 @@ export class Pager extends React.Component<Porps, State> {
 
                     {pageList.map((page) =>
                         <PageModel
+                            key={page}
                             text={`${page}`}
                             url={`${url}${page}#1`}
                             active={curPage === page}
