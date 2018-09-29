@@ -233,7 +233,6 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         const days = parseInt((Math.abs(lastTime - curTime) / 1000 / 60 / 60 / 24).toString());
         const hours = parseInt((Math.abs(lastTime - curTime) / 1000 / 60 / 60).toString());
         let fanCount=this.state.fanCount;
-        if(this.props.userInfo.name==="笨蛋路路")fanCount=10001;
         if (days > 365) lastLogOn = '一年前';
         else if (days > 30) lastLogOn = '一月前';
         else if (days > 7) lastLogOn = '一周前';
