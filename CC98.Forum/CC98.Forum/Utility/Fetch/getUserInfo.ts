@@ -54,7 +54,7 @@ export async function getUserInfo(key: number | string): Promise<UserInfo> {
             setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
             setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
         }
-        if(userInfo.name==='笨蛋路路')userInfo.fanCount=10001;
+        if(userInfo.name==='笨蛋路路')userInfo.fanCount+=10000;
         return userInfo;
     } catch(e) {
 
