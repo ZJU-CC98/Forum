@@ -17,13 +17,7 @@ interface Props{
     changePmVisible;
     changeJudgeVisible;
 }
-const content = (
-    <div>
-      <p><a href="https://www.github.com/Dearkano">Github: https://www.github.com/Dearkano</a></p>
-      <p>微博：<a href="https://weibo.com/vaynetian">VayneTian</a></p>
-      <p>厨代码 写币 炒偶像 (扑哧)</p>
-    </div>
-  );
+
 export class ReplierSignature extends React.Component<Props, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
@@ -139,6 +133,13 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
             signature = null;
         }
         if(this.props.userInfo.name==='Dearkano'){
+            const content = (
+                <div>
+                  <p><a href="https://www.github.com/Dearkano">Github: https://www.github.com/Dearkano</a></p>
+                  <p>微博：<a href="https://weibo.com/vaynetian">VayneTian</a></p>
+                  <p>厨代码 写币 炒偶像 (扑哧)</p>
+                </div>
+              );
             signature= <Popover content={content} title={<a href="https://www.github.com/ZJU-CC98/Forum">CC98 Durian</a>}>
             <Button style={{width:"300px",background:"pink"}} type="dashed">Yooooo~</Button>
           </Popover>;
