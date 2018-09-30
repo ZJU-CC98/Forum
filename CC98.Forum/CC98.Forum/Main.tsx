@@ -12,13 +12,14 @@ import { Constants } from './Components/Constant';
 import App from './Components/App';
 import ErrorBoundary from './Components/ErrorBoundary';
 import { IndexedDB } from './IndexedDB/IndexedDB';
+import { shouldUseIndexedDb } from './config';
 /**
  * 项目初始化代码
  */
 async function initialize() {
 
 	await Constants.loadConfig();
-	if(window.indexedDB) await IndexedDB.start();
+	if(shouldUseIndexedDb) await IndexedDB.start();
 
 	// 输出一些没用的东西
 	// console.info('%c       ', 'font-size: 100px; background: url(http://cdn.nyanit.com/nyan2.gif) no-repeat;');

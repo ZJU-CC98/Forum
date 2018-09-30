@@ -14,6 +14,7 @@ import {
     formAuthorizeHeader,
     cc98Fetch
 } from '../fetchUtility';
+import { shouldUseIndexedDb } from '../../config';
 
 /**
  * 使用用户id批量查询用户信息
@@ -33,7 +34,7 @@ export async function getUsersInfo(keys: (number | string)[]): Promise<UserInfo[
     try {
         // 缓存未命中的项，其值为对应的key，以便进一步通过api查询
         let infos: (UserInfo | number | string)[];
-        if(window.indexedDB) {
+        if(shouldUseIndexedDb) {
             infos = (await getIndexedDBUsersInfo(keys)).map((item, index) => (item || keys[index]));
         } else {
             infos = keys.map(item => (getLocalStorage(typeof item === 'number' ? `userId_${item}`: `userName_${item}`)) || item);
@@ -55,7 +56,7 @@ export async function getUsersInfo(keys: (number | string)[]): Promise<UserInfo[
                 let userInfo = queryInfo.shift();
                 // 未命中的项加入缓存
                 if(userInfo){
-                    if(window.indexedDB) {
+                    if(shouldUseIndexedDb) {
                         addUserInfo(userInfo);
                     } else {
                         setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
