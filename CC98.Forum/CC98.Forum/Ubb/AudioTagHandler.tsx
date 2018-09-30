@@ -40,32 +40,39 @@ class AudioComponent extends React.Component<IProps> {
      * 对播放器的引用
      */
     ap: any;
-
     /**
      * 组件加载后初始化播放器
      */
     componentDidMount() {
-        this.ap = new APlayer({
-            element: this.div,
-            autoplay: false,
-            preload: 'metadata',
-            music: {
-                url: encodeURI(this.props.src),
-                title: encodeURI(this.props.src),
-                author: '',
-                pic: '/static/images/audio_cover.png'
-            }
-        });
-        //去掉文件名后面的横杠
-        this.div.getElementsByClassName('aplayer-author')[0].innerHTML = '';
+        try {
+            this.ap = new APlayer({
+                element: this.div,
+                autoplay: false,
+                preload: 'metadata',
+                music: {
+                    url: encodeURI(this.props.src),
+                    title: encodeURI(this.props.src),
+                    author: '',
+                    pic: '/static/images/audio_cover.png'
+                }
+            });
+            //去掉文件名后面的横杠
+            this.div.getElementsByClassName('aplayer-author')[0].innerHTML = '';
+        
+        } catch (e) {    
+            // IE 11 下会抛一个 InvalidStateError 的错误，忽略
+        }
     }
 
     componentWillUnmount() {
-        this.ap.destroy();
+        this.ap && this.ap.destroy();
     }
     
     render() {
         //重置继承自article的whiteSpace
-        return <div className="aplayer" style={{ whiteSpace: 'normal', width: '30rem' }} ref={it => this.div = it}></div>;
+        return <div className="aplayer" 
+            style={{ whiteSpace: 'normal', width: '30rem' }}
+            ref={it => this.div = it}>
+        </div>;
     }
 }
