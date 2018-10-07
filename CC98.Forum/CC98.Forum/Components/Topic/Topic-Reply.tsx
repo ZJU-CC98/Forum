@@ -154,6 +154,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
                     </div>
                     <FloorSize isHot={this.props.isHot} floor={item.floor} />
                 </div>
+           
                 {hotReply}
             </div>;
         } else {
