@@ -176,7 +176,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow,
                 <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '6rem', transition: 'max-height 1s' }}>
                     <Link to={boardUrl}><div className="boardMessage">
                         <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
-                            <img style={{ marginLeft: "1.25rem" }} onError={this.onError}  src={url}></img>
+                            <img style={{ marginLeft: "1.25rem" }} onError={this.onError} src={url}></img>
                             <div className="boardMessageDetails">
                                 {boardNameDiv}
                                 <div className="row" style={{ width: "100%", alignItems: "center" }}>
@@ -336,12 +336,12 @@ export class ListButtonAndAds extends React.Component<{ boardInfo, adsUrl }> {
             sendInfo = <div style={{ display: "flex", alignItems: "center" }}><button style={{ border: "none" }} className="button bgcolor" onClick={this.clickListener}>发主题</button>{tip}</div>;
         else
             sendInfo = <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>;
-            if(this.props.boardInfo.canVote) {
-                sendInfo = <div>
-                    <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>
-                    <Link style={{ marginLeft: '2rem' }} className="button bgcolor" to={`/editor/postVoteTopic/${this.props.boardInfo.id}`}>发投票</Link>
-                </div>
-            }
+        if (this.props.boardInfo.canVote) {
+            sendInfo = <div>
+                <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>
+                <Link style={{ marginLeft: '2rem' }} className="button bgcolor" to={`/editor/postVoteTopic/${this.props.boardInfo.id}`}>发投票</Link>
+            </div>
+        }
         return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop: "1rem" }}>
             {sendInfo}
             <div style={{ height: "6.25rem" }}> <AdsComponent /></div>
@@ -355,7 +355,7 @@ export class ListTopContent extends React.Component<{ boardId }, { data }>{
     }
     private convertTopicToElement(item: TopicTitleAndContentState) {
         return <TopicTitleAndContent key={item.id}
-        {...item}
+            {...item}
         />;
     }
     async componentDidMount() {
@@ -379,7 +379,7 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
     private convertTopicToElement(item: TopicTitleAndContentState) {
 
         return <TopicTitleAndContent key={item.id}
-        {...item}
+            {...item}
         />;
     }
     render() {
@@ -408,7 +408,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
     private convertTopicToElement(item) {
 
         return <TopicTitleAndContent key={item.id}
-        {...item}
+            {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -433,9 +433,9 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         const page = Utility.getListTotalPage(count);
         return page;
     }
-   
+
     getCheckValue() {
-       function getCaption(obj) {
+        function getCaption(obj) {
             var index = obj.lastIndexOf("_");
             obj = obj.substring(index + 1, obj.length);
             return obj;
@@ -443,14 +443,14 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         let targets = [];
         $(".opTitleCheckboxValue").each(function () {
             if ($(this).is(":checked")) {
-                targets.push("id="+getCaption( $(this).attr('id')));
+                targets.push("id=" + getCaption($(this).attr('id')));
             }
         });
         let str = targets.join("&");
         console.log(str);
         return str;
     }
-   
+
     lockUI() {
         $("#deleteUI").css("display", "none");
         $("#lockUI").css("display", "");
@@ -475,8 +475,8 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         console.log("reason=" + reason);
         console.log("target = " + target);
         var status = await Utility.mutliLock(days, reason, target);
-        if(status==200)
-        document.location.href = `/list/${this.match.params.boardId}`;
+        if (status == 200)
+            document.location.href = `/list/${this.match.params.boardId}`;
     }
     async delete() {
         let reason = $("#opReason").val();
@@ -486,8 +486,8 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         console.log("reason=" + reason);
         let target = this.getCheckValue();
         var status = await Utility.mutliDelete(reason, target);
-        if(status==200)
-        document.location.href = `/list/${this.match.params.boardId}`;
+        if (status == 200)
+            document.location.href = `/list/${this.match.params.boardId}`;
     }
     changeReason() {
         let value = $("#opReason").val();
@@ -503,10 +503,10 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
     changeDeleteReason() {
         let value = $("#opReason").val();
         if (value == "自定义") {
-     
+
             $("#hideReason1").css("display", "");
         } else {
-  
+
             $("#hideReason1").css("display", "none");
         }
 
@@ -577,7 +577,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         console.log(this.state.boardInfo);
         console.log(this.state.boardInfo.boardMasters);
         if (Utility.isMaster(this.state.boardInfo.boardMasters)) {
-            manageBtn = <div onClick={this.manageUI.bind(this)} className="react-bootstrap-button" style={{ height: "1.8rem", lineHeight: "1.8rem", padding: 0, borderRadius: 0, marginLeft: "3rem", color: "#fff", backgroundColor:"#5198d8" }}>批量管理</div>;
+            manageBtn = <div onClick={this.manageUI.bind(this)} className="boardRecordBtn">批量管理</div>;
         }
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
@@ -596,12 +596,11 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
                 {topTopics}
                 <div>{topics}</div>
             </div>
-            <div className="row">
-                <div className="listContentBottom" style={{ flexGrow:1 }}><Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} />
+            <div className="row" style={{ marginTop: '0.5rem' }}>
+                <div className="listContentBottom" style={{ flexGrow: 1 }}><Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} /></div>
                 <Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link>
-            </div>
                 {manageBtn}
-                </div>
+            </div>
             {manageUI}
 
         </div>;
@@ -629,7 +628,7 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
     private convertTopicToElement(item) {
 
         return <TopicTitleAndContent key={item.id}
-        {...item}
+            {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -710,7 +709,7 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
     private convertTopicToElement(item) {
 
         return <TopicTitleAndContent key={item.id}
-        {...item}
+            {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -1134,9 +1133,9 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
 
             let title = '';
 
-            if(this.state.tag2 && !this.props.topState) title = `[${this.state.tag2}]${title}`;
-            if(this.state.tag1 && !this.props.topState) title = `[${this.state.tag1}]${title}`;
-            if(this.props.isVote) title = `[投票]${title}`;
+            if (this.state.tag2 && !this.props.topState) title = `[${this.state.tag2}]${title}`;
+            if (this.state.tag1 && !this.props.topState) title = `[${this.state.tag1}]${title}`;
+            if (this.props.isVote) title = `[投票]${title}`;
 
             return <div style={{ display: "flex" }} id={colorId}>
                 {checkbox}
@@ -1148,7 +1147,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                                 {icon}
                                 <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle: i }}>
                                     <span className="listTitleTag" style={{}} >{title}</span>
-                                     {this.props.title}</div>
+                                    {this.props.title}</div>
                             </div>
                             <div style={{ display: "flex", fontSize: "0.75rem", marginLeft: "1rem", width: "auto" }}>
                                 {this.state.pager.map(this.generateListPager.bind(this))}</div>
@@ -1205,7 +1204,7 @@ export class BoardRecordContent extends React.Component<BoardEvent> {
         let targetUserName;
         if (this.props.targetUserName) {
             targetUserName = <a href={`/user/name/${this.props.targetUserName}`} target="_blank">{this.props.targetUserName}</a>;
-        } else if (!this.props.targetUserName && this.props.boardId!=182) {
+        } else if (!this.props.targetUserName && this.props.boardId != 182) {
             targetUserName = "不适用";
         }
         else {

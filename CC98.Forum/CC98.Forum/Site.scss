@@ -24,6 +24,15 @@ $color-urlVisited: #741b47;
 body {
     margin: 0;
     padding: 0;
+    color: black;
+}
+
+p {
+    margin:1rem;
+}
+
+button {
+    line-height:normal;
 }
 
 #root {
@@ -780,7 +789,7 @@ body {
     border: #33C499 solid thin;
     width: 5rem;
     height: 2rem;
-    margin-left: 0.625rem;
+    margin-right: 0.625rem;
     background-color: $bgcolor2;
     border-radius: 0.3125rem;
     cursor: pointer;
@@ -1022,6 +1031,11 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom:1rem;
+}
+
+.pagination ul{
+    margin-bottom:0;
 }
 
 .page-nav {
@@ -1068,6 +1082,7 @@ a {
         margin-right: 3px;
         text-align: center;
         border: 1px solid #ddd;
+        padding:1px;
     }
 
     a {
@@ -3274,14 +3289,12 @@ variable {
 }
 
 .boardRecordBtn {
-    position: absolute;
-    right: -0.1rem;
-    top: 1rem;
-    height: 1.8rem;
+    height: 1.625rem;
     width: 8rem;
-    line-height: 1.8rem;
+    margin-left:0.5rem;
     text-align: center;
     border: 1px solid transparent;
+    box-sizing:border-box;
     font-size: 1rem;
     background-color: $color-main;
     color: #fff
