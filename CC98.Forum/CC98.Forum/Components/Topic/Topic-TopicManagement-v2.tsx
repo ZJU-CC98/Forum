@@ -350,13 +350,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                     <Item key="7">{this.props.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'}</Item>
                     <Item key="8">{this.props.topicInfo.bestState === 1 ? "解除精华" : "加精"}</Item>
                     <Item key="9">高亮</Item>
-                </Menu>
-                <Carousel effect="fade">
-                <div><img src="http://file.cc98.org/v2-upload/se0ekkk2.jpg"></img></div>
-                <div><img src="http://file.cc98.org/v2-upload/u00151gl.jpg"></img></div>
-                <div><img src="http://file.cc98.org/v2-upload/wbvcn5ml.jpg"></img></div>
-                <div><img src="http://file.cc98.org/v2-upload/ir23l2ai.jpg"></img></div>
-            </Carousel>
+                </Menu>               
                 {rcForm}
             </Modal>
         )
