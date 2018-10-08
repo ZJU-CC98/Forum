@@ -286,7 +286,7 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
             </div >;
         }
 
-        return <div className="row" style={{ width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        return <div className="row" style={{ width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", marginTop: '0.9375rem', marginBottom: '1rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <div >
 
                 {tag1Btn}
