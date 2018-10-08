@@ -81,6 +81,7 @@
     margin-top: 1rem;
     font-family: 微软雅黑;
 }
+
 .changeEditor {
     display: block;
     color: $color_main;
@@ -96,7 +97,7 @@
     white-space: nowrap;
     margin-top: 1rem;
     font-family: 微软雅黑;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .hiddenImage:hover {
@@ -207,12 +208,13 @@
     flex-direction: column;
     width: 51.25rem;
     margin-top: 0.75rem;
+    margin-bottom: 1.25rem;
 }
 
 .announcementContent {
     display: flex;
     flex-direction: row;
-    min-height: 9rem;
+    //min-height: 9rem;
     margin-top: 1rem;
     padding: 1rem 1.25rem;
     border-width: 8px 1px 1px 1px;
@@ -227,7 +229,7 @@
     display: flex;
     flex-direction: column;
     width: 51.25rem;
-    margin-top: 2em;
+    margin-top: 0.75rem;
 }
 
 .recommendedReadingContent {
@@ -447,7 +449,7 @@
     margin-top: 1rem;
     padding: 1.5rem 1.25rem 1rem 1.25rem;
     box-sizing: border-box;
-    background-color:$color_sec;
+    background-color: $color_sec;
 }
 
 .schoolNewsRow {
@@ -480,7 +482,7 @@
 
 .adButtons {
     display: flex;
-    width:16rem;
+    width: 16rem;
     height: 0.625rem;
     flex-direction: row;
     justify-content: center;
@@ -560,7 +562,7 @@
     padding: 0px;
     background: $background_image no-repeat center;
     z-index: 2;
-    background-size:120rem,12rem;
+    background-size: 120rem,12rem;
 }
 
 .headerWithoutImage {

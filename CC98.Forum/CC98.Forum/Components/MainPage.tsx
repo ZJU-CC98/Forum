@@ -11,7 +11,9 @@ import { CountDown } from './CountDown'
  **/
 export class AnnouncementComponent extends React.Component<{ data }, {}> {
     render() {
-        return <div className="announcement">
+        const data = this.props.data;
+        if(data == "") return <div></div>
+        else return <div className="announcement">
             <div className="mainPageTitle1">
                 <div className="mainPageTitleRow" style={{ width: '100%' }}>
                     <i className="fa fa-volume-up"></i>
@@ -19,7 +21,7 @@ export class AnnouncementComponent extends React.Component<{ data }, {}> {
                     {/*<CountDown endDate={new Date('05/26/2018 05:30 PM')} />*/}
                 </div>
             </div>
-            <div className="announcementContent"><UbbContainer code={this.props.data} /></div>
+            <div className="announcementContent"><UbbContainer code={data} /></div>
         </div>
     }
 }
