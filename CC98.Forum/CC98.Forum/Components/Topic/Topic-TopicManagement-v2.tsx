@@ -350,7 +350,11 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                     <Item key="7">{this.props.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'}</Item>
                     <Item key="8">{this.props.topicInfo.bestState === 1 ? "解除精华" : "加精"}</Item>
                     <Item key="9">高亮</Item>
+<<<<<<< HEAD
                 </Menu>
+=======
+                </Menu>               
+>>>>>>> ee6f4814b23228edd939eb269f12ce5fcf3b2aaa
                 {rcForm}
             </Modal>
         )
