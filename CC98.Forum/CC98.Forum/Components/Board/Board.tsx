@@ -19,6 +19,12 @@ import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard, ServerError } from
 import { AdsComponent } from '../MainPage';
 import { isLogOn } from '../../Utility';
 import * as moment from 'moment';
+import Modal from 'antd/es/modal';
+import List from 'antd/es/list';
+import Button from 'antd/es/button';
+import message from 'antd/es/message';
+import Avatar from 'antd/es/avatar';
+import Spin from 'antd/es/spin';
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
@@ -30,17 +36,45 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class List extends RouteComponent<{}, { page: number, boardId: number, boardInfo, fetchState }, { boardId: number }>  {
+export class BList extends RouteComponent<{}, { page: number, boardId: number, boardInfo, fetchState, visible, tpList, loading, hasMore ,isMaster}, { boardId: number }>  {
 
     constructor(props, context) {
         super(props, context);
 
         // 默认页码
         this.state = {
-            boardId: null, boardInfo: { bigPaper: "", masters: [], name: "" }, page: 1, fetchState: 'ok'
+            boardId: null, boardInfo: { bigPaper: "", masters: [], name: "" }, page: 1, fetchState: 'ok', visible: false, tpList: [],
+            loading: false,
+            hasMore: true,
+            isMaster:false
         };
     }
+    componentDidMount(){
+        const isMaster = Utility.isMaster(this.state.boardInfo.boardMasters);
+        this.setState({isMaster})
+    }
 
+
+    showModal = async () => {
+        let res = await Utility.getTpUsers(this.match.params.boardId, 0, 20);
+        this.setState({
+            visible: true,
+            tpList:res
+        });
+    }
+    handleOk = (e) => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    }
+
+    handleCancel = (e) => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    }
     async componentWillReceiveProps(newProps) {
 
         const boardInfo = await Utility.getBoardInfo(newProps.match.params.boardId);
@@ -54,6 +88,15 @@ export class List extends RouteComponent<{}, { page: number, boardId: number, bo
         // 设置状态
         this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId, fetchState: boardInfo });
     }
+    cancelTp=async (item)=>{
+        const response = await Utility.cancelStopBoardPost(item.userId,this.match.params.boardId);
+        if(response==='ok'){
+            let data = await Utility.getTpUsers(this.match.params.boardId,0,5)
+            this.setState({tpList:data});
+        }else{
+            alert("操作失败,原因："+response);
+        }
+    }
     render() {
         switch (this.state.fetchState) {
             case 'ok':
@@ -65,7 +108,7 @@ export class List extends RouteComponent<{}, { page: number, boardId: number, bo
             case 'server error':
                 return <ServerError />
         }
-
+        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
         return <div id="listRoot">
             <DocumentTitle title={`${this.state.boardInfo.name} - CC98论坛`} />
             <Category boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
@@ -80,6 +123,49 @@ export class List extends RouteComponent<{}, { page: number, boardId: number, bo
                 <Route exact path="/list/:boardId/record/:page?" component={BoardRecord} />
                 <Route exact path="/list/:boardId/:page?" component={ListContent} />
             </Switch>
+            <div style={{ display: 'flex',width:"100%",justifyContent:"flex-end" }}>
+                <Link to={recordTopicsUrl}><Button type="primary">查看版面事件</Button></Link>
+                <Button style={{ marginLeft: "2rem" }} type="primary" onClick={this.showModal}>小黑屋</Button>
+            </div>
+            <Modal
+                title="小黑屋"
+                visible={this.state.visible}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+                width={this.state.isMaster?'60rem':'45rem'}
+            >
+       
+                    <List
+                        dataSource={this.state.tpList}
+                        pagination={{
+                            onChange: async (page) => {
+                                const from = (page-1)*5;
+                                let data = await Utility.getTpUsers(this.match.params.boardId,from,5);
+                                let res = this.state.tpList.concat(data);
+                                this.setState({tpList:res});
+                              console.log(page);
+                            },
+                            pageSize: 5,
+                          }}
+                        renderItem={item => (
+                            <List.Item key={item.userId}>
+                                <List.Item.Meta
+                                    title={<a href={`https://cc98.org/user/${item.userId}`}>{item.userName}</a>}
+                                    description={<div><span>天数:{item.days}</span><span style={{marginLeft:"2rem",marginRight:"2rem"}}>到期时间:{moment(item.expiredTime).format('YYYY-MM-DD HH:mm:ss')}</span><Button onClick={this.cancelTp.bind(this,item)} type="primary" style={{display:this.state.isMaster?"":"none"}}>解除tp</Button></div>}
+                                />
+                                <div>操作人:{item.operatorUserName}</div>
+                            </List.Item>
+                        )}
+                    >
+                        {this.state.loading && this.state.hasMore && (
+                            <div className="demo-loading-container">
+                                <Spin />
+                            </div>
+                        )}
+                    </List>
+          
+
+            </Modal>
         </div>;
     }
 }
@@ -511,6 +597,9 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         }
 
     }
+    tpList = () => {
+
+    }
     render() {
         console.log("state");
         console.log(this.state.totalPage);
@@ -524,7 +613,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
-        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
+
         let reasonUI = <div ><ControlLabel>处理理由</ControlLabel>
             <select id="opReason" onChange={this.changeReason.bind(this)} className="react-bootstrap-select" >
 
@@ -577,7 +666,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         console.log(this.state.boardInfo);
         console.log(this.state.boardInfo.boardMasters);
         if (Utility.isMaster(this.state.boardInfo.boardMasters)) {
-            manageBtn = <div onClick={this.manageUI.bind(this)} className="boardRecordBtn">批量管理</div>;
+            manageBtn = <Button type="primary" onClick={this.manageUI.bind(this)} >批量管理</Button>;
         }
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
@@ -598,7 +687,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
             </div>
             <div className="row" style={{ marginTop: '0.5rem' }}>
                 <div className="listContentBottom" style={{ flexGrow: 1 }}><Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} /></div>
-                <Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link>
+
                 {manageBtn}
             </div>
             {manageUI}
@@ -684,7 +773,7 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
                 </div>
                 <div>{topics}</div>
             </div>
-            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={tagUrl} /><Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link></div>
+            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={tagUrl} /></div>
         </div>;
 
     }
@@ -765,7 +854,7 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
                 </div>
                 <div>{topics}</div>
             </div>
-            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={tagUrl} /><Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link></div>
+            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={tagUrl} /></div>
         </div>;
 
     }

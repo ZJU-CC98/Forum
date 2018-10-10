@@ -28,6 +28,7 @@
     "react-bootstrap": "0.32.3",
     "react-color": "^2.14.1",
     "react-dom": "16.4.2",
+    "react-infinite-scroller": "^1.2.2",
     "react-lazyload": "^2.3.0",
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",
@@ -40,7 +41,7 @@
     "url-join": "4.0.0",
     "url-parse": "^1.4.3",
     "whatwg-fetch": "2.0.4",
-    "why-did-you-update": "0.1.1"
+    "why-did-you-update": "0.1.1",
   },
   "devDependencies": {
     "@types/core-js": "^2.5.0",

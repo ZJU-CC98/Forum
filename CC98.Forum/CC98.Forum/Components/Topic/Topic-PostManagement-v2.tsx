@@ -73,14 +73,19 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                     reason = values.reason.toString();
                     response = await Utility.deletePost(this.props.item.topicId, this.props.item.id, reason);
                     break;
+                case 'tp':
+                    reason = values.reason.toString();
+                    value = parseInt(values.days);
+                    response = await Utility.stopBoardPost(this.props.item.id, reason, value);
+                    break;
                 case 'canceltp':
                     response = await Utility.cancelStopBoardPost(this.props.item.userId, this.props.boardId);
                     break;
             }
-            if(response==='ok'){
+            if (response === 'ok') {
                 this.props.update();
-                this.props.onCancel();            
-            }else{
+                this.props.onCancel();
+            } else {
                 alert(response);
             }
         })
@@ -91,13 +96,13 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
         const { getFieldDecorator } = this.props.form;
         const { visible, onCancel } = this.props;
         let rcForm = null;
-        let m_wealth:any = 0;
+        let m_wealth: any = 0;
         if (!this.props.m_wealth) m_wealth = '不限';
         else m_wealth = this.props.m_wealth;
         switch (this.state.current) {
             case 'wealth':
                 rcForm = <Form layout="vertical">
-                <Tag color="blue">您今天在{this.props.boardName}已经发了{this.props.d_wealth}财富值，最多可发{m_wealth}</Tag>
+                    <Tag color="blue">您今天在{this.props.boardName}已经发了{this.props.d_wealth}财富值，最多可发{m_wealth}</Tag>
                     <FormItem label="财富值">
                         {getFieldDecorator('wealth', {
                             rules: [{ required: true, message: '请输入财富值' }]
@@ -112,7 +117,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                         {getFieldDecorator('reason', {
                             rules: [{ required: true, message: '请输入理由' }]
                         })(
-                            <Select mode={"tags"}  style={{ width: 120 }} onChange={this.handleChange}>
+                            <Select mode={"tags"} style={{ width: 120 }} onChange={this.handleChange}>
                                 <Option value="好文章">好文章</Option>
                                 <Option value="有用资源">有用资源</Option>
                                 <Option value="热心回复">热心回复</Option>
@@ -165,7 +170,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                         {getFieldDecorator('reason', {
                             rules: [{ required: true, message: '请输入理由' }]
                         })(
-                            <Select mode={"tags"}  style={{ width: 120 }} onChange={this.handleChange}>
+                            <Select mode={"tags"} style={{ width: 120 }} onChange={this.handleChange}>
                                 <Option value="人身攻击">人身攻击</Option>
                                 <Option value="违反版规">违反版规</Option>
                                 <Option value="恶意灌水">恶意灌水</Option>
@@ -189,7 +194,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                         )}
                     </FormItem>
                     <FormItem label="理由">
-                        {getFieldDecorator('reason', {  
+                        {getFieldDecorator('reason', {
                             rules: [{ required: true, message: '请输入理由' }]
                         })(
                             <Select mode={"tags"} defaultValue="人身攻击" style={{ width: 120 }} onChange={this.handleChange}>
@@ -218,7 +223,25 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                 </Form>;
                 break;
             case 'canceltp':
-                rcForm = <div>解除此用户版面tp</div>;
+                rcForm = <div>接触此用户版面tp</div>;
+                break;
+            case 'tp':
+                rcForm = <Form layout="vertical">
+                    <FormItem label="天数">
+                        {getFieldDecorator('days', {
+                            rules: [{ required: true, message: '请输入tp天数' }]
+                        })(
+                            <InputNumber />
+                        )}
+                    </FormItem>
+                    <FormItem label="理由">
+                        {getFieldDecorator('reason', {
+                            rules: [{ required: true, message: '请输入理由' }]
+                        })(
+                            <Input />
+                        )}
+                    </FormItem>
+                </Form>;
                 break;
         }
         return (
@@ -229,7 +252,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                 cancelText="取消"
                 onOk={this.onCreate}
                 onCancel={onCancel}
-                width={"40rem"}
+                width={"50rem"}
             >
                 <Menu
                     onClick={this.handleClick}
@@ -251,6 +274,9 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                     </Menu.Item>
                     <Menu.Item key="delete">
                         删除
+                    </Menu.Item>
+                    <Menu.Item key="tp">
+                        TP
                     </Menu.Item>
                     <Menu.Item key="canceltp">
                         解除TP

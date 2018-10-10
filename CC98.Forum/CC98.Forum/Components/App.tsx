@@ -9,7 +9,7 @@ import {
 import { ConnectedRouter } from 'react-router-redux';
 import { history } from '../Store';
 import { Post, ShowTopic } from './Topic/Topic';
-import { List } from './Board/Board';
+import { BList } from './Board/Board';
 import { CurUserPost } from './Topic/Topic-Trace';
 import { BoardList } from './Board/BoardList';
 import UserCenter from './UserCenter/UserCenter';
@@ -55,7 +55,7 @@ class App extends React.Component<Props> {
                 <Route exact path="/topic/hot-history" component={HistoryHotTopic} />
                 <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />
                 <Route exact path="/topic/:topicId/postid/:postId/:page?" component={CurUserPost} />
-                <Route path="/list/:boardId/:type?/:page?" component={List} />
+                <Route path="/list/:boardId/:type?/:page?" component={BList} />
                 <Route exact path="/boardlist" component={BoardList} />
                 <Route path="/usercenter" component={UserCenter} />
                 <Route path="/message" component={Message} />

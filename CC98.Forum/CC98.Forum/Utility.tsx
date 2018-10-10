@@ -2966,3 +2966,12 @@ export async function mutliDelete(reason, target) {
     }
     return response.status;
 }
+
+
+export async function getTpUsers(boardId,from,size){
+    const url = `/board/${boardId}/stop-post-user?from=${from}&size=${size}`;
+    const headers = await formAuthorizeHeader();
+    headers.append("Content-Type", "application/json");
+    const response = await cc98Fetch(url, { headers });
+    return await response.json();
+}

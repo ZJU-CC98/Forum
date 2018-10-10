@@ -67,7 +67,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		// when there's content in the editor
 		// should be removed before the component unmounts
 		window.onbeforeunload = () => {
-			if(this.state.content) return '确定要离开吗？';
+			if(this.state.content) return '您还有内容未发布，确认离开吗？';
 			return null;
 		}
 
