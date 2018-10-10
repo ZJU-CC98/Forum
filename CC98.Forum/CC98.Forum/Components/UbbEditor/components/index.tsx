@@ -55,6 +55,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
     private customTextArea: CustomTextArea
 
     onChange = (value: string) => {
+        console.log("进入onchange")
         this.setState({ value })
         this.props.update(value)
     }
@@ -75,6 +76,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
     }
 
     private changeValue(ubbSegment: ConfigType.IUbbSegment): void {
+        console.log("进入changevvalue")
         const newState = utility.getNewState(this.state, ubbSegment)
         this.setState(newState, this.selectTextArea)
         this.props.update(newState.value)

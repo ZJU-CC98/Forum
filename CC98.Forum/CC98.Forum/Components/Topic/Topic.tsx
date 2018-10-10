@@ -64,8 +64,10 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 console.log("要跳转");
                 page = newPage;
                 let url = `/topic/${topicInfo.id}/${page}#${floor}`;
-                this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
-                this.props.history.push(url);
+                console.log("top update1");
+                this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } },     this.props.history.push(url));
+           
+            
             }
             else {
                 let url = `/topic/${topicInfo.id}/${page}`; 
@@ -73,17 +75,19 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 if (this.state.quote && this.state.quote.floor) {
                     let quoteFloor = this.state.quote.floor % 10;
                     url = `/topic/${topicInfo.id}/${page}#${quoteFloor}`;
-                    this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
-                    this.props.history.push(url);
+                    console.log("top update2");
+                    this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } },        this.props.history.push(url));
+            
                 }
                 //如果没有引用则不需要跳转，直接还是在输入框那个位置
             }
         }
         else {
+            console.log("-------");
             page = newPage;
             let url = `/topic/${topicInfo.id}/${page}#${floor}`;
-            this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
-            this.props.history.push(url);
+            this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } },   this.props.history.push(url));
+         
         }
         //回复成功提示
         Utility.noticeMessageShow('replyMessage');
@@ -142,6 +146,8 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
     }
 
     render() {
+        console.log("topic rerender");
+        console.log(this.state.quote);
         //$(".signature").children("article").children("img").css("display", "none");
        // $(".signature").children("article").children("img:first").css("display", "");
         switch (this.state.fetchState) {
