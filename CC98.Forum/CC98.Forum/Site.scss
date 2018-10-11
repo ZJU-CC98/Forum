@@ -46,6 +46,21 @@ button {
     box-sizing: content-box;
 }
 
+ul {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
 #root {
     font-size: 16px;
     width: 100%;
@@ -3479,3 +3494,4 @@ variable {
 .login-message {
     margin-top: 1rem;
 }
+
