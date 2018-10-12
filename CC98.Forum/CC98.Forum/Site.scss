@@ -28,6 +28,7 @@ body {
     color: black;
 }
 
+//---------------恢复一些被reset的样式------------------
 p {
     -webkit-margin-before: 1em;
     -webkit-margin-after: 1em;
@@ -49,7 +50,6 @@ button {
 ul {
     display: block;
     list-style-type: disc;
-    -webkit-margin-before: 1em;
     -webkit-margin-after: 1em;
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
@@ -60,6 +60,11 @@ li {
     display: list-item;
     text-align: -webkit-match-parent;
 }
+
+input[type="radio"] {
+    margin: 3px 3px 0px 5px;
+}
+//------------到此为止---------------
 
 #root {
     font-size: 16px;
@@ -3494,4 +3499,3 @@ variable {
 .login-message {
     margin-top: 1rem;
 }
-
