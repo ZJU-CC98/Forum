@@ -16,7 +16,7 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
         const title = tagData.value('title');
         let isShowedValue = parseInt(tagData.value('img'));
 
-        let { allowImage, allowExternalImage } = context.options;
+        let { allowImage, allowExternalImage, allowLightbox } = context.options;
         if (!allowExternalImage && !parse(imageUri).hostname.includes('cc98.org')) {
             allowImage = false;
         }
@@ -30,18 +30,18 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
         // HTML5 模式下，使用 figure 表示插图
         if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
             if (isShowedValue === 1) {
-                return <Image imageUri={imageUri} title={title} isShowed={false} />
+                return <Image imageUri={imageUri} title={title} isShowed={false} allowLightbox={allowLightbox} />
             } else {
                 return <figure>
-                    <Image imageUri={imageUri} title={title} isShowed={true} />
+                    <Image imageUri={imageUri} title={title} isShowed={true} allowLightbox={allowLightbox} />
                     <figcaption>{title}</figcaption>
                 </figure>;
             }
         } else {
             if (isShowedValue === 1) {
-                return <Image imageUri={imageUri} title={title} isShowed={false} />
+                return <Image imageUri={imageUri} title={title} isShowed={false} allowLightbox={allowLightbox} />
             } else {
-                return <Image imageUri={imageUri} title={title} isShowed={true} />
+                return <Image imageUri={imageUri} title={title} isShowed={true} allowLightbox={allowLightbox} />
             }
         }
     }
@@ -51,7 +51,7 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
  *图片组件
  *用于控制图片是否默认显示
  */
-export class Image extends React.Component<{ imageUri, title, isShowed: boolean }, { isShowed: boolean, isLightboxOn: boolean }> {
+export class Image extends React.Component<{ imageUri, title, isShowed: boolean, allowLightbox: boolean }, { isShowed: boolean, isLightboxOn: boolean }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
@@ -76,23 +76,30 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean 
     }
 
     render() {
-        let props = {
+        const props = {
             height: 300,
             once: true,
             offset: 100,
         };
 
         if (this.state.isShowed) {
-            if (this.state.isLightboxOn) {
-                return <div className="lightbox" onClick={this.toggleLightbox}>
-                    <div className="lightbox-image">
-                        <img src={this.props.imageUri} alt={this.props.title} />
+            if (this.props.allowLightbox) {
+                if (this.state.isLightboxOn) {
+                    return <div className="lightbox" onClick={this.toggleLightbox}>
+                        <div className="lightbox-image">
+                            <img src={this.props.imageUri} alt={this.props.title} />
+                        </div>
                     </div>
-                </div>
+                }
+                else {
+                    return <LazyLoad {...props} >
+                        <img style={{ maxWidth: '100%', cursor: 'pointer' }} src={this.props.imageUri} alt={this.props.title} onClick={this.toggleLightbox} />
+                    </LazyLoad>
+                }
             }
             else {
                 return <LazyLoad {...props} >
-                    <img style={{ maxWidth: '100%' }} src={this.props.imageUri} alt={this.props.title} onClick={this.toggleLightbox} />
+                    <img style={{ maxWidth: '100%' }} src={this.props.imageUri} alt={this.props.title} />
                 </LazyLoad>
             }
         } else {

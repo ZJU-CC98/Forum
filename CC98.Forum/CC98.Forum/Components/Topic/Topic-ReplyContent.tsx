@@ -4,6 +4,7 @@ import { AwardInfo } from './Topic-AwardInfo';
 import { RouteComponent } from '../RouteComponent';
 import { PostManagement } from './Topic-PostManagement';
 import { UbbContainer } from '../UbbContainer';
+import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
 import { VoteContent, voteInfo } from './VoteInfo';
 declare let editormd: any;
 interface Props {
@@ -24,7 +25,7 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
 
         this.getVote = this.getVote.bind(this);
     }
-  
+
 
     componentDidUpdate(prevProps) {
         const divid = `doc-content${this.props.postId}`;
@@ -38,7 +39,7 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
             sequenceDiagram: true,
             codeFold: true,
         });
-        if(this.props.floor === 1 && this.props.topicInfo.isVote && !this.state.vote && prevProps.postId !== this.props.postId) this.getVote();
+        if (this.props.floor === 1 && this.props.topicInfo.isVote && !this.state.vote && prevProps.postId !== this.props.postId) this.getVote();
     }
     async componentDidMount() {
         const divid = `doc-content${this.props.postId}`;
@@ -52,7 +53,7 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
             codeFold: true,
         });
         this.setState({});
-        if(this.props.floor === 1 && this.props.topicInfo.isVote && !this.state.vote) this.getVote();
+        if (this.props.floor === 1 && this.props.topicInfo.isVote && !this.state.vote) this.getVote();
     }
 
     async getVote() {
@@ -65,16 +66,16 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
             this.setState({
                 vote
             });
-        } catch(e) {
+        } catch (e) {
 
         }
     }
 
     render() {
-    
+
         const divid = `doc-content${this.props.postId}`;
         let ubbUrlContent = Utility.atUserUbbUrl(this.props.content);
-        const ubbMode = <UbbContainer code={ubbUrlContent} />;
+        const ubbMode = <UbbContainer code={ubbUrlContent} options={{ ...new UbbCodeOptions(), allowLightbox: true }} />;
         let mdUrlContent = Utility.atUserMdUrl(this.props.content);
         const mdMode = <div id={divid}>
             <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{mdUrlContent}</textarea>
@@ -86,10 +87,10 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
         if (this.props.contentType === 1) {
             content = mdMode;
         }
-      
-        return  <div className="reply-content">
-                {this.state.vote ? <VoteContent topicInfo={this.props.topicInfo} getInfo={this.getVote} voteInfo={this.state.vote} /> : null}
-                <div className="substance">{content}</div>        
-            </div>;
+
+        return <div className="reply-content">
+            {this.state.vote ? <VoteContent topicInfo={this.props.topicInfo} getInfo={this.getVote} voteInfo={this.state.vote} /> : null}
+            <div className="substance">{content}</div>
+        </div>;
     }
 }
