@@ -17,7 +17,7 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
         let isShowedValue = parseInt(tagData.value('img'));
 
         let { allowImage, allowExternalImage } = context.options;
-        if(!allowExternalImage && !parse(imageUri).hostname.includes('cc98.org')) {
+        if (!allowExternalImage && !parse(imageUri).hostname.includes('cc98.org')) {
             allowImage = false;
         }
 
@@ -51,20 +51,27 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
  *图片组件
  *用于控制图片是否默认显示
  */
-export class Image extends React.Component<{ imageUri, title, isShowed: boolean }, { isShowed: boolean }> {
+export class Image extends React.Component<{ imageUri, title, isShowed: boolean }, { isShowed: boolean, isLightboxOn: boolean }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
-            isShowed: this.props.isShowed
+            isShowed: this.props.isShowed,
+            isLightboxOn: false
         };
-        this.toggleIsShowed = this.toggleIsShowed.bind(this);//别再忘了bind了！！  “bind一般放在构造过程中” ——樱桃
+        this.toggleIsShowed = this.toggleIsShowed.bind(this);
+        this.toggleLightbox = this.toggleLightbox.bind(this);
     }
 
     toggleIsShowed() {
-        console.log("显示图片！")
         this.setState(prevState => ({
             isShowed: !prevState.isShowed   //setState() 可以接收一个函数，这个函数接受两个参数，第一个参数prevState表示上一个状态值，第二个参数props表示当前的props
+        }));
+    }
+
+    toggleLightbox() {
+        this.setState(prevState => ({
+            isLightboxOn: !prevState.isLightboxOn
         }));
     }
 
@@ -76,7 +83,18 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean 
         };
 
         if (this.state.isShowed) {
-            return <LazyLoad {...props} ><img style={{ maxWidth: '100%' }} src={this.props.imageUri} alt={this.props.title} /></LazyLoad>
+            if (this.state.isLightboxOn) {
+                return <div className="lightbox" onClick={this.toggleLightbox}>
+                    <div className="lightbox-image">
+                        <img src={this.props.imageUri} alt={this.props.title} />
+                    </div>
+                </div>
+            }
+            else {
+                return <LazyLoad {...props} >
+                    <img style={{ maxWidth: '100%' }} src={this.props.imageUri} alt={this.props.title} onClick={this.toggleLightbox} />
+                </LazyLoad>
+            }
         } else {
             return <div className="hiddenImage" onClick={this.toggleIsShowed}>点击查看图片</div>
         }
