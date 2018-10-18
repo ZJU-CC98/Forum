@@ -68,8 +68,8 @@ export class MessageResponsebox extends React.Component<MessageResponseProps> {
                                 {moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}
                             </div>
                         </div>
-                        <div className="message-response-box-middle-content">
-                    <UbbContainer code={content} options={{ allowAutoPlay: false, autoDetectUrl: true, allowExternalUrl: true, allowImage: false, allowMediaContent: false, compatibility: UbbCompatiblityMode.Recommended, allowEmotion: false, allowExternalImage: false }} />
+                <div className="message-response-box-middle-content">
+                    <UbbContainer code={content} options={{ allowAutoPlay: false, autoDetectUrl: true, allowExternalUrl: true, allowImage: false, allowMediaContent: false, compatibility: UbbCompatiblityMode.Recommended, allowEmotion: false, allowExternalImage: false, allowLightbox:false }} />
                         </div>
                     </div>
                 </div>

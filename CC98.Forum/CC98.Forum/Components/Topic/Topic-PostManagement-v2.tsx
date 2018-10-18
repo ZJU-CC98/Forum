@@ -8,7 +8,6 @@ import Select from 'antd/es/select';
 import Menu from 'antd/es/menu';
 import Tag from 'antd/es/tag';
 import * as Utility from '../../Utility';
-import { replace } from 'react-router-redux';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -223,7 +222,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                 </Form>;
                 break;
             case 'canceltp':
-                rcForm = <div>接触此用户版面tp</div>;
+                rcForm = <div>解除此用户版面 tp</div>;
                 break;
             case 'tp':
                 rcForm = <Form layout="vertical">

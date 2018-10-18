@@ -17,9 +17,10 @@ export class UploadTagHandler extends Ubb.TextTagHandler {
     get supportedTagNames(): string { return 'upload' };
 
     execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
-        
-        const uploadUri = content;
+
+        const uploadUrl = content;
         const uploadType = tagData.value(0);
+        const allowLightbox = context.options.allowLightbox;
         let uploadValue;
         if (tagData.parameterCount === 1) uploadValue = 0;
         if (tagData.parameterCount === 2) uploadValue = parseInt(tagData.value(1));
@@ -33,29 +34,28 @@ export class UploadTagHandler extends Ubb.TextTagHandler {
             case "webp":
                 // 不允许显示图像
                 if (!context.options.allowImage) {
-                    return <Image imageUri={uploadUri} title={"upload图片"} isShowed={false} />
+                    return <a href={uploadUrl}>{uploadUrl}</a>
                 }
-
                 //第二个参数值为1默认不显示图片，为0或没有则默认显示图片
                 // HTML5 模式下，使用 figure 表示插图
                 if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
                     if (uploadValue === 1) {
-                        return <Image imageUri={uploadUri} title={"upload图片"} isShowed={false} />
+                        return <Image imageUri={uploadUrl} title={"upload图片"} isShowed={false} allowLightbox={allowLightbox} />
                     } else {
                         return <figure>
-                            <Image imageUri={uploadUri} title={"upload图片"} isShowed={true} />
+                            <Image imageUri={uploadUrl} title={"upload图片"} isShowed={true} allowLightbox={allowLightbox} />
                             <figcaption>{"upload图片"}</figcaption>
                         </figure>;
                     }
                 } else {
                     if (uploadValue === 1) {
-                        return <Image imageUri={uploadUri} title={"upload图片"} isShowed={false} />
+                        return <Image imageUri={uploadUrl} title={"upload图片"} isShowed={false} allowLightbox={allowLightbox} />
                     } else {
-                        return <Image imageUri={uploadUri} title={"upload图片"} isShowed={true} />
+                        return <Image imageUri={uploadUrl} title={"upload图片"} isShowed={true} allowLightbox={allowLightbox} />
                     }
                 }
             default:
-                return <a className="hiddenImage" href={uploadUri}>点击下载文件</a>
+                return <a className="hiddenImage" href={uploadUrl}>点击下载文件</a>
         }
 
     }
