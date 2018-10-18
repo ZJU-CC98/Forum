@@ -100,7 +100,16 @@ export default class Announcement extends React.Component<props, AnnouncementSta
                         onChange={(e) => { this.setState({ announcement: e.target.value }); }}
                         value={this.state.announcement}
                     ></TextArea>
-                    <UbbContainer code={this.state.announcement} />
+                    <div className="announcement">
+            <div className="mainPageTitle1">
+                <div className="mainPageTitleRow" style={{ width: '100%' }}>
+                    <i className="fa fa-volume-up"></i>
+                    <div style={{ flexGrow: 1 }} className="mainPageTitleText">全站公告</div>
+                    {/*<CountDown endDate={new Date('05/26/2018 05:30 PM')} />*/}
+                </div>
+            </div>
+            <div className="announcementContent"><UbbContainer code={this.state.announcement} /></div>
+        </div>
                 </div>
             </div>
         );
