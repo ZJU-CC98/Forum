@@ -54,6 +54,7 @@ ul {
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
     -webkit-padding-start: 40px;
+    -moz-padding-start: 40px;
 }
 
 li {
@@ -3090,9 +3091,11 @@ a {
     font-size: 12px;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
+    background: rgb(233,233,233);
     z-index: 1000;
     list-style-type: none;
     margin-top: 2.1rem;
+    padding-left: 40px;
 }
 
 .tagBoxSub li {
@@ -3102,10 +3105,6 @@ a {
     padding-top: 3px;
     position: relative;
     left: -1.2rem;
-}
-
-.tagBoxSub {
-    background: rgb(233,233,233);
 }
 
 .createTopicTitle .box1 {
