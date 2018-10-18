@@ -1,6 +1,10 @@
 ﻿import * as React from 'react';
 import { cc98Fetch, getToken } from '../../Utility';
-
+import Button from 'antd/es/button';
+import Table from 'antd/es/table';
+import Checkbox from 'antd/es/checkbox';
+import Input from 'antd/es/input';
+import * as moment from 'moment';
 const PostForumIndexColumnInfoType = [
     '推荐阅读',
     '推荐功能',
@@ -79,7 +83,8 @@ type props = {
 }
 
 
-export default class extends React.Component<props, State > {
+
+export default class extends React.Component<props, State> {
     constructor(props) {
         super(props);
         this.state = {
@@ -92,7 +97,7 @@ export default class extends React.Component<props, State > {
         this.handleTdChange = this.handleTdChange.bind(this);
         this.add = this.add.bind(this);
     }
-    
+
     async getInfo(url) {
         this.setState({
             type: urls.indexOf(url) + 1,
@@ -114,7 +119,7 @@ export default class extends React.Component<props, State > {
 
     handleTdChange(key, value, index: number) {
         this.setState(prevState => {
-            let { data } = prevState as State; 
+            let { data } = prevState as State;
             data[index] = { ...data[index], [key]: value };
             //console.log(data);
             this.setState({ data });
@@ -122,7 +127,7 @@ export default class extends React.Component<props, State > {
     }
 
     async putCurData(index: number) {
-        let url: string, method:string;
+        let url: string, method: string;
         if (this.state.data[index].isNew) {
             url = '/index/column/';
             method = 'POST'
@@ -169,52 +174,132 @@ export default class extends React.Component<props, State > {
     }
 
     render() {
+        const Columns = [
+            {
+                title: 'id',
+                dataIndex: 'id',
+                key: 'id',
+                width:60,
+            },
+            {
+                title: 'type',
+                dataIndex: 'type',
+                key: 'type',
+                width:100,
+                render:text=>PostForumIndexColumnInfoType[text - 1]
+            },
+            {
+                title: 'title',
+                dataIndex: 'title',
+                key: 'title',
+                width:200,
+                render:(text,record,index)=><Input type="text" onChange={e => this.handleTdChange('title', e.target.value, index)} value={text} />
+            },
+            this.state.type === 1 ? {
+                title: 'content',
+                dataIndex: 'content',
+                key: 'content',
+                width:200,
+                render:(text,record,index)=><Input type="text" onChange={e => this.handleTdChange('content', e.target.value, index)} value={text} />
+
+            } : null,
+            {
+                title: 'url',
+                dataIndex: 'url',
+                key: 'url',
+                width:140,
+                render:(text,record,index)=><Input type="text" onChange={e => this.handleTdChange('url', e.target.value, index)} value={text} />
+            },
+            this.state.type !== 3 ? {
+                title: 'imageUrl',
+                dataIndex: 'imageUrl',
+                key: 'imageUrl',
+                width:200,
+                render:(text,record,index)=><Input type="text" onChange={e => this.handleTdChange('imageUrl', e.target.value, index)} value={text} />
+
+            } : null, this.state.type === 1 || this.state.type === 2 ? {
+                title: 'orderWeight',
+                dataIndex: 'orderWeight',
+                key: 'orderWeight',
+                width:150,
+                render:(text,record,index)=><Input type="text" onChange={e => this.handleTdChange('orderWeight', e.target.value, index)} value={text} />
+            } : null,
+            {
+                title: 'enable',
+                dataIndex: 'enable',
+                key: 'enable',
+                width:80,
+                render:(text,record,index)=><Checkbox checked={text} onChange={e=>this.handleTdChange('enable', (e.target as HTMLInputElement).checked, index)} />
+            },
+            this.state.type === 4 ? {
+                title: 'days',
+                dataIndex: 'days',
+                key: 'days',
+                render:(text,record,index)=><Input type="text" onChange={e => this.handleTdChange('days', e.target.value, index)} value={text} />
+            } : null,
+            this.state.type === 4 ? {
+                title: 'expiredTime',
+                dataIndex: 'expiredTime',
+                key: 'expiredTime',
+                render :text=>moment(text).format('YYYY-MM-DD HH:mm:ss')
+            } : null,
+            {
+                title: 'save',
+                dataIndex: 'save',
+                key: 'save',
+                width:100,
+                render: (text,record,index)=><Button type="primary" onClick={e => this.putCurData(index)}>保存</Button>
+            },
+        ].filter((v)=>{if(v)return v});
+
         return (
-            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "100%", marginBottom:"1rem" }}>
-                <div style={{ marginTop:"10px" }}>自定义栏目</div>
-                <div><button type="button" className="hiddenImage" disabled={this.state.type === 1} onClick={() => this.getInfo(urls[0])} >推荐阅读</button></div> 
-                    <div><button type="button" className="hiddenImage" disabled={this.state.type === 2} onClick={() => this.getInfo(urls[1])} >推荐功能</button></div> 
-                        <div><button type="button" className="hiddenImage" disabled={this.state.type === 3} onClick={() => this.getInfo(urls[2])} >校园新闻</button></div> 
-                            <div><button type="button" className="hiddenImage" disabled={this.state.type === 4} onClick={() => this.getInfo(urls[3])} >广告</button></div> 
-                    {this.state.type > 0 ? <div><button className="hiddenImage" type="button" onClick={() => this.add()} >添加</button></div> : null}
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: "1rem", borderTop: "#eaeaea solid thin", paddingTop: "1rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "100%", marginBottom: "1rem" }}>
+                    <div style={{ marginTop: "10px" }}>自定义栏目</div>
+                    <div><Button type="primary" disabled={this.state.type === 1} onClick={() => this.getInfo(urls[0])} >推荐阅读</Button></div>
+                    <div><Button type="primary" disabled={this.state.type === 2} onClick={() => this.getInfo(urls[1])} >推荐功能</Button></div>
+                    <div><Button type="primary" disabled={this.state.type === 3} onClick={() => this.getInfo(urls[2])} >校园新闻</Button></div>
+                    <div><Button type="primary" disabled={this.state.type === 4} onClick={() => this.getInfo(urls[3])} >广告</Button></div>
+                    {this.state.type > 0 ? <div><Button type="primary" onClick={() => this.add()} >添加</Button></div> : null}
                 </div>
                 <div>
-                {this.state.data.length > 0 ?
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>id</th>
-                                <th>type</th>
-                                <th>title</th>
-                                {this.state.type === 1 ? <th>content</th> : null}
-                                <th>url</th>
-                                {this.state.type !== 3 ? <th>imageUrl</th> : null}
-                                {this.state.type === 1 || this.state.type === 2 ? <th>orderWeight</th> : null}
-                                <th>enable</th>
-                                {this.state.type === 4 ? <th>days</th> : null}
-                                {this.state.type === 4 ? <th>expiredTime</th> : null}
-                                <th>save</th></tr>
-                            {this.state.data.map((item, index) => (
-                                <tr key={item.id}>
-                                    <td>{item.id}</td>
-                                    <td>{PostForumIndexColumnInfoType[item.type - 1]}</td>
-                                    <td><input type="text" onChange={e => this.handleTdChange('title', e.target.value, index)} value={item.title} /></td>
-                                    {this.state.type === 1 ? <td><input type="text" onChange={e => this.handleTdChange('content', e.target.value, index)} value={item.content} /></td> : null}
-                                    <td><input type="text" onChange={e => this.handleTdChange('url', e.target.value, index)} value={item.url} /></td>
-                                    {this.state.type !== 3 ? <td><input type="text" onChange={e => this.handleTdChange('imageUrl', e.target.value, index)} value={item.imageUrl} /></td> : null}
-                                    {this.state.type === 1 || this.state.type === 2 ? <td><input type="number" onChange={e => this.handleTdChange('orderWeight', Number.parseInt(e.target.value), index)} value={item.orderWeight} /></td> : null}
-                                    <td><input onChange={e => this.handleTdChange('enable', (e.target as HTMLInputElement).checked, index)} type="checkbox" checked={item.enable} /></td>
-                                    {this.state.type === 4 ? <td><input type="number" onChange={e => this.handleTdChange('days', Number.parseInt(e.target.value), index)} value={item.days} /></td> : null}
-                                    {this.state.type === 4 && item.expiredTime ? <td>{item.expiredTime.slice(0,19).replace('T', ' ')}</td> : null}
-                                    <td><button type="button" onClick={e => this.putCurData(index)}>保存</button></td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table> : null}
-                <p>{this.state.info}</p>
-               </div>
+                   <Table  bordered columns={Columns} dataSource={this.state.data} />
+                    <p>{this.state.info}</p>
                 </div>
+            </div>
         );
     }
 }
+
+// {this.state.data.length > 0 ?
+//     <table>
+//         <tbody>
+//             <tr>
+//                 <th>id</th>
+//                 <th>type</th>
+//                 <th>title</th>
+//                 {this.state.type === 1 ? <th>content</th> : null}
+//                 <th>url</th>
+//                 {this.state.type !== 3 ? <th>imageUrl</th> : null}
+//                 {this.state.type === 1 || this.state.type === 2 ? <th>orderWeight</th> : null}
+//                 <th>enable</th>
+//                 {this.state.type === 4 ? <th>days</th> : null}
+//                 {this.state.type === 4 ? <th>expiredTime</th> : null}
+//                 <th>save</th></tr>
+//             {this.state.data.map((item, index) => (
+//                 <tr key={item.id}>
+//                     <td>{item.id}</td>
+//                     <td>{PostForumIndexColumnInfoType[item.type - 1]}</td>
+//                     <td><input type="text" onChange={e => this.handleTdChange('title', e.target.value, index)} value={item.title} /></td>
+//                     {this.state.type === 1 ? <td><input type="text" onChange={e => this.handleTdChange('content', e.target.value, index)} value={item.content} /></td> : null}
+//                     <td><input type="text" onChange={e => this.handleTdChange('url', e.target.value, index)} value={item.url} /></td>
+//                     {this.state.type !== 3 ? <td><input type="text" onChange={e => this.handleTdChange('imageUrl', e.target.value, index)} value={item.imageUrl} /></td> : null}
+//                     {this.state.type === 1 || this.state.type === 2 ? <td><input type="number" onChange={e => this.handleTdChange('orderWeight', Number.parseInt(e.target.value), index)} value={item.orderWeight} /></td> : null}
+//                     <td><input onChange={e => this.handleTdChange('enable', (e.target as HTMLInputElement).checked, index)} type="checkbox" checked={item.enable} /></td>
+//                     {this.state.type === 4 ? <td><input type="number" onChange={e => this.handleTdChange('days', Number.parseInt(e.target.value), index)} value={item.days} /></td> : null}
+//                     {this.state.type === 4 && item.expiredTime ? <td>{item.expiredTime.slice(0, 19).replace('T', ' ')}</td> : null}
+//                     <td><button type="button" onClick={e => this.putCurData(index)}>保存</button></td>
+//                 </tr>
+//             ))}
+//         </tbody>
+//     </table> : null}
