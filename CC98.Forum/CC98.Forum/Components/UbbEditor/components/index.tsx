@@ -193,6 +193,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                         if(files) this.handleUpload(files)
                     }}
                     onPaste={e => {
+                        if(!e.clipboardData || !e.clipboardData.items) return;
                         const kinds = Array.from(e.clipboardData.items).map(item => item.kind)
                         const files = e.clipboardData.files;
                         if(kinds.some(kind => kind === 'file')) {
