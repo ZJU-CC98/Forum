@@ -170,7 +170,7 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
         }
         else {
             return <div className="topBarUserInfo">
-                <div className="topBarText"> <Link to="/logOn">登录</Link></div>
+                <div className="topBarText"> <Link onClick={()=>{localStorage.setItem("logOnRedirectUrl",window.location.href)}} to="/logOn">登录</Link></div>
                 <div className="topBarText"><a href="https://account.cc98.org/">注册</a></div>
             </div>
         }

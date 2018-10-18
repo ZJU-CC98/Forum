@@ -142,9 +142,12 @@ class LogOnExact extends React.Component<Props, LogOnState> {
             //跳转
             setTimeout(() => {
                 if (this.props.history.length === 1) {
-                    this.props.history.push('/');
+                  //  this.props.history.push('/');
+                    document.location.href="/";
                 } else {
-                    this.props.history.go(-1);
+                    const url = localStorage.getItem("logOnRedirectUrl");
+                   // this.props.history.go(-1);
+                   document.location.href=url;
                 }
             }, 100);
         } catch (e) {
