@@ -458,6 +458,7 @@ input[type="radio"] {
     width: 100%;
     padding-left: 2rem;
     padding-right: 2rem;
+    max-height: 300px;
 }
 
 .tagColumn {
@@ -3492,9 +3493,12 @@ variable {
 
 .signature iframe {
     width: 500px;
-    height: 300px;
+    max-height: 300px;
 }
 
 .login-message {
     margin-top: 1rem;
+}
+.antd-table table tr td{
+    height:100px
 }

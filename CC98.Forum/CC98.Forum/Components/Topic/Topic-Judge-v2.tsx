@@ -23,10 +23,10 @@ export default Form.create<Props>()(class extends React.Component< Props& FormCo
     constructor(props) {
         super(props);
         this.state = { current: "1", option: "" };
-        console.log("in constructor");
+
     }
     handleChange = (value) => {
-        console.log(`selected ${value}`);
+
         this.setState({ option: value });
     }
     onCreate = () => {
@@ -68,7 +68,6 @@ export default Form.create<Props>()(class extends React.Component< Props& FormCo
         });
     }
     render() {
-        console.log("in judge render");
         const { visible, onCancel } = this.props;
         const { getFieldDecorator } = this.props.form;
         const p1Form = <Form>
