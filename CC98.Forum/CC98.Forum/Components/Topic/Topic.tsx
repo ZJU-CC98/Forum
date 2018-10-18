@@ -16,21 +16,27 @@ import { Reply } from './Topic-Reply';
 import { NotFoundTopic, UnauthorizedTopic, ServerError } from '../Status';
 import { TopicInfo } from './Topic-TopicInfo';
 import { NoticeMessage } from '../NoticeMessage';
-import  DocumentTitle  from '../DocumentTitle';
-
-
-export class Post extends RouteComponent<{history}, { topicid, page, totalPage, userName, boardId, topicInfo, boardInfo, fetchState, quote, shouldRender,isFav ,IPData}, { topicid, page, userName }> {
+import DocumentTitle from '../DocumentTitle';
+const initQuoteContext = {
+    content: "",
+    userName: "",
+    replyTime: "",
+    floor: "",
+    postId: ""
+}
+export const QuoteContext = React.createContext((context) => { });
+export class Post extends RouteComponent<{ history }, { topicid, page, totalPage, userName, boardId, topicInfo, boardInfo, fetchState, quote, shouldRender, isFav, IPData }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
         this.update = this.update.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.quote = this.quote.bind(this);
         this.state = {
-            page: 1, shouldRender: true, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, fetchState: 'ok', quote: "", isFav: false, IPData:[]
+            page: 1, shouldRender: true, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, fetchState: 'ok', quote: "", isFav: false, IPData: []
         };
     }
     quote(content, userName, replyTime, floor, postId) {
-    
+
         const y = $("#sendTopicInfo").offset().top;
         let page = this.state.page;
         if (!this.state.page) page = 1;
@@ -39,7 +45,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor, postId: postId } });
     }
     update() {
-       
+
         this.setState({});
     }
     async handleChange() {
@@ -50,8 +56,8 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             page = parseInt(this.match.params.page);
         }
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
-        this.setState({topicInfo:topicInfo});
-        const newPage = (topicInfo.replyCount+1) % 10 === 0 ? (topicInfo.replyCount+1) / 10 : ((topicInfo.replyCount+1) - (topicInfo.replyCount+1) % 10) / 10 + 1;  
+        this.setState({ topicInfo: topicInfo });
+        const newPage = (topicInfo.replyCount + 1) % 10 === 0 ? (topicInfo.replyCount + 1) / 10 : ((topicInfo.replyCount + 1) - (topicInfo.replyCount + 1) % 10) / 10 + 1;
         const totalPage = await this.getTotalPage(topicInfo.replyCount);
         const userName = this.match.params.userName;
         const floor = (topicInfo.replyCount + 1) % 10;
@@ -64,30 +70,29 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 console.log("要跳转");
                 page = newPage;
                 let url = `/topic/${topicInfo.id}/${page}#${floor}`;
-                console.log("top update1");
-                this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } },     this.props.history.push(url));
-           
-            
+                this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } }, this.props.history.push(url));
+
+
             }
             else {
-                let url = `/topic/${topicInfo.id}/${page}`; 
+                let url = `/topic/${topicInfo.id}/${page}`;
                 //如果是引用了某一层楼，发帖后应该跳转回这层楼
                 if (this.state.quote && this.state.quote.floor) {
                     let quoteFloor = this.state.quote.floor % 10;
                     url = `/topic/${topicInfo.id}/${page}#${quoteFloor}`;
-                    console.log("top update2");
-                    this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } },        this.props.history.push(url));
-            
+               
+                    this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } }, this.props.history.push(url));
+
                 }
                 //如果没有引用则不需要跳转，直接还是在输入框那个位置
             }
         }
         else {
-            console.log("-------");
+       
             page = newPage;
             let url = `/topic/${topicInfo.id}/${page}#${floor}`;
-            this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } },   this.props.history.push(url));
-         
+            this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } }, this.props.history.push(url));
+
         }
         //回复成功提示
         Utility.noticeMessageShow('replyMessage');
@@ -113,7 +118,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             const url = `/topic/${topicInfo.id}/${page}#${floor}`;
             this.props.history.push(url);
         }
-        const isFav = await Utility.getFavState(newProps.match.params.topicid);  
+        const isFav = await Utility.getFavState(newProps.match.params.topicid);
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, isFav: isFav });
     }
     async componentDidMount() {
@@ -137,19 +142,24 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         }
         const isFav = await Utility.getFavState(this.match.params.topicid);
         let IPData = [];
-       // if (Utility.isMaster(boardInfo.boardMasters))
-      //   IPData = await Utility.findIP(this.match.params.topicid);
+        // if (Utility.isMaster(boardInfo.boardMasters))
+        //   IPData = await Utility.findIP(this.match.params.topicid);
         this.setState({ isFav, page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, fetchState: topicInfo, IPData: IPData });
     }
     getTotalPage(count) {
         return Utility.getTotalPageof10(count);
     }
-
+    handleQuoteContextChange = (context) => { 
+        console.log("传进topic.tsx")
+        console.log(context);
+        this.setState({ quote: context });
+    }
     render() {
-        console.log("topic rerender");
+        console.log("topic render");
+        console.log("state");
         console.log(this.state.quote);
         //$(".signature").children("article").children("img").css("display", "none");
-       // $(".signature").children("article").children("img:first").css("display", "");
+        // $(".signature").children("article").children("img:first").css("display", "");
         switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;
@@ -163,7 +173,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         let topic = null;
         let hotReply = null;
         let topicInfo = null;
-        topicInfo = <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo}  isFav={this.state.isFav} />;
+        topicInfo = <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo} isFav={this.state.isFav} />;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             hotReply = <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} isHot={true} postId={null} topicId={this.match.params.topicid} />
         }
@@ -173,28 +183,30 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             sendTopic = <SendTopic onChange={this.handleChange} boardInfo={this.state.boardInfo} content={this.state.quote} topicInfo={this.state.topicInfo} />;
         else
             sendTopic = <div>您还未登录，无法发言，请先登录。</div>;
-        if (Utility.getLocalStorage("userInfo")&&!Utility.getLocalStorage("userInfo").isVerified)
+        if (Utility.getLocalStorage("userInfo") && !Utility.getLocalStorage("userInfo").isVerified)
             sendTopic = <div>您的帐号未认证，无法发言，请先前往 <a href="https://account.cc98.org">https://account.cc98.org</a> 认证激活。</div>;
-        if (Utility.getLocalStorage("userInfo")&&Utility.getLocalStorage("userInfo").lockState !== 0)
+        if (Utility.getLocalStorage("userInfo") && Utility.getLocalStorage("userInfo").lockState !== 0)
             sendTopic = <div>您的帐号被全站禁言。</div>;
         let tip = null;
         if (this.state.topicInfo && this.state.topicInfo.state === 1)
-            tip = <div style={{color:"red", margin:"0.5rem"}}>该帖已被锁定</div>;
+            tip = <div style={{ color: "red", margin: "0.5rem" }}>该帖已被锁定</div>;
         let topicHtml = <div className="center" >
             <DocumentTitle title={`${this.state.topicInfo.title || "帖子"} - CC98论坛`} />
-            <div className="column" style={{width:"100%"}}>
+            <div className="column" style={{ width: "100%" }}>
                 <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center" }}>
-                <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
-                <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
+                    <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
+                    <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
                 </div>
                 {tip}
-                </div>
+            </div>
             {topicInfo}
-            <Reply topicInfo={this.state.topicInfo} page={this.state.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} postId={null} topicId={this.match.params.topicid} />
-            <div className="column" style={{width:"100%"}}>
-            <div className="row" style={{ width: "100%", justifyContent: "space-between", marginTop: "2rem" }}>
-                <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
-                <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
+            <QuoteContext.Provider value={this.handleQuoteContextChange}>
+                <Reply topicInfo={this.state.topicInfo} page={this.state.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} postId={null} topicId={this.match.params.topicid} />
+            </QuoteContext.Provider>
+            <div className="column" style={{ width: "100%" }}>
+                <div className="row" style={{ width: "100%", justifyContent: "space-between", marginTop: "2rem" }}>
+                    <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
+                    <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             </div>
             {sendTopic}
             <NoticeMessage text="回复成功" id="replyMessage" top="24%" left="46%" />

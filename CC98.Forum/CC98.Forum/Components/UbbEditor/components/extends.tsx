@@ -79,8 +79,8 @@ export class Extends extends React.PureComponent<Props, State> {
                         </>
                     }
                     {this.state.extendConfig.allowUpload && <label style={{ pointerEvents: 'all' }} className="fa fa-upload ubb-button-icon" htmlFor="ubbFileUpload" />}
-                    <button className="fa fa-check" type="submit" />
-                    <button className="fa fa-remove" type="reset" onClick={this.props.clearShown} />
+                    <button style={{marginLeft:"10px"}} className="fa fa-check" type="submit" />
+                    <button style={{marginLeft:"10px"}} className="fa fa-remove" type="reset" onClick={this.props.clearShown} />
                 </form> : null}
             </div>
         )

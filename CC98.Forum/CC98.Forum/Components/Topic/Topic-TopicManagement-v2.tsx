@@ -70,7 +70,6 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                 case '2':
                     //允许热门
                     if (this.props.topicInfo.disableHot) {
-                        console.log("in");
                         status = await Utility.cancelDisableHot(this.props.topicInfo.id, reason);
                     }
                     //禁止热门
@@ -189,9 +188,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
     }
 
     render() {
-        console.log(this.state.checkedList);
         const boards = JSON.parse(localStorage.getItem("boardsInfo")) || [];
-        console.log(this.state.childBoard);
         const boardOptions = boards.map(board => <Option key={board.id}>{board.name}</Option>);
         const childBoardOptions = this.state.childBoards.map(board => { if (board.id !== 182) { return <Option key={board.id}>{board.name}</Option> } else return null; });
 

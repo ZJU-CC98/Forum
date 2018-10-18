@@ -3,6 +3,8 @@ import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
+import {QuoteContext} from './Topic';
+import {withRouter,RouteComponentProps} from 'react-router-dom';
 import * as moment from 'moment';
 import  Popover from 'antd/es/popover';
 import Button from 'antd/es/button';
@@ -16,9 +18,10 @@ interface Props{
     traceMode;
     changePmVisible;
     changeJudgeVisible;
+    page;
 }
-
-export class ReplierSignature extends React.Component<Props, {likeNumber,dislikeNumber,likeState}>{
+interface withRouterProps extends RouteComponentProps<{}>{}
+export default withRouter(class extends React.Component<withRouterProps&Props, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
@@ -122,7 +125,11 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
        // console.log("img = "+$("img").);
       //  this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
- 
+    
+    handlePosition=()=>{
+        let url = `/topic/${this.props.topicInfo.id}/${this.props.page}#sendTopicInfo`;
+        this.props.history.push(url);
+    }
     render() {
 
         const manageIcon = `icon${this.props.postInfo.id}`;
@@ -132,18 +139,7 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         if (!this.props.userInfo.signatureCode) {
             signature = null;
         }
-        if(this.props.userInfo.name==='Dearkano'){
-            const content = (
-                <div>
-                  <p><a href="https://www.github.com/Dearkano">Github: https://www.github.com/Dearkano</a></p>
-                  <p>微博：<a href="https://weibo.com/vaynetian">VayneTian</a></p>
-                  <p>厨代码 写币 炒偶像 (扑哧)</p>
-                </div>
-              );
-            signature= <Popover content={content} title={<a href="https://www.github.com/ZJU-CC98/Forum">CC98 Durian</a>}>
-            <Button style={{width:"300px",background:"pink"}} type="dashed">Yooooo~</Button>
-          </Popover>;
-        }
+      
         let editIcon = null;
         const editUrl = `/editor/edit/${this.props.postInfo.id}`;
         if (Utility.getLocalStorage("userInfo"))
@@ -177,7 +173,12 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
                 <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩"  className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                 <div id="commentlike">
                         {judgeIcon}
-                        <div className="operation1" onClick={this.quote}>   引用</div>
+                        <QuoteContext.Consumer>
+                        {(handleQuoteContextChange)=><div className="operation1" onClick={()=>{handleQuoteContextChange({content:this.props.postInfo.content,userName: this.props.userInfo.name, replyTime:this.props.postInfo.time, floor:this.props.postInfo.floor, postId:this.props.postInfo.id});
+                        this.handlePosition();
+                    }}>   引用</div>}
+                        </QuoteContext.Consumer>
+                   
                         {traceIcon}
                         {editIcon}
                         {manageBtn}
@@ -190,3 +191,4 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         </div>;
     }
 }
+)

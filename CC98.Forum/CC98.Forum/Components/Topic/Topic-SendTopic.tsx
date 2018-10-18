@@ -28,7 +28,6 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		let initContent = "";
 		if (Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id)) {
 			initContent = Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id);
-			console.log("use cache content");
 		}
 		this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复", manageVisible: false });
 	}
@@ -39,8 +38,6 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		this.setState({ manageVisible: false });
 	}
 	update(value) {
-		console.log("update1");
-		console.log(value);
 		this.setState({ content: value });
 	}
 
@@ -64,7 +61,9 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		// remove the event listener
 		window.onbeforeunload = null;
 	}
+	
 	componentDidMount() {
+		console.log("sendtopic didmount");
 		// confirm before user close the window
 		// when there's content in the editor
 		// should be removed before the component unmounts
@@ -121,11 +120,12 @@ ${this.props.content.content}
 
 				this.setState({ masters: masters });
 			} else {
+			
 				const str = `
 [quote][b]以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：
 [color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]${this.props.content.content}[/quote]
 `;
-console.log("update2");
+console.log("didmount setstate");
 console.log(str);
 				this.setState({ masters: masters, content: str });
 			}
@@ -134,8 +134,7 @@ console.log(str);
 
 	}
 	componentWillReceiveProps(newProps) {
-		console.log("newProps");
-		console.log(newProps);
+		
 		const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
 		if (newProps.content.userName) {
 			if (this.state.mode === 1) {
@@ -155,8 +154,7 @@ ${newProps.content.content}
 				const str = `[quote][b]以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：[color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]
 ${newProps.content.content}[/quote]
 `;
-console.log("update3");
-console.log(str);
+
 				this.setState({ content: str });
 			}
 		}else{
@@ -164,53 +162,50 @@ console.log(str);
 		}
 	}
 
-	async componentDidUpdate() {
-		if (this.state.mode === 1) {
+	// async componentDidUpdate() {
+	// 	if (this.state.mode === 1) {
 
-			const fileUrl = `${Utility.getApiUrl}/file`;
-			editormd.emoji.path = '/static/images/emoji/';
-			Constants.testEditor = editormd('test-editormd', {
-				width: '100%',
-				height: 400,
-				path: '/static/scripts/lib/editor.md/lib/',
-				saveHTMLToTextarea: false,
-				imageUpload: false,
-				imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
-				imageUploadURL: fileUrl,
-				emoji: true,
-				toc: true,
-				tocm: true,
-				toolbarIcons() {
-					return [
-						'undo', 'redo', '|', 'emoji',
-						'bold', 'del', 'italic', 'quote', '|',
-						'h1', 'h2', 'h3', 'h4', '|',
-						'list-ul', 'list-ol', 'hr', '|',
-						'link', 'image', 'testIcon', 'code', 'table', 'html-entities',
-					];
-				},
-				toolbarIconsClass: {
-					testIcon: 'fa-upload'  // 指定一个FontAawsome的图标类
-				},
-				// 自定义工具栏按钮的事件处理
-				toolbarHandlers: {
-					testIcon() {
-						$('#upload-files').click();
-					}
-				},
-			});
-			Constants.testEditor.setMarkdown(this.state.content);
-		}
-	}
+	// 		const fileUrl = `${Utility.getApiUrl}/file`;
+	// 		editormd.emoji.path = '/static/images/emoji/';
+	// 		Constants.testEditor = editormd('test-editormd', {
+	// 			width: '100%',
+	// 			height: 400,
+	// 			path: '/static/scripts/lib/editor.md/lib/',
+	// 			saveHTMLToTextarea: false,
+	// 			imageUpload: false,
+	// 			imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
+	// 			imageUploadURL: fileUrl,
+	// 			emoji: true,
+	// 			toc: true,
+	// 			tocm: true,
+	// 			toolbarIcons() {
+	// 				return [
+	// 					'undo', 'redo', '|', 'emoji',
+	// 					'bold', 'del', 'italic', 'quote', '|',
+	// 					'h1', 'h2', 'h3', 'h4', '|',
+	// 					'list-ul', 'list-ol', 'hr', '|',
+	// 					'link', 'image', 'testIcon', 'code', 'table', 'html-entities',
+	// 				];
+	// 			},
+	// 			toolbarIconsClass: {
+	// 				testIcon: 'fa-upload'  // 指定一个FontAawsome的图标类
+	// 			},
+	// 			// 自定义工具栏按钮的事件处理
+	// 			toolbarHandlers: {
+	// 				testIcon() {
+	// 					$('#upload-files').click();
+	// 				}
+	// 			},
+	// 		});
+	// 		Constants.testEditor.setMarkdown(this.state.content);
+	// 	}
+	// }
 
 	async sendUbbTopic() {
 		this.setState({ buttonDisabled: true, buttonInfo: "..." });
 		const url = `/topic/${this.props.topicInfo.id}/post`;
 		let bodyInfo;
 		if (Utility.quoteJudger(this.state.content)) {
-			//console.log("有引用内容，postId是", this.props.content.postId);
-		//	let data = await Utility.getBasicPostsInfo([this.props.content.postId]);
-			//console.log("该postId对应的楼层信息",data);
 			bodyInfo = {
 				content: this.state.content,
 				contentType: 0,
@@ -219,7 +214,7 @@ console.log(str);
 			};
 		}
 		else {
-			//console.log("没有引用内容");
+
 			bodyInfo = {
 				content: this.state.content,
 				contentType: 0,
@@ -227,7 +222,7 @@ console.log(str);
 			};
 		}
 		const body = JSON.stringify(bodyInfo);
-		//console.log("body内容",body);
+
 		const token = await Utility.getToken();
 		const headers = new Headers();
 		headers.append('Authorization', token);
@@ -262,7 +257,7 @@ console.log(str);
 					body: atUsersJSON
 				});
 			}
-			console.log('2222222222222222')
+
 			Utility.removeLocalStorage("temporaryContent-" + this.props.topicInfo.id);
 			this.setState({ content: '', buttonDisabled: false, buttonInfo: "发帖" });
 			this.props.onChange();
@@ -376,12 +371,11 @@ console.log(str);
 		return { value: '' };
 	}
 	handleChange(event) {
-		console.log("update5");
-		console.log(event.target.value);
+
 		this.setState({ content: event.target.value });
 	}
 	render() {
-		console.log("rerender");
+		console.log("sendtopic render");
 		console.log(this.props.content);
 		console.log(this.state.content);
 		let mode, editor;

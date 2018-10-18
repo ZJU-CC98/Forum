@@ -11,7 +11,7 @@ import { match } from 'react-router';
 import { ReplyContent } from './Topic-ReplyContent';
 import { Replier } from './Topic-Replier';
 import { Award } from './Topic-Award';
-import { ReplierSignature } from './Topic-ReplierSignature';
+import  ReplierSignature  from './Topic-ReplierSignature';
 import { PostManagement } from './Topic-PostManagement';
 import { Judge } from './Topic-Judge';
 import { Pager } from '../Pager';

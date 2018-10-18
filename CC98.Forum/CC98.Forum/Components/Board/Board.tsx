@@ -143,7 +143,6 @@ export class BList extends RouteComponent<{}, { page: number, boardId: number, b
                                 let data = await Utility.getTpUsers(this.match.params.boardId,from,5);
                                 let res = this.state.tpList.concat(data);
                                 this.setState({tpList:res});
-                              console.log(page);
                             },
                             pageSize: 5,
                           }}
@@ -336,11 +335,6 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
     constructor(props, content) {
         super(props, content);
     }
-
-    componentWillReceiveProps(newProps) {
-        console.log("new");
-        console.log(newProps.totalPage);
-    }
     generateTagButton(item) {
         const url = `/list/${this.props.boardid}/tag/tag1/${item.id}`;
         return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
@@ -350,8 +344,6 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
         return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
     }
     render() {
-        console.log("totalpage");
-        console.log(this.props.totalPage);
         let tag1Btn = null;
         let tag2Btn = null;
         const url = `/list/${this.props.boardid}`;
@@ -485,9 +477,6 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         const data = await Utility.getBoardTopicAsync(page, this.match.params.boardId, boardInfo.topicCount);
         const totalPage = this.getTotalListPage(boardInfo.topicCount);
-        console.log("-------");
-        console.log(boardInfo);
-        console.log(totalPage);
         const tags = await Utility.getBoardTag(this.match.params.boardId);
         this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags });
     }
@@ -510,8 +499,6 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         const totalPage = this.getTotalListPage(boardInfo.topicCount);
         const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId, boardInfo.topicCount);
-        console.log("willrecieve");
-        console.log(totalPage);
         this.setState({ items: data, totalPage: totalPage });
     }
 
@@ -533,7 +520,6 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
             }
         });
         let str = targets.join("&");
-        console.log(str);
         return str;
     }
 
@@ -557,9 +543,6 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
             reason = $("#hideReason").val();
         }
         let target = this.getCheckValue();
-        console.log("day=" + days);
-        console.log("reason=" + reason);
-        console.log("target = " + target);
         var status = await Utility.mutliLock(days, reason, target);
         if (status == 200)
             document.location.href = `/list/${this.match.params.boardId}`;
@@ -569,7 +552,6 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         if (reason == "自定义") {
             reason = $("#hideReason1").val();
         }
-        console.log("reason=" + reason);
         let target = this.getCheckValue();
         var status = await Utility.mutliDelete(reason, target);
         if (status == 200)
@@ -601,8 +583,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
 
     }
     render() {
-        console.log("state");
-        console.log(this.state.totalPage);
+
         const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
         let topTopics = null;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
@@ -662,9 +643,6 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
 
         </div>;
         let manageBtn = null;
-        console.log("masters");
-        console.log(this.state.boardInfo);
-        console.log(this.state.boardInfo.boardMasters);
         if (Utility.isMaster(this.state.boardInfo.boardMasters)) {
             manageBtn = <Button type="primary" onClick={this.manageUI.bind(this)} >批量管理</Button>;
         }
@@ -911,7 +889,7 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
     }
     render() {
         const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
-        console.log("现在的页码是", curPage);
+   
         let topics = this.state.data.map(this.convertRecordToElement);
         let boardRecordUrl = `/list/${this.match.params.boardId}/record/`;
         return <div className="listContent ">

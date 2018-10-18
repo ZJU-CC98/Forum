@@ -12,7 +12,8 @@ import { ReplyContent } from './Topic-ReplyContent';
 import { Award } from './Topic-Award';
 import  PostManagement  from './Topic-PostManagement-v2';
 import Judge   from './Topic-Judge-v2';
-import { ReplierSignature } from './Topic-ReplierSignature';
+import  ReplierSignature  from './Topic-ReplierSignature';
+import Spin from 'antd/es/spin';
 import * as moment from 'moment';
 interface Props{
     topicId;
@@ -167,7 +168,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
                 <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                     <ReplyContent floor={item.floor} topicInfo={this.props.topicInfo} key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                     {awards}
-                    <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} changePmVisible={this.showPm} changeJudgeVisible={this.showJudge} />
+                    <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} changePmVisible={this.showPm} changeJudgeVisible={this.showJudge} page={this.props.page}/>
                 </div>
                 <FloorSize isHot={this.props.isHot} floor={item.floor} />
             </div>;
@@ -214,7 +215,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
                 ;
         }
         else
-            return <i style={{marginTop:"1rem"}} className="fa fa-spinner fa-pulse fa-5x fa-fw"></i>;
+            return <Spin style={{marginTop:"4rem"}} size="large" />;
 
     }
 }

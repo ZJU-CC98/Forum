@@ -13,7 +13,6 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
     constructor(props, content) {
      
         super(props, content);
-        console.log(this.props.userInfo);
         this.follow = this.follow.bind(this);
         this.unfollow = this.unfollow.bind(this);
         this.changeTraceMode = this.changeTraceMode.bind(this);
