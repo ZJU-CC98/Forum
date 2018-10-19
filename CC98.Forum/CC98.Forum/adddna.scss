@@ -33,9 +33,15 @@
     box-sizing: border-box;
 }
 
+.createTopicTitle {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
 .createTopicTitle input {
     display: flex;
-    width: 740px;
+    flex-grow: 1;
     border: 0;
     font-size: 14px;
     font-family: 微软雅黑;
@@ -44,23 +50,111 @@
     padding-left: 1rem;
 }
 
-.createTopicTag {
-    display: flex;
-    width: 120px;
-    height: 40px;
-    margin-bottom: 20px;
-    border-style: solid;
-    border-color: rgb(233,233,233);
-    border-width: 1px;
-    box-sizing: border-box;
-    background-color: rgb(255,255,255);
-    align-items: center;
-    justify-content: center;
-}
-
 .createTopicContent {
     margin-bottom: 0;
     justify-content: space-between;
+}
+
+.tagBoxSelect {
+    display: flex;
+    width: 4rem;
+    height: 30px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    justify-content: center;
+    align-items: center;
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+.downArrow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 32px;
+    border-right: 2px solid rgb(233,233,233);
+    padding-right: 2px;
+    cursor: pointer;
+}
+
+.tagBoxSub {
+    display: none;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    background: rgb(233,233,233);
+    z-index: 1000;
+    list-style-type: none;
+    padding: 0;
+    position: absolute;
+    top: 2.5rem;
+}
+
+.tagBoxSub li {
+    height: 25px;
+    line-height: 25px;
+    cursor: pointer;
+    padding-top: 3px;
+    width: 4rem;
+    text-align:center;
+}
+
+.tagBoxSelect1 {
+    display: flex;
+    width: 4rem;
+    height: 30px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    justify-content: center;
+    align-items: center;
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+
+.downArrow1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 32px;
+    border-right: 2px solid rgb(233,233,233);
+    padding-right: 2px;
+    cursor: pointer;
+}
+
+.tagBoxSub1 {
+    display: none;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    background: rgb(233,233,233);
+    z-index: 1000;
+    list-style-type: none;
+    padding: 0;
+    position: absolute;
+    top: 2.5rem;
+}
+
+
+.tagBoxSub1 li {
+    height: 25px;
+    line-height: 25px;
+    cursor: pointer;
+    padding-top: 3px;
+    width: 4rem;
+    text-align: center;
 }
 
 //ubb解析图片默认不显示的样式
@@ -679,7 +773,7 @@
     align-items: center;
     width: 3rem;
     height: 3rem;
-    cursor:pointer;
+    cursor: pointer;
 
     img {
         height: 2rem;
@@ -697,7 +791,7 @@
     font-size: 1rem;
     font-family: 微软雅黑;
     color: #ffffff;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .topBarMessage {

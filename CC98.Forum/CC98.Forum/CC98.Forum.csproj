@@ -124,7 +124,6 @@
     <TypeScriptCompile Include="Components\FindIP.tsx" />
     <TypeScriptCompile Include="Components\Focus\FocusTopicArea.tsx" />
     <TypeScriptCompile Include="Components\NoticeMessage.tsx" />
-    <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
     <TypeScriptCompile Include="Components\Signin.tsx" />
@@ -155,7 +154,6 @@
     <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-TopicManagement.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
-    <TypeScriptCompile Include="Components\UbbEditor.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\Manage\DeleteTopicsAndPosts.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\Manage\Operation.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\Manage\ShowPost.tsx" />
