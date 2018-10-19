@@ -93,6 +93,7 @@
     <None Remove="Ubb\LineTagHandler.tsx" />
     <None Remove="Ubb\MahjongTagHandler.tsx" />
     <None Remove="Ubb\mdTagHandler.tsx" />
+    <None Remove="Ubb\needReplyTagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
     <None Remove="Ubb\PmTagHandler.tsx" />
     <None Remove="Ubb\RightTagHandler.tsx" />
@@ -178,6 +179,7 @@
     <TypeScriptCompile Include="Ubb\DelTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EmTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EnglishTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\NeedReplyTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
     <TypeScriptCompile Include="Ubb\LeftTagHandler.tsx" />
