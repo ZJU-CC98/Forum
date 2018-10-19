@@ -54,6 +54,7 @@ ul {
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
     -webkit-padding-start: 40px;
+    -moz-padding-start: 40px;
 }
 
 li {
@@ -3041,149 +3042,6 @@ a {
     margin-bottom: 2rem;
 }
 
-.createTopicTitle .box {
-    display: flex;
-    flex-direction: row;
-    height: 36px;
-    width: 340px;
-    border-radius: 5px;
-    border-style: solid;
-    border-color: rgb(233,233,233);
-    border-width: 2px;
-    box-sizing: border-box;
-    align-items: center;
-    opacity: 0.8;
-}
-
-.tagBoxSelect {
-    display: flex;
-    width: 4rem;
-    height: 30px;
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(80,80,80);
-    justify-content: center;
-    align-items: center;
-    margin-left: 2px;
-    cursor: pointer;
-}
-
-.downArrow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 32px;
-    border-right: 2px solid rgb(233,233,233);
-    padding-right: 2px;
-    cursor: pointer;
-}
-
-.tagIco {
-    width: 20px;
-    padding: 2px 0 0 3px;
-}
-
-.tagBoxSub {
-    border-radius: 5px;
-    border-style: solid;
-    border-color: rgb(233,233,233);
-    border-width: 2px;
-    box-sizing: border-box;
-    display: none;
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(80,80,80);
-    z-index: 1000;
-    list-style-type: none;
-    margin-top: 2.1rem;
-}
-
-.tagBoxSub li {
-    height: 25px;
-    line-height: 25px;
-    cursor: pointer;
-    padding-top: 3px;
-    position: relative;
-    left: -1.2rem;
-}
-
-.tagBoxSub {
-    background: rgb(233,233,233);
-}
-
-.createTopicTitle .box1 {
-    display: flex;
-    flex-direction: row;
-    height: 36px;
-    width: 340px;
-    border-radius: 5px;
-    border-style: solid;
-    border-color: rgb(233,233,233);
-    border-width: 2px;
-    box-sizing: border-box;
-    align-items: center;
-    opacity: 0.8;
-}
-
-
-.tagBoxSelect1 {
-    display: flex;
-    width: 3rem;
-    height: 30px;
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(80,80,80);
-    justify-content: center;
-    align-items: center;
-    margin-left: 2px;
-    cursor: pointer;
-}
-
-
-.downArrow1 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 32px;
-    border-right: 2px solid rgb(233,233,233);
-    padding-right: 2px;
-    cursor: pointer;
-}
-
-
-.tagIco1 {
-    width: 20px;
-    padding: 2px 0 0 3px;
-}
-
-
-.tagBoxSub1 {
-    border-radius: 5px;
-    border-style: solid;
-    border-color: rgb(233,233,233);
-    border-width: 2px;
-    box-sizing: border-box;
-    display: none;
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(80,80,80);
-    z-index: 1000;
-    list-style-type: none;
-    margin-top: 2.1rem;
-    background-color: #e9e9e9;
-    margin-left: -0.4rem;
-}
-
-
-.tagBoxSub1 li {
-    height: 25px;
-    line-height: 25px;
-    cursor: pointer;
-    padding-top: 3px;
-    position: relative;
-    left: -1.2rem;
-}
-
 .findIP {
     width: 70rem;
     max-height: 80rem;
@@ -3503,6 +3361,7 @@ variable {
 .login-message {
     margin-top: 1rem;
 }
-.antd-table table tr td{
-    height:100px
+
+.antd-table table tr td {
+    height: 100px
 }

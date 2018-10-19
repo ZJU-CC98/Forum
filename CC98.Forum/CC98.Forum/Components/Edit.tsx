@@ -20,10 +20,10 @@ declare let editormd: any;
 declare let testEditor: any;
 
 export class Edit extends RouteComponent<
-    { history }, 
-    { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[], voteInfo: VoteProps['voteInfo'] }, 
+    { history },
+    { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[], voteInfo: VoteProps['voteInfo'] },
     { mode: string, id: number }
-> {
+    > {
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -36,19 +36,19 @@ export class Edit extends RouteComponent<
         this.changeNormalType = this.changeNormalType.bind(this);
         this.onVoteInfoChange = this.onVoteInfoChange.bind(this);
         this.state = ({
-            masters: [], 
-            tags: [], 
-            boardName: "", 
-            ready: false, 
-            mode: 0, 
-            content: "", 
-            title: "", 
-            postInfo: { floor: 0, title: "", content: "", contentType: 0 }, 
-            tag1: "", 
-            tag2: "", 
-            fetchState: 'ok', 
-            boardId: 1, 
-            type: 0, 
+            masters: [],
+            tags: [],
+            boardName: "",
+            ready: false,
+            mode: 0,
+            content: "",
+            title: "",
+            postInfo: { floor: 0, title: "", content: "", contentType: 0 },
+            tag1: "",
+            tag2: "",
+            fetchState: 'ok',
+            boardId: 1,
+            type: 0,
             topicInfo: {},
             voteInfo: {
                 voteItems: ['', ''],
@@ -142,9 +142,9 @@ export class Edit extends RouteComponent<
         this.setState({ content: value });
     }
     async sendMdTopic() {
-        if(this.match.params.mode === 'postVoteTopic') { // 投票内容发布前检查合法性
+        if (this.match.params.mode === 'postVoteTopic') { // 投票内容发布前检查合法性
             const info = Vote.isFormIllegal(this.state.voteInfo);
-            if(info) {
+            if (info) {
                 alert(info);
                 return null;
             }
@@ -189,7 +189,7 @@ export class Edit extends RouteComponent<
                         type: this.state.type
                     };
                 }
-                if(this.match.params.mode === 'postVoteTopic') { // 投票内容
+                if (this.match.params.mode === 'postVoteTopic') { // 投票内容
                     content = {
                         ...content,
                         isVote: true,
@@ -241,9 +241,9 @@ export class Edit extends RouteComponent<
 
     }
     async sendUbbTopic() {
-        if(this.match.params.mode === 'postVoteTopic') { // 投票内容发布前检查合法性
+        if (this.match.params.mode === 'postVoteTopic') { // 投票内容发布前检查合法性
             const info = Vote.isFormIllegal(this.state.voteInfo);
-            if(info) {
+            if (info) {
                 alert(info);
                 return null;
             }
@@ -285,7 +285,7 @@ export class Edit extends RouteComponent<
                     type: this.state.type
                 };
             }
-            if(this.match.params.mode === 'postVoteTopic') { // 投票内容
+            if (this.match.params.mode === 'postVoteTopic') { // 投票内容
                 content = {
                     ...content,
                     isVote: true,
@@ -535,7 +535,7 @@ export class Category extends React.Component<{ url: string, boardName: string, 
         super(props);
         this.state = ({
             url: "",
-            boardName: "",       
+            boardName: "",
         });
     }
     //在子组件中，this.props的值不会自动更新，每当父组件的传值发生变化时，需要在子组件的的componentWillReceiveProps中去手动更新
@@ -543,7 +543,7 @@ export class Category extends React.Component<{ url: string, boardName: string, 
         this.setState({
             url: nextProps.url,
             boardName: nextProps.boardName,
-   
+
         });
     }
     render() {
@@ -759,28 +759,24 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             let defaultTag2 = this.state.tags[1].tags[0].name;
             if (this.state.tag1) defaultTag1 = this.state.tag1;
             if (this.state.tag2) defaultTag2 = this.state.tag2;
-            tagInfo = <div className="row"><div className="column" style={{ marginTop: "6.1rem", height: "8rem", zIndex: 1000, marginLeft: "0.5rem" }}>
-                <div style={{ display: "flex" }}>
+            tagInfo = <div className="row">
+                <div className="row">
                     <div className="tagBoxSelect">{defaultTag1}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
+                    {drop1}
                 </div>
-                {drop1}
-            </div>
-                <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zIndex: 1000, marginLeft: "0.5rem" }}>
-                    <div style={{ display: "flex" }}>
-                        <div className="tagBoxSelect1">{defaultTag2}</div>
-                        <div className="downArrow1"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
-                    </div>
+                <div className="row">
+                    <div className="tagBoxSelect1">{defaultTag2}</div>
+                    <div className="downArrow1"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                     {drop2}
-                </div></div >;
+                </div>
+            </div>;
         } else if (this.state.tags.length == 1) {
             let defaultTag1 = this.state.tags[0].tags[0].name;
             if (this.state.tag1) defaultTag1 = this.state.tag1;
-            tagInfo = <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zIndex: 1000, marginLeft: "0.5rem" }}>
-                <div style={{ display: "flex" }}>
-                    <div className="tagBoxSelect">{defaultTag1}</div>
-                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
-                </div>
+            tagInfo = <div className="row">
+                <div className="tagBoxSelect">{defaultTag1}</div>
+                <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 {drop1}
             </div>
                 ;
@@ -877,7 +873,7 @@ export class InputMdContent extends React.Component<{ mode, content, postInfo, r
                 </div>
             </form>
             <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-                <div id="post-topic-button" className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }} onClick={this.send.bind(this)}>{this.props.mode === 'postTopic'|| this.props.mode === 'postVoteTopic' ? "发帖" : "编辑"}</div>
+                <div id="post-topic-button" className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }} onClick={this.send.bind(this)}>{this.props.mode === 'postTopic' || this.props.mode === 'postVoteTopic' ? "发帖" : "编辑"}</div>
             </div>
         </div>
         </div>;

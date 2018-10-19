@@ -93,6 +93,7 @@
     <None Remove="Ubb\LineTagHandler.tsx" />
     <None Remove="Ubb\MahjongTagHandler.tsx" />
     <None Remove="Ubb\mdTagHandler.tsx" />
+    <None Remove="Ubb\needReplyTagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
     <None Remove="Ubb\PmTagHandler.tsx" />
     <None Remove="Ubb\RightTagHandler.tsx" />
@@ -124,7 +125,6 @@
     <TypeScriptCompile Include="Components\FindIP.tsx" />
     <TypeScriptCompile Include="Components\Focus\FocusTopicArea.tsx" />
     <TypeScriptCompile Include="Components\NoticeMessage.tsx" />
-    <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
     <TypeScriptCompile Include="Components\Signin.tsx" />
@@ -155,7 +155,6 @@
     <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-TopicManagement.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
-    <TypeScriptCompile Include="Components\UbbEditor.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\Manage\DeleteTopicsAndPosts.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\Manage\Operation.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\Manage\ShowPost.tsx" />
@@ -180,6 +179,7 @@
     <TypeScriptCompile Include="Ubb\DelTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EmTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EnglishTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\NeedReplyTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
     <TypeScriptCompile Include="Ubb\LeftTagHandler.tsx" />
