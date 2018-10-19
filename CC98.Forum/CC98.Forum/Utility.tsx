@@ -642,7 +642,8 @@ export async function getBoardName(boardId: number) {
 
 export function isLogOn(): boolean {
     const token = getLocalStorage("refresh_token");
-    return !!token;
+    const userInfo = getLocalStorage("userInfo");
+    return !!(token && userInfo);
 }
 
 /*
@@ -2968,7 +2969,7 @@ export async function mutliDelete(reason, target) {
 }
 
 
-export async function getTpUsers(boardId,from,size){
+export async function getTpUsers(boardId, from, size) {
     const url = `/board/${boardId}/stop-post-user?from=${from}&size=${size}`;
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
