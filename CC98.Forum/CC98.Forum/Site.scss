@@ -458,6 +458,7 @@ input[type="radio"] {
     padding-left: 2rem;
     padding-right: 2rem;
     max-height: 300px;
+    overflow: hidden;
 }
 
 .tagColumn {
@@ -468,6 +469,7 @@ input[type="radio"] {
 .signature img {
     max-height: 12.5rem;
     max-width: 32.5rem;
+    overflow: hidden;
 }
 
 .upup {
@@ -3495,6 +3497,7 @@ variable {
 .signature iframe {
     width: 500px;
     max-height: 300px;
+    overflow: hidden;
 }
 
 .login-message {
