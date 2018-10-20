@@ -20,7 +20,8 @@ export class AudioTagHandler extends Ubb.TextTagHandler {
         if (context.options.allowMediaContent === false) {
             return innerContent;
         } 
-
+        const title=tagData.tltle;/*读取用户输入的title标题*/
+        const author=tagData.author;/*读取用户输入的作者信息*/
         return <AudioComponent src={innerContent} />;
 	}
 }
@@ -51,8 +52,8 @@ class AudioComponent extends React.Component<IProps> {
             preload: 'metadata',
             music: {
                 url: encodeURI(this.props.src),
-                title: encodeURI(this.props.src),
-                author: '',
+                title: this.props.title,
+                author: this.props.author,
                 pic: '/static/images/audio_cover.png'
             }
         });
