@@ -188,6 +188,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
     }
 
     render() {
+        console.log(this.state.childBoard);
         const boards = JSON.parse(localStorage.getItem("boardsInfo")) || [];
         const boardOptions = boards.map(board => <Option key={board.id}>{board.name}</Option>);
         const childBoardOptions = this.state.childBoards.map(board => { if (board.id !== 182) { return <Option key={board.id}>{board.name}</Option> } else return null; });
@@ -239,7 +240,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                 <Select defaultValue={boards[0].name} style={{ width: 90 }} onChange={this.handleBoardChange}>
                     {boardOptions}
                 </Select>
-                <Select value={this.state.childBoard} style={{ marginLeft: "2rem", width: 90 }} onChange={this.onChildBoardChange}>
+                <Select style={{ marginLeft: "2rem", width: 90 }} onChange={this.onChildBoardChange}>
                     {childBoardOptions}
                 </Select>
 
