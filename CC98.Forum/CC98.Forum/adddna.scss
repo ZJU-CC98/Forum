@@ -102,7 +102,7 @@
     cursor: pointer;
     padding-top: 3px;
     width: 4rem;
-    text-align:center;
+    text-align: center;
 }
 
 .tagBoxSelect1 {
@@ -237,6 +237,7 @@
     position: absolute;
     left: 50%;
     top: 50%;
+    pointer-events: none;
 }
 /*
 .photoFrame img {
