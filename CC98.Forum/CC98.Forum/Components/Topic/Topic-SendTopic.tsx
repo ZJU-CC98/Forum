@@ -133,6 +133,7 @@ console.log(str);
 
 
 	}
+
 	componentWillReceiveProps(newProps) {
 		
 		const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
@@ -162,44 +163,44 @@ ${newProps.content.content}[/quote]
 		}
 	}
 
-	// async componentDidUpdate() {
-	// 	if (this.state.mode === 1) {
+	async componentDidUpdate() {
+		if (this.state.mode === 1) {
 
-	// 		const fileUrl = `${Utility.getApiUrl}/file`;
-	// 		editormd.emoji.path = '/static/images/emoji/';
-	// 		Constants.testEditor = editormd('test-editormd', {
-	// 			width: '100%',
-	// 			height: 400,
-	// 			path: '/static/scripts/lib/editor.md/lib/',
-	// 			saveHTMLToTextarea: false,
-	// 			imageUpload: false,
-	// 			imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
-	// 			imageUploadURL: fileUrl,
-	// 			emoji: true,
-	// 			toc: true,
-	// 			tocm: true,
-	// 			toolbarIcons() {
-	// 				return [
-	// 					'undo', 'redo', '|', 'emoji',
-	// 					'bold', 'del', 'italic', 'quote', '|',
-	// 					'h1', 'h2', 'h3', 'h4', '|',
-	// 					'list-ul', 'list-ol', 'hr', '|',
-	// 					'link', 'image', 'testIcon', 'code', 'table', 'html-entities',
-	// 				];
-	// 			},
-	// 			toolbarIconsClass: {
-	// 				testIcon: 'fa-upload'  // 指定一个FontAawsome的图标类
-	// 			},
-	// 			// 自定义工具栏按钮的事件处理
-	// 			toolbarHandlers: {
-	// 				testIcon() {
-	// 					$('#upload-files').click();
-	// 				}
-	// 			},
-	// 		});
-	// 		Constants.testEditor.setMarkdown(this.state.content);
-	// 	}
-	// }
+			const fileUrl = `${Utility.getApiUrl}/file`;
+			editormd.emoji.path = '/static/images/emoji/';
+			Constants.testEditor = editormd('test-editormd', {
+				width: '100%',
+				height: 400,
+				path: '/static/scripts/lib/editor.md/lib/',
+				saveHTMLToTextarea: false,
+				imageUpload: false,
+				imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
+				imageUploadURL: fileUrl,
+				emoji: true,
+				toc: true,
+				tocm: true,
+				toolbarIcons() {
+					return [
+						'undo', 'redo', '|', 'emoji',
+						'bold', 'del', 'italic', 'quote', '|',
+						'h1', 'h2', 'h3', 'h4', '|',
+						'list-ul', 'list-ol', 'hr', '|',
+						'link', 'image', 'testIcon', 'code', 'table', 'html-entities',
+					];
+				},
+				toolbarIconsClass: {
+					testIcon: 'fa-upload'  // 指定一个FontAawsome的图标类
+				},
+				// 自定义工具栏按钮的事件处理
+				toolbarHandlers: {
+					testIcon() {
+						$('#upload-files').click();
+					}
+				},
+			});
+			Constants.testEditor.setMarkdown(this.state.content);
+		}
+	}
 
 	async sendUbbTopic() {
 		this.setState({ buttonDisabled: true, buttonInfo: "..." });
