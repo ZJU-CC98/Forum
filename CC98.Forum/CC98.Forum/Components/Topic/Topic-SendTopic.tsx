@@ -9,14 +9,22 @@ import { NoticeMessage } from '../NoticeMessage';
 import { Prompt } from 'react-router-dom';
 import Button from 'antd/es/button';
 import * as moment from 'moment';
-declare let editormd: any;
+import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "react-mde";
+import * as Showdown from "showdown";
+import CustomCommand from "./topic-react-mde/imageUploaderCommand";
 interface Props {
 	boardInfo;
 	onChange;
 	content;
 	topicInfo;
 }
+const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
+	{ commands: [CustomCommand] },
+];
+const defaultCommands = ReactMdeCommands.getDefaultCommands();
+const myCommands = defaultCommands.concat(getCommands());
 export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[], buttonInfo, buttonDisabled, manageVisible }>{
+	converter: Showdown.Converter;
 	constructor(props) {
 		super(props);
 		this.sendUbbTopic = this.sendUbbTopic.bind(this);
@@ -29,8 +37,16 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		if (Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id)) {
 			initContent = Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id);
 		}
+		this.converter = new Showdown.Converter({ tables: true, simplifiedAutoLink: true });
 		this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复", manageVisible: false });
 	}
+	// handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
+	// 	console.log(mdeState);
+	//     this.setState({mdeState,content:mdeState.markdown.toString()});
+	// }
+	handleValueChange = (value: string) => {
+		this.setState({ content: value });
+	};
 	showManageUI = (v) => {
 		this.setState({ manageVisible: v });
 	}
@@ -61,7 +77,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		// remove the event listener
 		window.onbeforeunload = null;
 	}
-	
+
 	componentDidMount() {
 		console.log("sendtopic didmount");
 		// confirm before user close the window
@@ -72,42 +88,8 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 			return null;
 		}
 
-		if (this.state.mode === 1) {
 
-			const fileUrl = `${Utility.getApiUrl}/file`;
-			editormd.emoji.path = '/static/images/emoji/';
-			Constants.testEditor = editormd('test-editormd', {
-				width: '100%',
-				height: 400,
-				path: '/static/scripts/lib/editor.md/lib/',
-				saveHTMLToTextarea: false,
-				imageUpload: false,
-				imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
-				imageUploadURL: fileUrl,
-				emoji: true,
-				toc: true,
-				tocm: true,
-				toolbarIcons() {
-					return [
-						'undo', 'redo', '|', 'emoji',
-						'bold', 'del', 'italic', 'quote', '|',
-						'h1', 'h2', 'h3', 'h4', '|',
-						'list-ul', 'list-ol', 'hr', '|',
-						'link', 'image', 'testIcon', 'code', 'table', 'html-entities',
-					];
-				},
-				toolbarIconsClass: {
-					testIcon: 'fa-upload'  // 指定一个FontAawsome的图标类
-				},
-				// 自定义工具栏按钮的事件处理
-				toolbarHandlers: {
-					testIcon() {
-						$('#upload-files').click();
 
-					}
-				},
-			});
-		}
 		const time = moment(this.props.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
 		const url = `/topic/${this.props.topicInfo.id}#${this.props.content.floor}`;
 		const masters = this.props.boardInfo.masters;
@@ -115,18 +97,19 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 			if (this.state.mode === 1) {
 				const str = `>**以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：**
 ${this.props.content.content}
-`;
-				Constants.testEditor.appendMarkdown(str);
+`; console.log("in markdown ");
 
-				this.setState({ masters: masters });
+
+
+				this.setState({ masters: masters, content: str });
 			} else {
-			
+
 				const str = `
 [quote][b]以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：
 [color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]${this.props.content.content}[/quote]
 `;
-console.log("didmount setstate");
-console.log(str);
+				console.log("didmount setstate");
+				console.log(str);
 				this.setState({ masters: masters, content: str });
 			}
 		}
@@ -135,14 +118,14 @@ console.log(str);
 	}
 
 	componentWillReceiveProps(newProps) {
-		
+
 		const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
 		if (newProps.content.userName) {
 			if (this.state.mode === 1) {
 				const str = `>**以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：**
 ${newProps.content.content}
-`;
-				Constants.testEditor.appendMarkdown(str);
+`; console.log("in markdown will ");
+				this.setState({ content: str });
 			} else {
 				let floor = newProps.content.floor, page, url;
 				if (floor > 10) {
@@ -158,49 +141,11 @@ ${newProps.content.content}[/quote]
 
 				this.setState({ content: str });
 			}
-		}else{
-			this.setState({content:""});
+		} else {
+			this.setState({ content: "" });
 		}
 	}
 
-	async componentDidUpdate() {
-		if (this.state.mode === 1) {
-
-			const fileUrl = `${Utility.getApiUrl}/file`;
-			editormd.emoji.path = '/static/images/emoji/';
-			Constants.testEditor = editormd('test-editormd', {
-				width: '100%',
-				height: 400,
-				path: '/static/scripts/lib/editor.md/lib/',
-				saveHTMLToTextarea: false,
-				imageUpload: false,
-				imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
-				imageUploadURL: fileUrl,
-				emoji: true,
-				toc: true,
-				tocm: true,
-				toolbarIcons() {
-					return [
-						'undo', 'redo', '|', 'emoji',
-						'bold', 'del', 'italic', 'quote', '|',
-						'h1', 'h2', 'h3', 'h4', '|',
-						'list-ul', 'list-ol', 'hr', '|',
-						'link', 'image', 'testIcon', 'code', 'table', 'html-entities',
-					];
-				},
-				toolbarIconsClass: {
-					testIcon: 'fa-upload'  // 指定一个FontAawsome的图标类
-				},
-				// 自定义工具栏按钮的事件处理
-				toolbarHandlers: {
-					testIcon() {
-						$('#upload-files').click();
-					}
-				},
-			});
-			Constants.testEditor.setMarkdown(this.state.content);
-		}
-	}
 
 	async sendUbbTopic() {
 		this.setState({ buttonDisabled: true, buttonInfo: "..." });
@@ -265,13 +210,13 @@ ${newProps.content.content}[/quote]
 		}
 
 	}
-
-	async sendMdTopic() {
+	sendMdTopic = async () => {
 		try {
 			this.setState({ buttonDisabled: true, buttonInfo: "..." });
 			const url = `/topic/${this.props.topicInfo.id}/post`;
-			const c = Constants.testEditor.getMarkdown();
-			Constants.testEditor.setMarkdown('');
+			let c = this.state.content;
+			console.log(c);
+
 			const content = {
 				content: c,
 				contentType: 1,
@@ -316,40 +261,6 @@ ${newProps.content.content}[/quote]
 				Utility.removeLocalStorage("temporaryContent");
 				this.props.onChange();
 
-				const fileUrl = `${Utility.getApiUrl}/file`;
-				editormd.emoji.path = '/static/images/emoji/';
-				Constants.testEditor = editormd('test-editormd', {
-					width: '100%',
-					height: 400,
-					path: '/static/scripts/lib/editor.md/lib/',
-					saveHTMLToTextarea: false,
-					imageUpload: false,
-					imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
-					imageUploadURL: fileUrl,
-					emoji: true,
-					toc: true,
-					tocm: true,
-					toolbarIcons() {
-						return [
-							'undo', 'redo', '|', 'emoji',
-							'bold', 'del', 'italic', 'quote', '|',
-							'h1', 'h2', 'h3', 'h4', '|',
-							'list-ul', 'list-ol', 'hr', '|',
-							'link', 'image', 'testIcon', 'code', 'table', 'html-entities',
-						];
-					},
-					toolbarIconsClass: {
-						testIcon: 'fa-upload'  // 指定一个FontAawsome的图标类
-					},
-					// 自定义工具栏按钮的事件处理
-					toolbarHandlers: {
-						testIcon() {
-							$('#upload-files').click();
-
-						}
-					},
-				});
-
 				this.setState({ content: '', buttonDisabled: false, buttonInfo: "发帖" });
 			}
 		} catch (e) {
@@ -357,6 +268,7 @@ ${newProps.content.content}[/quote]
 			console.log(e);
 		}
 	}
+
 	showIP() {
 		$('.findIP').css('display', 'flex');
 	}
@@ -371,47 +283,56 @@ ${newProps.content.content}[/quote]
 	getInitialState() {
 		return { value: '' };
 	}
-	handleChange(event) {
 
-		this.setState({ content: event.target.value });
-	}
+
 	render() {
+		//删除原来的img插入按钮
+		myCommands[1].commands.length = 3;
+
 		console.log("sendtopic render");
 		console.log(this.props.content);
 		console.log(this.state.content);
 		let mode, editor;
 		if (this.state.mode === 0) {
 			mode = '使用UBB模式编辑';
-			editor = <div>
-				<UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }} />
-				<div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
-					<button id="post-topic-button" onClick={this.sendUbbTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>{this.state.buttonInfo}
-					</button>
-				</div></div>;
+			editor =
+				<div >
+					<UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }} />
+					<div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
+						<button id="post-topic-button" onClick={this.sendUbbTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>{this.state.buttonInfo}
+						</button>
+					</div>
+				</div>
 		}
 		else {
 			mode = '使用Markdown编辑';
-			editor = <div id="sendTopic">
-				<form>
-					<input type="file" id="upload-files" style={{ display: 'none ' }} onChange={Utility.uploadEvent} />
-					<div id="test-editormd" className="editormd">
-						<textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc"   ></textarea>
-					</div>
-				</form>
-				<div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
-					<button id="post-topic-button" disabled={this.state.buttonDisabled} onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: '1.25rem', width: '4.5rem', height: "2rem", lineHeight: "0.8rem" }}>{this.state.buttonInfo}</button>
+			editor = <div >
+				<div>
 
+					<ReactMde
+						className="cc98reactmde"
+						value={this.state.content}
+						onChange={this.handleValueChange}
+						generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
+						commands={myCommands}
+						buttonContentOptions={{
+							iconProvider: name => {
+								console.log(name);
+								if (name === 'heading') return <i className={`fa fa-header`} />;
+							
+								return <i className={`fa fa-${name}`} />
+							},
+						}}
 
+					/></div>
+
+				<div className="row" style={{ justifyContent: 'center', marginTop: '5rem ' }}>
+					<button id="post-topic-button" onClick={this.sendMdTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>{this.state.buttonInfo}
+					</button>
 				</div>
-
 			</div>;
 		}
 
-
-		const uploadInfo = null;
-		if (this.state.mode === 1) {
-
-		}
 		let manageBTN = null;
 		if (Utility.isMaster(this.props.boardInfo.boardMasters))
 			manageBTN = <div><Button type="primary" onClick={this.showManagement}>管理</Button>

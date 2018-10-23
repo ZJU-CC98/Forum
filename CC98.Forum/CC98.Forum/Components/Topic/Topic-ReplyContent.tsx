@@ -6,6 +6,7 @@ import { PostManagement } from './Topic-PostManagement';
 import { UbbContainer } from '../UbbContainer';
 import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
 import { VoteContent, voteInfo } from './VoteInfo';
+const ReactMarkdown = require('react-markdown');
 declare let editormd: any;
 interface Props {
     postId;
@@ -25,34 +26,7 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
 
         this.getVote = this.getVote.bind(this);
     }
-
-
-    componentDidUpdate(prevProps) {
-        const divid = `doc-content${this.props.postId}`;
-
-        editormd.markdownToHTML(divid, {
-            htmlDecode: false,
-            emoji: true,
-            taskList: true,
-            tex: true,
-            flowChart: true,
-            sequenceDiagram: true,
-            codeFold: true,
-        });
-        if (this.props.floor === 1 && this.props.topicInfo.isVote && !this.state.vote && prevProps.postId !== this.props.postId) this.getVote();
-    }
     async componentDidMount() {
-        const divid = `doc-content${this.props.postId}`;
-        editormd.markdownToHTML(divid, {
-            htmlDecode: false,
-            emoji: true,
-            taskList: true,
-            tex: true,
-            flowChart: true,
-            sequenceDiagram: true,
-            codeFold: true,
-        });
-        this.setState({});
         if (this.props.floor === 1 && this.props.topicInfo.isVote && !this.state.vote) this.getVote();
     }
 
@@ -78,7 +52,7 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
         const ubbMode = <UbbContainer code={ubbUrlContent} options={{ ...new UbbCodeOptions(), allowLightbox: true }} />;
         let mdUrlContent = Utility.atUserMdUrl(this.props.content);
         const mdMode = <div id={divid}>
-            <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{mdUrlContent}</textarea>
+            <ReactMarkdown source={this.props.content} />
         </div>;
         let content;
         //ubb      
