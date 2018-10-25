@@ -127,7 +127,9 @@ export default withRouter(class extends React.Component<withRouterProps&Props, {
     }
     
     handlePosition=()=>{
-        let url = `/topic/${this.props.topicInfo.id}/${this.props.page}#sendTopicInfo`;
+        let page = this.props.page;
+        if(!this.props.page)page=1;
+        let url = `/topic/${this.props.topicInfo.id}/${page}#sendTopicInfo`;
         this.props.history.push(url);
     }
     render() {

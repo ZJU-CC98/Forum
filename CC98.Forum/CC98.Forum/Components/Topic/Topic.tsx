@@ -69,6 +69,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
             if ((noticeSetting && noticeSetting.post === "是") || ((newPage == page + 1) && (floor == 1))) {
                 console.log("要跳转");
                 page = newPage;
+                if(!page)page=1;
                 let url = `/topic/${topicInfo.id}/${page}#${floor}`;
                 this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } }, this.props.history.push(url));
 
@@ -79,6 +80,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
                 //如果是引用了某一层楼，发帖后应该跳转回这层楼
                 if (this.state.quote && this.state.quote.floor) {
                     let quoteFloor = this.state.quote.floor % 10;
+                    if(!page)page=1;
                     url = `/topic/${topicInfo.id}/${page}#${quoteFloor}`;
                
                     this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } }, this.props.history.push(url));
@@ -90,6 +92,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         else {
        
             page = newPage;
+            if(!page)page=1;
             let url = `/topic/${topicInfo.id}/${page}#${floor}`;
             this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } }, this.props.history.push(url));
 

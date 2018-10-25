@@ -42,6 +42,5 @@ const customCommand: ReactMdeTypes.Command = {
 
             }
     },
-    keyCommand: "image"
 };
 export default customCommand;

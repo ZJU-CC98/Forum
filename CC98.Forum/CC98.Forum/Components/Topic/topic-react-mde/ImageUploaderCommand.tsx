@@ -18,50 +18,43 @@ const customCommand: ReactMdeTypes.Command = {
             <label style={{ cursor: "pointer" }} htmlFor="upload-files"><i className={`fa fa-image`} /></label>
             <input type="file" id="upload-files" style={{ display: 'none ' }} onChange={handleUpload} />
         </div>,
-    execute: (state) => {
-        localStorage.setItem("react-mde-imageurl-status","start");
+    execute: async (state) => {
+        localStorage.setItem("react-mde-imageurl-status", "start")
         console.log("in execute");
-        const fun = () => new Promise((resolve)=>{
-            let stId = setInterval(()=>{
+        const fun = () => new Promise((resolve) => {
+            let stId = setInterval(() => {
                 let urlTry = localStorage.getItem("react-mde-imageurl-status");
                 console.log(urlTry);
-                if(urlTry==="fail"||urlTry==="success") {              
+                if (urlTry === "fail" || urlTry === "success") {
                     url = urlTry;
                     clearInterval(stId);
                     resolve(localStorage.getItem("react-mde-imageurl"));
                 }
-            },1000);
+            }, 1000);
         })
-       fun()
-       .then(
-           (v)=>{
-            console.log("in then b = "+ v);
-            const { text, selection } = DraftUtil.getMarkdownStateFromDraftState(state);
-            console.log(text);
-            console.log(selection);
-            const { newText, insertionLength } = MarkdownUtil.insertText(text, "![", selection.start);
-            const finalText = MarkdownUtil.insertText(newText, `](${v})`, selection.end + insertionLength).newText;
-            return DraftUtil.buildNewDraftState(
-                state,
-                {
-                    text: finalText,
-                    selection: {
-                        start: selection.start + insertionLength,
-                        end: selection.end + insertionLength,
-                    },
+        const v = await fun()
+        console.log("in then b = " + v);
+        const { text, selection } = DraftUtil.getMarkdownStateFromDraftState(state);
+        console.log(text);
+        console.log(selection);
+        const { newText, insertionLength } = MarkdownUtil.insertText(text, "![", selection.start);
+        const finalText = MarkdownUtil.insertText(newText, `](${v})`, selection.end + insertionLength).newText;
+        return DraftUtil.buildNewDraftState(
+            state,
+            {
+                text: finalText,
+                selection: {
+                    start: selection.start + insertionLength,
+                    end: selection.end + insertionLength,
                 },
-            );
-           }
-       )
-
-      
+            },
+        );
     },
     buttonProps: {
         handleSubmit:
             (text) => {
-                console.log("in handle submit"+text);
+                console.log("in handle submit" + text);
             }
     },
-    keyCommand: "image"
 };
 export default customCommand;

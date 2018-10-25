@@ -18,12 +18,13 @@ interface Props {
 	content;
 	topicInfo;
 }
+
 const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
 	{ commands: [CustomCommand] },
 ];
 const defaultCommands = ReactMdeCommands.getDefaultCommands();
 const myCommands = defaultCommands.concat(getCommands());
-export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[], buttonInfo, buttonDisabled, manageVisible }>{
+export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[], buttonInfo, buttonDisabled, manageVisible, mdeState }>{
 	converter: Showdown.Converter;
 	constructor(props) {
 		super(props);
@@ -38,14 +39,14 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 			initContent = Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id);
 		}
 		this.converter = new Showdown.Converter({ tables: true, simplifiedAutoLink: true });
-		this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复", manageVisible: false });
+		this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复", manageVisible: false, mdeState: initContent  });
 	}
 	// handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
 	// 	console.log(mdeState);
 	//     this.setState({mdeState,content:mdeState.markdown.toString()});
 	// }
-	handleValueChange = (value: string) => {
-		this.setState({ content: value });
+	handleValueChange = (value) => {
+		this.setState({ mdeState: value });
 	};
 	showManageUI = (v) => {
 		this.setState({ manageVisible: v });
@@ -95,13 +96,10 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		const masters = this.props.boardInfo.masters;
 		if (this.props.content) {
 			if (this.state.mode === 1) {
-				const str = `>**以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：**
-${this.props.content.content}
+				const str = `> **以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：**\n\n > ${this.props.content.content}
 `; console.log("in markdown ");
 
-
-
-				this.setState({ masters: masters, content: str });
+				this.setState({ masters: masters, content: str ,mdeState:str});
 			} else {
 
 				const str = `
@@ -125,7 +123,9 @@ ${this.props.content.content}
 				const str = `>**以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：**
 ${newProps.content.content}
 `; console.log("in markdown will ");
-				this.setState({ content: str });
+
+				this.setState({ content: str, mdeState: str});
+
 			} else {
 				let floor = newProps.content.floor, page, url;
 				if (floor > 10) {
@@ -138,11 +138,11 @@ ${newProps.content.content}
 				const str = `[quote][b]以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：[color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]
 ${newProps.content.content}[/quote]
 `;
-
 				this.setState({ content: str });
+
 			}
 		} else {
-			this.setState({ content: "" });
+			this.setState({ content: "", mdeState: ""});
 		}
 	}
 
@@ -214,7 +214,7 @@ ${newProps.content.content}[/quote]
 		try {
 			this.setState({ buttonDisabled: true, buttonInfo: "..." });
 			const url = `/topic/${this.props.topicInfo.id}/post`;
-			let c = this.state.content;
+			let c = this.state.mdeState;
 			console.log(c);
 
 			const content = {
@@ -286,12 +286,7 @@ ${newProps.content.content}[/quote]
 
 
 	render() {
-		//删除原来的img插入按钮
-		myCommands[1].commands.length = 3;
-
-		console.log("sendtopic render");
-		console.log(this.props.content);
-		console.log(this.state.content);
+		myCommands[1].commands.length=3;
 		let mode, editor;
 		if (this.state.mode === 0) {
 			mode = '使用UBB模式编辑';
@@ -310,16 +305,17 @@ ${newProps.content.content}[/quote]
 				<div>
 
 					<ReactMde
-						className="cc98reactmde"
-						value={this.state.content}
+						value={this.state.mdeState}
 						onChange={this.handleValueChange}
 						generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
 						commands={myCommands}
+						minEditorHeight={330}
+						maxEditorHeight={500}
 						buttonContentOptions={{
 							iconProvider: name => {
 								console.log(name);
 								if (name === 'heading') return <i className={`fa fa-header`} />;
-							
+
 								return <i className={`fa fa-${name}`} />
 							},
 						}}
