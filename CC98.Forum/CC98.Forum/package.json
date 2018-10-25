@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aspnet/signalr": "^1.0.3",
+    "@cc98/hell-react-mde": "^6.0.0-alpha.1",
     "antd": "3.6.6",
     "aplayer": "^1.10.1",
     "blueimp-canvas-to-blob": "3.14.0",
@@ -32,8 +33,6 @@
     "react-dom": "16.4.2",
     "react-infinite-scroller": "^1.2.2",
     "react-lazyload": "^2.3.0",
-    "react-markdown": "^4.0.3",
-    "react-mde": "^6.0.0-alpha.1",
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",
     "react-router-redux": "^5.0.0-alpha.9",

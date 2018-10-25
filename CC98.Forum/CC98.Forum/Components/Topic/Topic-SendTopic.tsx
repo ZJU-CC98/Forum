@@ -9,7 +9,7 @@ import { NoticeMessage } from '../NoticeMessage';
 import { Prompt } from 'react-router-dom';
 import Button from 'antd/es/button';
 import * as moment from 'moment';
-import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "react-mde";
+import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "@cc98/hell-react-mde";
 import * as Showdown from "showdown";
 import CustomCommand from "./topic-react-mde/imageUploaderCommand";
 interface Props {
