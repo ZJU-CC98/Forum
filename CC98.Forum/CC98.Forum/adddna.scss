@@ -354,7 +354,7 @@
     flex-direction: row;
     height: 7.5rem;
     margin-top: 1rem;
-    padding: 1.25rem;
+    padding: 1.25rem 1.25rem 0 1.25rem;
     border-width: 8px 1px 1px 1px;
     border-style: solid;
     border-color: $color_sec;
@@ -389,7 +389,7 @@
 .recommendedReadingAbstract {
     display: block;
     max-width: 43.625rem;
-    margin-top: 0.75rem;
+    margin-top: 0.5rem;
     margin-bottom: 0.75rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
