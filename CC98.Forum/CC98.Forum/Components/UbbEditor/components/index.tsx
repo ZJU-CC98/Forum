@@ -217,9 +217,10 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                     id="ubbFileUpload" 
                     multiple 
                     onChange={async e => {
+                        const input = e.target
                         let filelist = e.target.files
                         await this.handleUpload(filelist, this.state.shouldCompassImage)
-                        e.target.value = ''
+                        input.value = ''
                     }}
                 />
                 <Emoji 
