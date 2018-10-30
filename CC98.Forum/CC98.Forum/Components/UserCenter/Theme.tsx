@@ -5,7 +5,7 @@ import { UserInfo } from '../../States/AppState';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 
-const themeList = ['系统默认', '冬季', '春季（浅色）', '春季（深色）','夏季','秋季（橙色）','秋季（红色）'];
+const themeList = ['系统默认', '冬季', '春季（浅色）', '春季（深色）','夏季','秋季（橙色）','秋季（红色）','双十一'];
 
 interface Props {
     userInfo: UserInfo;
@@ -43,6 +43,7 @@ class Theme extends React.Component<Props> {
                 <button style={{ backgroundColor: '#5198d8'}} key={4} onClick={() => this.handleSubmit(4)} disabled={this.props.userInfo.theme === 4}>夏季</button>
                 <button style={{ backgroundColor: '#F4A460' }} key={5} onClick={() => this.handleSubmit(5)} disabled={this.props.userInfo.theme === 5}>秋季（橙色）</button>
                 <button style={{ backgroundColor: '#B22222' }} key={6} onClick={() => this.handleSubmit(6)} disabled={this.props.userInfo.theme === 6}>秋季（红色）</button>
+                <button style={{ backgroundColor: 'rgb(240,125,145)' }} key={7} onClick={() => this.handleSubmit(7)} disabled={this.props.userInfo.theme === 6}>双十一交友</button>
             </div>
         </div>
         );

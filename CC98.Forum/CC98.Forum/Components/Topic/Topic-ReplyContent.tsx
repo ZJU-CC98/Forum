@@ -8,8 +8,7 @@ import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
 import { VoteContent, voteInfo } from './VoteInfo';
 var remark = require('remark');
 var reactRenderer = require('remark-react');
-const ReactMarkdown = require('react-markdown');
-declare let editormd: any;
+
 interface Props {
     postId;
     content;

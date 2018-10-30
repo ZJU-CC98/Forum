@@ -36,7 +36,8 @@ module.exports = {
         css_more_green: './Themes/deep_dark_green.scss',
         css_summer: './Themes/summer.scss',
         css_autumn_orange: './Themes/autumn_orange.scss',
-        css_autumn_red: './Themes/autumn_red.scss'
+        css_autumn_red: './Themes/autumn_red.scss',
+        css_singleday: './Themes/singleday_pink.scss'
     },
     
     output: {
