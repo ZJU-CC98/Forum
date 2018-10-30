@@ -30,7 +30,7 @@ const customCommand: ReactMdeTypes.Command = {
                     clearInterval(stId);
                     resolve(localStorage.getItem("react-mde-imageurl"));
                 }
-            }, 1000);
+            }, 300);
         })
         const v = await fun()
         console.log("in then b = " + v);
