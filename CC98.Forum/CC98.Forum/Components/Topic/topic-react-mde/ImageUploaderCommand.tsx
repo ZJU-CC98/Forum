@@ -1,4 +1,4 @@
-import { ReactMdeTypes, MarkdownUtil, DraftUtil } from "react-mde";
+import { ReactMdeTypes, MarkdownUtil, DraftUtil } from "@cc98/hell-react-mde";
 import { ButtonComponent } from "./ButtonComponent";
 import * as Utility from '../../../Utility';
 import * as React from 'react';
