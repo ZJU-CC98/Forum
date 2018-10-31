@@ -6,8 +6,6 @@ async function handleUpload(e, o) {
     url = await Utility.uploadEvent(e);
     const instance = o.default.editor
     const text = `![](${url})\n\n`
-    const input = document.getElementById('upload-files')
-    input.nodeValue=null
     instance.setValue(text)
 }
 
@@ -15,7 +13,7 @@ const customCommand = {
     buttonContentBuilder: ({ iconProvider }) =>
         <div>
             <label id='upload-label' style={{ cursor: "pointer",padding:"0.5rem 0.5rem 0.5rem 0.5rem" }} htmlFor="upload-files"><i className={`fa fa-image`} /></label>
-            <input type="file" id="upload-files" style={{ display: 'none ' }} onChange={e => handleUpload(e, this)} />
+            <input type="file" id="upload-files" style={{ display: 'none ' }} onChange={async e => { const input=e.target;   await handleUpload(e, this);input.value='';} } />
         </div>,
     buttonProps: {
         handleSubmit:
