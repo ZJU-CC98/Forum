@@ -5,7 +5,7 @@ let url = "";
 async function handleUpload(e, o) {
     url = await Utility.uploadEvent(e);
     const instance = o.default.editor
-    const text = `![](${url})\n\n`
+    const text = `\n\n![](${url})\n\n`
     instance.setValue(text)
 }
 
