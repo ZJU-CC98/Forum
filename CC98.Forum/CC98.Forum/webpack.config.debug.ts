@@ -48,9 +48,9 @@ const config: Webpack.Configuration = {
         publicPath: '/',
         filename: 'static/scripts/[name].js'
     },
-    
+
     devtool: 'source-map',
-    
+
     externals: {
         'jquery': '$',
         'editor.md': 'editormd',
@@ -60,15 +60,15 @@ const config: Webpack.Configuration = {
     plugins: [
         // generate index.html
         new HTMLWebpackPlugin({
-			template: 'Template.ejs',
-			filename: 'static/index.html',
-			inject: false
-		}),
-        
+            template: 'Template.ejs',
+            filename: 'static/index.html',
+            inject: false
+        }),
+
         // clean wwwroot
         new CleanWebpackPlugin([
-            'wwwroot/static/scripts', 
-            'wwwroot/static/content', 
+            'wwwroot/static/scripts',
+            'wwwroot/static/content',
             'wwwroot/static/index.html'
         ]),
 
@@ -80,25 +80,26 @@ const config: Webpack.Configuration = {
             { from: 'node_modules/codemirror', to: 'static/scripts/lib/editor.md/lib/codemirror/' },
             { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
             { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' },
-            { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' }
-        ]),
+            { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' },
 
-        new ExtractTextPlugin('static/content/[name].css'),
+    ]),
 
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new ExtractTextPlugin('static/content/[name].css'),
+
+    new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ],
 
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    test: /[\\/]node_modules[\\/]/,
+optimization: {
+    splitChunks: {
+        cacheGroups: {
+            commons: {
+                test: /[\\/]node_modules[\\/]/,
                     name: 'vendors',
-                    chunks: 'all'
-                }
+                        chunks: 'all'
             }
         }
-    },
+    }
+},
 }
 
 export default config;

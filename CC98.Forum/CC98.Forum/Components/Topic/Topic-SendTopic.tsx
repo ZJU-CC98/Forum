@@ -13,6 +13,7 @@ import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "@cc98/hell-react-mde"
 import * as Showdown from "showdown";
 import CustomCommand from "./topic-react-mde/imageUploaderCommand";
 import { RightTagHandler } from '../../Ubb/RightTagHandler';
+var xssFilter = require('showdown-xss-filter')
 interface Props {
 	boardInfo;
 	onChange;
@@ -30,12 +31,12 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		this.showManagement = this.showManagement.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.close = this.close.bind(this);
-		this.update = this.update.bind(this);
+		this.update = this.update.bind(this); 
 		let initContent = "";
 		if (Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id)) {
 			initContent = Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id);
 		}
-		this.converter = new Showdown.Converter({ tables: true, simplifiedAutoLink: true });
+		this.converter = new Showdown.Converter({ tables: true, simplifiedAutoLink: true, extensions: [xssFilter] });
 		this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复", manageVisible: false, mdeState: initContent, commands: [] });
 	}
 	// handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
@@ -318,7 +319,13 @@ ${newProps.content.content}[/quote]
 					<ReactMde
 						value={this.state.mdeState}
 						onChange={this.handleValueChange}
-						generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
+						generateMarkdownPreview={
+							(markdown) => 
+							{
+								console.log(this.converter.makeHtml(markdown))
+								return Promise.resolve(this.converter.makeHtml(markdown))
+							}
+						}
 						commands={this.state.commands}
 						minEditorHeight={330}
 						maxEditorHeight={500}

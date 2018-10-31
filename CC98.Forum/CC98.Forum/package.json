@@ -41,6 +41,7 @@
     "remark": "^10.0.0",
     "remark-react": "^4.0.3",
     "showdown": "^1.8.7",
+    "showdown-xss-filter": "^0.2.0",
     "spectrum-colorpicker": "^1.8.0",
     "ssri": "^6.0.1",
     "tslib": "^1.9.3",
