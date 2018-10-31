@@ -12,7 +12,7 @@ async function handleUpload(e, o) {
 const customCommand = {
     buttonContentBuilder: ({ iconProvider }) =>
         <div>
-            <label id='upload-label' style={{ cursor: "pointer",paddingBttotm:"0.5rem",paddingTop:"0,5rem",paddingLeft:"1rem",paddingRight:"1rem" }} htmlFor="upload-files"><i className={`fa fa-image`} /></label>
+            <label id='upload-label' style={{ cursor: "pointer",paddingBottom:"0.5rem",paddingTop:"0,5rem",paddingLeft:"1rem",paddingRight:"1rem" }} htmlFor="upload-files"><i className={`fa fa-image`} /></label>
             <input type="file" id="upload-files" style={{ display: 'none ' }} onChange={async e => { const input=e.target;   await handleUpload(e, this);input.value='';} } />
         </div>,
     buttonProps: {
