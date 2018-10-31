@@ -21,16 +21,11 @@ import * as Showdown from "showdown";
 import CustomCommand from "./react-mde/imageUploaderCommand";
 
 
-const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
-    { commands: [CustomCommand] },
-];
-const defaultCommands = ReactMdeCommands.getDefaultCommands();
-const myCommands = defaultCommands.concat(getCommands());
 
 
 export class Edit extends RouteComponent<
     { history },
-    { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[], voteInfo: VoteProps['voteInfo'], mdeState },
+    { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[], voteInfo: VoteProps['voteInfo'], mdeState ,commands},
     { mode: string, id: number }
     > {
     converter: Showdown.Converter;
@@ -67,7 +62,8 @@ export class Edit extends RouteComponent<
                 maxVoteCount: 0,
                 needVote: false
             },
-            mdeState: ''
+            mdeState: '',
+            commands:[]
         });
     }
 
@@ -78,6 +74,14 @@ export class Edit extends RouteComponent<
         const headers = new Headers();
         headers.append("Authorization", token);
         let url, response, data, tags;
+        CustomCommand.editor = this;
+		const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
+			{ commands: [CustomCommand] },
+		];
+		const defaultCommands = ReactMdeCommands.getDefaultCommands();
+		const myCommands = defaultCommands.concat(getCommands());
+		myCommands[1].commands.length = 3;
+		this.setState({ commands: myCommands })
         switch (mode) {
             case 'postTopic':
             case 'postVoteTopic':
@@ -453,8 +457,10 @@ export class Edit extends RouteComponent<
     onVoteInfoChange(voteInfo: VoteProps['voteInfo']) {
         this.setState({ voteInfo });
     }
+    setValue = (v) => {
+		this.setState({ mdeState: this.state.mdeState+v },()=>{this.setState({mdeState:this.state.mdeState })})
+	}
     render() {
-        myCommands[1].commands.length=3;
         const contentCache = Utility.getLocalStorage("contentCache");
         const mode = this.match.params.mode;
         const id = this.match.params.id;
@@ -483,7 +489,7 @@ export class Edit extends RouteComponent<
                         value={this.state.mdeState}
                         onChange={this.handleValueChange}
                         generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
-                        commands={myCommands}
+                        commands={this.state.commands}
                         minEditorHeight={330}
                         maxEditorHeight={500}
                         buttonContentOptions={{
@@ -519,7 +525,7 @@ export class Edit extends RouteComponent<
                         value={this.state.mdeState}
                         onChange={this.handleValueChange}
                         generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
-                        commands={myCommands}
+                        commands={this.state.commands}
                         minEditorHeight={330}
                         maxEditorHeight={500}
                         buttonContentOptions={{
@@ -675,6 +681,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
     }
 
     componentDidMount() {
+        
         //如果有默认tags就绑定事件
         if (this.state.tags.length > 0) {
             this.bindEvent();

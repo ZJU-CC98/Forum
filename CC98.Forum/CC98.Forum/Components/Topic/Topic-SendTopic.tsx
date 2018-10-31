@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "@cc98/hell-react-mde";
 import * as Showdown from "showdown";
 import CustomCommand from "./topic-react-mde/imageUploaderCommand";
+import { RightTagHandler } from '../../Ubb/RightTagHandler';
 interface Props {
 	boardInfo;
 	onChange;
@@ -19,12 +20,8 @@ interface Props {
 	topicInfo;
 }
 
-const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
-	{ commands: [CustomCommand] },
-];
-const defaultCommands = ReactMdeCommands.getDefaultCommands();
-const myCommands = defaultCommands.concat(getCommands());
-export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[], buttonInfo, buttonDisabled, manageVisible, mdeState }>{
+
+export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[], buttonInfo, buttonDisabled, manageVisible, mdeState, commands }>{
 	converter: Showdown.Converter;
 	constructor(props) {
 		super(props);
@@ -39,7 +36,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 			initContent = Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id);
 		}
 		this.converter = new Showdown.Converter({ tables: true, simplifiedAutoLink: true });
-		this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复", manageVisible: false, mdeState: initContent  });
+		this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复", manageVisible: false, mdeState: initContent, commands: [] });
 	}
 	// handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
 	// 	console.log(mdeState);
@@ -71,6 +68,8 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 	componentWillUnmount() {
 		if (this.state.content) {
 			Utility.setLocalStorage("temporaryContent-" + this.props.topicInfo.id, this.state.content);
+		} else if (this.state.mdeState) {
+			Utility.setLocalStorage("temporaryContent-" + this.props.topicInfo.id, this.state.mdeState);
 		} else {
 			Utility.removeLocalStorage("temporaryContent-" + this.props.topicInfo.id);
 		}
@@ -80,7 +79,14 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 	}
 
 	componentDidMount() {
-		console.log("sendtopic didmount");
+		CustomCommand.editor = this;
+		const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
+			{ commands: [CustomCommand] },
+		];
+		const defaultCommands = ReactMdeCommands.getDefaultCommands();
+		const myCommands = defaultCommands.concat(getCommands());
+		myCommands[1].commands.length = 3;
+		this.setState({ commands: myCommands })
 		// confirm before user close the window
 		// when there's content in the editor
 		// should be removed before the component unmounts
@@ -99,7 +105,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 				const str = `> **以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：**\n\n > ${this.props.content.content}
 `; console.log("in markdown ");
 
-				this.setState({ masters: masters, content: str ,mdeState:str});
+				this.setState({ masters: masters, content: str, mdeState: str });
 			} else {
 
 				const str = `
@@ -124,7 +130,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 ${newProps.content.content}
 `; console.log("in markdown will ");
 
-				this.setState({ content: str, mdeState: str});
+				this.setState({ content: str, mdeState: str });
 
 			} else {
 				let floor = newProps.content.floor, page, url;
@@ -142,7 +148,7 @@ ${newProps.content.content}[/quote]
 
 			}
 		} else {
-			this.setState({ content: "", mdeState: ""});
+			this.setState({ content: "", mdeState: "" });
 		}
 	}
 
@@ -284,9 +290,12 @@ ${newProps.content.content}[/quote]
 		return { value: '' };
 	}
 
-
+	setValue = (v) => {
+		this.setState({ mdeState: this.state.mdeState+v },()=>{this.setState({mdeState:this.state.mdeState })})
+	}
 	render() {
-		myCommands[1].commands.length=3;
+		console.log('in reader')
+		console.log(this.state.mdeState)
 		let mode, editor;
 		if (this.state.mode === 0) {
 			mode = '使用UBB模式编辑';
@@ -301,6 +310,8 @@ ${newProps.content.content}[/quote]
 		}
 		else {
 			mode = '使用Markdown编辑';
+			console.log("react mde")
+			console.log(this.state.mdeState)
 			editor = <div >
 				<div>
 
@@ -308,7 +319,7 @@ ${newProps.content.content}[/quote]
 						value={this.state.mdeState}
 						onChange={this.handleValueChange}
 						generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
-						commands={myCommands}
+						commands={this.state.commands}
 						minEditorHeight={330}
 						maxEditorHeight={500}
 						buttonContentOptions={{

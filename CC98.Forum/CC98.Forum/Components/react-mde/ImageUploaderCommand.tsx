@@ -1,60 +1,26 @@
-import { ReactMdeTypes, MarkdownUtil, DraftUtil } from "@cc98/hell-react-mde";
-import { ButtonComponent } from "./ButtonComponent";
+
 import * as Utility from '../../Utility';
 import * as React from 'react';
 let url = "";
-async function handleUpload(e) {
-    url = await Utility.uploadEvent(e);
+async function handleUpload(e, o) {
+    url = await Utility.uploadEvent(e); 
+    const instance = o.default.editor
+    const text = `![](${url})\n\n`
+    instance.setValue(text)
 }
-async function uploadAsync() {
-    // $("#upload-files").click();
-    $("#upload-files").change(async function (e) {
-        url = await Utility.uploadEvent(e);
-    })
-}
-const customCommand: ReactMdeTypes.Command = {
+
+const customCommand = {
     buttonContentBuilder: ({ iconProvider }) =>
         <div>
-            <label style={{ cursor: "pointer" }} htmlFor="upload-files"><i className={`fa fa-image`} /></label>
-            <input type="file" id="upload-files" style={{ display: 'none ' }} onChange={handleUpload} />
+            <label id='upload-label' style={{ cursor: "pointer",padding:"0.5rem 0.5rem 0.5rem 0.5rem" }} htmlFor="upload-files"><i className={`fa fa-image`} /></label>
+            <input type="file" id="upload-files" style={{ display: 'none ' }} onChange={e => handleUpload(e, this)} />
         </div>,
-    execute: async (state) => {
-        localStorage.setItem("react-mde-imageurl-status", "start")
-        console.log("in execute");
-        const fun = () => new Promise((resolve) => {
-            let stId = setInterval(() => {
-                let urlTry = localStorage.getItem("react-mde-imageurl-status");
-                console.log(urlTry);
-                if (urlTry === "fail" || urlTry === "success") {
-                    url = urlTry;
-                    clearInterval(stId);
-                    resolve(localStorage.getItem("react-mde-imageurl"));
-                }
-            }, 300);
-        })
-        const v = await fun()
-        console.log("in then b = " + v);
-        const { text, selection } = DraftUtil.getMarkdownStateFromDraftState(state);
-        console.log(text);
-        console.log(selection);
-        const { newText, insertionLength } = MarkdownUtil.insertText(text, "![", selection.start);
-        const finalText = MarkdownUtil.insertText(newText, `](${v})`, selection.end + insertionLength).newText;
-        return DraftUtil.buildNewDraftState(
-            state,
-            {
-                text: finalText,
-                selection: {
-                    start: selection.start + insertionLength,
-                    end: selection.end + insertionLength,
-                },
-            },
-        );
-    },
     buttonProps: {
         handleSubmit:
             (text) => {
                 console.log("in handle submit" + text);
             }
     },
+    editor:null
 };
 export default customCommand;

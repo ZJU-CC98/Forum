@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@aspnet/signalr": "^1.0.3",
-    "@cc98/hell-react-mde": "^6.0.0-alpha.1",
+    "@cc98/hell-react-mde": "^6.0.1-alpha.1",
     "antd": "3.6.6",
     "aplayer": "^1.10.1",
     "blueimp-canvas-to-blob": "3.14.0",
