@@ -6,8 +6,8 @@ import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
 import {QuoteContext} from './Topic';
 import {withRouter,RouteComponentProps} from 'react-router-dom';
 import * as moment from 'moment';
-import  Popover from 'antd/es/popover';
-import Button from 'antd/es/button';
+import  * as Popover from 'antd/es/popover';
+import * as Button from 'antd/es/button';
 interface Props{
     postInfo;
     topicInfo;
