@@ -174,10 +174,16 @@
     white-space: nowrap;
     margin-top: 1rem;
     font-family: 微软雅黑;
-    box-sizing: content-box;
 }
 
-.changeEditor {
+.hiddenImage:hover {
+    background-color: $color_main;
+    color: rgb(255,255,255);
+    cursor: pointer;
+}
+
+//ubb点击下载文件按钮
+.download-file {
     display: block;
     color: $color_main;
     width: 7rem;
@@ -192,14 +198,38 @@
     white-space: nowrap;
     margin-top: 1rem;
     font-family: 微软雅黑;
-    cursor: pointer;
 }
 
-.hiddenImage:hover {
+.download-file:hover {
     background-color: $color_main;
     color: rgb(255,255,255);
     cursor: pointer;
 }
+
+//切换编辑器按钮
+.changeEditor {
+    display: block;
+    color: $color_main;
+    background-color: transparent;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 1px solid $color_main;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    line-height: normal;
+    white-space: nowrap;
+    margin-top: 1rem;
+    font-family: 微软雅黑;
+    cursor: pointer;
+}
+
+.changeEditor:hover {
+    background-color: $color_main;
+    color: rgb(255,255,255);
+    cursor: pointer;
+}
+
 
 //ubb解析图片时的lightbox
 .lightbox {
