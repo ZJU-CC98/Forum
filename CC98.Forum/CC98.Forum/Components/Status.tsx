@@ -161,3 +161,17 @@ export const PageNotFound = () => (
         <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
     </div>
 );
+
+export const TooFrequentSearch = () => (
+    <div className="errorState" >
+        <DocumentTitle title={`操作失败或被拒绝 - CC98论坛`} />
+        <div>
+            <img className="errorIcon" src="/static/images/403.png"></img>
+        </div>
+        <div className="errorTitle">糟糕！好像出错了</div>
+        <div className="errorText">可能的原因有：</div>
+        <div className="errorText">1. 你没有权限进行该操作；</div>
+        <div className="errorText">2. 你的请求过快。出于服务器性能考虑，目前设定为10秒内最多搜索一次。</div>
+        <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
+    </div>
+);

@@ -1431,7 +1431,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     case 401:
                         store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
                     case 403:
-                        store.dispatch(ErrorActions.throwError('OperationForbidden'));
+                        store.dispatch(ErrorActions.throwError('TooFrequentSearch'));
                     case 404:
                     //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
                     case 500:
