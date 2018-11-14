@@ -12,7 +12,7 @@ import { CountDown } from './CountDown'
 export class AnnouncementComponent extends React.Component<{ data }, {}> {
     render() {
         const data = this.props.data;
-        if(data == "") return <div></div>
+        if (data == "") return <div></div>
         else return <div className="announcement">
             <div className="mainPageTitle1">
                 <div className="mainPageTitleRow" style={{ width: '100%' }}>
@@ -41,10 +41,10 @@ export class RecommendedReadingComponent extends React.Component<{ data }, { ind
     }
 
     async componentWillReceiveProps(nextProps) {
-        const length: number = nextProps.data.length;        
+        const length: number = nextProps.data.length;
         this.setState({
-            index: Math.floor(Math.random()*length),
-        })       
+            index: Math.floor(Math.random() * length),
+        })
     }
 
     handleMouseEnter(index) {
@@ -122,6 +122,7 @@ export class HotTopicState {
 export class HotTopicComponent extends React.Component<{ data }, { mainPageTopicState: HotTopicState[] }> {
 
     convertMainPageTopic(item: HotTopicState) {
+        if (!item.id) return <div>{item.title}</div>
         const boardUrl = `/list/${item.boardId}`;
         const topicUrl = `/topic/${item.id}/1`;
         return <div className="mainPageListRow">
@@ -131,12 +132,22 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
     }
 
     render() {
-        // 数据库计算新的十大需要一定时间，这时API去查询更新，就会查到空的十大信息。
-        // 因此这里检查获得的十大信息是否为空，如果为空，则显示上一次获取非空数据时缓存的十大信息。
+        // 数据库计算新的十大需要一定时间，这时API去查询更新，就会查到空的十大（返回一个空数组）
+        // 因此这里检查获得的十大是否为空数组，如果是，则显示上一次获取非空十大时的缓存
         let data = this.props.data;
-        if (data) Utility.setLocalStorage("mainPageHotTopic", data);
-        else data = Utility.getLocalStorage("mainPageHotTopic");
-
+        if (data !== []) {
+            Utility.setLocalStorage("mainPageHotTopic", data);
+        }
+        else {
+            const hotTopic = Utility.getLocalStorage("mainPageHotTopic")
+            const defaultData = {
+                title: "数据库正在计算新的十大数据，请前辈等会再来~",
+                id: 0,
+                boardName: "错误提示",
+                boardId: 0
+            }
+            data = hotTopic ? hotTopic : [defaultData]
+        }
         return <div className="mainPageList">
             <div className="mainPageTitle1">
                 <div className="mainPageTitleRow">

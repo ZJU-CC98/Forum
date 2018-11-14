@@ -16,7 +16,7 @@ export default class AcTagHandler extends Ubb.RecursiveTagHandler {
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-        const reg = /ac/g;
+        const reg = /ac/gi;
         const tagName = tagData.tagName;
         const acId = tagName.replace(reg, "");
         const url = `/static/images/ac/${acId}.png`;
