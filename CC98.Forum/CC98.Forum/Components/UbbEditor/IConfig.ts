@@ -1,5 +1,5 @@
 export type UbbSegmentType = 'text' | 'extend' | 'fontSize' | 'color' | 'emoji' | 'upload'
-export type emojiType = 'em' | 'ac' | 'mj' | 'tb' | 'hide'
+export type emojiType = 'em' | 'ac' | 'mj' | 'tb' | 'hide' | 'ms'
 
 export interface IUbbProperty {
     key: string

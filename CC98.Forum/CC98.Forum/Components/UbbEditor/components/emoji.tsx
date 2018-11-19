@@ -101,7 +101,17 @@ export default class Emoji extends React.Component<EmojiProps> {
                     key={`[tb${item}]`}
                     src={`/static/images/tb/tb${item}.png`}
                     onClick={() => { this.insertEmoji('tb', item) }}
-                ></LazyImage>))
+                ></LazyImage>)),
+            'ms': new Array(54).fill(0)
+                    .map((item, index) => {
+                        if (index < 9) { return `0${index + 1}`; }
+                        else { return `${index + 1}`; }
+                    })
+                    .map((item) => <LazyImage
+                        key={`ms${item}`}
+                        src={`/static/images/ms/ms${item}.png`}
+                        onClick={() => this.insertEmoji('ms', item)}
+                    />)
         };
 
         //表情栏上的info
@@ -109,6 +119,7 @@ export default class Emoji extends React.Component<EmojiProps> {
             'ac': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="http://www.acfun.cn">AcFun弹幕视频网</a> 提供</p>,
             'mj': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//bbs.saraba1st.com/2b/forum.php">stage1st论坛</a> 提供</p>,
             'tb': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//tieba.baidu.com ">百度贴吧</a> 提供</p>,
+            'ms': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="http://majsoul.union-game.com">雀魂Majsoul</a> 提供</p>,
             'em': null
         };
 
@@ -140,6 +151,11 @@ export default class Emoji extends React.Component<EmojiProps> {
                         type="button" 
                         className={emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('em'); }}
+                    >经典</button>
+                    <button 
+                        type="button" 
+                        className={emojiType === 'ms' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                        onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('ms'); }}
                     >经典</button>
                 </div>
                 <div className={`ubb-emoji-content ubb-emoji-content-${emojiType}`} style={{ height: `${this.props.height || 16}rem`}} >
