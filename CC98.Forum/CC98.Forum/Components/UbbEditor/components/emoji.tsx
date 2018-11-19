@@ -111,6 +111,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                         key={`ms${item}`}
                         src={`/static/images/ms/ms${item}.png`}
                         onClick={() => this.insertEmoji('ms', item)}
+                        className="ubb-emoji-ms"
                     />)
         };
 
@@ -149,13 +150,13 @@ export default class Emoji extends React.Component<EmojiProps> {
                     >贴吧</button>
                     <button 
                         type="button" 
-                        className={emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
-                        onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('em'); }}
-                    >经典</button>
-                    <button 
-                        type="button" 
                         className={emojiType === 'ms' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('ms'); }}
+                    >雀魂</button>
+                    <button 
+                        type="button" 
+                        className={emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                        onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('em'); }}
                     >经典</button>
                 </div>
                 <div className={`ubb-emoji-content ubb-emoji-content-${emojiType}`} style={{ height: `${this.props.height || 16}rem`}} >
