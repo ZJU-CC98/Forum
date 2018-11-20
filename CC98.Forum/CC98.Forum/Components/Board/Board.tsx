@@ -390,14 +390,15 @@ export class ListButtonAndAds extends React.Component<{ boardInfo, adsUrl }> {
         else if (!isVerified) alert("您的帐号未认证，无法发言，请先前往https://account.cc98.org 认证激活。");
         else if (isLocked) alert("您的账号被全站禁言！");
     }
+
     render() {
         let sendInfo = null;
-        let isLogon = false;
+        let isLogOn = false;
         let isVerified = false;
         let isLocked = true;
         let tip = null;
         if (Utility.getLocalStorage("userInfo")) {
-            isLogon = true;
+            isLogOn = true;
             if (!Utility.getLocalStorage("userInfo").isVerified) { isVerified = false; tip = <div style={{ marginLeft: "1rem", color: "red" }}>您的帐号未认证，无法发言，请先前往 <a href="https://account.cc98.org">https://account.cc98.org</a> 认证激活。</div>; }
             else isVerified = true;
             if (Utility.getLocalStorage("userInfo").lockState !== 0) { isLocked = true; tip = <div style={{ marginLeft: "1rem", color: "red" }}>您被全站禁言。</div> }
