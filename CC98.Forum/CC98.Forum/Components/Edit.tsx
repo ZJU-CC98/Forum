@@ -25,7 +25,7 @@ import CustomCommand from "./react-mde/imageUploaderCommand";
 
 export class Edit extends RouteComponent<
     { history },
-    { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[], voteInfo: VoteProps['voteInfo'], mdeState ,commands},
+    { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[], voteInfo: VoteProps['voteInfo'], mdeState, commands },
     { mode: string, id: number }
     > {
     converter: Showdown.Converter;
@@ -63,7 +63,7 @@ export class Edit extends RouteComponent<
                 needVote: false
             },
             mdeState: '',
-            commands:[]
+            commands: []
         });
     }
 
@@ -75,13 +75,13 @@ export class Edit extends RouteComponent<
         headers.append("Authorization", token);
         let url, response, data, tags;
         CustomCommand.editor = this;
-		const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
-			{ commands: [CustomCommand] },
-		];
-		const defaultCommands = ReactMdeCommands.getDefaultCommands();
-		const myCommands = defaultCommands.concat(getCommands());
-		myCommands[1].commands.length = 3;
-		this.setState({ commands: myCommands })
+        const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
+            { commands: [CustomCommand] },
+        ];
+        const defaultCommands = ReactMdeCommands.getDefaultCommands();
+        const myCommands = defaultCommands.concat(getCommands());
+        myCommands[1].commands.length = 3;
+        this.setState({ commands: myCommands })
         switch (mode) {
             case 'postTopic':
             case 'postVoteTopic':
@@ -118,14 +118,14 @@ export class Edit extends RouteComponent<
                 url = `/Board/${data.boardId}`;
                 response = await Utility.cc98Fetch(url, { headers });
                 let masters = (await response.json()).boardMasters;
-                if (!(Utility.isMaster(masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) && type === 1) {
+                if (Utility.getLocalStorage('userInfo') && !(Utility.isMaster(masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) && type === 1) {
                     type = 0;
                 }
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
                     this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 0 });
                 } else
-                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 1 ,mdeState:data.content});
+                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 1, mdeState: data.content });
                 break;
         }
 
@@ -458,8 +458,8 @@ export class Edit extends RouteComponent<
         this.setState({ voteInfo });
     }
     setValue = (v) => {
-		this.setState({ mdeState: this.state.mdeState+v },()=>{this.setState({mdeState:this.state.mdeState })})
-	}
+        this.setState({ mdeState: this.state.mdeState + v }, () => { this.setState({ mdeState: this.state.mdeState }) })
+    }
     render() {
         const contentCache = Utility.getLocalStorage("contentCache");
         const mode = this.match.params.mode;
@@ -481,9 +481,9 @@ export class Edit extends RouteComponent<
                     </div></div>
                     ;
             } else {
-                editor = <div style={{display:'flex',flexDirection:'column'}}><div className="createTopicContent">
+                editor = <div style={{ display: 'flex', flexDirection: 'column' }}><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginTop: "0rem"  }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginTop: "0rem" }}>切换到UBB编辑器</div>
                 </div>
                     <ReactMde
                         value={this.state.mdeState}
@@ -509,7 +509,7 @@ export class Edit extends RouteComponent<
             if (this.state.mode === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginTop: "0rem"  }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginTop: "0rem" }}>切换到Markdown编辑器</div>
                 </div>
                     <UbbEditor update={this.update} value={this.state.content} option={{ submit: this.editUBB.bind(this) }} />
                     <div className="row" style={{ justifyContent: "center" }}>
@@ -517,7 +517,7 @@ export class Edit extends RouteComponent<
                     </div></div>
                     ;
             } else if (this.state.mode === 1) {
-                editor = <div style={{display:'flex',flexDirection:'column'}} ><div className="createTopicContent">
+                editor = <div style={{ display: 'flex', flexDirection: 'column' }} ><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginTop: "0rem" }}>切换到UBB编辑器</div>
                 </div>
@@ -556,7 +556,7 @@ export class Edit extends RouteComponent<
         console.log(Utility.isMaster(this.state.masters))
 
         // issue #38 普通用户不显示校园活动
-        if (Utility.isMaster(this.state.masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) {
+        if (Utility.getLocalStorage('userInfo') && Utility.isMaster(this.state.masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) {
             topicType = <div className="createTopicType">
                 <div className="createTopicListName">发帖类型</div>
                 <input type="radio" name="type" value="普通" onClick={this.changeNormalType} checked={this.state.type === 0 ? true : false} /> 普通
@@ -681,7 +681,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
     }
 
     componentDidMount() {
-        
+
         //如果有默认tags就绑定事件
         if (this.state.tags.length > 0) {
             this.bindEvent();
