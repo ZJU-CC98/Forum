@@ -87,7 +87,8 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
             }
         }
         parseContent = parseContent.replace(/发言：\*\*\n/g, "发言：**\n\n");
-        const mdMode = <div id={domId} style={{maxWidth:"52rem",overflow:"hidden"}}>
+        //不知道
+        const mdMode = <div id={domId} style={{maxWidth:"52rem",overflow:"hidden",padding:"2px"}}>
             {remark().use(reactRenderer).processSync(parseContent).contents}
         </div>;
         // const mdMode = <div id={domId}>
