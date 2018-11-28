@@ -255,11 +255,23 @@
 
 //ubb解析[table]标签时的默认样式
 .UBBTableTag {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 14px;
+    display: block;
+    width: 100%;
+    border-spacing: 0;
     border-collapse: collapse;
 }
 
+.UBBTabletTag th {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
 .UBBTableTag th, td {
-    border: 1px solid rgb(0,0,0);
+    padding: 6px 13px;
+    border: 1px solid #c8ccd0;
 }
 
 //相框样式

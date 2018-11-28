@@ -434,6 +434,33 @@ input[type="radio"] {
     font-family: 微软雅黑;
 }
 
+
+//以下用于控制markdown表格的样式
+.substance table {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.substance table {
+    display: block;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.substance table thead th {
+    font-weight: bold;
+    white-space: nowrap;//
+}
+
+.substance table th,
+.substance table td {
+    padding: 6px 13px;
+    border: 1px solid #c8ccd0;
+}
+
+
 .replySubstance {
     border-top: #eaeaea thin solid;
 }
@@ -3808,9 +3835,13 @@ variable {
         box-sizing: border-box;
     }
 }
-.createTopicContent{
+
+.createTopicContent {
     display: flex;
     align-items: center;
     height: 3rem;
 }
-ol{padding-left: 20px;}
+
+ol {
+    padding-left: 20px;
+}
