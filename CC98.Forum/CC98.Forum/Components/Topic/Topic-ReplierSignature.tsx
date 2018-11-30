@@ -4,6 +4,7 @@ import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
 import {QuoteContext} from './Topic';
+import {QuoteTraceContext} from './Topic-Trace'
 import {withRouter,RouteComponentProps} from 'react-router-dom';
 import * as moment from 'moment';
 import  * as Popover from 'antd/es/popover';
@@ -129,7 +130,7 @@ export default withRouter(class extends React.Component<withRouterProps&Props, {
     handlePosition=()=>{
         let page = this.props.page;
         if(!this.props.page)page=1;
-        let url = `/topic/${this.props.topicInfo.id}/${page}#sendTopicInfo`;
+        let url = `#sendTopicInfo`;
         this.props.history.push(url);
     }
     render() {
@@ -175,11 +176,18 @@ export default withRouter(class extends React.Component<withRouterProps&Props, {
                 <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩"  className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                 <div id="commentlike">
                         {judgeIcon}
-                        <QuoteContext.Consumer>
-                        {(handleQuoteContextChange)=><div className="operation1" onClick={()=>{handleQuoteContextChange({content:this.props.postInfo.content,userName: this.props.userInfo.name, replyTime:this.props.postInfo.time, floor:this.props.postInfo.floor, postId:this.props.postInfo.id});
-                        this.handlePosition();
-                    }}>   引用</div>}
-                        </QuoteContext.Consumer>
+                        {window.location.pathname.indexOf('postid')===-1?
+                         <QuoteContext.Consumer>
+                         {(handleQuoteContextChange)=><div className="operation1" onClick={()=>{handleQuoteContextChange({content:this.props.postInfo.content,userName: this.props.userInfo.name, replyTime:this.props.postInfo.time, floor:this.props.postInfo.floor, postId:this.props.postInfo.id});
+                         this.handlePosition();
+                     }}>   引用</div>}
+                         </QuoteContext.Consumer>:
+                         <QuoteTraceContext.Consumer>
+                         {(handleQuoteContextChange)=><div className="operation1" onClick={()=>{handleQuoteContextChange({content:this.props.postInfo.content,userName: this.props.userInfo.name, replyTime:this.props.postInfo.time, floor:this.props.postInfo.floor, postId:this.props.postInfo.id});
+                         this.handlePosition();
+                     }}>   引用</div>}
+                         </QuoteTraceContext.Consumer>}
+                       
                    
                         {traceIcon}
                         {editIcon}
