@@ -79,7 +79,7 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
         return (
             <div style={{ position: 'relative' }} className="user-avatar">
                 <img className="user-avatar-img" src={this.props.userInfo.portraitUrl} />
-                {this.state.url ? <img style={{ width: '13rem', height: '13rem', position: 'absolute', top: '-1.5rem' }} src={this.state.url} /> : null}
+                {this.state.url ? <img style={{ width: '13.32rem', position: 'absolute', top: '-1.45rem' }} src={this.state.url} /> : null}
                 <div className="user-badge">
                     {this.state.displayTitles && this.props.userInfo.userTitleIds ? 
                         this.state.displayTitles.filter(item => this.props.userInfo.userTitleIds.indexOf(item.id) !== -1).map(item => [18, 81].indexOf(item.id) === -1 ? 

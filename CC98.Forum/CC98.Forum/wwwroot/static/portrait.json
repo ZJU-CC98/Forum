@@ -2,10 +2,9 @@
   "吉祥物": {
     "style": {
       "width": "6.66rem",
-      "height": "6.66rem",
       "position": "absolute",
       "left": "-3.33rem",
-      "top": "-3.33rem",
+      "top": "-3.2rem",
       "z-index": "150"
     },
     "imageUrl": "/static/images/相框/吉祥物.png",

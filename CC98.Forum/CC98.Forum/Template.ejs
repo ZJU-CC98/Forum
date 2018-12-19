@@ -12,47 +12,83 @@
     <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
 
     <script>
-        window.onerror = function(a, b, c) {
-            if(b.indexOf('vendors') !== -1) {
+        window.onerror = function (a, b, c) {
+            if (b.indexOf('vendors') !== -1) {
                 var root = document.getElementById('root');
 
                 root.innerHTML = '<h1>Something went wrong</h1>'
                 root.innerHTML += '<p>you can refresh to retry.</p>'
                 root.innerHTML += '<p>if this still happens, please contact with <a style={style} href="mailto:contact@cc98.org">contact@cc98.org</a>.</p>'
                 root.innerHTML += '<hr />'
-                root.innerHTML += "<b>An error was thrown and caught.</b><br />"; 
-                root.innerHTML += "Error: " + a + "<br />"; 
-                root.innerHTML += "Line: " + c + "<br />"; 
-                root.innerHTML += "URL: " + b + "<br />"; 
+                root.innerHTML += "<b>An error was thrown and caught.</b><br />";
+                root.innerHTML += "Error: " + a + "<br />";
+                root.innerHTML += "Line: " + c + "<br />";
+                root.innerHTML += "URL: " + b + "<br />";
             }
+        }
+    </script>
+    <script>
+        //检测到移动端访问，自动跳转到pwa
+        if (navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i)) {
+            var url = location.href
+            //TODO：替换basicURL
+            var basicURL = "https://dev--cc98.netlify.com/"
+            var PWAURL = basicURL
+            if (url.match(/\/topic\//i)) {
+                //本周热门，本月热门，历史上的今天跳转到pwa热门话题
+                if (url.match(/(hot-weekly|hot-monthly|hot-history)/i)) {
+                    PWAURL = basicURL + "hotTopics"
+                }
+                //帖子跳转到pwa相应帖
+                else {
+                    var topicID = url.match(/topic\/\d+/i)[0].match(/\d+/)[0]
+                    PWAURL = basicURL + "topic/" + topicID
+                }
+            }
+            //版面列表跳转到pwa的版面列表
+            else if (url.match(/boardList/i)) {
+                PWAURL = basicURL + "boardList"
+            }
+            //版面跳转到pwa相应版
+            else if (url.match(/\/list\//i)) {
+                var boardID = url.match(/list\/\d+/i)[0].match(/\d+/)[0]
+                PWAURL = basicURL + "board/" + boardID
+            }
+            //用户页跳转到pwa相应页
+            else if (url.match(/\/user\//)) {
+                var userID = url.match(/user\/id\/\d+/i)[0].match(/\d+/)[0]
+                PWAURL = basicURL + "user/" + userID
+            }
+
+            location.href = PWAURL
         }
     </script>
     <script>
         // 控制用户缓存
         // 需要清理缓存时更新 version
         var version = '3.2.3';
-        if(localStorage.getItem('version') !== version) {
+        if (localStorage.getItem('version') !== version) {
             localStorage.clear();
             localStorage.setItem('version', version);
         }
     </script>
     <script>
         var themeNames = [''];
-        <% for (var cssFile in htmlWebpackPlugin.files.css) { %>
-        themeNames.push("<%= htmlWebpackPlugin.files.css[cssFile].split('/').pop() %>");
-        <% } %>
-        // themeNames[0]为当前的默认主题
-        themeNames[0] = themeNames[5];
+                    <% for (var cssFile in htmlWebpackPlugin.files.css) { %>
+            themeNames.push("<%= htmlWebpackPlugin.files.css[cssFile].split('/').pop() %>");
+                    <% } %>
+            // themeNames[0]为当前的默认主题
+            themeNames[0] = themeNames[1];
         try {
-            (function() {
+            (function () {
                 var time = localStorage.getItem('refresh_token_expirationTime');
                 var isLogOn = time && (parseInt(time) * 1000 > Date.now());
-                if(!isLogOn) throw new Error('用户未登录');
+                if (!isLogOn) throw new Error('用户未登录');
                 var theme = JSON.parse(localStorage.getItem('userInfo').slice(4)).theme;
-                if(!theme) throw new Error('用户未选择主题');
+                if (!theme) throw new Error('用户未选择主题');
                 document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[theme] + '">');
             })();
-        } catch(e) {
+        } catch (e) {
             document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[0] + '">')
         }
     </script>
@@ -65,15 +101,15 @@
     <script type="text/javascript" src="/static/scripts/lib/spectrum/spectrum.js"></script>
     <script type="text/javascript">
         //兼容性检查
-        if(!('flex' in document.documentElement.style)) {
+        if (!('flex' in document.documentElement.style)) {
             document.write("<div style='width: 100%; text-align: left; font-size: 30px; position: fixed; top: 10%; left:10%;'><div style='font-size: 40px;'>抱歉，CC98在您的浏览器上无法正常显示</div><br/><div> 请使用较新版本的IE、Chrome、Edge、FireFox、Safari等主流现代浏览器</div ><br/><div style='font-size: 20px;'>浏览器最新版下载链接<br/><br/><a href='https://www.google.com/chrome/' target='_blank' class='unSupportA'>Chrome浏览器</a><a href='http://www.firefox.com.cn/' target='_blank' style='margin-left: 40px;' class='unSupportA'>FireFox浏览器</a><a href='https://www.microsoft.com/zh-cn/download/internet-explorer.aspx' target='_blank' style='margin-left: 40px;' class='unSupportA'>IE浏览器</a></div><br/><br/><div>若您使用的是国产浏览器，请切换到“极速模式”或“高速模式”，勿使用“兼容模式”</div><br/><div style='font-size: 20px;'>不同浏览器切换“极速模式”教程请点击以下对应链接<br/><br/><a href='https://jingyan.baidu.com/article/fcb5aff77f0f19edaa4a71a1.html' target='_blank' class='unSupportA'>360浏览器</a><a href='https://jingyan.baidu.com/article/e75057f21f6dd3ebc81a8972.html' target='_blank' style='margin-left: 46px;' class='unSupportA'>QQ浏览器</a><a href='https://www.kafan.cn/edu/60454086.html' target='_blank' style='margin-left: 46px;' class='unSupportA'>搜狗浏览器</a><br/><br/><a href = 'https://zhidao.baidu.com/question/743803842371080452.html' target = '_blank' class='unSupportA'>猎豹浏览器</a><a href='https://jingyan.baidu.com/article/90808022c36ad2fd90c80f6c.html' target='_blank' style='margin-left: 35px;' class='unSupportA'>傲游浏览器</a><a href='http://www.downxia.com/zixun/6730.html' target='_blank' style='margin-left: 36px;' class='unSupportA'>百度浏览器</a></div><br/><br/><div> 如果仍未解决，请联系 <a href='mailto:contact@cc98.org' class='unSupportA'>contact@cc98.org</a></div></div>");
         } else {
-            <% for (var jsFile in htmlWebpackPlugin.files.js) { %>
-                <% if (htmlWebpackPlugin.files.js[jsFile].indexOf('css') === -1) { %>
-                document.write("<script type='text/javascript' src='/static/scripts/<%= htmlWebpackPlugin.files.js[jsFile].split('/').pop() %>'><" + "/script>"); 
-                <% } %>
-            <% } %>
-        }
+                    <% for (var jsFile in htmlWebpackPlugin.files.js) { %>
+                        <% if (htmlWebpackPlugin.files.js[jsFile].indexOf('css') === -1) { %>
+                    document.write("<script type='text/javascript' src='/static/scripts/<%= htmlWebpackPlugin.files.js[jsFile].split('/').pop() %>'><" + "/script>");
+                        <% } %>
+                    <% } %>
+                }
     </script>
 </body>
 </html>
