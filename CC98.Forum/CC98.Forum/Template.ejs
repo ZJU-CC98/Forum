@@ -31,8 +31,7 @@
         //检测到移动端访问，自动跳转到pwa
         if (navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i)) {
             var url = location.href
-            //TODO：替换basicURL
-            var basicURL = "https://dev--cc98.netlify.com/"
+            var basicURL = "https://m.cc98.org/"
             var PWAURL = basicURL
             if (url.match(/\/topic\//i)) {
                 //本周热门，本月热门，历史上的今天跳转到pwa热门话题
