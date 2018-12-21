@@ -13,9 +13,9 @@ import { refreshCurrentUserInfo } from '../AsyncActions/UserCenter';
 import { MessageInfo } from '../Reducers/Message';
 
 type props = {
-    isLogOn: boolean, 
-    userInfo: UserInfo, 
-    logOff: () => void, 
+    isLogOn: boolean,
+    userInfo: UserInfo,
+    logOff: () => void,
     reLogOn: (userInfo: UserInfo) => void,
     refreshUserInfo: () => void,
     messageCount: MessageInfo
@@ -38,18 +38,18 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
          * 同步不同窗口的登陆信息
          */
         window.addEventListener('storage', (e) => {
-            if(e.key === 'userInfo') {
-                if(e.oldValue === e.newValue) return;
-                if(e.newValue){ //如果用户在其他页面重新登陆
+            if (e.key === 'userInfo') {
+                if (e.oldValue === e.newValue) return;
+                if (e.newValue) { //如果用户在其他页面重新登陆
                     this.props.reLogOn(JSON.parse(e.newValue.slice(4)));
-                }else { //如果用户在其他页面注销
+                } else { //如果用户在其他页面注销
                     this.props.logOff();
                 }
-            } 
+            }
         });
 
         //每天刷新一次用户信息
-        if(Utility.isLogOn() && !Utility.getLocalStorage('shouldNotRefreshUserInfo')) {
+        if (Utility.isLogOn() && !Utility.getLocalStorage('shouldNotRefreshUserInfo')) {
             this.props.refreshUserInfo();
             Utility.setLocalStorage('shouldNotRefreshUserInfo', true, 86400);
         }
@@ -60,7 +60,9 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
         Utility.removeLocalStorage("accessToken");
         Utility.removeLocalStorage("refresh_token");
         Utility.removeLocalStorage("userInfo");
+        Utility.removeLocalStorage("usePWA");
         Utility.removeStorage("all");
+
         Utility.changeTheme(0);
         this.props.logOff();            //更新redux中的状态
     }
@@ -86,7 +88,7 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
         if (this.props.isLogOn) {
             const totalCount = this.props.messageCount.atCount +
                 this.props.messageCount.messageCount +
-                this.props.messageCount.replyCount + 
+                this.props.messageCount.replyCount +
                 this.props.messageCount.systemCount;
 
             const style = {
@@ -170,7 +172,7 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
         }
         else {
             return <div className="topBarUserInfo">
-                <div className="topBarText"> <Link onClick={()=>{localStorage.setItem("logOnRedirectUrl",window.location.href)}} to="/logOn">登录</Link></div>
+                <div className="topBarText"> <Link onClick={() => { localStorage.setItem("logOnRedirectUrl", window.location.href) }} to="/logOn">登录</Link></div>
                 <div className="topBarText"><a href="https://account.cc98.org/">注册</a></div>
             </div>
         }
@@ -369,6 +371,7 @@ export class Header extends React.Component<{}, AppState> {
         let pathname = location.pathname;
         if (pathname === "/") {
             return <div className="header">
+                <Redirect />
                 <div className="topBar-mainPage">
                     <div className="topBarRow">
                         <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
@@ -386,6 +389,7 @@ export class Header extends React.Component<{}, AppState> {
             </div>;
         } else {
             return <div className="headerWithoutImage">
+                <Redirect />
                 <div className="topBar">
                     <div className="topBarRow">
                         <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
@@ -402,5 +406,88 @@ export class Header extends React.Component<{}, AppState> {
                 </div>
             </div>;
         }
+    }
+}
+
+class Redirect extends React.Component<{}, { isShowed: boolean }>{
+    constructor(props) {
+        super(props)
+        const isShowed: boolean = !Utility.getLocalStorage("usePWA")
+        this.state = { isShowed }
+    }
+
+    jump = () => {
+        let PWAURL: string = ""
+        const url = location.href
+        const basicURL = "https://m.cc98.org/"
+
+        if (url.match(/\/topic\//i)) {
+            //本周热门，本月热门，历史上的今天跳转到pwa热门话题
+            if (url.match(/(hot-weekly|hot-monthly|hot-history)/i)) {
+                PWAURL = `${basicURL}hotTopics`
+            }
+            //帖子跳转到pwa相应帖
+            else {
+                const topicID = url.match(/topic\/\d+/i)[0].match(/\d+/)[0]
+                PWAURL = `${basicURL}topic/${topicID}`
+            }
+        }
+        //版面列表跳转到pwa的版面列表
+        else if (url.match(/boardList/i)) {
+            PWAURL = `${basicURL}boardList`
+        }
+        //版面跳转到pwa相应版
+        else if (url.match(/\/list\//i)) {
+            const boardID = url.match(/list\/\d+/i)[0].match(/\d+/)[0]
+            PWAURL = `${basicURL}board/${boardID}`
+        }
+        //用户页跳转到pwa相应页
+        else if (url.match(/\/user\//)) {
+            const userID = url.match(/user\/id\/\d+/i)[0].match(/\d+/)[0]
+            PWAURL = `${basicURL}user/${userID}`
+        }
+        //其他页跳转到pwa首页
+        else {
+            PWAURL = basicURL
+        }
+        location.href = PWAURL
+    }
+
+    close = () => {
+        this.setState({
+            isShowed: false
+        })
+    }
+
+    neverShow = () => {
+        Utility.setLocalStorage("usePWA", "false", 2592000)
+        this.setState({
+            isShowed: false
+        })
+    }
+
+    render() {
+
+        if (this.state.isShowed && navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+
+            return (
+                <div className="pwa-redirect-background">
+                    <div className="pwa-redirect-container">
+                        <img className="pwa-redirect-image" src="/static/images/login.png" />
+                        <div className="pwa-redirect-text-container">
+                            <div className="pwa-redirect-text">检测到您正使用移动端访问</div>
+                            <div className="pwa-redirect-text"> 建议使用移动版CC98</div>
+                            <div className="pwa-redirect-text"> 以获得更好的浏览体验</div>
+                        </div>
+                        <div className="pwa-redirect-button-container">
+                            <div className="pwa-redirect-button" onClick={this.jump}>点击跳转</div>
+                            <div className="pwa-redirect-button" onClick={this.close}>下次再说</div>
+                            <div className="pwa-redirect-button" onClick={this.neverShow}>不再提示</div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        return <></>
     }
 }

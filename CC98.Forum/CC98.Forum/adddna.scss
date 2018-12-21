@@ -11,15 +11,18 @@
     margin-bottom: 20px;
 }
 
-.createTopicTitle, .createTopicType, .createTopicOption, .createTopicContent {
+.createTopicTitle,
+.createTopicType,
+.createTopicOption,
+.createTopicContent {
     display: flex;
     height: 40px;
     margin-bottom: 20px;
     border-style: solid;
-    border-color: rgb(233,233,233);
+    border-color: rgb(233, 233, 233);
     border-width: 1px;
     box-sizing: border-box;
-    background-color: rgb(255,255,255);
+    background-color: rgb(255, 255, 255);
     align-items: center;
 }
 
@@ -29,7 +32,7 @@
     justify-content: center;
     border-width: 0 1px 0 0;
     border-style: solid;
-    border-color: rgb(233,233,233);
+    border-color: rgb(233, 233, 233);
     box-sizing: border-box;
 }
 
@@ -45,7 +48,7 @@
     border: 0;
     font-size: 14px;
     font-family: 微软雅黑;
-    color: rgb(80,80,80);
+    color: rgb(80, 80, 80);
     outline: none;
     padding-left: 1rem;
 }
@@ -61,7 +64,7 @@
     height: 30px;
     font-size: 12px;
     font-family: 微软雅黑;
-    color: rgb(80,80,80);
+    color: rgb(80, 80, 80);
     justify-content: center;
     align-items: center;
     margin-left: 2px;
@@ -73,7 +76,7 @@
     flex-direction: row;
     align-items: center;
     height: 32px;
-    border-right: 2px solid rgb(233,233,233);
+    border-right: 2px solid rgb(233, 233, 233);
     padding-right: 2px;
     cursor: pointer;
 }
@@ -82,13 +85,13 @@
     display: none;
     border-radius: 5px;
     border-style: solid;
-    border-color: rgb(233,233,233);
+    border-color: rgb(233, 233, 233);
     border-width: 2px;
     box-sizing: border-box;
     font-size: 12px;
     font-family: 微软雅黑;
-    color: rgb(80,80,80);
-    background: rgb(233,233,233);
+    color: rgb(80, 80, 80);
+    background: rgb(233, 233, 233);
     z-index: 1000;
     list-style-type: none;
     padding: 0;
@@ -111,7 +114,7 @@
     height: 30px;
     font-size: 12px;
     font-family: 微软雅黑;
-    color: rgb(80,80,80);
+    color: rgb(80, 80, 80);
     justify-content: center;
     align-items: center;
     margin-left: 2px;
@@ -124,7 +127,7 @@
     flex-direction: row;
     align-items: center;
     height: 32px;
-    border-right: 2px solid rgb(233,233,233);
+    border-right: 2px solid rgb(233, 233, 233);
     padding-right: 2px;
     cursor: pointer;
 }
@@ -133,13 +136,13 @@
     display: none;
     border-radius: 5px;
     border-style: solid;
-    border-color: rgb(233,233,233);
+    border-color: rgb(233, 233, 233);
     border-width: 2px;
     box-sizing: border-box;
     font-size: 12px;
     font-family: 微软雅黑;
-    color: rgb(80,80,80);
-    background: rgb(233,233,233);
+    color: rgb(80, 80, 80);
+    background: rgb(233, 233, 233);
     z-index: 1000;
     list-style-type: none;
     padding: 0;
@@ -178,7 +181,7 @@
 
 .hiddenImage:hover {
     background-color: $color_main;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
     cursor: pointer;
 }
 
@@ -202,7 +205,7 @@
 
 .download-file:hover {
     background-color: $color_main;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
     cursor: pointer;
 }
 
@@ -226,7 +229,7 @@
 
 .changeEditor:hover {
     background-color: $color_main;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
     cursor: pointer;
 }
 
@@ -239,7 +242,7 @@
     left: 0%;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: 1001;
     justify-content: center;
     align-items: center;
@@ -268,7 +271,8 @@
     white-space: nowrap;
 }
 
-.UBBTableTag th, td {
+.UBBTableTag th,
+td {
     padding: 6px 13px;
     border: 1px solid #c8ccd0;
 }
@@ -281,6 +285,7 @@
     top: 50%;
     pointer-events: none;
 }
+
 /*
 .photoFrame img {
     width: 9rem;
@@ -380,7 +385,7 @@
     border-style: solid;
     border-color: $color_main;
     box-sizing: border-box;
-    background-color: rgb(252,252,252);
+    background-color: rgb(252, 252, 252);
 }
 
 //推荐阅读~
@@ -401,7 +406,7 @@
     border-style: solid;
     border-color: $color_sec;
     box-sizing: border-box;
-    background-color: rgb(252,252,252);
+    background-color: rgb(252, 252, 252);
 }
 
 .recommendedReadingImage {
@@ -422,7 +427,7 @@
     max-width: 43.625rem;
     font-size: 1rem;
     font-family: 微软雅黑;
-    color: rgb(107,113,120);
+    color: rgb(107, 113, 120);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -435,7 +440,7 @@
     margin-bottom: 0.75rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: rgb(107,113,120);
+    color: rgb(107, 113, 120);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -453,7 +458,7 @@
     height: 0.625rem;
     margin: 0 0.25rem;
     border-style: solid;
-    border-color: rgb(107,113,120);
+    border-color: rgb(107, 113, 120);
     border-width: 1px;
     border-radius: 50%;
     box-sizing: border-box;
@@ -464,11 +469,11 @@
     height: 0.625rem;
     margin: 0 0.25rem;
     border-style: solid;
-    border-color: rgb(251,97,101);
+    border-color: rgb(251, 97, 101);
     border-width: 1px;
     border-radius: 50%;
     box-sizing: border-box;
-    background-color: rgb(251,97,101);
+    background-color: rgb(251, 97, 101);
 }
 
 //列表区~
@@ -502,7 +507,7 @@
     border-style: solid;
     border-color: $color_sec;
     box-sizing: border-box;
-    background-color: rgb(252,252,252);
+    background-color: rgb(252, 252, 252);
 }
 
 .mainPageListRow {
@@ -519,12 +524,12 @@
     margin-right: 0.375rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: rgb(251,97,101);
+    color: rgb(251, 97, 101);
 
     a {
         font-size: 0.75rem;
         font-family: 微软雅黑;
-        color: rgb(251,97,101);
+        color: rgb(251, 97, 101);
     }
 }
 
@@ -532,14 +537,14 @@
     flex-grow: 1;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: rgb(102,102,102);
+    color: rgb(102, 102, 102);
     white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
     overflow: hidden; //不显示超过对象尺寸的内容
     text-overflow: ellipsis; //当文本对象溢出时显示...
     a {
         font-size: 0.75rem;
         font-family: 微软雅黑;
-        color: rgb(102,102,102);
+        color: rgb(102, 102, 102);
     }
 }
 
@@ -583,12 +588,12 @@
     flex-grow: 1;
     font-size: 1rem;
     font-family: 微软雅黑;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
 
     a {
         font-size: 1rem;
         font-family: 微软雅黑;
-        color: rgb(255,255,255);
+        color: rgb(255, 255, 255);
     }
 }
 
@@ -622,14 +627,14 @@
     flex-grow: 1;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
     white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
     overflow: hidden; //不显示超过对象尺寸的内容
     text-overflow: ellipsis; //当文本对象溢出时显示...
     a {
         font-size: 0.75rem;
         font-family: 微软雅黑;
-        color: rgb(255,255,255);
+        color: rgb(255, 255, 255);
     }
 }
 
@@ -652,7 +657,7 @@
     height: 0.625rem;
     margin: 0 0.25rem;
     border-style: solid;
-    border-color: rgba(255,255,255,0.5);
+    border-color: rgba(255, 255, 255, 0.5);
     border-width: 1px;
     border-radius: 50%;
     box-sizing: border-box;
@@ -663,12 +668,13 @@
     height: 0.625rem;
     margin: 0 0.25rem;
     border-style: solid;
-    border-color: rgba(255,255,255,0.5);
+    border-color: rgba(255, 255, 255, 0.5);
     border-width: 1px;
     border-radius: 50%;
     box-sizing: border-box;
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255, 255, 255, 0.5);
 }
+
 //论坛统计
 .mainPageCount {
     display: flex;
@@ -698,7 +704,7 @@
 .mainPageCountTitle {
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
 
     a {
         font-size: 0.75rem;
@@ -721,7 +727,7 @@
     padding: 0px;
     background: $background_image no-repeat center;
     z-index: 2;
-    background-size: 120rem,12rem;
+    background-size: 120rem, 12rem;
 }
 
 .headerWithoutImage {
@@ -856,7 +862,7 @@
     border-radius: 50%;
     justify-content: center;
     align-items: center;
-    background-color: rgb(107,113,120);
+    background-color: rgb(107, 113, 120);
     font-size: 1rem;
     font-family: 微软雅黑;
     color: #ffffff;
@@ -871,12 +877,12 @@
     z-index: 100;
     font-size: 0.875rem;
     font-family: 微软雅黑;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
 
     a {
         font-size: 0.875rem;
         font-family: 微软雅黑;
-        color: rgb(255,255,255);
+        color: rgb(255, 255, 255);
     }
 
     ul {
@@ -896,7 +902,7 @@
     }
 
     li:hover {
-        background-color: rgb(251,97,101);
+        background-color: rgb(251, 97, 101);
     }
 }
 
@@ -908,12 +914,12 @@
     z-index: 100;
     font-size: 0.875rem;
     font-family: 微软雅黑;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
 
     a {
         font-size: 0.875rem;
         font-family: 微软雅黑;
-        color: rgb(255,255,255);
+        color: rgb(255, 255, 255);
     }
 
     ul {
@@ -933,7 +939,7 @@
     }
 
     li:hover {
-        background-color: rgb(251,97,101);
+        background-color: rgb(251, 97, 101);
     }
 }
 
@@ -946,12 +952,12 @@
     z-index: 100;
     font-size: 0.875rem;
     font-family: 微软雅黑;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
 
     a {
         font-size: 0.875rem;
         font-family: 微软雅黑;
-        color: rgb(255,255,255);
+        color: rgb(255, 255, 255);
     }
 
     ul {
@@ -972,7 +978,7 @@
     }
 
     li:hover {
-        background-color: rgb(251,97,101);
+        background-color: rgb(251, 97, 101);
     }
 }
 
@@ -984,12 +990,12 @@
     z-index: 100;
     font-size: 0.875rem;
     font-family: 微软雅黑;
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
 
     a {
         font-size: 0.875rem;
         font-family: 微软雅黑;
-        color: rgb(255,255,255);
+        color: rgb(255, 255, 255);
     }
 
     ul {
@@ -1010,9 +1016,10 @@
     }
 
     li:hover {
-        background-color: rgb(251,97,101);
+        background-color: rgb(251, 97, 101);
     }
 }
+
 //搜索框
 #search .box {
     display: flex;
@@ -1098,7 +1105,7 @@
 }
 
 #search .searchBoxSub li:hover {
-    background-color: rgb(107,113,120);
+    background-color: rgb(107, 113, 120);
 }
 
 //头部中未读数的样式
@@ -1134,4 +1141,59 @@
     line-height: 0.625rem;
     top: 0.75rem;
     left: 6rem;
+}
+
+.pwa-redirect-background {
+    display: flex;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.pwa-redirect-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 2001;
+    background-color: white;
+    font-size: 48px;
+    font-family: "微软雅黑";
+    width: 80%;
+    min-height: 80%;
+}
+
+.pwa-redirect-image {
+    display: block;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.pwa-redirect-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+}
+
+.pwa-redirect-button {
+    box-sizing: border-box;
+    border: 2px solid #007acc;
+    border-radius: 8px;
+    background-color: #007acc;
+    margin-bottom: 20px;
+    padding: 8px 32px;
+    color: white;
+    font-size: 48px;
+}
+
+.pwa-redirect-button-container {
+    display: flex;
+    flex-direction: column;
 }
