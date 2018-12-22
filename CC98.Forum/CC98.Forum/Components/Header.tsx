@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { Actions, RootState } from '../Store';
 import { Link, withRouter, Route } from 'react-router-dom';
 import { refreshCurrentUserInfo } from '../AsyncActions/UserCenter';
+import { refreshCurrentMessageCount } from '../AsyncActions/Message';
 import { MessageInfo } from '../Reducers/Message';
 
 type props = {
@@ -17,6 +18,7 @@ type props = {
     userInfo: UserInfo,
     logOff: () => void,
     reLogOn: (userInfo: UserInfo) => void,
+    refreshCurrentMessageCount: () => void,
     refreshUserInfo: () => void,
     messageCount: MessageInfo
 }
@@ -47,6 +49,10 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
                 }
             }
         });
+
+        if(Utility.isLogOn()) {
+            this.props.refreshCurrentMessageCount();
+        }
 
         //每天刷新一次用户信息
         if (Utility.isLogOn() && !Utility.getLocalStorage('shouldNotRefreshUserInfo')) {
@@ -200,7 +206,10 @@ function mapDispatch(dispatch) {
         },
         refreshUserInfo: () => {
             dispatch(refreshCurrentUserInfo());
-        }
+        },
+        refreshCurrentMessageCount: () => {
+            dispatch(refreshCurrentMessageCount());
+        },
     };
 }
 
