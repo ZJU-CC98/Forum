@@ -76,6 +76,7 @@ module.exports = {
             { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
             { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' },
             { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' },
+            { from: 'node_modules/hls.js/dist/hls.min.js', to: 'static/content/hls.min.js'},
         ]),
 
         new ExtractTextPlugin('static/content/[name].css'),
@@ -89,7 +90,8 @@ module.exports = {
     devServer: {
         // contentBase: path.resolve(__dirname, "wwwroot"),
         historyApiFallback: true,
-        open: true,
+        port: 8082,
+        host: '0.0.0.0',
 
         // proxy: {
         //     '/1262843-1.flv': {

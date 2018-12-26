@@ -35,6 +35,8 @@ interface IState {
     height: string;
 }
 
+declare const Hls: any
+
 class VideoComponent extends React.Component<IProps, IState> {
     /**
      * 对div的引用
@@ -53,17 +55,37 @@ class VideoComponent extends React.Component<IProps, IState> {
      * 组件加载后初始化播放器
      */
     componentDidMount() {
+        if (this.props.src.match(/\.m3u8$/)) {
+            try {
+                new Hls()
+                this.initPlayer('hls')
+            } catch(e) {
+                const script = document.createElement('script')
+                script.src = '/static/content/hls.min.js'
+                document.getElementsByTagName('head')[0].appendChild(script)
+                script.onload = () => {
+                    this.initPlayer('hls')
+                }
+            }
+        } else {
+            this.initPlayer()
+        }
+
+    }
+
+    initPlayer = (type?: string) => {
         try {
             this.dp = new DPlayer({
                 element: this.div,
                 autoplay: false,
                 preload: 'metadata',
                 video: {
-                    url: encodeURI(this.props.src)
+                    url: encodeURI(this.props.src),
+                    type,
                 },
             });
-        } catch {
-            console.log('new Dplayer Error.')
+        } catch(e) {
+            console.log(e, 'new Dplayer Error.')
         }
 
         if(!this.dp) {

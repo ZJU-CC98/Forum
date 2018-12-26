@@ -81,25 +81,25 @@ const config: Webpack.Configuration = {
             { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
             { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' },
             { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' },
+            { from: 'node_modules/hls.js/dist/hls.min.js', to: 'static/content/hls.min.js'},
+        ]),
 
-    ]),
+        new ExtractTextPlugin('static/content/[name].css'),
 
-    new ExtractTextPlugin('static/content/[name].css'),
+        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        ],
 
-    new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    ],
-
-optimization: {
-    splitChunks: {
-        cacheGroups: {
-            commons: {
-                test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                        chunks: 'all'
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                        name: 'vendors',
+                            chunks: 'all'
+                }
             }
         }
-    }
-},
+    },
 }
 
 export default config;
