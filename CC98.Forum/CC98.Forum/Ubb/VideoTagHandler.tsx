@@ -97,7 +97,8 @@ class VideoComponent extends React.Component<IProps, IState> {
         // 对全屏下高度的调整
         this.dp.on('fullscreen', e => this.setState({ height: 'auto' }));
         this.dp.on('fullscreen_cancel', e => this.setState({ height: '28.8984375rem' }));
-
+        this.dp.on('webfullscreen', e => this.setState({ height: '100%' }));
+        this.dp.on('webfullscreen_cancel', e => this.setState({ height: '28.8984375rem' }));
         this.div.getElementsByClassName('dplayer-menu')[0].innerHTML = '<div class="dplayer-menu-item"><a target="_blank" href="https://github.com/MoePlayer/DPlayer">关于 DPlayer 播放器</a></div>';
     }
 
@@ -112,6 +113,6 @@ class VideoComponent extends React.Component<IProps, IState> {
     
     render() {
         //重置继承自article的whiteSpace
-        return <div style={{ display: 'flex' }}><div className="aplayer" style={{ whiteSpace: 'normal', height: this.state.height }} ref={it => this.div = it}></div></div>;
+        return <div style={{ display: 'flex' }}><div className="dplayer" style={{ whiteSpace: 'normal', height: this.state.height }} ref={it => this.div = it}></div></div>;
     }
 }
