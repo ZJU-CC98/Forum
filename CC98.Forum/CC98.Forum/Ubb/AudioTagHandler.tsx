@@ -22,7 +22,7 @@ export class AudioTagHandler extends Ubb.TextTagHandler {
         } 
 //        const title=tagData.tltle;/*读取用户输入的title标题*/
 //        const author=tagData.author;/*读取用户输入的作者信息*/
-        return <AudioComponent src={innerContent} />;
+        return <AudioComponent src={innerContent} tagData={tagData}/>;
 	}
 }
 
@@ -31,6 +31,10 @@ interface IProps {
      * 音频文件地址
      */
     src: string;
+    /**
+    tagData
+     */
+    tagData:Ubb.UbbTagData;
 }
 class AudioComponent extends React.Component<IProps> {
     /**
@@ -52,8 +56,8 @@ class AudioComponent extends React.Component<IProps> {
             preload: 'metadata',
             music: {
                 url: encodeURI(this.props.src),
-                title: encodeURI(this.props.src),
-                author: encodeURI(this.props.src),
+                title: this.props.tagData.value('title'),
+                author: '',
                 pic: '/static/images/audio_cover.png'
             }
         });
