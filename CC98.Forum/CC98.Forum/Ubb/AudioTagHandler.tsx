@@ -56,7 +56,7 @@ class AudioComponent extends React.Component<IProps> {
             preload: 'metadata',
             music: {
                 url: encodeURI(this.props.src),
-                title: this.props.tagData.value('title'),
+                title: this.props.tagData.value('title')?this.props.tagData.value('title'):'（请在audio标签内使用title标记为音频添加标题）',
                 author: '',
                 pic: '/static/images/audio_cover.png'
             }
