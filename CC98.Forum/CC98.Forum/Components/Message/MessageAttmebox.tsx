@@ -6,7 +6,7 @@ import { MessageResponseProps } from '../../Props/MessageResponseProps';
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { UbbCompatiblityMode } from '../../Ubb/UbbCodeExtension';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 
 export class MessageAttmebox extends React.Component<MessageResponseProps> {
 
@@ -66,7 +66,7 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
                         <UbbContainer code={boardName}/>
                     </div>
                     <div className="message-response-box-middle-date" >
-                        {moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}
+                        {dayjs(this.props.time).format('YYYY-MM-DD HH:mm:ss')}
                     </div>
                 </div>
                 <div className="message-response-box-middle-content">

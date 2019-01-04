@@ -102,7 +102,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
                         <div className="focus-topic-title"><a href={topicUrl} target="_blank">{this.props.title}</a></div>
                     </div>
                     <div className="focus-topic-info2">
-                        <div className="focus-topic-board"><a href={boardUrl} target="_blank">{this.props.boardName}</a>&nbsp;&nbsp;/&nbsp;&nbsp;{moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}</div>
+                        <div className="focus-topic-board"><a href={boardUrl} target="_blank">{this.props.boardName}</a>&nbsp;&nbsp;/&nbsp;&nbsp;{dayjs(this.props.time).format('YYYY-MM-DD HH:mm:ss')}</div>
                         <div className="focus-topic-response">
                         <div><i className="fa fa-thumbs-o-up" aria-hidden="true"></i>{this.props.likeCount}</div>
                     <div><i className="fa fa-thumbs-o-down" aria-hidden="true"></i>{this.props.dislikeCount}</div>

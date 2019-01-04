@@ -2,7 +2,7 @@
 import * as Utility from '../Utility';
 import { UbbEditor } from './UbbEditor';
 import { withRouter } from 'react-router-dom';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 export class Signin extends React.Component<{history}, { signinInfo ,content}>{
     constructor(props) {
         super(props);
@@ -43,7 +43,7 @@ export class Signin extends React.Component<{history}, { signinInfo ,content}>{
             Utility.setLocalStorage(`signin_${userInfo.id}`, true, workTime);
             //设定已签到信息
             info = <div><div className="row" style={{ justifyContent: "center" }}>
-                你上次的签到日期是{moment(this.state.signinInfo.lastSignInTime).format('YYYY-MM-DD HH:mm:ss')}
+                你上次的签到日期是{dayjs(this.state.signinInfo.lastSignInTime).format('YYYY-MM-DD HH:mm:ss')}
             </div>
                 <div className="row" style={{ justifyContent: "center" }}>
                     你已经连续签到了{this.state.signinInfo.lastSignInCount}天
