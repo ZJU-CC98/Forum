@@ -21,7 +21,7 @@ export class AudioTagHandler extends Ubb.TextTagHandler {
             return innerContent;
         } 
 
-        return <AudioComponent src={innerContent} />;
+        return <AudioComponent src={innerContent} tagData={tagData}/>;
 	}
 }
 
@@ -30,6 +30,10 @@ interface IProps {
      * 音频文件地址
      */
     src: string;
+   /**
+   *ubb内含的信息
+   */
+  tagData: Ubb.UbbTagData;
 }
 class AudioComponent extends React.Component<IProps> {
     /**
@@ -51,7 +55,7 @@ class AudioComponent extends React.Component<IProps> {
                 preload: 'metadata',
                 music: {
                     url: encodeURI(this.props.src),
-                    title: encodeURI(this.props.src),
+                    title: this.props.tagData.value('title')?this.props.tagData.value('title'):'(快使用title标签为您的音频加上标题吧)',
                     author: '',
                     pic: '/static/images/audio_cover.png'
                 }
