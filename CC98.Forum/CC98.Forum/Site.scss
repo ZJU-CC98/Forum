@@ -22,339 +22,342 @@ $color-url: #0b5394;
 $color-urlVisited: #741b47;
 
 blockquote {
-    color: #666;
-    margin: 0;
-    padding-left: 3em;
-    border-left: 0.5em #eee solid;
+  color: #666;
+  margin: 0;
+  padding-left: 3em;
+  border-left: 0.5em #eee solid;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    color: black;
+  margin: 0;
+  padding: 0;
+  color: black;
 }
 
 //---------------恢复一些被reset的样式------------------
 p {
-    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
 }
 
 button {
-    line-height: normal;
+  line-height: normal;
 }
 
 *,
 *::before,
 *::after {
-    -webkit-box-sizing: content-box;
-    box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 ul {
-    display: block;
-    list-style-type: disc;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-    -webkit-padding-start: 40px;
-    -moz-padding-start: 40px;
+  display: block;
+  list-style-type: disc;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  -webkit-padding-start: 40px;
+  -moz-padding-start: 40px;
 }
 
 li {
-    display: list-item;
-    text-align: -webkit-match-parent;
+  display: list-item;
+  text-align: -webkit-match-parent;
 }
 
 input[type="radio"] {
-    margin: 3px 3px 0px 5px;
+  margin: 3px 3px 0px 5px;
 }
 
 //------------到此为止---------------
 
 #root {
-    font-size: 16px;
-    width: 100%;
-    font-family: 微软雅黑;
+  font-size: 16px;
+  width: 100%;
+  font-family: 微软雅黑;
 }
 
 .unSupportA {
-    text-decoration: underline;
-    color: blue;
-    cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
 }
 
 .urlStyle {
-    /* 未访问的链接 */
-    &:link {
-        color: $color-url;
-    }
-    /* 已访问的链接 */
-    &:visited {
-        color: $color-urlVisited;
-    }
-    /* 鼠标移动到链接上 */
-    &:hover {
-        text-decoration: underline
-    }
-    /* 选定的链接 */
-    &:active {
-        color: red;
-    }
+
+  /* 未访问的链接 */
+  &:link {
+    color: $color-url;
+  }
+
+  /* 已访问的链接 */
+  &:visited {
+    color: $color-urlVisited;
+  }
+
+  /* 鼠标移动到链接上 */
+  &:hover {
+    text-decoration: underline
+  }
+
+  /* 选定的链接 */
+  &:active {
+    color: red;
+  }
 }
 
 .noticeSuccess {
-    font-size: 1rem;
-    padding: 0 1rem;
-    height: 2rem;
-    line-height: 2rem;
-    text-align: center;
-    background-color: darkgrey;
-    opacity: 0.6;
-    border-radius: 0.8rem;
+  font-size: 1rem;
+  padding: 0 1rem;
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  background-color: darkgrey;
+  opacity: 0.6;
+  border-radius: 0.8rem;
 }
 
 .noticeSuccess.noticeDisplaynone {
-    animation-name: fadeOut;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
+  animation-name: fadeOut;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
 }
 
 .postRoot {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #FFFFFF;
-    font-family: 微软雅黑;
-    width: 100%;
-    border: #eaeaea solid thin;
-    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
+  font-family: 微软雅黑;
+  width: 100%;
+  border: #eaeaea solid thin;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
 }
 
 .mde-text {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .mde-preview {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .react-mde .grip {
-    height: 20px
+  height: 20px
 }
 
 .replyRoot {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    min-height: 16rem;
-    font-family: 微软雅黑;
-    background-color: #7ab7c9;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 16rem;
+  font-family: 微软雅黑;
+  background-color: #7ab7c9;
 }
 
 .replyContentRoot {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 #listRoot {
-    display: flex;
-    width: 1140px;
-    flex-direction: column;
-    font-family: 微软雅黑;
-    align-items: center;
-    justify-content: center;
-    margin-left: 6.25rem;
-    margin-right: 6.25rem;
-    margin-top: 0.5rem;
-    min-width: 71.2px;
+  display: flex;
+  width: 1140px;
+  flex-direction: column;
+  font-family: 微软雅黑;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6.25rem;
+  margin-right: 6.25rem;
+  margin-top: 0.5rem;
+  min-width: 71.2px;
 }
 
 #boardTopics {
-    border: #eaeaea thin solid;
+  border: #eaeaea thin solid;
 }
 
 .listContent {
-    display: flex;
-    margin-bottom: 1rem;
-    border-radius: 0.3125rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  margin-bottom: 1rem;
+  border-radius: 0.3125rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .notice {
-    display: flex;
-    width: 100%;
-    border: #EAEAEA solid thin;
-    border-radius: 5px;
-    background-color: #FFFFFF;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  width: 100%;
+  border: #EAEAEA solid thin;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
 }
 
 .essay {
-    height: 6rem;
-    width: 100%;
-    display: flex;
-    border-bottom: #EAEAEA solid thin;
-    box-sizing: border-box;
+  height: 6rem;
+  width: 100%;
+  display: flex;
+  border-bottom: #EAEAEA solid thin;
+  box-sizing: border-box;
 }
 
 .row {
-    display: flex;
+  display: flex;
 }
 
 .column {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 
 
 #authormes {
-    border-right: $bgcolor solid thin;
-    width: 26rem;
+  border-right: $bgcolor solid thin;
+  width: 26rem;
 }
 
 
 #authorName {
-    margin-left: 1rem;
-    justify-content: flex-start;
-    font-size: 1rem;
-    width: 8rem;
+  margin-left: 1rem;
+  justify-content: flex-start;
+  font-size: 1rem;
+  width: 8rem;
 }
 
 #authorName p {
-    margin-top: 1.4375rem;
-    font-size: 1rem;
-    font-family: 微软雅黑;
-    color: #9ACD32;
+  margin-top: 1.4375rem;
+  font-size: 1rem;
+  font-family: 微软雅黑;
+  color: #9ACD32;
 }
 
 #fans {
-    margin-top: 1.4375rem;
-    font-family: 微软雅黑;
-    font-size: 1rem;
+  margin-top: 1.4375rem;
+  font-family: 微软雅黑;
+  font-size: 1rem;
 }
 
-.authorImg {
-}
+.authorImg {}
 
 .authorImg img {
-    margin-left: 20px;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    margin-top: 20px;
+  margin-left: 20px;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-top: 20px;
 }
 
 .watch {
-    width: 4.6rem;
-    font-size: 0.75rem;
-    font-family: 微软雅黑;
-    letter-spacing: 0.1875rem;
-    border-radius: 0.3125rem;
-    background: red;
-    border: 1px solid #B22222;
-    color: #fff;
-    text-align: center;
+  width: 4.6rem;
+  font-size: 0.75rem;
+  font-family: 微软雅黑;
+  letter-spacing: 0.1875rem;
+  border-radius: 0.3125rem;
+  background: red;
+  border: 1px solid #B22222;
+  color: #fff;
+  text-align: center;
 }
 
 .email {
+  color: #fff;
+  width: 5rem;
+  height: 1.5rem;
+  font-size: 0.75rem;
+  font-family: 微软雅黑;
+  letter-spacing: 0.2rem;
+  border-radius: 0.3rem;
+  background: #67B3FF;
+  border: 1px solid #2576A8;
+  cursor: pointer;
+
+  a {
     color: #fff;
-    width: 5rem;
-    height: 1.5rem;
-    font-size: 0.75rem;
-    font-family: 微软雅黑;
-    letter-spacing: 0.2rem;
-    border-radius: 0.3rem;
-    background: #67B3FF;
-    border: 1px solid #2576A8;
-    cursor: pointer;
+  }
 
-    a {
-        color: #fff;
-    }
-
-    text-align: center;
-    margin-left: 1rem;
+  text-align: center;
+  margin-left: 1rem;
 }
 
 #title {
-    width: 45rem;
-    display: flex;
-    border-right: $bgcolor solid thin;
+  width: 45rem;
+  display: flex;
+  border-right: $bgcolor solid thin;
 }
 
 #topicTitleProp {
-    width: 44.5rem;
-    height: 6rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  width: 44.5rem;
+  height: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 
 #essay1 {
-    margin-left: 1.5rem;
-    margin-top: 0.5rem;
-    align-items: center;
-    height: 4rem;
-    font-size: 1.25rem;
-    padding-right: 1rem;
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+  align-items: center;
+  height: 4rem;
+  font-size: 1.25rem;
+  padding-right: 1rem;
 }
 
 .titleProp {
-    color: #FF8838;
-    font-size: 1rem;
+  color: #FF8838;
+  font-size: 1rem;
 }
 
 #essayTitle {
-    max-width: 30rem;
-    color: #000000;
-    font-size: 16px;
+  max-width: 30rem;
+  color: #000000;
+  font-size: 16px;
 }
 
 #essayProp {
-    margin-left: 1.4rem;
-    display: flex;
-    font-size: 0.75rem;
-    color: $color_main;
+  margin-left: 1.4rem;
+  display: flex;
+  font-size: 0.75rem;
+  color: $color_main;
 }
 
 #like {
-    flex-grow: 0;
-    margin-bottom: 1rem;
-    margin-left: auto;
-    margin-right: 1rem;
+  flex-grow: 0;
+  margin-bottom: 1rem;
+  margin-left: auto;
+  margin-right: 1rem;
 }
 
 
 
 #tags {
-    display: flex;
-    flex-wrap: nowrap;
-    word-break: keep-all;
-    margin-right: 0.6rem;
+  display: flex;
+  flex-wrap: nowrap;
+  word-break: keep-all;
+  margin-right: 0.6rem;
 }
 
 .tagSize {
-    font-size: 0.75rem;
+  font-size: 0.75rem;
 }
 
 #essayGrow {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 #onlike {
-    border: none;
-    background-color: #FFFFFF;
+  border: none;
+  background-color: #FFFFFF;
 }
 
 
@@ -362,1547 +365,1549 @@ input[type="radio"] {
 
 
 #time {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .timeProp {
-    margin-left: 0.1875rem;
-    font-size: 0.75rem;
-    word-break: keep-all;
+  margin-left: 0.1875rem;
+  font-size: 0.75rem;
+  word-break: keep-all;
 }
 
 #time img {
-    width: 0.625rem;
-    height: 0.625rem;
+  width: 0.625rem;
+  height: 0.625rem;
 }
 
 #viewtimes {
-    display: flex;
-    flex-direction: row;
-    margin-left: 1rem;
+  display: flex;
+  flex-direction: row;
+  margin-left: 1rem;
 }
 
 
 #liked img {
-    width: 0.625rem;
-    height: 0.625rem;
+  width: 0.625rem;
+  height: 0.625rem;
 }
 
 #disliked {
-    margin-left: 0.625rem;
-    margin-right: 0.625rem;
+  margin-left: 0.625rem;
+  margin-right: 0.625rem;
 }
 
 #disliked img {
-    width: 0.625rem;
-    height: 0.625rem;
+  width: 0.625rem;
+  height: 0.625rem;
 }
 
 #ads {
-    width: 20rem;
-    display: inline-flex;
+  width: 20rem;
+  display: inline-flex;
 }
 
 #ads img {
-    display: flex;
+  display: flex;
 }
 
 .content {
-    display: flex;
-    align-self: flex-start;
-    flex-direction: column;
-    width: 100%;
-    box-sizing: border-box;
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .reply-content {
-    width: 100%;
-    display: flex;
-    align-self: flex-start;
-    flex-direction: column;
-    box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 .substance {
-    display: flex;
-    margin-top: 2rem;
-    margin-left: 1.5rem;
-    width: 52rem;
-    word-wrap: break-word;
-    color: rgb(80, 80, 80);
-    font-family: 微软雅黑;
+  display: flex;
+  margin-top: 2rem;
+  margin-left: 1.5rem;
+  width: 52rem;
+  word-wrap: break-word;
+  color: rgb(80, 80, 80);
+  font-family: 微软雅黑;
 }
-
 
 //以下用于控制markdown表格的样式
 .substance table {
-    margin-top: 0;
-    margin-bottom: 16px;
-    font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 14px;
 }
 
 .substance table {
-    width: 100%;
-    border-spacing: 0;
-    border-collapse: collapse;
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
 
 .substance table thead th {
-    font-weight: bold;
-    white-space: nowrap;//
+  font-weight: bold;
+  white-space: nowrap; //
 }
 
 .substance table th,
 .substance table td {
-    padding: 6px 13px;
-    border: 1px solid #c8ccd0;
+  padding: 6px 13px;
+  border: 1px solid #c8ccd0;
 }
 
 
 .replySubstance {
-    border-top: #eaeaea thin solid;
+  border-top: #eaeaea thin solid;
 }
 
 .replierBtn {
-    background-color: $color_main;
-    color: #fff;
-    border: #fff solid thin;
-    border-radius: 0.63rem;
-    width: 2.6rem;
-    height: 1.4rem;
-    cursor: pointer;
-    font-size: 0.6rem;
-    overflow: visible;
+  background-color: $color_main;
+  color: #fff;
+  border: #fff solid thin;
+  border-radius: 0.63rem;
+  width: 2.6rem;
+  height: 1.4rem;
+  cursor: pointer;
+  font-size: 0.6rem;
+  overflow: visible;
 }
 
 
 
 .userGender {
-    display: flex;
-    justify-content: flex-end;
-    width: 90%;
-    font-size: 1rem;
-    z-index: 200;
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+  font-size: 1rem;
+  z-index: 200;
 }
 
 .userPortrait {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-    box-shadow: 0 0 5px;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  box-shadow: 0 0 5px;
 }
 
 .signature {
-    color: rgb(80, 80, 80);
-    margin-left: 1.25rem;
-    margin-bottom: 1.25rem;
-    padding-top: 1rem;
-    word-break: break-all;
-    border-top: $color_main solid thin;
-    width: 100%;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    max-height: 300px;
-    overflow: hidden;
+  color: rgb(80, 80, 80);
+  margin-left: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: 1rem;
+  word-break: break-all;
+  border-top: $color_main solid thin;
+  width: 100%;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  max-height: 300px;
+  overflow: hidden;
 }
 
 .tagColumn {
-    width: 100%;
-    border: $color_main solid thin;
+  width: 100%;
+  border: $color_main solid thin;
 }
 
 .signature img {
-    max-height: 12.5rem;
-    max-width: 32.5rem;
-    overflow: hidden;
+  max-height: 12.5rem;
+  max-width: 32.5rem;
+  overflow: hidden;
 }
 
 .upup {
-    cursor: pointer;
-    display: flex;
+  cursor: pointer;
+  display: flex;
 }
 
 .downdown {
-    cursor: pointer;
-    display: flex;
+  cursor: pointer;
+  display: flex;
 }
 
 .commentProp {
-    margin-left: 0.2rem;
+  margin-left: 0.2rem;
 }
 
 .comment {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    font-size: 0.75rem;
-    align-items: flex-end;
-    margin-left: 2rem;
-    padding-bottom: 1rem;
-    margin-right: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-size: 0.75rem;
+  align-items: flex-end;
+  margin-left: 2rem;
+  padding-bottom: 1rem;
+  margin-right: 2rem;
 }
 
 .comment1 {
-    display: flex;
-    flex-direction: row;
-    font-size: 0.75rem;
-    align-items: flex-end;
-    padding-bottom: 0.3rem;
-    color: $color_main;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  font-size: 0.75rem;
+  align-items: flex-end;
+  padding-bottom: 0.3rem;
+  color: $color_main;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #commentlike {
-    display: flex;
-    align-items: flex-end;
+  display: flex;
+  align-items: flex-end;
 }
 
 #commentliked {
-    margin-left: 1rem;
+  margin-left: 1rem;
 }
 
 #commentunliked {
-    margin-left: 1.25rem;
+  margin-left: 1.25rem;
 }
 
 #commentliked img {
-    width: 0.625rem;
-    height: 0.625rem;
+  width: 0.625rem;
+  height: 0.625rem;
 }
 
 #commentunliked img {
-    width: 0.625rem;
-    height: 0.625rem;
+  width: 0.625rem;
+  height: 0.625rem;
 }
 
 .commentbutton {
-    border: none;
-    background-color: #FFFFFF;
-    margin-left: 0.625rem;
-    outline: none;
+  border: none;
+  background-color: #FFFFFF;
+  margin-left: 0.625rem;
+  outline: none;
 }
 
 .good {
-    height: 1.7rem;
-    width: 35rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-content: center;
-    padding-top: 0.2rem;
-    font-size: 0.75rem;
-    border-top: #EAEAEA dashed 2px;
-    box-sizing: border-box;
-    align-items: center;
+  height: 1.7rem;
+  width: 35rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
+  padding-top: 0.2rem;
+  font-size: 0.75rem;
+  border-top: #EAEAEA dashed 2px;
+  box-sizing: border-box;
+  align-items: center;
 }
 
 .userImage img {
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 50%;
-    margin-left: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  margin-left: 1.25rem;
 }
 
 .userName {
-    width: 5rem;
-    margin-left: 0.625rem;
+  width: 5rem;
+  margin-left: 0.625rem;
 }
 
 .grades {
-    margin-left: 1.25rem;
-    width: 8rem;
+  margin-left: 1.25rem;
+  width: 8rem;
 }
 
 .reward {
-    margin-left: 1.25rem;
+  margin-left: 1.25rem;
 }
 
 .credit {
-    margin-left: 2.5rem;
+  margin-left: 2.5rem;
 }
 
 .vote {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    border-left: #EAEAEA solid thin;
-    border-bottom: #EAEAEA solid thin;
-    border-right: #EAEAEA solid thin;
-    font-size: 0.875rem;
-    box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-left: #EAEAEA solid thin;
+  border-bottom: #EAEAEA solid thin;
+  border-right: #EAEAEA solid thin;
+  font-size: 0.875rem;
+  box-sizing: border-box;
 }
 
 .buttonFont {
-    font-size: 0.75rem;
+  font-size: 0.75rem;
 }
 
 #checkbox {
-    margin-left: 1.25rem;
+  margin-left: 1.25rem;
 }
 
 #option1 {
-    margin: 0.625rem;
+  margin: 0.625rem;
 }
 
 .progress {
-    margin-left: 1.25rem;
-    display: flex;
-    width: 40rem;
-    height: 0.625rem;
-    background-color: #ECEEEF;
-    border-radius: 0.3125rem;
-    box-sizing: border-box;
+  margin-left: 1.25rem;
+  display: flex;
+  width: 40rem;
+  height: 0.625rem;
+  background-color: #ECEEEF;
+  border-radius: 0.3125rem;
+  box-sizing: border-box;
 }
 
 .voteResult {
-    background-color: #F0AD4E;
-    height: 10px;
-    width: 60%;
-    box-sizing: inherit;
+  background-color: #F0AD4E;
+  height: 10px;
+  width: 60%;
+  box-sizing: inherit;
 }
 
 #replierMes {
-    display: flex;
-    align-items: flex-end;
-    flex-wrap: nowrap;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: nowrap;
 }
 
 .reply {
-    width: 100%;
-    margin-top: 1rem;
-    border: $color_main solid 1.5px;
-    background-color: #fff;
-    flex-direction: row;
-    display: flex;
+  width: 100%;
+  margin-top: 1rem;
+  border: $color_main solid 1.5px;
+  background-color: #fff;
+  flex-direction: row;
+  display: flex;
+  position: relative;
+
+  .reply-floor {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    right: -0.8rem;
+    background-color: $color_main;
+    text-align: center;
+    line-height: 40px;
     position: relative;
+    top: 70px;
+    color: #ffffff;
+    font-family: '微软雅黑';
+    font-size: 16px;
+  }
 
-    .reply-floor {
-        flex-shrink: 0;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        right: -0.8rem;
-        background-color: $color_main;
-        text-align: center;
-        line-height: 40px;
-        position: relative;
-        top: 70px;
-        color: #ffffff;
-        font-family: '微软雅黑';
-        font-size: 16px;
-    }
-
-    .reply-floor-small {
-        @extend .reply-floor;
-        font-size: 10px;
-    }
+  .reply-floor-small {
+    @extend .reply-floor;
+    font-size: 10px;
+  }
 }
 
 .userMessage {
-    align-items: flex-start;
-    background-color: $color_main;
-    color: #fff;
-    width: 15.5rem;
-    display: flex;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    font-size: 0.75rem;
+  align-items: flex-start;
+  background-color: $color_main;
+  color: #fff;
+  width: 15.5rem;
+  display: flex;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 0.75rem;
 }
 
 .userMessageAnonymous {
-    color: #fff;
-    border: thin solid #fff;
-    margin-top: 1.25rem;
-    border-radius: 1rem;
-    width: 6rem;
-    margin-left: 1rem;
-    text-align: center;
+  color: #fff;
+  border: thin solid #fff;
+  margin-top: 1.25rem;
+  border-radius: 1rem;
+  width: 6rem;
+  margin-left: 1rem;
+  text-align: center;
 }
 
 .userMessage-left {
-    padding-top: 1.5rem;
-    width: 8.3rem;
+  padding-top: 1.5rem;
+  width: 8.3rem;
 }
 
 .userMessage-right {
-    width: 7.2rem;
-    padding-right: 0.5rem;
+  width: 7.2rem;
+  padding-right: 0.5rem;
 }
 
 .userMessage-userName {
-    font-size: 1rem;
-    font-weight: bold;
-    font-family: 微软雅黑;
-    margin-left: 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  margin-left: 1.5rem;
 }
 
 .userMessageOpt {
-    white-space: nowrap;
-    line-height: 1.25rem;
-    font-family: 微软雅黑;
+  white-space: nowrap;
+  line-height: 1.25rem;
+  font-family: 微软雅黑;
 }
 
 .userMessageBtn {
-    margin-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .rpyClr {
-    font-size: 1.25rem;
-    width: 8rem;
-    word-break: keep-all;
-    font-family: 微软雅黑;
+  font-size: 1.25rem;
+  width: 8rem;
+  word-break: keep-all;
+  font-family: 微软雅黑;
 }
 
 #replierMes {
-    margin-top: 25px;
-    margin-bottom: 10px;
+  margin-top: 25px;
+  margin-bottom: 10px;
 }
 
 #clockimg img {
-    margin-left: 10px;
-    width: 10px;
-    height: 10px;
+  margin-left: 10px;
+  width: 10px;
+  height: 10px;
 }
 
 #operation {
-    margin-top: 1rem;
-    height: 3rem;
-    display: flex;
-    justify-content: flex-end;
+  margin-top: 1rem;
+  height: 3rem;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .operation1 {
-    word-break: keep-all;
-    font-size: 0.75rem;
-    font-family: 微软雅黑;
-    color: #000000;
-    outline: none;
-    cursor: pointer;
-    color: $color_main;
-    border: $color_main solid thin;
-    border-radius: 1rem;
-    width: 2.25rem;
-    height: 1.25rem;
-    text-align: center;
-    margin-left: 0.5rem;
-    line-height: 1.25rem;
+  word-break: keep-all;
+  font-size: 0.75rem;
+  font-family: 微软雅黑;
+  color: #000000;
+  outline: none;
+  cursor: pointer;
+  color: $color_main;
+  border: $color_main solid thin;
+  border-radius: 1rem;
+  width: 2.25rem;
+  height: 1.25rem;
+  text-align: center;
+  margin-left: 0.5rem;
+  line-height: 1.25rem;
 
-    a {
-        color: $color_main;
-    }
+  a {
+    color: $color_main;
+  }
 }
 
 .operation {
-    word-break: keep-all;
-    margin-top: 1rem;
-    font-size: 0.75rem;
-    font-family: 微软雅黑;
-    padding-left: 0.4375rem;
-    padding-right: 0.4375rem;
-    padding-top: 0.1rem;
-    border-radius: 0.3125rem;
-    background: #FFFFFF;
-    border: 1px solid #5CADDD;
-    color: #000000;
-    margin-left: 0.3125rem;
-    margin-right: 0.625rem;
-    margin-bottom: 0.625rem;
-    outline: none;
-    cursor: pointer;
+  word-break: keep-all;
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  font-family: 微软雅黑;
+  padding-left: 0.4375rem;
+  padding-right: 0.4375rem;
+  padding-top: 0.1rem;
+  border-radius: 0.3125rem;
+  background: #FFFFFF;
+  border: 1px solid #5CADDD;
+  color: #000000;
+  margin-left: 0.3125rem;
+  margin-right: 0.625rem;
+  margin-bottom: 0.625rem;
+  outline: none;
+  cursor: pointer;
 }
 
 #rpymes {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    height: 6rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 6rem;
 }
 
 #ListImg img {
-    width: 290px;
-    height: 100px;
+  width: 290px;
+  height: 100px;
 }
 
 #noticeName {
-    display: flex;
-    background-color: #3399FE;
-    font-size: 1rem;
+  display: flex;
+  background-color: #3399FE;
+  font-size: 1rem;
 }
 
 #topicsNumber {
-    display: flex;
-    flex-wrap: nowrap;
-    word-break: keep-all;
+  display: flex;
+  flex-wrap: nowrap;
+  word-break: keep-all;
 }
 
 .postTopic {
-    width: 80px;
-    height: 30px;
-    border: none;
-    background-color: #FF593D;
-    color: #FFFFFF;
-    border-radius: 5px;
+  width: 80px;
+  height: 30px;
+  border: none;
+  background-color: #FF593D;
+  color: #FFFFFF;
+  border-radius: 5px;
 }
 
 .postVote {
-    margin-left: 20px;
-    width: 80px;
-    height: 30px;
-    border: none;
-    background-color: #33C499;
-    color: #FFFFFF;
-    border-radius: 5px;
+  margin-left: 20px;
+  width: 80px;
+  height: 30px;
+  border: none;
+  background-color: #33C499;
+  color: #FFFFFF;
+  border-radius: 5px;
 }
 
 
 
 #pager {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    font-family: "微软雅黑";
-    margin-left: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  font-family: "微软雅黑";
+  margin-left: 1rem;
 }
 
 .chooseTag {
-    border: #33C499 solid thin;
-    width: 5rem;
-    height: 2rem;
-    margin-right: 0.625rem;
-    background-color: $bgcolor2;
-    border-radius: 0.3125rem;
-    cursor: pointer;
+  border: #33C499 solid thin;
+  width: 5rem;
+  height: 2rem;
+  margin-right: 0.625rem;
+  background-color: $bgcolor2;
+  border-radius: 0.3125rem;
+  cursor: pointer;
 }
 
 .tagNumber {
-    background-color: #9BCCFE;
-    color: #FFFFFF;
-    border-radius: 0.3125rem;
+  background-color: #9BCCFE;
+  color: #FFFFFF;
+  border-radius: 0.3125rem;
 }
 
 .listContentTag {
-    margin-top: 0.625rem;
-    margin-left: 1.25rem;
-    margin-bottom: 0.625rem;
-    border: none;
-    cursor: pointer;
-    color: #fff;
+  margin-top: 0.625rem;
+  margin-left: 1.25rem;
+  margin-bottom: 0.625rem;
+  border: none;
+  cursor: pointer;
+  color: #fff;
 }
 
 .listContentTag a {
-    color: #fff;
+  color: #fff;
 }
 
 .topicInList {
-    height: 4rem;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 0.625rem;
+  height: 4rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 0.625rem;
 }
 
 .topicInList:hover {
-    background-color: #eaeaea;
+  background-color: #eaeaea;
 }
 
 #commentsAmount img {
-    width: 10px;
-    height: 10px;
+  width: 10px;
+  height: 10px;
 }
 
 #changeColor:nth-child(odd) {
-    background-color: #FCFCFC;
+  background-color: #FCFCFC;
 }
 
 
 
 #changeColor {
-    background-color: #ebf5f8;
+  background-color: #ebf5f8;
 }
 
 .followTopic {
-    width: 3rem;
-    margin-left: 1rem;
-    border: $color_main solid thin;
-    border-radius: 10px;
-    text-align: center;
-    cursor: pointer;
+  width: 3rem;
+  margin-left: 1rem;
+  border: $color_main solid thin;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
 }
 
 .reputation {
-    font-size: 0.75rem;
-    margin-left: 1rem;
+  font-size: 0.75rem;
+  margin-left: 1rem;
 }
 
 #changeTopColor {
-    background-color: #FFFAF0;
+  background-color: #FFFAF0;
 }
 
 .lastReply {
-    width: 12rem;
-    white-space: nowrap;
-    text-align: left;
+  width: 12rem;
+  white-space: nowrap;
+  text-align: left;
 }
 
 .listTitleAndPager {
-    display: flex;
-    margin-left: 0.5rem;
-    align-items: flex-end;
-    width: 40rem;
-    padding-left: 1rem;
+  display: flex;
+  margin-left: 0.5rem;
+  align-items: flex-end;
+  width: 40rem;
+  padding-left: 1rem;
 }
 
 .topicIcon {
-    width: 8.5rem;
+  width: 8.5rem;
 }
 
 .listTitleAndIcon {
-    overflow: hidden;
-    align-items: center;
+  overflow: hidden;
+  align-items: center;
 }
 
 .listTitle {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    align-items: center;
-    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  align-items: center;
+  overflow: hidden;
 }
 
 a {
-    text-decoration: none;
-    /*超链接无下划线*/
-    color: #000000;
+  text-decoration: none;
+  /*超链接无下划线*/
+  color: #000000;
 }
 
 #tagButton {
-    border-radius: 5px;
-    border: #33C499 solid thin;
-    width: 4.375rem;
-    background-color: #F5FAFD;
+  border-radius: 5px;
+  border: #33C499 solid thin;
+  width: 4.375rem;
+  background-color: #F5FAFD;
 }
 
 .follow {
-    width: 5rem;
-    background-color: #FF6A6A;
-    margin-right: 0.63rem;
-    margin-left: 1rem;
-    height: 1.5rem;
-    cursor: pointer;
-    text-align: center;
-    font-size: 0.75rem;
-    font-family: 微软雅黑;
-    letter-spacing: 0.2rem;
-    border-radius: 0.3rem;
-    background: red;
-    border: 1px solid #B22222;
-    color: #fff;
+  width: 5rem;
+  background-color: #FF6A6A;
+  margin-right: 0.63rem;
+  margin-left: 1rem;
+  height: 1.5rem;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.75rem;
+  font-family: 微软雅黑;
+  letter-spacing: 0.2rem;
+  border-radius: 0.3rem;
+  background: red;
+  border: 1px solid #B22222;
+  color: #fff;
 }
 
 .followuser {
-    width: 6rem;
-    background-color: #FF6A6A;
-    margin-right: 0.63rem;
-    margin-left: 2.5rem;
-    margin-top: 2.5rem;
-    height: 2.5rem;
-    cursor: pointer;
-    text-align: center;
-    font-family: 微软雅黑;
-    letter-spacing: 0.2rem;
-    border-radius: 0.3rem;
-    border: 1px solid #B22222;
-    color: #fff;
+  width: 6rem;
+  background-color: #FF6A6A;
+  margin-right: 0.63rem;
+  margin-left: 2.5rem;
+  margin-top: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  text-align: center;
+  font-family: 微软雅黑;
+  letter-spacing: 0.2rem;
+  border-radius: 0.3rem;
+  border: 1px solid #B22222;
+  color: #fff;
 }
 
 .center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 71.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 71.2rem;
 }
 
 .button {
-    display: inline-block;
-    outline: none;
-    cursor: pointer;
-    width: 7rem;
-    height: 4rem;
-    text-align: center;
-    text-decoration: none;
-    font-size: 1.25rem;
-    font-family: 微软雅黑;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, .3);
-    border-radius: 1rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-    line-height: 4rem;
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  width: 7rem;
+  height: 4rem;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-family: 微软雅黑;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+  line-height: 4rem;
 }
 
 .board-topBar {
-    justify-content: space-between;
-    background-color: $color_main;
-    color: #fff;
+  justify-content: space-between;
+  background-color: $color_main;
+  color: #fff;
 }
 
 .bgcolor {
-    color: #fff;
-    background-color: $color_main;
+  color: #fff;
+  background-color: $color_main;
 }
 
 .orange {
-    color: #fef4e9;
-    border: solid 1px #da7c0c;
-    background: #f78d1d;
+  color: #fef4e9;
+  border: solid 1px #da7c0c;
+  background: #f78d1d;
 }
 
 .orange:hover {
-    background: #f47c20;
+  background: #f47c20;
 }
 
 .orange:active {
-    color: #fcd3a5;
-    background-color: #faa51a;
+  color: #fcd3a5;
+  background-color: #faa51a;
 }
 
 .green {
-    color: #fef4e9;
-    border: solid 1px #71c671;
-    background-color: #66cd00;
+  color: #fef4e9;
+  border: solid 1px #71c671;
+  background-color: #66cd00;
 }
 
 .green:hover {
-    background-color: #71cd61
+  background-color: #71cd61
 }
 
 .green:active {
-    color: #fcd3a5;
-    background-color: #66cd00;
+  color: #fcd3a5;
+  background-color: #66cd00;
 }
 
 .blue {
-    color: #fff;
-    border: solid 1px $color_main;
-    background-color: $color_main;
-    opacity: 0.8;
+  color: #fff;
+  border: solid 1px $color_main;
+  background-color: $color_main;
+  opacity: 0.8;
 }
 
 .blue:hover {
-    background-color: $color_main;
-    opacity: 0.9;
+  background-color: $color_main;
+  opacity: 0.9;
 }
 
 .blue:active {
-    background-color: $color_main;
+  background-color: $color_main;
 }
 
 .button:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .button:active {
-    position: relative;
-    top: 1px;
+  position: relative;
+  top: 1px;
 }
 
 
 /* --- pagination by Hydrogen--- */
 .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pagination ul {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .page-nav {
-    list-style: none;
+  list-style: none;
 }
 
 .page-item {
-    display: inline;
-    list-style: none;
+  display: inline;
+  list-style: none;
 }
 
 .page-link {
-    display: inline-block;
-    min-width: 34px;
-    height: 26px;
-    line-height: 26px;
-    text-align: center;
-    color: $color_main;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    font-family: 微软雅黑;
-    margin-left: 0.3rem;
+  display: inline-block;
+  min-width: 34px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  color: $color_main;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  font-family: 微软雅黑;
+  margin-left: 0.3rem;
 
-    &:hover {
-        color: #fff;
-        background-color: $color_main;
-        border-color: transparent;
-    }
-}
-
-.page-link.active {
+  &:hover {
     color: #fff;
     background-color: $color_main;
     border-color: transparent;
+  }
+}
+
+.page-link.active {
+  color: #fff;
+  background-color: $color_main;
+  border-color: transparent;
 }
 
 .page-goto {
-    display: flex;
+  display: flex;
 
-    input {
-        width: 55px;
-        height: 24px;
-        margin-left: 5px;
-        margin-right: 3px;
-        text-align: center;
-        border: 1px solid #ddd;
-        padding: 1px;
+  input {
+    width: 55px;
+    height: 24px;
+    margin-left: 5px;
+    margin-right: 3px;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 1px;
+  }
+
+  a {
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    color: #fff;
+    background-color: $color_main;
+    border: 1px solid transparent;
+
+    &:hover {
+      background-color: $color_main
     }
-
-    a {
-        display: inline-block;
-        width: 48px;
-        height: 26px;
-        line-height: 26px;
-        text-align: center;
-        color: #fff;
-        background-color: $color_main;
-        border: 1px solid transparent;
-
-        &:hover {
-            background-color: $color_main
-        }
-    }
+  }
 }
 
 /* --- pagination end --- */
 
 //以下是版面列表的样式~~---------------------------------------------------------
 .boardList {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 1140px;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 1140px;
+  align-items: center;
 }
 
 .boardGuide {
-    position: fixed;
-    margin-left: 1140px;
-    width: 5rem;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: #eaeaea solid thin;
-    color: #505050;
-    font-size: 0.75rem;
+  position: fixed;
+  margin-left: 1140px;
+  width: 5rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: #eaeaea solid thin;
+  color: #505050;
+  font-size: 0.75rem;
 }
 
 .boardOption {
-    border-bottom: #eaeaea dashed 3px;
-    margin-top: 0.4rem;
-    white-space: nowrap;
-    cursor: pointer;
+  border-bottom: #eaeaea dashed 3px;
+  margin-top: 0.4rem;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 .anArea {
-    display: flex;
-    flex-direction: column;
-    width: 1140px;
-    box-sizing: border-box;
-    background-color: #fff;
-    margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  width: 1140px;
+  box-sizing: border-box;
+  background-color: #fff;
+  margin-bottom: 2rem;
 }
 
 .hideBoard {
-    width: 2rem;
-    height: 1.25rem;
-    margin-left: 2rem;
-    border-radius: 5px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #000000;
-    font-size: 0.88rem;
-    font-family: 微软雅黑;
-    color: rgb(80, 80, 80);
-    text-align: center;
-    cursor: pointer;
+  width: 2rem;
+  height: 1.25rem;
+  margin-left: 2rem;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #000000;
+  font-size: 0.88rem;
+  font-family: 微软雅黑;
+  color: rgb(80, 80, 80);
+  text-align: center;
+  cursor: pointer;
 }
 
 .areaName {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  font-size: 1rem;
+  font-family: 微软雅黑;
+  color: #fff;
+  margin-left: 1.1rem;
+
+  a {
     font-size: 1rem;
     font-family: 微软雅黑;
     color: #fff;
-    margin-left: 1.1rem;
-
-    a {
-        font-size: 1rem;
-        font-family: 微软雅黑;
-        color: #fff;
-    }
+  }
 }
 
 .expendBoardList {
-    width: 2.5rem;
-    margin-top: 0rem;
-    font-size: 0.75rem;
-    color: #fff;
-    border: #fff solid thin;
-    border-radius: 1rem;
-    text-align: center;
-    height: 1.25rem;
-    line-height: 1.25rem;
-    cursor: pointer;
-    margin-right: 2rem;
+  width: 2.5rem;
+  margin-top: 0rem;
+  font-size: 0.75rem;
+  color: #fff;
+  border: #fff solid thin;
+  border-radius: 1rem;
+  text-align: center;
+  height: 1.25rem;
+  line-height: 1.25rem;
+  cursor: pointer;
+  margin-right: 2rem;
 }
 
 .areaContent {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .boardContent {
-    display: flex;
-    margin: 1.1rem 1rem 1.1rem 1.1rem;
-    width: 15.6rem;
+  display: flex;
+  margin: 1.1rem 1rem 1.1rem 1.1rem;
+  width: 15.6rem;
 }
 
 .noImgBoardContent {
-    display: flex;
-    flex-direction: column;
-    margin: 0px 1rem 1.1rem 1.1rem;
-    width: 15.6rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0px 1rem 1.1rem 1.1rem;
+  width: 15.6rem;
 }
 
 .boardBlock {
-    margin-left: 0.5rem
+  margin-left: 0.5rem
 }
 
 .greenBackdrop {
-    height: 6rem;
-    width: 6rem;
-    background-size: 100%;
-    border-radius: 50%;
-    background-color: $color_main;
+  height: 6rem;
+  width: 6rem;
+  background-size: 100%;
+  border-radius: 50%;
+  background-color: $color_main;
 }
 
-.listTitle {
-}
+.listTitle {}
 
 .boardName2 {
-    font-size: 0.88rem;
-    font-family: 微软雅黑;
-    color: rgb(80, 80, 80);
-    margin-top: 0.75rem;
-    letter-spacing: 2px;
+  font-size: 0.88rem;
+  font-family: 微软雅黑;
+  color: rgb(80, 80, 80);
+  margin-top: 0.75rem;
+  letter-spacing: 2px;
 }
 
 .boardInfo {
-    font-size: 0.75rem;
-    font-family: 微软雅黑;
-    color: rgb(80, 80, 80);
-    margin-top: 8px;
-    display: flex;
-    flex-direction: column;
+  font-size: 0.75rem;
+  font-family: 微软雅黑;
+  color: rgb(80, 80, 80);
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
 }
 
 /*****************************************以下为我的消息的样式*********************************/
 .message-root {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .message {
-    display: flex;
-    flex-direction: column;
-    width: 1140px;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 1140px;
+  position: relative;
 }
 
 .message-title {
-    font-size: 16px;
-    color: $color-thinBlack;
+  font-size: 16px;
+  color: $color-thinBlack;
 }
 
 .message-content {
-    display: flex;
+  display: flex;
 
-    margin: {
-        top: 20px;
-    }
+  margin: {
+    top: 20px;
+  }
 }
 
 .message-nav {
-    flex-shrink: 0;
-    width: 198px;
-    height: 400px;
-    margin-right: 30px;
-    border: 1px solid $color-border;
-    display: flex;
-    flex-direction: column;
-    background-color: $color-post;
+  flex-shrink: 0;
+  width: 198px;
+  height: 400px;
+  margin-right: 30px;
+  border: 1px solid $color-border;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-post;
 
-    hr {
-        margin: 0;
-        background-color: #fff;
-        border-top: 1px dashed #e9e9e9;
-        width: 11.125rem;
-        margin-left: 9px;
+  hr {
+    margin: 0;
+    background-color: #fff;
+    border-top: 1px dashed #e9e9e9;
+    width: 11.125rem;
+    margin-left: 9px;
+  }
+
+  .nav-div {
+    height: 14px;
+    padding: 19px 0px 23px 30px;
+    font-size: 14px;
+    position: relative;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      color: $color-red;
     }
+  }
 
-    .nav-div {
-        height: 14px;
-        padding: 19px 0px 23px 30px;
-        font-size: 14px;
-        position: relative;
-    }
-
-    a {
-        text-decoration: none;
-
-        &:hover {
-            color: $color-red;
-        }
-    }
-
-    a.active {
-        color: $color-red;
-    }
+  a.active {
+    color: $color-red;
+  }
 }
 
 .message-right {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .message-pager {
-    flex-shrink: 0;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: row-reverse;
+  flex-shrink: 0;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 /******以下为私信部分的样式***/
 .message-message {
-    display: flex;
-    flex-grow: 1;
-    flex-shrink: 0;
-    height: 674px;
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 0;
+  height: 674px;
 }
 
 .readAllMessage {
-    width: 100px;
-    height: 30px;
-    position: absolute;
-    top: 5px;
-    left: 232px;
+  width: 100px;
+  height: 30px;
+  position: absolute;
+  top: 5px;
+  left: 232px;
 }
 
 .message-message-people {
+  display: flex;
+  flex-direction: column;
+  width: 198px;
+  border: 1px solid $color-border;
+  font-size: 14px;
+
+  .message-message-pTitle {
+    color: $color-thinBlack;
+    background-color: $color-body;
+    height: 14px;
+    padding: 11px 71px 13px 71px;
+    border-bottom: 1px solid $color-border;
+  }
+
+  .message-message-pList {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    width: 198px;
-    border: 1px solid $color-border;
-    font-size: 14px;
+    background-color: $color-post;
+    overflow-y: auto;
 
-    .message-message-pTitle {
-        color: $color-thinBlack;
-        background-color: $color-body;
-        height: 14px;
-        padding: 11px 71px 13px 71px;
-        border-bottom: 1px solid $color-border;
+    a {
+      text-decoration: none;
+      color: $color-black;
     }
 
-    .message-message-pList {
+    .message-message-pFocus {
+      background-color: $color-focus;
+    }
+
+    .message-message-plMore {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+
+      img {
+        padding-top: 20px;
+      }
+
+      div {
+        font-size: 12px;
+        color: $color-thinBlack;
+        text-align: center;
+        padding-top: 10px;
+      }
+
+      padding-bottom: 10px;
+    }
+
+    .message-message-person {
+      flex-shrink: 0;
+      display: flex;
+      min-height: 80px;
+      border-bottom: 1px dashed lightgray;
+      cursor: pointer;
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      &:hover {
+        @extend .message-message-pFocus;
+      }
+
+      .message-message-pPortraitUrl {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        padding: 20px 10px;
+        border-radius: 50%;
+      }
+
+      .message-message-pInfo {
         flex-grow: 1;
+        height: 40px;
+        margin: 20px 0px;
         display: flex;
         flex-direction: column;
-        background-color: $color-post;
-        overflow-y: auto;
 
-        a {
-            text-decoration: none;
-            color: $color-black;
+        .message-message-pName {
+          height: 14px;
+          font-size: 14px;
+          color: $color-black;
+          padding-bottom: 10px;
         }
 
-        .message-message-pFocus {
-            background-color: $color-focus;
+        .message-message-pMessage {
+          height: 10px;
+          width: 110px;
+          display: inline-block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis !important;
+          font-size: 10px;
+          color: $color-gray;
+          padding-bottom: 6px;
         }
+      }
 
-        .message-message-plMore {
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-
-            img {
-                padding-top: 20px;
-            }
-
-            div {
-                font-size: 12px;
-                color: $color-thinBlack;
-                text-align: center;
-                padding-top: 10px;
-            }
-
-            padding-bottom: 10px;
-        }
-
-        .message-message-person {
-            flex-shrink: 0;
-            display: flex;
-            min-height: 80px;
-            border-bottom: 1px dashed lightgray;
-            cursor: pointer;
-            position: relative;
-            overflow-y: auto;
-            overflow-x: hidden;
-
-            &:hover {
-                @extend .message-message-pFocus;
-            }
-
-            .message-message-pPortraitUrl {
-                display: inline-block;
-                width: 40px;
-                height: 40px;
-                padding: 20px 10px;
-                border-radius: 50%;
-            }
-
-            .message-message-pInfo {
-                flex-grow: 1;
-                height: 40px;
-                margin: 20px 0px;
-                display: flex;
-                flex-direction: column;
-
-                .message-message-pName {
-                    height: 14px;
-                    font-size: 14px;
-                    color: $color-black;
-                    padding-bottom: 10px;
-                }
-
-                .message-message-pMessage {
-                    height: 10px;
-                    width: 110px;
-                    display: inline-block;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis !important;
-                    font-size: 10px;
-                    color: $color-gray;
-                    padding-bottom: 6px;
-                }
-            }
-
-            .message-counterPerson {
-                position: absolute;
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                background-color: red;
-                top: 36px;
-                right: 15px;
-            }
-        }
+      .message-counterPerson {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: red;
+        top: 36px;
+        right: 15px;
+      }
     }
+  }
 }
 
 .message-message-wPostBtn {
-    width: 100px;
-    height: 30px;
-    background-color: $color_main;
-    color: $color-post;
-    border: 0px;
-    border-radius: 3px;
-    font-size: 12px;
-    text-align: center;
+  width: 100px;
+  height: 30px;
+  background-color: $color_main;
+  color: $color-post;
+  border: 0px;
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: center;
 
-    &:hover {
-        filter: brightness(1.1); //亮度
-    }
+  &:hover {
+    filter: brightness(1.1); //亮度
+  }
 
-    &:focus {
-        outline: none;
-    }
+  &:focus {
+    outline: none;
+  }
 
-    &:active {
-        filter: brightness(1.2);
-        position: relative;
-        top: 1px;
-        left: 1px;
-    }
+  &:active {
+    filter: brightness(1.2);
+    position: relative;
+    top: 1px;
+    left: 1px;
+  }
 }
 
 
 .message-message-window {
-    flex-grow: 1;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-post;
+
+  .message-message-wHeader {
+    flex-basis: 39px;
+    border-top: 1px solid $color-border;
+    border-right: 1px solid $color-border;
+    display: flex;
+
+    .message-message-wReport {
+      flex-basis: 62px;
+      color: $color-thinBlack;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      button {
+        width: 30px;
+        height: 20px;
+        line-height: 16px;
+        font-size: 12px;
+        text-align: center;
+        border: 0px;
+        border-radius: 2px;
+        background-color: $color-post;
+        padding: 0px;
+
+        &:hover {
+          border: 0px;
+          background-color: $color-body;
+        }
+
+        &:active {
+          border: 0px;
+          background-color: $color-post;
+          position: relative;
+          top: 1px;
+          left: 1px;
+        }
+
+        &visited {
+          border: 0px;
+        }
+      }
+    }
+
+    .message-message-wTitle {
+      flex-grow: 1;
+      color: $color-black;
+      font-size: 14px;
+      text-align: center;
+      height: 14px;
+      padding: 11px 0px 13px 0px;
+    }
+  }
+
+  .message-message-wContent {
+    flex-basis: 479px;
+    border-top: 1px solid $color-border;
+    border-right: 1px solid $color-border;
     display: flex;
     flex-direction: column;
-    background-color: $color-post;
+    overflow-y: auto;
+    overflow-x: hidden;
 
-    .message-message-wHeader {
-        flex-basis: 39px;
-        border-top: 1px solid $color-border;
-        border-right: 1px solid $color-border;
-        display: flex;
+    .message-message-wcLoading {
+      flex-shrink: 0;
+      flex-grow: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-        .message-message-wReport {
-            flex-basis: 62px;
-            color: $color-thinBlack;
-            display: flex;
-            justify-content: center;
-            align-items: center;
 
-            button {
-                width: 30px;
-                height: 20px;
-                line-height: 16px;
-                font-size: 12px;
-                text-align: center;
-                border: 0px;
-                border-radius: 2px;
-                background-color: $color-post;
-                padding: 0px;
+      .message-message-wcLoadingText {
+        height: 10px;
+        font-size: 10px;
+        color: $color-thinBlack;
+        text-align: center;
+        padding: 10px 0px 21px 0px;
+      }
 
-                &:hover {
-                    border: 0px;
-                    background-color: $color-body;
-                }
-
-                &:active {
-                    border: 0px;
-                    background-color: $color-post;
-                    position: relative;
-                    top: 1px;
-                    left: 1px;
-                }
-
-                &visited {
-                    border: 0px;
-                }
-            }
-        }
-
-        .message-message-wTitle {
-            flex-grow: 1;
-            color: $color-black;
-            font-size: 14px;
-            text-align: center;
-            height: 14px;
-            padding: 11px 0px 13px 0px;
-        }
+      .message-message-wcLoadingMore {
+        @extend .message-message-wcLoadingText;
+        cursor: pointer;
+      }
     }
 
-    .message-message-wContent {
-        flex-basis: 479px;
-        border-top: 1px solid $color-border;
-        border-right: 1px solid $color-border;
+    .message-message-wc {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      margin: 10px 0px 10px 0px;
+
+      .message-message-wcTime {
+        height: 10px;
+        font-size: 10px;
+        color: $color-thinBlack;
+        text-align: center;
+        padding: 5px 0px 8px 0px;
+      }
+
+      .message-message-wcSender {
         display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        overflow-x: hidden;
-
-        .message-message-wcLoading {
-            flex-shrink: 0;
-            flex-grow: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-
-            .message-message-wcLoadingText {
-                height: 10px;
-                font-size: 10px;
-                color: $color-thinBlack;
-                text-align: center;
-                padding: 10px 0px 21px 0px;
-            }
-
-            .message-message-wcLoadingMore {
-                @extend .message-message-wcLoadingText;
-                cursor: pointer;
-            }
-        }
-
-        .message-message-wc {
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            margin: 10px 0px 10px 0px;
-
-            .message-message-wcTime {
-                height: 10px;
-                font-size: 10px;
-                color: $color-thinBlack;
-                text-align: center;
-                padding: 5px 0px 8px 0px;
-            }
-
-            .message-message-wcSender {
-                display: flex;
-                flex-direction: row-reverse;
-                position: relative;
-
-                .message-message-wcPortraitUrl {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    padding: 5px 20px;
-                    margin-right: 10px;
-                }
-
-                .message-message-wcContent:before {
-                    content: '';
-                    position: absolute;
-                    width: 0;
-                    height: 0;
-                    right: 85px;
-                    top: 18px;
-                    border: 8px solid;
-                    border-color: transparent transparent transparent $color-border;
-                }
-
-                .message-message-wcContent:after {
-                    content: '';
-                    position: absolute;
-                    width: 0;
-                    height: 0;
-                    right: 89px;
-                    top: 20px;
-                    border: 6px solid;
-                    border-color: transparent transparent transparent $color-body;
-                }
-            }
-
-            .message-message-wcReceiver {
-                display: flex;
-                flex-direction: row;
-                position: relative;
-
-                .message-message-wcPortraitUrl {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    padding: 5px 20px;
-                    margin-left: 10px;
-                }
-
-                .message-message-wcContent:before {
-                    content: '';
-                    position: absolute;
-                    width: 0;
-                    height: 0;
-                    left: 85px;
-                    top: 18px;
-                    border: 8px solid;
-                    border-color: transparent $color-border transparent transparent;
-                }
-
-                .message-message-wcContent:after {
-                    content: '';
-                    position: absolute;
-                    width: 0;
-                    height: 0;
-                    left: 89px;
-                    top: 20px;
-                    border: 6px solid;
-                    border-color: transparent $color-body transparent transparent;
-                }
-            }
-
-            .message-message-wcContent {
-                background-color: $color-body;
-                border: 1px solid $color-border;
-                border-radius: 3px;
-                width: auto;
-                height: auto;
-                max-width: 500px;
-                margin-top: 8px;
-                margin-bottom: 10px;
-
-                .message-message-wcText {
-                    font-size: 14px;
-                    color: $color-thinBlack;
-                    margin: 10px 10px 9px 10px;
-                    line-height: 22px;
-                    clear: both;
-                    word-wrap: break-word;
-                }
-            }
-
-            .message-message-wcRead1 {
-                flex-basis: 50px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-
-                .message-message-wcRead2 {
-                    font-size: 12px;
-                    color: $color-thinBlack;
-                    flex-basis: 12px;
-                    flex-grow: 0;
-                    text-align: center;
-                }
-            }
-        }
-    }
-
-    .message-message-wPost {
-        flex-basis: 160px;
-        border-top: 1px solid $color-border;
-        border-right: 1px solid $color-border;
-        border-bottom: 1px solid $color-border;
-        display: flex;
-        flex-direction: column;
-        background-color: rgb(245, 245, 245);
+        flex-direction: row-reverse;
         position: relative;
 
-        .message-message-wPostArea {
-            width: 648px;
-            height: 78px;
-            line-height: 22px;
-            font-size: 12px;
-            border: 1px solid $color-border;
-            margin: 19px 29px 10px 29px;
-            background-color: $color-post;
-
-            &:focus {
-                outline: none;
-                border: 1px solid $color_main;
-            }
+        .message-message-wcPortraitUrl {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          padding: 5px 20px;
+          margin-right: 10px;
         }
 
-        .message-message-wPostNotice {
-            position: absolute;
-            line-height: 20px;
-            margin-top: 22px;
-            margin-left: 34px;
-            color: #777;
-            font-size: 14px;
-            cursor: inherit;
+        .message-message-wcContent:before {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 0;
+          right: 85px;
+          top: 18px;
+          border: 8px solid;
+          border-color: transparent transparent transparent $color-border;
         }
 
-        .message-message-wPostError {
-            position: absolute;
-            line-height: 20px;
-            margin-top: 22px;
-            margin-left: 34px;
-            color: red;
-            font-size: 14px;
-            cursor: inherit;
+        .message-message-wcContent:after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 0;
+          right: 89px;
+          top: 20px;
+          border: 6px solid;
+          border-color: transparent transparent transparent $color-body;
+        }
+      }
+
+      .message-message-wcReceiver {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+
+        .message-message-wcPortraitUrl {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          padding: 5px 20px;
+          margin-left: 10px;
         }
 
-        .message-message-wPostBtn {
-            margin: 0px 29px 19px 580px;
+        .message-message-wcContent:before {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 0;
+          left: 85px;
+          top: 18px;
+          border: 8px solid;
+          border-color: transparent $color-border transparent transparent;
         }
+
+        .message-message-wcContent:after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 0;
+          left: 89px;
+          top: 20px;
+          border: 6px solid;
+          border-color: transparent $color-body transparent transparent;
+        }
+      }
+
+      .message-message-wcContent {
+        background-color: $color-body;
+        border: 1px solid $color-border;
+        border-radius: 3px;
+        width: auto;
+        height: auto;
+        max-width: 500px;
+        margin-top: 8px;
+        margin-bottom: 10px;
+
+        .message-message-wcText {
+          font-size: 14px;
+          color: $color-thinBlack;
+          margin: 10px 10px 9px 10px;
+          line-height: 22px;
+          clear: both;
+          word-wrap: break-word;
+        }
+      }
+
+      .message-message-wcRead1 {
+        flex-basis: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .message-message-wcRead2 {
+          font-size: 12px;
+          color: $color-thinBlack;
+          flex-basis: 12px;
+          flex-grow: 0;
+          text-align: center;
+        }
+      }
     }
+  }
+
+  .message-message-wPost {
+    flex-basis: 160px;
+    border-top: 1px solid $color-border;
+    border-right: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(245, 245, 245);
+    position: relative;
+
+    .message-message-wPostArea {
+      width: 648px;
+      height: 78px;
+      line-height: 22px;
+      font-size: 12px;
+      border: 1px solid $color-border;
+      margin: 19px 29px 10px 29px;
+      background-color: $color-post;
+
+      &:focus {
+        outline: none;
+        border: 1px solid $color_main;
+      }
+    }
+
+    .message-message-wPostNotice {
+      position: absolute;
+      line-height: 20px;
+      margin-top: 22px;
+      margin-left: 34px;
+      color: #777;
+      font-size: 14px;
+      cursor: inherit;
+    }
+
+    .message-message-wPostError {
+      position: absolute;
+      line-height: 20px;
+      margin-top: 22px;
+      margin-left: 34px;
+      color: red;
+      font-size: 14px;
+      cursor: inherit;
+    }
+
+    .message-message-wPostBtn {
+      margin: 0px 29px 19px 580px;
+    }
+  }
 }
 
 /******以下为系统消息部分的样式***/
 .message-system {
-    min-height: 952px;
+  min-height: 952px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  font-family: 微软雅黑;
+  border: 1px solid $color-border;
+  flex-shrink: 0;
+  overflow-y: auto;
+  background-color: $color-post;
+
+  .message-system-box {
+    /*一个系统消息的框框*/
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    font-family: 微软雅黑;
-    border: 1px solid $color-border;
+    border-bottom: 1px dashed lightgray;
     flex-shrink: 0;
-    overflow-y: auto;
-    background-color: $color-post;
 
-    .message-system-box {
-        /*一个系统消息的框框*/
-        display: flex;
-        flex-direction: column;
-        border-bottom: 1px dashed lightgray;
-        flex-shrink: 0;
-
-        .message-system-box-bar {
-            display: flex;
-            flex-direction: row;
-        }
-
-        .message-system-box-title {
-            /*一个系统消息标题*/
-            height: 50px;
-            font-size: 15px;
-            line-height: 50px;
-            color: black;
-            margin-left: 30px;
-        }
-
-        .message-system-box-date {
-            /*一个系统消息日期*/
-            height: 50px;
-            font-size: 13px;
-            line-height: 50px;
-            color: lightgray;
-            margin-left: 10px;
-        }
-
-        .message-system-box-content {
-            /*一个系统消息内容*/
-            font-size: 14px;
-            line-height: 24px;
-            margin: 0px 30px 20px 30px;
-
-            a {
-                &:link {
-                    color: grey;
-                }
-                /* 已访问的链接 */
-                &:visited {
-                    color: grey;
-                }
-                /* 鼠标移动到链接上 */
-                &:hover {
-                    text-decoration: underline
-                }
-                /* 选定的链接 */
-                &:active {
-                    color: grey;
-                }
-            }
-        }
+    .message-system-box-bar {
+      display: flex;
+      flex-direction: row;
     }
+
+    .message-system-box-title {
+      /*一个系统消息标题*/
+      height: 50px;
+      font-size: 15px;
+      line-height: 50px;
+      color: black;
+      margin-left: 30px;
+    }
+
+    .message-system-box-date {
+      /*一个系统消息日期*/
+      height: 50px;
+      font-size: 13px;
+      line-height: 50px;
+      color: lightgray;
+      margin-left: 10px;
+    }
+
+    .message-system-box-content {
+      /*一个系统消息内容*/
+      font-size: 14px;
+      line-height: 24px;
+      margin: 0px 30px 20px 30px;
+
+      a {
+        &:link {
+          color: grey;
+        }
+
+        /* 已访问的链接 */
+        &:visited {
+          color: grey;
+        }
+
+        /* 鼠标移动到链接上 */
+        &:hover {
+          text-decoration: underline
+        }
+
+        /* 选定的链接 */
+        &:active {
+          color: grey;
+        }
+      }
+    }
+  }
 }
 
 /******以下为我的回复部分的样式***/
 .message-response {
-    min-height: 952px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    border: 1px solid $color-border;
-    overflow-y: hidden;
-    background-color: $color-post;
+  min-height: 952px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border: 1px solid $color-border;
+  overflow-y: hidden;
+  background-color: $color-post;
 
-    .message-response-box {
-        /*一个消息的框框*/
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: row;
-        border-bottom: 1px dashed lightgray;
-        /*.message-response-box-left { 
+  .message-response-box {
+    /*一个消息的框框*/
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px dashed lightgray;
+
+    /*.message-response-box-left { 
             flex-basis: 100px;
             flex-shrink: 0;
 
@@ -1913,379 +1918,386 @@ a {
                 height: 60px;
             }
         }*/
-        .message-response-box-middle {
-            /*消息框的中间-文字*/
-            display: flex;
-            flex-direction: column;
-            flex-wrap: wrap;
-            flex-grow: 1;
-            flex-shrink: 0;
-            margin: 0px 30px 20px 30px;
+    .message-response-box-middle {
+      /*消息框的中间-文字*/
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      flex-grow: 1;
+      flex-shrink: 0;
+      margin: 0px 30px 20px 30px;
 
-            .message-response-box-middle1 {
-                display: flex;
-                flex-direction: row;
+      .message-response-box-middle1 {
+        display: flex;
+        flex-direction: row;
 
-                .message-response-box-middle-title {
-                    /*消息框文字第一行 版面信息*/
-                    height: 50px;
-                    flex-wrap: nowrap;
-                    font-size: 14px;
-                    line-height: 50px;
-                    color: dodgerblue;
-                    flex-shrink: 0;
-                    margin-right: 10px;
+        .message-response-box-middle-title {
+          /*消息框文字第一行 版面信息*/
+          height: 50px;
+          flex-wrap: nowrap;
+          font-size: 14px;
+          line-height: 50px;
+          color: dodgerblue;
+          flex-shrink: 0;
+          margin-right: 10px;
 
-                    a {
-                        &:link {
-                            color: dodgerblue;
-                        }
-                        /* 已访问的链接 */
-                        &:visited {
-                            color: dodgerblue;
-                        }
-                        /* 鼠标移动到链接上 */
-                        &:hover {
-                            text-decoration: underline
-                        }
-                        /* 选定的链接 */
-                        &:active {
-                            color: dodgerblue;
-                        }
-                    }
-                }
-
-                .message-response-box-middle-date {
-                    /*消息框文字第一行日期*/
-                    height: 50px;
-                    flex-basis: 300px;
-                    font-size: 12px;
-                    line-height: 50px;
-                    color: gray;
-                    flex-shrink: 0;
-                    flex-grow: 1;
-                }
+          a {
+            &:link {
+              color: dodgerblue;
             }
 
-            .message-response-box-middle-content {
-                /*消息框文字第二行-主体内容*/
-                height: 24px;
-                font-size: 14px;
-                line-height: 24px;
-                flex-shrink: 0;
-
-                a {
-                    &:link {
-                        color: $color-url;
-                    }
-                    /* 已访问的链接 */
-                    &:visited {
-                        color: $color-url;
-                    }
-                    /* 鼠标移动到链接上 */
-                    &:hover {
-                        text-decoration: underline
-                    }
-                    /* 选定的链接 */
-                    &:active {
-                        color: $color-url;
-                    }
-                }
+            /* 已访问的链接 */
+            &:visited {
+              color: dodgerblue;
             }
+
+            /* 鼠标移动到链接上 */
+            &:hover {
+              text-decoration: underline
+            }
+
+            /* 选定的链接 */
+            &:active {
+              color: dodgerblue;
+            }
+          }
         }
-        /*.message-response-box-right { 
+
+        .message-response-box-middle-date {
+          /*消息框文字第一行日期*/
+          height: 50px;
+          flex-basis: 300px;
+          font-size: 12px;
+          line-height: 50px;
+          color: gray;
+          flex-shrink: 0;
+          flex-grow: 1;
+        }
+      }
+
+      .message-response-box-middle-content {
+        /*消息框文字第二行-主体内容*/
+        height: 24px;
+        font-size: 14px;
+        line-height: 24px;
+        flex-shrink: 0;
+
+        a {
+          &:link {
+            color: $color-url;
+          }
+
+          /* 已访问的链接 */
+          &:visited {
+            color: $color-url;
+          }
+
+          /* 鼠标移动到链接上 */
+          &:hover {
+            text-decoration: underline
+          }
+
+          /* 选定的链接 */
+          &:active {
+            color: $color-url;
+          }
+        }
+      }
+    }
+
+    /*.message-response-box-right { 
             flex-basis: 60px;
             line-height: 100px;
             font-size: 14px;
             margin-left: 10px;
             flex-shrink: 0;
         }*/
-    }
+  }
 }
 
 /*****************************************以下为我的关注的样式*********************************/
 .focus-root {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .focus {
-    display: flex;
-    flex-direction: column;
-    width: 1140px;
-    min-height: 780px;
-    margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  width: 1140px;
+  min-height: 780px;
+  margin-bottom: 60px;
 }
 
 .focus-nav {
-    display: flex;
-    flex-direction: row;
-    position: relative;
+  display: flex;
+  flex-direction: row;
+  position: relative;
 }
 
 .focus-title {
-    height: 40px;
-    line-height: 40px;
-    font-size: 20px;
-    color: #6b7178;
-    flex-shrink: 0;
-    margin-right: 20px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+  color: #6b7178;
+  flex-shrink: 0;
+  margin-right: 20px;
 
-    &:hover {
-        @extend .focus-title-hover;
-    }
+  &:hover {
+    @extend .focus-title-hover;
+  }
 }
 
 .focus-title-hover {
-    color: #fb6165;
-    border-bottom: 2px solid #fb6165;
+  color: #fb6165;
+  border-bottom: 2px solid #fb6165;
 }
 
 .focus-board-area {
-    display: flex;
-    flex-wrap: wrap;
-    min-height: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 30px;
 
-    .focus-board {
-        display: block;
-        color: $color_main;
-        background-color: transparent;
-        text-align: center;
-        vertical-align: middle; //设置元素的垂直对齐方式
-        border: 1px solid $color_main;
-        padding: .375rem .75rem;
-        font-size: 1rem;
-        border-radius: .25rem;
-        line-height: normal;
-        white-space: nowrap;
-        font-family: 微软雅黑;
-        margin-right: 1rem;
-        margin-top: 1rem;
-        flex-shrink: 0;
+  .focus-board {
+    display: block;
+    color: $color_main;
+    background-color: transparent;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 1px solid $color_main;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    line-height: normal;
+    white-space: nowrap;
+    font-family: 微软雅黑;
+    margin-right: 1rem;
+    margin-top: 1rem;
+    flex-shrink: 0;
 
-        &:hover {
-            background-color: $color_main;
-            color: rgb(255, 255, 255);
-            cursor: pointer;
-        }
+    &:hover {
+      background-color: $color_main;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
     }
+  }
 
-    .focus-hover {
-        background-color: $color_main;
-        color: #ffffff;
-    }
+  .focus-hover {
+    background-color: $color_main;
+    color: #ffffff;
+  }
 
-    .focus-boardTip {
-        font-size: .8rem;
-        color: darkgrey;
-        margin-top: 1.8rem;
-    }
+  .focus-boardTip {
+    font-size: .8rem;
+    color: darkgrey;
+    margin-top: 1.8rem;
+  }
 }
 
 .focus-topic-area {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.625rem;
+
+  .focus-topic-topicArea {
     display: flex;
     flex-direction: column;
-    margin-top: 0.625rem;
+  }
 
-    .focus-topic-topicArea {
-        display: flex;
-        flex-direction: column;
+  .focus-topic-getMore {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+    color: $color_main;
+    justify-content: center;
+
+    div {
+      margin-top: 10px;
+      text-align: center;
+    }
+  }
+
+  .focus-topic-loading {
+    margin-top: 20px;
+    text-align: center;
+
+    img {
+      width: 200px;
+      height: 18px;
+    }
+  }
+
+  .focus-topic-loaddone {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: $color-black;
+  }
+
+  button {
+    width: 6rem;
+    position: fixed;
+    bottom: 5%;
+    right: 13%;
+    height: 3rem;
+    border-radius: 1rem;
+    opacity: 0.5;
+    display: none;
+    z-index: 2;
+    margin: 0;
+    padding: 0.7rem;
+    border: 0;
+    font-size: 1.1rem;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
     }
 
-    .focus-topic-getMore {
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        cursor: pointer;
-        color: $color_main;
-        justify-content: center;
-
-        div {
-            margin-top: 10px;
-            text-align: center;
-        }
+    &:active {
+      opacity: 1;
     }
 
-    .focus-topic-loading {
-        margin-top: 20px;
-        text-align: center;
-
-        img {
-            width: 200px;
-            height: 18px;
-        }
+    &:focus {
+      outline: none;
     }
+  }
 
-    .focus-topic-loaddone {
-        margin-top: 20px;
-        text-align: center;
-        font-size: 16px;
-        color: $color-black;
-    }
+  .btn-show {
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    display: inherit;
+  }
 
-    button {
-        width: 6rem;
-        position: fixed;
-        bottom: 5%;
-        right: 13%;
-        height: 3rem;
-        border-radius: 1rem;
-        opacity: 0.5;
-        display: none;
-        z-index: 2;
-        margin: 0;
-        padding: 0.7rem;
-        border: 0;
-        font-size: 1.1rem;
-        cursor: pointer;
-
-        &:hover {
-            opacity: 0.8;
-        }
-
-        &:active {
-            opacity: 1;
-        }
-
-        &:focus {
-            outline: none;
-        }
-    }
-
-    .btn-show {
-        animation-name: fadeIn;
-        animation-duration: 1s;
-        display: inherit;
-    }
-
-    .btn-disappare {
-        display: inherit;
-        animation-name: fadeOut;
-        animation-duration: 500ms;
-        animation-fill-mode: forwards;
-    }
+  .btn-disappare {
+    display: inherit;
+    animation-name: fadeOut;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+  }
 }
 
 .focus-allNewTopic {
-    color: #6b7178;
-    min-height: 20px;
-    font-size: 20px;
-    display: flex;
-    align-items: baseline;
+  color: #6b7178;
+  min-height: 20px;
+  font-size: 20px;
+  display: flex;
+  align-items: baseline;
 
-    i {
-        flex-basis: 22px;
-        font-size: 20px;
-    }
+  i {
+    flex-basis: 22px;
+    font-size: 20px;
+  }
 }
 
 .focus-topic {
+  display: flex;
+  flex-direction: row;
+  min-height: 80px;
+  margin-top: 12px;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: solid 1px $color_main;
+
+  .focus-topic-left {
     display: flex;
     flex-direction: row;
-    min-height: 80px;
-    margin-top: 12px;
-    overflow: hidden;
+    flex-basis: 180px;
+    background-color: $color_main;
+    flex-shrink: 0;
+
+    .focus-topic-portraitUrl {
+      width: 60px;
+      height: 60px;
+      margin: 10px;
+      border-radius: 50%;
+    }
+
+    .focus-topic-userName {
+      font-size: 16px;
+      height: 80px;
+      line-height: 80px;
+      color: #ffffff
+    }
+  }
+
+  .focus-topic-middle {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
     background-color: #ffffff;
-    border: solid 1px $color_main;
+    color: #6b7178;
 
-    .focus-topic-left {
-        display: flex;
-        flex-direction: row;
-        flex-basis: 180px;
-        background-color: $color_main;
-        flex-shrink: 0;
-
-        .focus-topic-portraitUrl {
-            width: 60px;
-            height: 60px;
-            margin: 10px;
-            border-radius: 50%;
-        }
-
-        .focus-topic-userName {
-            font-size: 16px;
-            height: 80px;
-            line-height: 80px;
-            color: #ffffff
-        }
+    .focus-topic-title {
+      font-size: 20px;
+      color: #6b7178;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 28px;
+      line-height: 28px;
+      margin: 11px 20px auto 20px;
+      max-width: 800px;
     }
 
-    .focus-topic-middle {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
+    .focus-topic-info {
+      display: flex;
+      flex-direction: row;
+      margin: auto 20px 13px 21px;
+      height: 16px;
+      line-height: 16px;
+      font-size: 12px;
+
+      div {
         flex-shrink: 0;
-        background-color: #ffffff;
+        margin-right: 20px;
+        overflow: hidden;
+        position: relative;
         color: #6b7178;
 
-        .focus-topic-title {
-            font-size: 20px;
-            color: #6b7178;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            height: 28px;
-            line-height: 28px;
-            margin: 11px 20px auto 20px;
-            max-width: 800px;
+        a {
+          color: #6b7178;
+
+          &:hover {
+            text-decoration: underline;
+          }
         }
 
-        .focus-topic-info {
-            display: flex;
-            flex-direction: row;
-            margin: auto 20px 13px 21px;
-            height: 16px;
-            line-height: 16px;
-            font-size: 12px;
-
-            div {
-                flex-shrink: 0;
-                margin-right: 20px;
-                overflow: hidden;
-                position: relative;
-                color: #6b7178;
-
-                a {
-                    color: #6b7178;
-
-                    &:hover {
-                        text-decoration: underline;
-                    }
-                }
-
-                i {
-                    position: relative;
-                    bottom: 2px;
-                    margin-right: 2px;
-                }
-            }
+        i {
+          position: relative;
+          bottom: 2px;
+          margin-right: 2px;
         }
+      }
     }
+  }
 
-    .focus-topic-rightBar {
-        width: 0px;
-        height: 48px;
-        border-left: 1px solid #6b7178;
-        margin-top: 16px;
+  .focus-topic-rightBar {
+    width: 0px;
+    height: 48px;
+    border-left: 1px solid #6b7178;
+    margin-top: 16px;
+  }
+
+  .focus-topic-right {
+    text-align: center;
+    flex-basis: 70px;
+    height: 80px;
+    background-color: #ffffff;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #6b7178;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .focus-topic-board {
+      line-height: 20px;
     }
-
-    .focus-topic-right {
-        text-align: center;
-        flex-basis: 70px;
-        height: 80px;
-        background-color: #ffffff;
-        padding-left: 15px;
-        padding-right: 15px;
-        color: #6b7178;
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        .focus-topic-board {
-            line-height: 20px;
-        }
-    }
+  }
 }
 
 /*.focus-topic {
@@ -2380,1289 +2392,1288 @@ a {
 }
 */
 .displaynone {
-    display: none;
+  display: none;
 }
 
 //-------------------------原头部的样式，现在只剩下消息中心导航器中未读消息数的样式保留 ----------------------------------------
 .message-counterNav {
-    position: absolute;
-    min-width: 10px;
-    height: 12px;
-    line-height: 12px;
-    margin-top: -11px;
-    padding: 1px 5px;
-    font-size: 10px;
-    font-weight: normal;
-    color: white;
-    text-align: center;
-    background-color: #fb6165;
-    border-radius: 8px;
-    top: 32px;
-    left: 110px;
+  position: absolute;
+  min-width: 10px;
+  height: 12px;
+  line-height: 12px;
+  margin-top: -11px;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-weight: normal;
+  color: white;
+  text-align: center;
+  background-color: #fb6165;
+  border-radius: 8px;
+  top: 32px;
+  left: 110px;
 }
 
 //-------------------------以下是底部的样式~~~---------------------------------------------------
 .footer {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin-top: 5rem;
-    padding-top: 15px;
-    width: 100%;
-    min-width: 1140px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 5rem;
+  padding-top: 15px;
+  width: 100%;
+  min-width: 1140px;
 }
 
 .footerRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(80, 80, 80);
-    margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 12px;
+  font-family: 微软雅黑;
+  color: rgb(80, 80, 80);
+  margin-bottom: 15px;
 }
 
 .footerRow a {
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(80, 80, 80);
-    margin-left: 10px;
-    margin-right: 10px;
+  font-size: 12px;
+  font-family: 微软雅黑;
+  color: rgb(80, 80, 80);
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 /*
 * UBB用
 */
 .ubb-code {
-    ol {
-        list-style: none;
-        counter-reset: li;
-        padding: 0;
-        font-family: Consolas, Monaco;
-        overflow-x: auto;
-        white-space: pre;
-    }
+  ol {
+    list-style: none;
+    counter-reset: li;
+    padding: 0;
+    font-family: Consolas, Monaco;
+    overflow-x: auto;
+    white-space: pre;
+  }
 
-    li {
-        counter-increment: li
-    }
+  li {
+    counter-increment: li
+  }
 
-    li::before {
-        content: counter(li);
-        display: inline-flex;
-        width: 50px;
-        margin: 0 10px;
-        justify-content: center;
-        background-color: #ebebeb;
-    }
+  li::before {
+    content: counter(li);
+    display: inline-flex;
+    width: 50px;
+    margin: 0 10px;
+    justify-content: center;
+    background-color: #ebebeb;
+  }
 }
 
 /**
     弹出用户悬浮窗
 */
 .popup {
-    width: 30rem;
-    height: 15.625rem;
-    /*高度自由，因为不确定，内容多少。*/
-    border: 1px solid #D5D5D5;
-    background: #fff;
-    /*窗口内容不透明，背景为白色*/
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
-    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
-    /*内容窗口带阴影*/
-    border-radius: 0.5rem;
-    /* 所有角都使用半径为8px的圆角，此属性为CSS3标准属性 */
-    -moz-border-radius: 0.5rem;
-    /* Mozilla浏览器的私有属性 */
-    -webkit-border-radius: 0.5rem;
-    /* Webkit浏览器的私有属性 */
-    /*窗口圆角*/
-    z-index: 9000;
+  width: 30rem;
+  height: 15.625rem;
+  /*高度自由，因为不确定，内容多少。*/
+  border: 1px solid #D5D5D5;
+  background: #fff;
+  /*窗口内容不透明，背景为白色*/
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+  /*内容窗口带阴影*/
+  border-radius: 0.5rem;
+  /* 所有角都使用半径为8px的圆角，此属性为CSS3标准属性 */
+  -moz-border-radius: 0.5rem;
+  /* Mozilla浏览器的私有属性 */
+  -webkit-border-radius: 0.5rem;
+  /* Webkit浏览器的私有属性 */
+  /*窗口圆角*/
+  z-index: 9000;
 }
 
 .popup_title {
-    background: url(/images/headerBackground.jpg) no-repeat center;
-    height: 7.8rem;
-    line-height: 1.5rem;
-    /*使垂直居中*/
-    border-bottom: 1px solid #efefef;
-    /*底边框*/
-    border-radius: 0.5rem 0.5rem 0 0;
-    /* 左上角和右上角使用半径为5px的圆角，此属性为CSS3标准属性 */
-    -moz-border-radius: 0.5rem 0.5rem 0 0;
-    /* Mozilla浏览器的私有属性 */
-    -webkit-border-radius: 0.5rem 0.5rem 0 0;
-    /* Webkit浏览器的私有属性 */
-    /*窗口圆角*/
-    color: #535353;
-    font-size: 1rem;
-    /*字体颜色和字体大小*/
-    -moz-user-select: none;
-    /* Firefox all */
-    -webkit-user-select: none;
-    /* Chrome all / Safari all /opera15+*/
-    -ms-user-select: none;
-    /*IE10*/
-    -khtml-user-select: none;
-    /*早期浏览器*/
-    user-select: none;
-    -o-user-select: none;
-    /* 以上两个属性目前并未支持，写在这里为了减少风险 */
+  background: url(/images/headerBackground.jpg) no-repeat center;
+  height: 7.8rem;
+  line-height: 1.5rem;
+  /*使垂直居中*/
+  border-bottom: 1px solid #efefef;
+  /*底边框*/
+  border-radius: 0.5rem 0.5rem 0 0;
+  /* 左上角和右上角使用半径为5px的圆角，此属性为CSS3标准属性 */
+  -moz-border-radius: 0.5rem 0.5rem 0 0;
+  /* Mozilla浏览器的私有属性 */
+  -webkit-border-radius: 0.5rem 0.5rem 0 0;
+  /* Webkit浏览器的私有属性 */
+  /*窗口圆角*/
+  color: #535353;
+  font-size: 1rem;
+  /*字体颜色和字体大小*/
+  -moz-user-select: none;
+  /* Firefox all */
+  -webkit-user-select: none;
+  /* Chrome all / Safari all /opera15+*/
+  -ms-user-select: none;
+  /*IE10*/
+  -khtml-user-select: none;
+  /*早期浏览器*/
+  user-select: none;
+  -o-user-select: none;
+  /* 以上两个属性目前并未支持，写在这里为了减少风险 */
 }
 
 /*
     topic页用
 */
 .login {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 6rem;
+
+  &>div {
+    margin-top: 30px;
+    background-color: white;
+    min-width: 1140px;
     display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin-bottom: 6rem;
+    border: 1px solid rgb(204, 204, 204);
+    height: 567px;
 
-    & > div {
-        margin-top: 30px;
-        background-color: white;
-        min-width: 1140px;
-        display: flex;
-        border: 1px solid rgb(204, 204, 204);
-        height: 567px;
-
-        & > img {
-            margin: 30px;
-        }
-
-        & > div {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            margin-top: 50px;
-
-            & > img {
-                width: 123px;
-                height: 26px;
-                margin-right: 200px;
-            }
-
-            & > p {
-                margin-right: 200px;
-                font-size: 12px;
-            }
-
-            .LogOffInfo {
-                align-self: center;
-                font-size: 1rem;
-                margin-right: 0;
-            }
-        }
+    &>img {
+      margin: 30px;
     }
 
-    .login-form {
-        display: flex;
-        margin-right: 80px;
-        margin-top: 30px;
+    &>div {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-top: 50px;
+
+      &>img {
+        width: 123px;
+        height: 26px;
+        margin-right: 200px;
+      }
+
+      &>p {
+        margin-right: 200px;
         font-size: 12px;
+      }
 
-        input {
-            width: 320px;
-            height: 40px;
-            border: 1px solid rgb(204, 204, 204);
-            border-radius: 5px;
-            margin-left: 25px;
-            padding: 0 10px;
-        }
+      .LogOffInfo {
+        align-self: center;
+        font-size: 1rem;
+        margin-right: 0;
+      }
+    }
+  }
+
+  .login-form {
+    display: flex;
+    margin-right: 80px;
+    margin-top: 30px;
+    font-size: 12px;
+
+    input {
+      width: 320px;
+      height: 40px;
+      border: 1px solid rgb(204, 204, 204);
+      border-radius: 5px;
+      margin-left: 25px;
+      padding: 0 10px;
+    }
+  }
+
+  a {
+    color: rgb(40, 167, 225);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  button {
+    margin-right: 5rem;
+    height: 2.5rem;
+    width: 20rem;
+    border: 0;
+    background-color: rgb(40, 167, 225);
+    color: white;
+    border-radius: 0.3125rem;
+
+    &:hover {
+      background-color: rgb(41, 174, 223);
     }
 
-    a {
-        color: rgb(40, 167, 225);
+    &:active {
+      background-color: rgb(38, 154, 196);
     }
+  }
 
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-    }
-
-    button {
-        margin-right: 5rem;
-        height: 2.5rem;
-        width: 20rem;
-        border: 0;
-        background-color: rgb(40, 167, 225);
-        color: white;
-        border-radius: 0.3125rem;
-
-        &:hover {
-            background-color: rgb(41, 174, 223);
-        }
-
-        &:active {
-            background-color: rgb(38, 154, 196);
-        }
-    }
-
-    #loginMessage {
-        color: red;
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        width: 340px;
-        margin-right: 80px;
-    }
+  #loginMessage {
+    color: red;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: 340px;
+    margin-right: 80px;
+  }
 }
 
 @keyframes cssShake {
-    from {
-        transform: translateX(-5px);
-    }
+  from {
+    transform: translateX(-5px);
+  }
 
-    to {
-        transform: translateX(5px);
-    }
+  to {
+    transform: translateX(5px);
+  }
 }
 
 .shake {
-    animation-name: cssShake;
-    animation-duration: 50ms;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  animation-name: cssShake;
+  animation-duration: 50ms;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 //------------------------topic页到此结束----------------------------------
 #sendTopic {
-    border: #CCCCCC solid thin;
-    display: flex;
-    flex-direction: column;
+  border: #CCCCCC solid thin;
+  display: flex;
+  flex-direction: column;
 
 
 
-    #sendTopic-options {
-        background-color: #fff;
-        border-bottom: #CCCCCC solid thin;
-    }
+  #sendTopic-options {
+    background-color: #fff;
+    border-bottom: #CCCCCC solid thin;
+  }
 
-    #sendTopic-input {
-        background-color: #fff;
-        height: 34.5rem;
-        padding: 1rem;
-        border: none;
-        width: 96.5%;
-    }
+  #sendTopic-input {
+    background-color: #fff;
+    height: 34.5rem;
+    padding: 1rem;
+    border: none;
+    width: 96.5%;
+  }
 }
 
 .editor__menu {
-    float: left;
-    margin: 0 2px;
-    vertical-align: text-top;
-    padding-left: 0.3125rem;
+  float: left;
+  margin: 0 2px;
+  vertical-align: text-top;
+  padding-left: 0.3125rem;
 }
 
 .editor__menu li {
-    list-style: none;
-    float: left;
-    list-style-type: none;
-    margin-right: 2px;
-    margin-left: 2px;
+  list-style: none;
+  float: left;
+  list-style-type: none;
+  margin-right: 2px;
+  margin-left: 2px;
 }
 
 .editor__menu--bold {
-    background-image: url(/images/editOption.png);
-    background-size: 380px 60px;
-    border-bottom-color: rgb(255, 255, 255);
-    display: block;
-    height: 20px;
-    list-style-type: none;
-    width: 20px;
-    border-left-width: 5px;
-    border-right-width: 5px;
-    border-style: solid;
-    border-width: 5px;
-    border-color: rgb(255, 255, 255);
-    cursor: pointer;
-    background-color: #fff;
+  background-image: url(/images/editOption.png);
+  background-size: 380px 60px;
+  border-bottom-color: rgb(255, 255, 255);
+  display: block;
+  height: 20px;
+  list-style-type: none;
+  width: 20px;
+  border-left-width: 5px;
+  border-right-width: 5px;
+  border-style: solid;
+  border-width: 5px;
+  border-color: rgb(255, 255, 255);
+  cursor: pointer;
+  background-color: #fff;
 }
 
 .wmd-spacer1 {
-    margin: 5px 4px;
-    width: 0px;
-    height: 20px;
-    padding-left: 0px;
-    padding-right: 0px;
-    border-right: 1px solid #ddd;
-    text-indent: 110%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-transform: capitalize;
+  margin: 5px 4px;
+  width: 0px;
+  height: 20px;
+  padding-left: 0px;
+  padding-right: 0px;
+  border-right: 1px solid #ddd;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-transform: capitalize;
 }
 
 #sendTopic-send {
-    display: inline-block;
-    outline: none;
-    cursor: pointer;
-    text-align: center;
-    width: 50px;
-    margin-top: 20px;
-    background-color: rgb(128, 187, 235);
-    color: #fff;
-    text-decoration: none;
-    font: 14px/100% Arial, Helvetica, sans-serif;
-    padding: .5em 2em .55em;
-    letter-spacing: 5px;
-    -webkit-border-radius: .5em;
-    -moz-border-radius: .5em;
-    border-radius: .5em;
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  width: 50px;
+  margin-top: 20px;
+  background-color: rgb(128, 187, 235);
+  color: #fff;
+  text-decoration: none;
+  font: 14px/100% Arial, Helvetica, sans-serif;
+  padding: .5em 2em .55em;
+  letter-spacing: 5px;
+  -webkit-border-radius: .5em;
+  -moz-border-radius: .5em;
+  border-radius: .5em;
 }
 
 #quoteOverflow {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
 .userDetails {
-    z-index: 1;
+  z-index: 1;
 }
 
 /**********************************搜索页的样式*********************************/
 .rusultErr {
-    font-size: 16px;
-    color: $color-thinBlack;
-    margin-top: 100px;
-    text-align: center;
+  font-size: 16px;
+  color: $color-thinBlack;
+  margin-top: 100px;
+  text-align: center;
 }
 
 .noResult {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    .noResultPic {
-        width: 50%;
-        align-self: center;
-    }
+  .noResultPic {
+    width: 50%;
+    align-self: center;
+  }
 
-    .noResultText {
-        font-size: 16px;
-        color: $color-thinBlack;
-        margin-top: 20px;
-        align-self: center;
-    }
+  .noResultText {
+    font-size: 16px;
+    color: $color-thinBlack;
+    margin-top: 20px;
+    align-self: center;
+  }
 }
 
 .noResult.displaynone {
-    display: none;
+  display: none;
 }
 
 .topicManagement {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 30rem;
-    margin-top: 10rem;
-    position: absolute;
-    z-index: 1000;
-    width: 30rem;
-    height: 30rem;
-    border: 1px solid #d5d5d5;
-    background: #fff;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
-    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
-    border-radius: .5rem;
-    -moz-border-radius: .5rem;
-    -webkit-border-radius: .5rem;
-    background-color: #CCCCCC;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 30rem;
+  margin-top: 10rem;
+  position: absolute;
+  z-index: 1000;
+  width: 30rem;
+  height: 30rem;
+  border: 1px solid #d5d5d5;
+  background: #fff;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+  border-radius: .5rem;
+  -moz-border-radius: .5rem;
+  -webkit-border-radius: .5rem;
+  background-color: #CCCCCC;
 }
 
 .postManagement {
-    display: flex;
-    bottom: 1rem;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 30rem;
-    position: absolute;
-    z-index: 1000;
-    width: 30rem;
-    height: 23rem;
-    border: 1px solid #d5d5d5;
-    background: #fff;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
-    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
-    border-radius: .5rem;
-    -moz-border-radius: .5rem;
-    -webkit-border-radius: .5rem;
-    background-color: $color_main;
+  display: flex;
+  bottom: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 30rem;
+  position: absolute;
+  z-index: 1000;
+  width: 30rem;
+  height: 23rem;
+  border: 1px solid #d5d5d5;
+  background: #fff;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+  border-radius: .5rem;
+  -moz-border-radius: .5rem;
+  -webkit-border-radius: .5rem;
+  background-color: $color_main;
 }
 
 .judgeManagement {
-    margin-left: 15rem;
-    position: absolute;
-    bottom: 1rem;
-    z-index: 1000;
-    width: 30rem;
-    height: 23rem;
-    border: 1px solid #d5d5d5;
-    background: #fff;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
-    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
-    border-radius: .5rem;
-    -moz-border-radius: .5rem;
-    -webkit-border-radius: .5rem;
-    background-color: $color_main;
+  margin-left: 15rem;
+  position: absolute;
+  bottom: 1rem;
+  z-index: 1000;
+  width: 30rem;
+  height: 23rem;
+  border: 1px solid #d5d5d5;
+  background: #fff;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+  border-radius: .5rem;
+  -moz-border-radius: .5rem;
+  -webkit-border-radius: .5rem;
+  background-color: $color_main;
 }
 
 .manageUI {
-    display: flex;
-    flex-direction: row;
-    margin-top: -2rem;
+  display: flex;
+  flex-direction: row;
+  margin-top: -2rem;
 }
 
 .judgeUI {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
 }
 
 .manageOptions {
-    width: 30rem;
-    height: 3rem;
+  width: 30rem;
+  height: 3rem;
 }
 
 .judgeName {
-    font-size: 1.25rem;
-    color: #fff;
-    border: #fff 2px solid;
-    border-radius: 0.5rem;
-    line-height: 2rem;
-    width: 4rem;
-    height: 2rem;
-    text-align: center;
-    justify-content: center;
+  font-size: 1.25rem;
+  color: #fff;
+  border: #fff 2px solid;
+  border-radius: 0.5rem;
+  line-height: 2rem;
+  width: 4rem;
+  height: 2rem;
+  text-align: center;
+  justify-content: center;
 }
 
 .judgeOption {
-    display: flex;
-    align-content: center;
-    color: #fff;
+  display: flex;
+  align-content: center;
+  color: #fff;
 }
 
 .judgeOptions {
-    width: 100%;
-    justify-content: space-around;
+  width: 100%;
+  justify-content: space-around;
 }
 
 .manageOptions-icon {
-    text-align: center;
-    width: 7.5rem;
-    height: 3rem;
-    line-height: 3rem;
-    border-right: #EAEAEA solid thin;
-    border-bottom: #EAEAEA solid thin;
-    cursor: pointer;
+  text-align: center;
+  width: 7.5rem;
+  height: 3rem;
+  line-height: 3rem;
+  border-right: #EAEAEA solid thin;
+  border-bottom: #EAEAEA solid thin;
+  cursor: pointer;
 }
 
 .judgeOptions-icon {
-    text-align: center;
-    width: 15rem;
-    height: 3rem;
-    line-height: 3rem;
-    border-right: #EAEAEA solid thin;
-    border-bottom: #EAEAEA solid thin;
-    cursor: pointer;
+  text-align: center;
+  width: 15rem;
+  height: 3rem;
+  line-height: 3rem;
+  border-right: #EAEAEA solid thin;
+  border-bottom: #EAEAEA solid thin;
+  cursor: pointer;
 }
 
 .confirmManagement {
-    margin-top: 1rem;
-    width: 5rem;
-    height: 2rem;
-    background-color: #fff;
-    border: gray solid thin;
-    border-radius: 0.3rem;
-    cursor: pointer;
+  margin-top: 1rem;
+  width: 5rem;
+  height: 2rem;
+  background-color: #fff;
+  border: gray solid thin;
+  border-radius: 0.3rem;
+  cursor: pointer;
 }
 
 .awardPage {
-    width: 5rem;
-    height: 1.2rem;
-    background-color: $bgcolor2;
-    border: #eaeaea solid thin;
-    border-radius: 0.2rem;
-    cursor: pointer;
-    margin-left: 2rem;
+  width: 5rem;
+  height: 1.2rem;
+  background-color: $bgcolor2;
+  border: #eaeaea solid thin;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  margin-left: 2rem;
 }
 
 .awardInfo {
-    margin-left: 2rem;
-    margin-right: 2rem;
-    margin-top: 2rem;
-    width: 35rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 2rem;
+  width: 35rem;
 }
 
 .awardPager {
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .manageOperation {
-    justify-content: flex-start;
-    width: 100%;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 
 .manageOperation input[type="radio"],
 .judgeOption input[type="radio"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid #fff;
-    border-radius: .5rem;
-    box-sizing: border-box;
-    padding: 0.2rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #fff;
+  border-radius: .5rem;
+  box-sizing: border-box;
+  padding: 0.2rem;
 
-    &:focus {
-        outline: none;
-    }
+  &:focus {
+    outline: none;
+  }
 
-    &:checked {
-        background-color: #fff;
-        background-clip: content-box;
-    }
+  &:checked {
+    background-color: #fff;
+    background-clip: content-box;
+  }
 }
 
 .manageInfo {
-    height: 15rem;
-    justify-content: space-around;
-    margin-left: 3rem;
+  height: 15rem;
+  justify-content: space-around;
+  margin-left: 3rem;
 }
 
 .manageObject {
-    display: flex;
-    justify-content: center;
-    color: #fff;
+  display: flex;
+  justify-content: center;
+  color: #fff;
 }
 
 .followBoard {
-    width: 5rem;
-    height: 1.5rem;
-    background-color: #e6e6fa;
-    border: gray solid thin;
-    border-radius: 0.3rem;
-    cursor: pointer;
+  width: 5rem;
+  height: 1.5rem;
+  background-color: #e6e6fa;
+  border: gray solid thin;
+  border-radius: 0.3rem;
+  cursor: pointer;
 }
 
 .followBoard :hover {
-    background-color: #eea9b8;
+  background-color: #eea9b8;
 }
 
 .errorState {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.5rem;
-    letter-spacing: 2px;
-    align-items: center;
-    font-family: 黑体;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  align-items: center;
+  font-family: 黑体;
 }
 
 .errorIcon {
-    width: 48rem;
-    height: 27rem;
-    margin-top: -5rem;
+  width: 48rem;
+  height: 27rem;
+  margin-top: -5rem;
 }
 
 .errorText {
-    text-align: center;
-    font-size: 0.88rem;
-    margin-top: 0.6rem;
+  text-align: center;
+  font-size: 0.88rem;
+  margin-top: 0.6rem;
 }
 
 .errorTitle {
-    width: 18rem;
-    justify-content: center;
-    margin-top: -7.5rem;
-    text-align: center;
-    font-size: 1.5rem;
-    border-bottom: black solid thin;
-    padding-bottom: 0.6rem;
+  width: 18rem;
+  justify-content: center;
+  margin-top: -7.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  border-bottom: black solid thin;
+  padding-bottom: 0.6rem;
 }
 
 .returnIndexBtn {
-    justify-content: center;
-    font-size: 0.75rem;
-    margin-top: 2.5rem;
-    text-decoration: underline;
+  justify-content: center;
+  font-size: 0.75rem;
+  margin-top: 2.5rem;
+  text-decoration: underline;
 }
 
 .topicInfo-info {
-    display: flex;
-    flex-direction: row;
-    width: 71.2rem;
-    height: 6.5rem;
-    border: rgb(106, 113, 119) solid 1.5px;
-    font-family: 微软雅黑;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  width: 71.2rem;
+  height: 6.5rem;
+  border: rgb(106, 113, 119) solid 1.5px;
+  font-family: 微软雅黑;
+  box-sizing: border-box;
 }
 
 .topicInfo-boardInfo {
-    width: 10.6rem;
-    height: 6.4rem;
-    display: flex;
-    background-color: rgb(106, 113, 119);
-    align-items: center;
+  width: 10.6rem;
+  height: 6.4rem;
+  display: flex;
+  background-color: rgb(106, 113, 119);
+  align-items: center;
 }
 
 .topicInfo-boardImage {
-    width: 4rem;
-    height: 4rem;
-    margin-left: 0.5rem;
+  width: 4rem;
+  height: 4rem;
+  margin-left: 0.5rem;
 }
 
 .topicInfo-boardMessage {
-    display: flex;
-    flex-direction: column;
-    margin-left: 1rem;
-    color: #6b7178;
-    height: 3rem;
-    align-self: center;
-    border-left: #6b7178 solid 1.5px;
-    width: 7rem;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+  color: #6b7178;
+  height: 3rem;
+  align-self: center;
+  border-left: #6b7178 solid 1.5px;
+  width: 7rem;
+  align-items: center;
 }
 
 .topicInfo-title {
-    width: 52.3rem;
-    height: 6.25rem;
-    display: flex;
-    background-color: #fff;
-    color: #6b7178;
-    font-size: 1rem;
+  width: 52.3rem;
+  height: 6.25rem;
+  display: flex;
+  background-color: #fff;
+  color: #6b7178;
+  font-size: 1rem;
 }
 
 .topicInfo-ads {
-    width: 18.65rem;
-    height: 6.25rem;
+  width: 18.65rem;
+  height: 6.25rem;
 }
 
 .boardMessage {
-    width: 15rem;
-    min-height: 6rem;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-    background-color: #6b7178;
-    font-family: 微软雅黑;
+  width: 15rem;
+  min-height: 6rem;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  background-color: #6b7178;
+  font-family: 微软雅黑;
 }
 
 .boardMessage img {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 50%;
-    background-color: $color_main;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: $color_main;
 }
 
 .boardMessageDetails {
-    height: 3rem;
-    width: 8rem;
-    display: flex;
-    flex-direction: column;
-    margin-left: 1rem;
-    line-height: 2rem;
-    margin-top: 0.1rem;
+  height: 3rem;
+  width: 8rem;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+  line-height: 2rem;
+  margin-top: 0.1rem;
 }
 
 .boardFollow {
-    width: 3rem;
-    height: 1.4rem;
-    border-radius: 1rem;
-    background-color: #fb6165;
-    font-size: .9rem;
-    color: #fff;
-    text-align: center;
-    line-height: 1.3rem;
-    cursor: pointer;
+  width: 3rem;
+  height: 1.4rem;
+  border-radius: 1rem;
+  background-color: #fb6165;
+  font-size: .9rem;
+  color: #fff;
+  text-align: center;
+  line-height: 1.3rem;
+  cursor: pointer;
 }
 
 .topicManageBTN {
-    border: none;
-    width: 5rem;
-    height: 2rem;
-    cursor: pointer;
+  border: none;
+  width: 5rem;
+  height: 2rem;
+  cursor: pointer;
 }
 
 .boardDescription {
-    display: flex;
-    flex-direction: column;
-    margin-top: 2rem;
-    margin-left: 1rem;
-    font-size: 0.75rem;
-    margin-right: 1rem;
-    line-height: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  margin-left: 1rem;
+  font-size: 0.75rem;
+  margin-right: 1rem;
+  line-height: 1.4rem;
 }
 
 .boardMasters {
-    display: flex;
-    flex-direction: column;
-    margin-top: 2rem;
-    font-size: 0.75rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    line-height: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  line-height: 1.4rem;
 }
 
 .bigPaper {
-    width: 56.25rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #ffffff;
-    border: solid 1px #6b7178;
-    padding: 1.5rem;
-    font-size: 1rem;
-    font-family: 微软雅黑;
+  width: 56.25rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border: solid 1px #6b7178;
+  padding: 1.5rem;
+  font-size: 1rem;
+  font-family: 微软雅黑;
 }
 
 .bigPaperTitle {
-    font-size: 1.25rem;
-    color: #fb6165;
-    margin-bottom: 2rem;
+  font-size: 1.25rem;
+  color: #fb6165;
+  margin-bottom: 2rem;
 }
 
 .findIP {
-    width: 70rem;
-    max-height: 80rem;
-    display: none;
-    flex-direction: column;
-    z-index: 2000;
-    position: absolute;
-    overflow-y: auto;
+  width: 70rem;
+  max-height: 80rem;
+  display: none;
+  flex-direction: column;
+  z-index: 2000;
+  position: absolute;
+  overflow-y: auto;
 }
 
 .IPContent {
-    max-height: 10rem;
-    width: 65rem;
-    overflow-y: auto;
+  max-height: 10rem;
+  width: 65rem;
+  overflow-y: auto;
 }
 
 /***********************消息设置的样式*****************************/
 .message-setting {
+  display: flex;
+  flex-direction: column;
+  background-color: $color-post;
+  border: 1px solid $color-border;
+  height: 400px;
+
+  .message-settingbox {
     display: flex;
-    flex-direction: column;
-    background-color: $color-post;
-    border: 1px solid $color-border;
-    height: 400px;
+    flex-direction: row;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    font-size: 1rem;
+    font-family: "微软雅黑";
+    color: black;
+    flex-shrink: 0;
+    margin: 1.5rem 0 0 5rem;
 
-    .message-settingbox {
-        display: flex;
-        flex-direction: row;
-        height: 2.5rem;
-        line-height: 2.5rem;
-        font-size: 1rem;
-        font-family: "微软雅黑";
-        color: black;
-        flex-shrink: 0;
-        margin: 1.5rem 0 0 5rem;
-
-        .radioTitle {
-            width: 12rem;
-        }
-
-        input {
-            margin: 0.8rem 0.2rem 0 1.5rem;
-        }
+    .radioTitle {
+      width: 12rem;
     }
 
-    .message-setting-btn {
-        width: 7rem;
-        height: 2rem;
-        line-height: 1.8rem;
-        margin: 2rem 0rem 0rem 9rem;
+    input {
+      margin: 0.8rem 0.2rem 0 1.5rem;
     }
+  }
+
+  .message-setting-btn {
+    width: 7rem;
+    height: 2rem;
+    line-height: 1.8rem;
+    margin: 2rem 0rem 0rem 9rem;
+  }
 }
 
 .boardListHead {
-    height: 3rem;
-    align-items: center;
-    background-color: $color_main;
-    justify-content: space-between;
-    cursor: pointer;
+  height: 3rem;
+  align-items: center;
+  background-color: $color_main;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
-.boardListHead:hover {
-}
+.boardListHead:hover {}
 
 
 //配色方案
 variable {
-    --wuteng-blue: #79b8ca;
-    --wuteng-blue-o: rgba(121, 184, 202, 0.8);
-    --naocan-pink: #f595a9;
-    --naocan-pink-o: rgba(245, 149, 169, 0.8);
-    --gay-purple: #c490bf;
-    --gay-purple-: rgba(196, 144, 191, 0.8);
-    --forgive-green: #b1d396;
-    --forgive-green-o: rgba(177, 211, 150, 0.8);
-    --deep-dark-green: #95b675;
-    --deep-dark-green-o: rgba(149, 182, 117, 0.8);
-    --deeo-dark-grey: #6b7178;
-    --yima-red: red;
-    --oldman-black: black;
+  --wuteng-blue: #79b8ca;
+  --wuteng-blue-o: rgba(121, 184, 202, 0.8);
+  --naocan-pink: #f595a9;
+  --naocan-pink-o: rgba(245, 149, 169, 0.8);
+  --gay-purple: #c490bf;
+  --gay-purple-: rgba(196, 144, 191, 0.8);
+  --forgive-green: #b1d396;
+  --forgive-green-o: rgba(177, 211, 150, 0.8);
+  --deep-dark-green: #95b675;
+  --deep-dark-green-o: rgba(149, 182, 117, 0.8);
+  --deeo-dark-grey: #6b7178;
+  --yima-red: red;
+  --oldman-black: black;
 }
 
 //版面事件
 .boardRecord {
-    display: flex;
-    flex-direction: row;
-    height: 3.6rem;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 0.625rem;
-    position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 3.6rem;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 0.625rem;
+  position: relative;
 
-    div {
-        flex-shrink: 0;
-        font-size: 1rem;
+  div {
+    flex-shrink: 0;
+    font-size: 1rem;
 
-        a:hover {
-            text-decoration: underline;
-        }
+    a:hover {
+      text-decoration: underline;
     }
+  }
 }
 
 .boardRecord-1 {
-    display: flex;
-    width: 7.5rem;
-    justify-content: center;
+  display: flex;
+  width: 7.5rem;
+  justify-content: center;
 }
 
 .boardRecord-2 {
-    display: flex;
-    width: 40rem;
-    flex-grow: 1;
-    justify-content: flex-start;
+  display: flex;
+  width: 40rem;
+  flex-grow: 1;
+  justify-content: flex-start;
 }
 
 .boardRecord-3 {
-    display: flex;
-    width: 12rem;
-    text-align: left;
-    justify-content: center;
+  display: flex;
+  width: 12rem;
+  text-align: left;
+  justify-content: center;
 }
 
 .boardRecord-4 {
-    display: flex;
-    width: 7.5rem;
-    text-align: right;
-    justify-content: center;
+  display: flex;
+  width: 7.5rem;
+  text-align: right;
+  justify-content: center;
 }
 
 .boardRecord-ip {
-    position: absolute;
-    right: 3rem;
-    top: -0.5rem;
+  position: absolute;
+  right: 3rem;
+  top: -0.5rem;
 }
 
 .listContentBottom {
-    display: flex;
-    justify-content: center;
-    position: relative;
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
 
 .boardRecordBtn {
-    height: 1.75rem;
-    width: 8rem;
-    margin-left: 0.5rem;
-    text-align: center;
-    border: 1px solid transparent;
-    box-sizing: border-box;
-    font-size: 1rem;
-    background-color: $color-main;
-    color: #fff
+  height: 1.75rem;
+  width: 8rem;
+  margin-left: 0.5rem;
+  text-align: center;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  font-size: 1rem;
+  background-color: $color-main;
+  color: #fff
 }
 
 .markdown-body {
-    font-size: 1rem;
-    color: #505050;
-    font-family: 微软雅黑;
+  font-size: 1rem;
+  color: #505050;
+  font-family: 微软雅黑;
 }
 
 //react-bootstap
 .react-bootstrap-select {
-    width: 10rem;
-    height: 34px;
-    padding: 6px 12px;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    display: block;
-    font-size: 14px;
-    line-height: 1.4285;
-    color: #555;
-    text-transform: none;
+  width: 10rem;
+  height: 34px;
+  padding: 6px 12px;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  display: block;
+  font-size: 14px;
+  line-height: 1.4285;
+  color: #555;
+  text-transform: none;
 }
 
 .react-bootstrap-select::after {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #959595;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    content: "Example";
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #959595;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  content: "Example";
 }
 
 .react-bootstrap-option {
-    width: 100%;
-    height: 34px;
-    padding: 6px 12px;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    display: block;
-    font-size: 14px;
-    line-height: 1.4285;
-    color: #555;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  display: block;
+  font-size: 14px;
+  line-height: 1.4285;
+  color: #555;
 }
 
 .react-bootstrap-option:focus {
-    border-color: #66afe9;
-    outline: 0;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
-    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075), 0px 0px 8px rgba(102, 175, 233, 0.6);
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075), 0px 0px 8px rgba(102, 175, 233, 0.6);
 }
 
 .react-bootstrap-option::after {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #959595;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    content: "Example";
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #959595;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  content: "Example";
 }
 
 .react-bootstrap-button {
-    display: block;
-    color: $color_main;
-    width: 7rem;
-    background-color: transparent;
-    text-align: center;
-    vertical-align: middle; //设置元素的垂直对齐方式
-    border: 1px solid $color_main;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    border-radius: .25rem;
-    line-height: normal;
-    white-space: nowrap;
-    margin-top: 1rem;
-    font-family: 微软雅黑;
-    cursor: pointer;
+  display: block;
+  color: $color_main;
+  width: 7rem;
+  background-color: transparent;
+  text-align: center;
+  vertical-align: middle; //设置元素的垂直对齐方式
+  border: 1px solid $color_main;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  border-radius: .25rem;
+  line-height: normal;
+  white-space: nowrap;
+  margin-top: 1rem;
+  font-family: 微软雅黑;
+  cursor: pointer;
 }
 
 .react-bootstrap-text {
-    width: 100%;
-    height: 34px;
-    padding: 6px 12px;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    display: block;
-    font-size: 14px;
-    line-height: 1.4285;
-    color: #555;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  display: block;
+  font-size: 14px;
+  line-height: 1.4285;
+  color: #555;
 }
 
 .react-bootstrap-smalltext {
-    width: 10rem;
-    height: 0.8rem;
-    padding: 6px 12px;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    display: block;
-    font-size: 14px;
-    line-height: 1.4285;
-    color: #555;
+  width: 10rem;
+  height: 0.8rem;
+  padding: 6px 12px;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  display: block;
+  font-size: 14px;
+  line-height: 1.4285;
+  color: #555;
 }
 
 .react-bootstrap-smalltext .react-bootstrap-text::after {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #959595;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    content: "Example";
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #959595;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  content: "Example";
 }
 
 .ant-carousel .slick-slide {
-    text-align: center;
-    height: 160px;
-    line-height: 160px;
-    background: #364d79;
-    overflow: hidden;
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
 }
 
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .signature iframe {
-    width: 500px;
-    max-height: 300px;
-    overflow: hidden;
+  width: 500px;
+  max-height: 300px;
+  overflow: hidden;
 }
 
 .login-message {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .antd-table table tr td {
-    height: 100px
+  height: 100px
 }
 
 .mde-toolbar-children {
-    display: flex;
+  display: flex;
 }
 
 .cc98reactmde {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .mde-header {
-    flex-shrink: 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    border-bottom: 1px solid #c8ccd0;
-    border-radius: 2px 2px 0 0;
-    background: #f9f9f9;
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  border-bottom: 1px solid #c8ccd0;
+  border-radius: 2px 2px 0 0;
+  background: #f9f9f9;
 }
 
 .mde-header .mde-tabs {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .mde-header .mde-tabs button {
-    border-radius: 2px;
-    margin: 6px;
-    background-color: transparent;
-    border: 1px solid transparent;
-    cursor: pointer;
+  border-radius: 2px;
+  margin: 6px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
 }
 
 .mde-header .mde-tabs button.selected {
-    border: 1px solid #c8ccd0;
+  border: 1px solid #c8ccd0;
 }
 
 .mde-header button:focus {
-    outline: 0;
+  outline: 0;
 }
 
 .mde-header ul.mde-header-group {
-    margin: 0;
-    padding: 10px;
-    list-style: none;
-    display: flex;
-    flex-wrap: nowrap;
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item {
-    display: inline-block;
-    position: relative;
-    margin: 0 4px;
+  display: inline-block;
+  position: relative;
+  margin: 0 4px;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item button {
-    text-align: left;
-    cursor: pointer;
-    height: 22px;
-    padding: 4px;
-    margin: 0;
-    border: none;
-    background: none;
-    color: #242729;
+  text-align: left;
+  cursor: pointer;
+  height: 22px;
+  padding: 4px;
+  margin: 0;
+  border: none;
+  background: none;
+  color: #242729;
 }
 
 @keyframes tooltip-appear {
-    from {
-        opacity: 0;
-    }
+  from {
+    opacity: 0;
+  }
 
-    to {
-        opacity: 1;
-    }
+  to {
+    opacity: 1;
+  }
 }
 
 .mde-header ul.mde-header-group li.mde-header-item button.tooltipped:hover::before {
-    animation-name: tooltip-appear;
-    animation-duration: 0.2s;
-    animation-delay: 0.5s;
-    animation-fill-mode: forwards;
-    opacity: 0;
-    position: absolute;
-    z-index: 1000001;
-    width: 0;
-    height: 0;
-    color: rgba(0, 0, 0, 0.8);
-    pointer-events: none;
-    content: "";
-    border: 5px solid transparent;
-    top: -5px;
-    right: 50%;
-    bottom: auto;
-    margin-right: -5px;
-    border-top-color: rgba(0, 0, 0, 0.8);
+  animation-name: tooltip-appear;
+  animation-duration: 0.2s;
+  animation-delay: 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+  position: absolute;
+  z-index: 1000001;
+  width: 0;
+  height: 0;
+  color: rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  content: "";
+  border: 5px solid transparent;
+  top: -5px;
+  right: 50%;
+  bottom: auto;
+  margin-right: -5px;
+  border-top-color: rgba(0, 0, 0, 0.8);
 }
 
 .mde-header ul.mde-header-group li.mde-header-item button.tooltipped:hover::after {
-    animation-name: tooltip-appear;
-    animation-duration: 0.2s;
-    animation-delay: 0.5s;
-    animation-fill-mode: forwards;
-    font-size: 11px;
-    opacity: 0;
-    position: absolute;
-    z-index: 1000000;
-    padding: 5px 8px;
-    color: #fff;
-    pointer-events: none;
-    content: attr(aria-label);
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 3px;
-    right: 50%;
-    bottom: 100%;
-    transform: translateX(50%);
-    margin-bottom: 5px;
-    white-space: nowrap;
+  animation-name: tooltip-appear;
+  animation-duration: 0.2s;
+  animation-delay: 0.5s;
+  animation-fill-mode: forwards;
+  font-size: 11px;
+  opacity: 0;
+  position: absolute;
+  z-index: 1000000;
+  padding: 5px 8px;
+  color: #fff;
+  pointer-events: none;
+  content: attr(aria-label);
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 3px;
+  right: 50%;
+  bottom: 100%;
+  transform: translateX(50%);
+  margin-bottom: 5px;
+  white-space: nowrap;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown {
-    position: absolute;
-    left: 0;
-    top: 30px;
-    background-color: white;
-    border: 1px solid #c8ccd0;
-    padding: 5px;
-    z-index: 2;
-    transform: translateX(-9px);
+  position: absolute;
+  left: 0;
+  top: 30px;
+  background-color: white;
+  border: 1px solid #c8ccd0;
+  padding: 5px;
+  z-index: 2;
+  transform: translateX(-9px);
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li {
-    margin: 0;
-    white-space: nowrap;
-    list-style: none;
-    display: block;
+  margin: 0;
+  white-space: nowrap;
+  list-style: none;
+  display: block;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button {
-    display: block;
-    height: auto;
+  display: block;
+  height: auto;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p {
-    display: block;
-    margin: 0;
-    padding: 0;
-    font-weight: bold;
-    line-height: 1em;
-    background: none;
-    border: 0;
-    text-align: left;
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  line-height: 1em;
+  background: none;
+  border: 0;
+  text-align: left;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p:hover {
-    color: #4078c0;
+  color: #4078c0;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-1 {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-2 {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-3 {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-4 {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown::before {
-    position: absolute;
-    content: "";
-    width: 0;
-    height: 0;
-    border: 8px solid transparent;
-    border-bottom-color: rgba(0, 0, 0, 0.15);
-    top: -16px;
-    left: 3px;
-    transform: translateX(50%);
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.15);
+  top: -16px;
+  left: 3px;
+  transform: translateX(50%);
 }
 
 .mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown::after {
-    position: absolute;
-    content: "";
-    width: 0;
-    height: 0;
-    border: 7px solid transparent;
-    border-bottom-color: white;
-    top: -14px;
-    left: 5px;
-    transform: translateX(50%);
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border: 7px solid transparent;
+  border-bottom-color: white;
+  top: -14px;
+  left: 5px;
+  transform: translateX(50%);
 }
 
 .mde-text {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
 .DraftEditor-editorContainer {
-    height: 100%;
+  height: 100%;
 }
 
 .mde-text .public-DraftEditor-content {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
 }
 
 .mde-preview .mde-preview-content {
-    padding: 10px;
+  padding: 10px;
 }
 
 .mde-preview .mde-preview-content p,
@@ -3672,175 +3683,185 @@ variable {
 .mde-preview .mde-preview-content dl,
 .mde-preview .mde-preview-content table,
 .mde-preview .mde-preview-content pre {
-    margin-top: 0;
-    margin-bottom: 16px;
+  margin-top: 0;
+  margin-bottom: 16px;
 }
 
 .mde-preview .mde-preview-content h1,
 .mde-preview .mde-preview-content h2,
 .mde-preview .mde-preview-content h3 {
-    margin-top: 24px;
-    margin-bottom: 16px;
-    font-weight: 600;
-    line-height: 1.25;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.3em;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.3em;
 }
 
 .mde-preview .mde-preview-content h1 {
-    font-size: 1.6em;
+  font-size: 1.6em;
 }
 
 .mde-preview .mde-preview-content h2 {
-    font-size: 1.4em;
+  font-size: 1.4em;
 }
 
 .mde-preview .mde-preview-content h3 {
-    font-size: 1.2em;
+  font-size: 1.2em;
 }
 
 .mde-preview .mde-preview-content ul,
 .mde-preview .mde-preview-content ol {
-    padding-left: 2em;
+  padding-left: 2em;
 }
 
 .mde-preview .mde-preview-content blockquote {
-    margin-left: 0;
-    padding: 0 1em;
-    color: #777;
-    border-left: 0.25em solid #ddd;
+  margin-left: 0;
+  padding: 0 1em;
+  color: #777;
+  border-left: 0.25em solid #ddd;
 }
 
-.mde-preview .mde-preview-content blockquote > :first-child {
-    margin-top: 0;
+.mde-preview .mde-preview-content blockquote> :first-child {
+  margin-top: 0;
 }
 
-.mde-preview .mde-preview-content blockquote > :last-child {
-    margin-bottom: 0;
+.mde-preview .mde-preview-content blockquote> :last-child {
+  margin-bottom: 0;
 }
 
 .mde-preview .mde-preview-content code {
-    padding: 0.2em 0 0.2em 0;
-    margin: 0;
-    font-size: 90%;
-    background-color: rgba(0, 0, 0, 0.04);
-    border-radius: 3px;
+  padding: 0.2em 0 0.2em 0;
+  margin: 0;
+  font-size: 90%;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 3px;
 }
 
 .mde-preview .mde-preview-content code::before,
 .mde-preview .mde-preview-content code::after {
-    letter-spacing: -0.2em;
-    content: "\00a0";
+  letter-spacing: -0.2em;
+  content: "\00a0";
 }
 
 .mde-preview .mde-preview-content pre {
-    padding: 16px;
-    overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: #f7f7f7;
-    border-radius: 3px;
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
 }
 
 .mde-preview .mde-preview-content pre code {
-    display: inline;
-    padding: 0;
-    margin: 0;
-    overflow: visible;
-    line-height: inherit;
-    word-wrap: normal;
-    background-color: transparent;
-    border: 0;
+  display: inline;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
 }
 
 .mde-preview .mde-preview-content pre code::before,
 .mde-preview .mde-preview-content pre code::after {
-    content: none;
+  content: none;
 }
 
-.mde-preview .mde-preview-content pre > code {
-    padding: 0;
-    margin: 0;
-    font-size: 100%;
-    word-break: normal;
-    white-space: pre;
-    background: transparent;
-    border: 0;
+.mde-preview .mde-preview-content pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
 }
 
 .mde-preview .mde-preview-content a {
-    color: #4078c0;
-    text-decoration: none;
+  color: #4078c0;
+  text-decoration: none;
 }
 
 .mde-preview .mde-preview-content a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-.mde-preview .mde-preview-content > *:first-child {
-    margin-top: 0 !important;
+.mde-preview .mde-preview-content>*:first-child {
+  margin-top: 0 !important;
 }
 
-.mde-preview .mde-preview-content > *:last-child {
-    margin-bottom: 0 !important;
+.mde-preview .mde-preview-content>*:last-child {
+  margin-bottom: 0 !important;
 }
 
 .mde-preview .mde-preview-content::after {
-    display: table;
-    clear: both;
-    content: "";
+  display: table;
+  clear: both;
+  content: "";
 }
 
 .mde-preview .mde-preview-content table {
-    display: block;
-    width: 100%;
-    border-spacing: 0;
-    border-collapse: collapse;
+  display: block;
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
 
 .mde-preview .mde-preview-content table thead th {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .mde-preview .mde-preview-content table th,
 .mde-preview .mde-preview-content table td {
-    padding: 6px 13px;
-    border: 1px solid #c8ccd0;
+  padding: 6px 13px;
+  border: 1px solid #c8ccd0;
 }
 
 .react-mde {
-    border: 1px solid #c8ccd0;
-    border-radius: 2px;
-    box-sizing: border-box;
+  border: 1px solid #c8ccd0;
+  border-radius: 2px;
+  box-sizing: border-box;
 }
 
 .react-mde .grip {
-    border-top: 1px solid #c8ccd0;
-    background-color: #f9f9f9;
-    text-align: center;
-    height: 20px;
-    color: black;
-    cursor: s-resize;
+  border-top: 1px solid #c8ccd0;
+  background-color: #f9f9f9;
+  text-align: center;
+  height: 20px;
+  color: black;
+  cursor: s-resize;
 }
 
 .react-mde .grip .icon {
-    height: 10px;
+  height: 10px;
 }
 
 .DraftEditor-root {
-    height: 100%;
+  height: 100%;
 
-    div {
-        box-sizing: border-box;
-    }
+  div {
+    box-sizing: border-box;
+  }
 }
 
 .createTopicContent {
-    display: flex;
-    align-items: center;
-    height: 3rem;
+  display: flex;
+  align-items: center;
+  height: 3rem;
 }
 
 ol {
-    padding-left: 20px;
+  padding-left: 20px;
+}
+
+.markdown-container {
+  max-width: 52rem;
+  overflow: hidden;
+  padding: 2px;
+
+  img {
+    max-width: 100%;
+  }
 }
