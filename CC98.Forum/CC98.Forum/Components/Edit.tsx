@@ -556,7 +556,7 @@ export class Edit extends RouteComponent<
         console.log(Utility.isMaster(this.state.masters))
 
         // issue #38 普通用户不显示校园活动
-        if (Utility.getLocalStorage('userInfo') && Utility.isMaster(this.state.masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) {
+        if (Utility.getLocalStorage('userInfo') && (Utility.isMaster(this.state.masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1)) {
             topicType = <div className="createTopicType">
                 <div className="createTopicListName">发帖类型</div>
                 <input type="radio" name="type" value="普通" onClick={this.changeNormalType} checked={this.state.type === 0 ? true : false} /> 普通
