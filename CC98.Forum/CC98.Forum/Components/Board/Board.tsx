@@ -399,7 +399,9 @@ export class ListButtonAndAds extends React.Component<{ boardInfo, adsUrl }> {
         let tip = null;
         if (Utility.getLocalStorage("userInfo")) {
             isLogOn = true;
-            if (!Utility.getLocalStorage("userInfo").isVerified) { isVerified = false; tip = <div style={{ marginLeft: "1rem", color: "red" }}>您的帐号未认证，无法发言，请先前往 <a href="https://account.cc98.org">https://account.cc98.org</a> 认证激活。</div>; }
+            if (!Utility.getLocalStorage("userInfo").isVerified) { 
+                isVerified = false; 
+                tip = <div style={{ marginLeft: "1rem", color: "red" }}>您的帐号未认证，无法发言，请先前往 <a href="https://account.cc98.org">https://account.cc98.org</a> 认证激活。</div>; }
             else isVerified = true;
             if (Utility.getLocalStorage("userInfo").lockState !== 0) { isLocked = true; tip = <div style={{ marginLeft: "1rem", color: "red" }}>您被全站禁言。</div> }
             else isLocked = false;
@@ -409,18 +411,20 @@ export class ListButtonAndAds extends React.Component<{ boardInfo, adsUrl }> {
             tip = <div style={{ marginLeft: "1rem", color: "red" }}>您还未登录，不能发帖，请先登录</div>;
         }
 
-
         const createTopicUrl = `/editor/postTopic/${this.props.boardInfo.id}`;
-        if (isLocked || !isLogOn || !isVerified)
-            sendInfo = <div style={{ display: "flex", alignItems: "center" }}><button style={{ border: "none" }} className="button bgcolor" onClick={this.clickListener}>发主题</button>{tip}</div>;
-        else
-            sendInfo = <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>;
         if (this.props.boardInfo.canVote) {
             sendInfo = <div>
                 <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>
                 <Link style={{ marginLeft: '2rem' }} className="button bgcolor" to={`/editor/postVoteTopic/${this.props.boardInfo.id}`}>发投票</Link>
             </div>
         }
+        else
+            sendInfo = <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>;
+
+        if (isLocked || !isLogOn || !isVerified)
+            sendInfo = <div style={{ display: "flex", alignItems: "center" }}>{tip}</div>;
+
+ 
         return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop: "1rem" }}>
             {sendInfo}
             <div style={{ height: "6.25rem" }}> <AdsComponent /></div>
