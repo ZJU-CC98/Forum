@@ -35,12 +35,6 @@ import * as Utility from '../Utility';
 import { RootState } from '../Store';
 import { errorKeys } from '../Reducers/Error';
 import { connect } from 'react-redux';
-import V4Board from '../Components/V4/Board';
-import * as dayjs from 'dayjs';
-import * as zh from 'dayjs/locale/zh-cn';
-import * as relativeTime from 'dayjs/plugin/relativeTime';
-dayjs.locale(zh);
-dayjs.extend(relativeTime);
 
 type Props = {
   isError: boolean;
@@ -62,7 +56,6 @@ class App extends React.Component<Props> {
           component={CurUserPost}
         />
         <Route path="/list/:boardId/:type?/:page?" component={BList} />
-        <Route path="/board/:boardId/:page?" component={V4Board} />
         <Route exact path="/boardlist" component={BoardList} />
         <Route path="/usercenter" component={UserCenter} />
         <Route path="/message" component={Message} />

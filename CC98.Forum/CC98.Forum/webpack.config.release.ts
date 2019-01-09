@@ -78,7 +78,7 @@ const config: Webpack.Configuration = {
 
 		new CopyWebpackPlugin([
 			{ from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
-			{ from: 'node_modules/dayjs', to: 'static/scripts/lib/dayjs/' },
+			{ from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
 			{ from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
 			{ from: 'node_modules/codemirror', to: 'static/scripts/lib/editor.md/lib/codemirror/' },
 			{ from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
@@ -92,7 +92,7 @@ const config: Webpack.Configuration = {
 
 		new WebpackChunkHash({algorithm: 'md5'}),
 
-		new Webpack.IgnorePlugin(/^\.\/locale$/, /dayjs$/),
+		new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 	],
 
 	optimization: {

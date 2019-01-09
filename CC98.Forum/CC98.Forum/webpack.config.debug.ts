@@ -74,7 +74,7 @@ const config: Webpack.Configuration = {
 
         new CopyWebpackPlugin([
             { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
-            { from: 'node_modules/dayjs', to: 'static/scripts/lib/dayjs/' },
+            { from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
             { from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
             { from: 'node_modules/editor.md', to: 'static/scripts/lib/editor.md/' },
             { from: 'node_modules/codemirror', to: 'static/scripts/lib/editor.md/lib/codemirror/' },
@@ -86,7 +86,7 @@ const config: Webpack.Configuration = {
 
         new ExtractTextPlugin('static/content/[name].css'),
 
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /dayjs$/),
+        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         ],
 
     optimization: {

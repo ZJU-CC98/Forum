@@ -2,7 +2,7 @@ import * as Utility from '../../Utility';
 import * as React from 'react';
 import store from '../../Store';
 import { Link } from 'react-router-dom';
-import * as dayjs from 'dayjs';
+import * as moment from 'moment';
 
 type voteItem = {
     id: number;
@@ -176,7 +176,7 @@ export class VoteContent extends React.PureComponent<props, state> {
                     </div>
                 ))}
                 <div className="vote-info" >
-                    <p>投票过期时间：{dayjs(this.props.voteInfo.expiredTime).format('YYYY年MM月DD日 HH:mm:ss')}</p>
+                    <p>投票过期时间：{moment(this.props.voteInfo.expiredTime).format('YYYY年MM月DD日 HH:mm:ss')}</p>
                     <p>每人最多允许投{this.props.voteInfo.maxVoteCount}票，已有{this.props.voteInfo.voteUserCount}人参与投票。</p>
                     {this.getMessage()}
                 </div>

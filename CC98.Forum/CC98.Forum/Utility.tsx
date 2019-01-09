@@ -13,7 +13,7 @@ import { removeUserInfo as removeUserInfoInIndexDB } from './IndexedDB/UserStora
 import * as React from 'react';
 import * as $ from 'jquery';
 
-import * as dayjs from 'dayjs';
+import * as moment from 'moment';
 
 
 // -------- TBC --------
@@ -761,7 +761,7 @@ export function sortRecentMessage(recentMessage) {
  * @param time
  */
 export function transerTime(time) {
-    let time1 = dayjs(time).format('YYYY-MM-DD HH:mm:ss');
+    let time1 = moment(time).format('YYYY-MM-DD HH:mm:ss');
     let timestamp = new Date(time1.replace(/-/g, '/')).getTime();
     return timestamp;
 }
@@ -771,48 +771,47 @@ export function transerTime(time) {
  * @param time
  */
 export function transerRecentTime(time) {
-    // let time1 = dayjs(time).format('YYYY/MM/DD HH:mm:ss');
-    // let thatDate = new Date(time1);
-    // let thatTime = thatDate.getTime();
-    // let thisDate = new Date();
-    // let thisTime = new Date().getTime();
-    // let delta = (new Date(new Date().setHours(0, 0, 0, 0)).getTime() + 86400000 - thatTime) / 1000;
-    // let month: any = thatDate.getMonth() + 1;
-    // if (month < 10) { month = `0${month}`; }
-    // let date: any = thatDate.getDate();
-    // if (date < 10) { date = `0${date}`; }
-    // let hours: any = thatDate.getHours();
-    // if (hours < 10) { hours = `0${hours}`; }
-    // let min: any = thatDate.getMinutes();
-    // if (min < 10) { min = `0${min}`; }
-    // let sec: any = thatDate.getSeconds();
-    // if (sec < 10) { sec = `0${sec}`; }
-    // if (delta > 259200) {
-    //     let strTime = `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}`;
-    //     return strTime;
-    // }
-    // else if (delta > 172800) {
-    //     let strTime = `${hours}:${min}:${sec}`;
-    //     return `前天 ${strTime}`;
-    // }
-    // else if (delta > 86400) {
-    //     let strTime = `${hours}:${min}:${sec}`;
-    //     return `昨天 ${strTime}`;
-    // }
-    // else if (thisTime - thatTime > 3600000) {
-    //     let strTime = `${hours}:${min}:${sec}`;
-    //     return `今天 ${strTime}`;
-    // }
-    // else if (thisTime - thatTime > 0) {
-    //     let min0: any = (thisTime - thatTime) / 60000;
-    //     min = parseInt(min0);
-    //     return `${min}分钟前`;
-    // }
-    // else {
-    //     let strTime = `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}`;
-    //     return strTime;
-    // }
-    return dayjs(time).fromNow()
+    let time1 = moment(time).format('YYYY/MM/DD HH:mm:ss');
+    let thatDate = new Date(time1);
+    let thatTime = thatDate.getTime();
+    let thisDate = new Date();
+    let thisTime = new Date().getTime();
+    let delta = (new Date(new Date().setHours(0, 0, 0, 0)).getTime() + 86400000 - thatTime) / 1000;
+    let month: any = thatDate.getMonth() + 1;
+    if (month < 10) { month = `0${month}`; }
+    let date: any = thatDate.getDate();
+    if (date < 10) { date = `0${date}`; }
+    let hours: any = thatDate.getHours();
+    if (hours < 10) { hours = `0${hours}`; }
+    let min: any = thatDate.getMinutes();
+    if (min < 10) { min = `0${min}`; }
+    let sec: any = thatDate.getSeconds();
+    if (sec < 10) { sec = `0${sec}`; }
+    if (delta > 259200) {
+        let strTime = `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}`;
+        return strTime;
+    }
+    else if (delta > 172800) {
+        let strTime = `${hours}:${min}:${sec}`;
+        return `前天 ${strTime}`;
+    }
+    else if (delta > 86400) {
+        let strTime = `${hours}:${min}:${sec}`;
+        return `昨天 ${strTime}`;
+    }
+    else if (thisTime - thatTime > 3600000) {
+        let strTime = `${hours}:${min}:${sec}`;
+        return `今天 ${strTime}`;
+    }
+    else if (thisTime - thatTime > 0) {
+        let min0: any = (thisTime - thatTime) / 60000;
+        min = parseInt(min0);
+        return `${min}分钟前`;
+    }
+    else {
+        let strTime = `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}`;
+        return strTime;
+    }
 }
 
 /**

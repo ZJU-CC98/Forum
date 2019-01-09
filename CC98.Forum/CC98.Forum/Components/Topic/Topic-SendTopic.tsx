@@ -8,7 +8,7 @@ import TopicManagement from './Topic-TopicManagement-v2';
 import { NoticeMessage } from '../NoticeMessage';
 import { Prompt } from 'react-router-dom';
 import Button from 'antd/es/button';
-import * as dayjs from 'dayjs';
+import * as moment from 'moment';
 import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "@cc98/hell-react-mde";
 import * as Showdown from "showdown";
 import CustomCommand from "./topic-react-mde/imageUploaderCommand";
@@ -98,7 +98,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 
 
 
-		const time = dayjs(this.props.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
+		const time = moment(this.props.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
 		const url = `/topic/${this.props.topicInfo.id}#${this.props.content.floor}`;
 		const masters = this.props.boardInfo.masters;
 		if (this.props.content) {
@@ -124,7 +124,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 
 	componentWillReceiveProps(newProps) {
 
-		const time = dayjs(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
+		const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
 		if (newProps.content.userName) {
 			if (this.state.mode === 1) {
 				const str = `>**以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：**

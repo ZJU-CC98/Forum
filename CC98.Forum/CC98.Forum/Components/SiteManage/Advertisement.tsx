@@ -4,7 +4,7 @@ import Button from 'antd/es/button';
 import Table from 'antd/es/table';
 import Checkbox from 'antd/es/checkbox';
 import Input from 'antd/es/input';
-import * as dayjs from 'dayjs';
+import * as moment from 'moment';
 const PostForumIndexColumnInfoType = [
     '推荐阅读',
     '推荐功能',
@@ -241,7 +241,7 @@ export default class extends React.Component<props, State> {
                 title: 'expiredTime',
                 dataIndex: 'expiredTime',
                 key: 'expiredTime',
-                render :text=>dayjs(text).format('YYYY-MM-DD HH:mm:ss')
+                render :text=>moment(text).format('YYYY-MM-DD HH:mm:ss')
             } : null,
             {
                 title: 'save',

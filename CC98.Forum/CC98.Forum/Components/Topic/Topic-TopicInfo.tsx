@@ -2,7 +2,7 @@
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 import { AdsComponent } from '../MainPage';
-import * as dayjs from 'dayjs';
+import * as moment from 'moment';
 interface Props {
     topicInfo;
     boardInfo;
@@ -77,7 +77,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
                     </div>
                     <div className="row" id="essayProp">
                         {tags}
-                        <div id="time"><div className="viewProp"><i className="fa fa-clock-o fa-lg fa-fw"></i></div> <div className="timeProp tagSize">{dayjs(this.props.topicInfo.time).format('YYYY-MM-DD HH:mm:ss')}</div></div>
+                        <div id="time"><div className="viewProp"><i className="fa fa-clock-o fa-lg fa-fw"></i></div> <div className="timeProp tagSize">{moment(this.props.topicInfo.time).format('YYYY-MM-DD HH:mm:ss')}</div></div>
                         <div id="viewtimes"><div className="viewProp"><i className="fa fa-eye fa-lg fa-fw"></i>  </div> <div className="timeProp tagSize">{this.props.topicInfo.hitCount}</div></div>
                         <div className="followTopic" onClick={this.state.isFollow ? this.unFollow : this.follow}>
                             {this.state.isFollow ? "已收藏" : "收藏"}

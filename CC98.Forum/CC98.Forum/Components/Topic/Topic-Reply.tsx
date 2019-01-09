@@ -14,7 +14,7 @@ import  PostManagement  from './Topic-PostManagement-v2';
 import Judge   from './Topic-Judge-v2';
 import  ReplierSignature  from './Topic-ReplierSignature';
 import Spin from 'antd/es/spin';
-import * as dayjs from 'dayjs';
+import * as moment from 'moment';
 interface Props{
     topicId;
     page;

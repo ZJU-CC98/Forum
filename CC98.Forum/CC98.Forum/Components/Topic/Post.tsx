@@ -10,7 +10,7 @@ import {
 
 import { match } from "react-router";
 import { UbbContainer } from './UbbContainer';
-import * as dayjs from 'dayjs';
+import * as moment from 'moment';
 
 declare let editormd: any;
 

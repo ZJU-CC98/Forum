@@ -6,7 +6,7 @@ import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
 import {QuoteContext} from './Topic';
 import {QuoteTraceContext} from './Topic-Trace'
 import {withRouter,RouteComponentProps} from 'react-router-dom';
-import * as dayjs from 'dayjs';
+import * as moment from 'moment';
 import  * as Popover from 'antd/es/popover';
 import * as Button from 'antd/es/button';
 interface Props{
@@ -152,7 +152,7 @@ export default withRouter(class extends React.Component<withRouterProps&Props, {
         }
         let lastUpdate = null;
         if (this.props.postInfo.lastUpdateAuthor && this.props.postInfo.lastUpdateTime) {
-            const time = dayjs(this.props.postInfo.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss');
+            const time = moment(this.props.postInfo.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss');
             const name = this.props.userInfo.name === this.props.postInfo.lastUpdateAuthor ? '作者' : this.props.postInfo.lastUpdateAuthor;
             const str = `该帖最后由 ${name} 在 ${time} 编辑`;
             lastUpdate = str;
@@ -170,7 +170,7 @@ export default withRouter(class extends React.Component<withRouterProps&Props, {
         return <div className="column" style={{ marginTop: "1rem", width: "52rem", marginBottom:"0.5rem" }}>
             <div className="comment1">
                 <div style={{ width: "40rem", marginLeft: "1.2rem", fontSize:"0.8rem" }}>
-                    <span>发表于 {dayjs(this.props.postInfo.time).format('YYYY-MM-DD HH:mm:ss')}</span><span style={{ marginLeft: "1rem" }}>{lastUpdate}</span></div>
+                    <span>发表于 {moment(this.props.postInfo.time).format('YYYY-MM-DD HH:mm:ss')}</span><span style={{ marginLeft: "1rem" }}>{lastUpdate}</span></div>
                 <div className="row" style={{ alignItems:"center" }}>
                 <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }} onClick={ this.like.bind(this) }><i title="赞"  className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                 <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩"  className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>

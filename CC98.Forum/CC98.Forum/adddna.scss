@@ -1,286 +1,289 @@
 ﻿//发帖
 .createTopic {
-  display: flex;
-  flex-direction: column;
-  width: 1140px;
-  font-family: 微软雅黑;
-  font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    width: 1140px;
+    font-family: 微软雅黑;
+    font-size: 14px;
 }
 
 .createTopicBoardName {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .createTopicTitle,
 .createTopicType,
 .createTopicOption,
 .createTopicContent {
-  display: flex;
-  height: 40px;
-  margin-bottom: 20px;
-  border-style: solid;
-  border-color: rgb(233, 233, 233);
-  border-width: 1px;
-  box-sizing: border-box;
-  background-color: rgb(255, 255, 255);
-  align-items: center;
+    display: flex;
+    height: 40px;
+    margin-bottom: 20px;
+    border-style: solid;
+    border-color: rgb(233, 233, 233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    align-items: center;
 }
 
 .createTopicListName {
-  display: flex;
-  width: 120px;
-  justify-content: center;
-  border-width: 0 1px 0 0;
-  border-style: solid;
-  border-color: rgb(233, 233, 233);
-  box-sizing: border-box;
+    display: flex;
+    width: 120px;
+    justify-content: center;
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    border-color: rgb(233, 233, 233);
+    box-sizing: border-box;
 }
 
 .createTopicTitle {
-  display: flex;
-  flex-direction: row;
-  position: relative;
+    display: flex;
+    flex-direction: row;
+    position: relative;
 }
 
 .createTopicTitle input {
-  display: flex;
-  flex-grow: 1;
-  border: 0;
-  font-size: 14px;
-  font-family: 微软雅黑;
-  color: rgb(80, 80, 80);
-  outline: none;
-  padding-left: 1rem;
+    display: flex;
+    flex-grow: 1;
+    border: 0;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(80, 80, 80);
+    outline: none;
+    padding-left: 1rem;
 }
 
 .createTopicContent {
-  margin-bottom: 0;
-  justify-content: space-between;
+    margin-bottom: 0;
+    justify-content: space-between;
 }
 
 .tagBoxSelect {
-  display: flex;
-  width: 4rem;
-  height: 30px;
-  font-size: 12px;
-  font-family: 微软雅黑;
-  color: rgb(80, 80, 80);
-  justify-content: center;
-  align-items: center;
-  margin-left: 2px;
-  cursor: pointer;
+    display: flex;
+    width: 4rem;
+    height: 30px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80, 80, 80);
+    justify-content: center;
+    align-items: center;
+    margin-left: 2px;
+    cursor: pointer;
 }
 
 .downArrow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 32px;
-  border-right: 2px solid rgb(233, 233, 233);
-  padding-right: 2px;
-  cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 32px;
+    border-right: 2px solid rgb(233, 233, 233);
+    padding-right: 2px;
+    cursor: pointer;
 }
 
 .tagBoxSub {
-  display: none;
-  border-radius: 5px;
-  border-style: solid;
-  border-color: rgb(233, 233, 233);
-  border-width: 2px;
-  box-sizing: border-box;
-  font-size: 12px;
-  font-family: 微软雅黑;
-  color: rgb(80, 80, 80);
-  background: rgb(233, 233, 233);
-  z-index: 1000;
-  list-style-type: none;
-  padding: 0;
-  position: absolute;
-  top: 2.5rem;
+    display: none;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233, 233, 233);
+    border-width: 2px;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80, 80, 80);
+    background: rgb(233, 233, 233);
+    z-index: 1000;
+    list-style-type: none;
+    padding: 0;
+    position: absolute;
+    top: 2.5rem;
 }
 
 .tagBoxSub li {
-  height: 25px;
-  line-height: 25px;
-  cursor: pointer;
-  padding-top: 3px;
-  width: 4rem;
-  text-align: center;
+    height: 25px;
+    line-height: 25px;
+    cursor: pointer;
+    padding-top: 3px;
+    width: 4rem;
+    text-align: center;
 }
 
 .tagBoxSelect1 {
-  display: flex;
-  width: 4rem;
-  height: 30px;
-  font-size: 12px;
-  font-family: 微软雅黑;
-  color: rgb(80, 80, 80);
-  justify-content: center;
-  align-items: center;
-  margin-left: 2px;
-  cursor: pointer;
+    display: flex;
+    width: 4rem;
+    height: 30px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80, 80, 80);
+    justify-content: center;
+    align-items: center;
+    margin-left: 2px;
+    cursor: pointer;
 }
 
+
 .downArrow1 {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 32px;
-  border-right: 2px solid rgb(233, 233, 233);
-  padding-right: 2px;
-  cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 32px;
+    border-right: 2px solid rgb(233, 233, 233);
+    padding-right: 2px;
+    cursor: pointer;
 }
 
 .tagBoxSub1 {
-  display: none;
-  border-radius: 5px;
-  border-style: solid;
-  border-color: rgb(233, 233, 233);
-  border-width: 2px;
-  box-sizing: border-box;
-  font-size: 12px;
-  font-family: 微软雅黑;
-  color: rgb(80, 80, 80);
-  background: rgb(233, 233, 233);
-  z-index: 1000;
-  list-style-type: none;
-  padding: 0;
-  position: absolute;
-  top: 2.5rem;
+    display: none;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233, 233, 233);
+    border-width: 2px;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80, 80, 80);
+    background: rgb(233, 233, 233);
+    z-index: 1000;
+    list-style-type: none;
+    padding: 0;
+    position: absolute;
+    top: 2.5rem;
 }
 
+
 .tagBoxSub1 li {
-  height: 25px;
-  line-height: 25px;
-  cursor: pointer;
-  padding-top: 3px;
-  width: 4rem;
-  text-align: center;
+    height: 25px;
+    line-height: 25px;
+    cursor: pointer;
+    padding-top: 3px;
+    width: 4rem;
+    text-align: center;
 }
 
 //ubb解析图片默认不显示的样式
 //类似bootstrap4的"btn btn-outline-primary"
 .hiddenImage {
-  display: block;
-  color: $color_main;
-  width: 7rem;
-  background-color: transparent;
-  text-align: center;
-  vertical-align: middle; //设置元素的垂直对齐方式
-  border: 1px solid $color_main;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  line-height: normal;
-  white-space: nowrap;
-  margin-top: 1rem;
-  font-family: 微软雅黑;
+    display: block;
+    color: $color_main;
+    width: 7rem;
+    background-color: transparent;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 1px solid $color_main;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    line-height: normal;
+    white-space: nowrap;
+    margin-top: 1rem;
+    font-family: 微软雅黑;
 }
 
 .hiddenImage:hover {
-  background-color: $color_main;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
+    background-color: $color_main;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
 }
 
 //ubb点击下载文件按钮
 .download-file {
-  display: block;
-  color: $color_main;
-  width: 7rem;
-  background-color: transparent;
-  text-align: center;
-  vertical-align: middle; //设置元素的垂直对齐方式
-  border: 1px solid $color_main;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  line-height: normal;
-  white-space: nowrap;
-  margin-top: 1rem;
-  font-family: 微软雅黑;
+    display: block;
+    color: $color_main;
+    width: 7rem;
+    background-color: transparent;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 1px solid $color_main;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    line-height: normal;
+    white-space: nowrap;
+    margin-top: 1rem;
+    font-family: 微软雅黑;
 }
 
 .download-file:hover {
-  background-color: $color_main;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
+    background-color: $color_main;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
 }
 
 //切换编辑器按钮
 .changeEditor {
-  display: block;
-  color: $color_main;
-  background-color: transparent;
-  text-align: center;
-  vertical-align: middle; //设置元素的垂直对齐方式
-  border: 1px solid $color_main;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  line-height: normal;
-  white-space: nowrap;
-  margin-top: 1rem;
-  font-family: 微软雅黑;
-  cursor: pointer;
+    display: block;
+    color: $color_main;
+    background-color: transparent;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 1px solid $color_main;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    line-height: normal;
+    white-space: nowrap;
+    margin-top: 1rem;
+    font-family: 微软雅黑;
+    cursor: pointer;
 }
 
 .changeEditor:hover {
-  background-color: $color_main;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
+    background-color: $color_main;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
 }
+
 
 //ubb解析图片时的lightbox
 .lightbox {
-  display: flex;
-  position: fixed;
-  top: 0%;
-  left: 0%;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1001;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1001;
+    justify-content: center;
+    align-items: center;
 }
 
 .lightbox-image {
-  display: block;
-  max-width: 90%;
-  max-height: 90%;
-  z-index: 1002;
-  overflow: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    z-index: 1002;
+    overflow: auto;
 }
 
 //ubb解析[table]标签时的默认样式
 .UBBTableTag {
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 14px;
-  width: 100%;
-  border-spacing: 0;
-  border-collapse: collapse;
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 14px;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
 }
 
 .UBBTabletTag th {
-  font-weight: bold;
-  white-space: nowrap;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
 .UBBTableTag th,
 td {
-  padding: 6px 13px;
-  border: 1px solid #c8ccd0;
+    padding: 6px 13px;
+    border: 1px solid #c8ccd0;
 }
 
 //相框样式
 .photoFrame {
-  //display: none;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  pointer-events: none;
+    //display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    pointer-events: none;
 }
 
 /*
@@ -294,1014 +297,903 @@ td {
 */
 //--------------------------------以下是首页的样式~ --------------------------------------------
 .mainPage {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  min-width: 71.25rem;
-  margin-bottom: 2.5rem;
-  z-index: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    min-width: 71.25rem;
+    margin-bottom: 2.5rem;
+    z-index: 0;
 
-  a:hover {
-    text-decoration: underline;
-  }
+    a:hover {
+        text-decoration: underline;
+    }
 }
 
 .leftPart {
-  display: flex;
-  flex-direction: column;
-  width: 51.25rem;
-  margin-right: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    width: 51.25rem;
+    margin-right: 1.25rem;
 }
 
 .rightPart {
-  display: flex;
-  flex-direction: column;
-  width: 18.75rem;
+    display: flex;
+    flex-direction: column;
+    width: 18.75rem;
 }
 
 //首页各栏目的标题
 .mainPageTitle1 {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.25rem;
-  font-family: 微软雅黑;
-  padding-left: 0.75rem;
-  color: $color_main;
-
-  a {
-    font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.25rem;
     font-family: 微软雅黑;
+    padding-left: 0.75rem;
     color: $color_main;
-  }
+
+    a {
+        font-size: 1rem;
+        font-family: 微软雅黑;
+        color: $color_main;
+    }
 }
 
 .mainPageTitle2 {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  font-size: 1.25rem;
-  font-family: 微软雅黑;
-  padding-left: 0.75rem;
-  color: $color_sec;
-
-  a {
-    font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.25rem;
     font-family: 微软雅黑;
+    padding-left: 0.75rem;
     color: $color_sec;
-  }
+
+    a {
+        font-size: 1rem;
+        font-family: 微软雅黑;
+        color: $color_sec;
+    }
 }
 
 .mainPageTitleRow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .mainPageTitleText {
-  margin-left: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 //全站公告~
 .announcement {
-  display: flex;
-  flex-direction: column;
-  width: 51.25rem;
-  margin-top: 0.75rem;
-  margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    width: 51.25rem;
+    margin-top: 0.75rem;
+    margin-bottom: 1.25rem;
 }
 
 .announcementContent {
-  display: flex;
-  flex-direction: row;
-  //min-height: 9rem;
-  margin-top: 1rem;
-  padding: 1rem 1.25rem;
-  border-width: 8px 1px 1px 1px;
-  border-style: solid;
-  border-color: $color_main;
-  box-sizing: border-box;
-  background-color: rgb(252, 252, 252);
+    display: flex;
+    flex-direction: row;
+    //min-height: 9rem;
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    border-width: 8px 1px 1px 1px;
+    border-style: solid;
+    border-color: $color_main;
+    box-sizing: border-box;
+    background-color: rgb(252, 252, 252);
 }
 
 //推荐阅读~
 .recommendedReading {
-  display: flex;
-  flex-direction: column;
-  width: 51.25rem;
-  margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    width: 51.25rem;
+    margin-top: 0.75rem;
 }
 
 .recommendedReadingContent {
-  display: flex;
-  flex-direction: row;
-  height: 7.5rem;
-  margin-top: 1rem;
-  padding: 1.25rem 1.25rem 0 1.25rem;
-  border-width: 8px 1px 1px 1px;
-  border-style: solid;
-  border-color: $color_sec;
-  box-sizing: border-box;
-  background-color: rgb(252, 252, 252);
+    display: flex;
+    flex-direction: row;
+    height: 7.5rem;
+    margin-top: 1rem;
+    padding: 1.25rem 1.25rem 0 1.25rem;
+    border-width: 8px 1px 1px 1px;
+    border-style: solid;
+    border-color: $color_sec;
+    box-sizing: border-box;
+    background-color: rgb(252, 252, 252);
 }
 
 .recommendedReadingImage {
-  display: flex;
-  flex-direction: row;
-  margin-right: 1.25rem;
+    display: flex;
+    flex-direction: row;
+    margin-right: 1.25rem;
 
-  img {
-    border-radius: 50%;
-    background-color: $color_sec;
-    width: 3.75rem;
-    height: 3.75rem;
-  }
+    img {
+        border-radius: 50%;
+        background-color: $color_sec;
+        width: 3.75rem;
+        height: 3.75rem;
+    }
 }
 
 .recommendedReadingTitle {
-  display: block;
-  max-width: 43.625rem;
-  font-size: 1rem;
-  font-family: 微软雅黑;
-  color: rgb(107, 113, 120);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    display: block;
+    max-width: 43.625rem;
+    font-size: 1rem;
+    font-family: 微软雅黑;
+    color: rgb(107, 113, 120);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .recommendedReadingAbstract {
-  display: block;
-  max-width: 43.625rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0.75rem;
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: rgb(107, 113, 120);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    display: block;
+    max-width: 43.625rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: rgb(107, 113, 120);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .recommendedReadingButtons {
-  display: flex;
-  height: 0.625rem;
-  flex-direction: row;
-  justify-content: flex-end;
+    display: flex;
+    height: 0.625rem;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
 .recommendedReadingButton {
-  width: 0.625rem;
-  height: 0.625rem;
-  margin: 0 0.25rem;
-  border-style: solid;
-  border-color: rgb(107, 113, 120);
-  border-width: 1px;
-  border-radius: 50%;
-  box-sizing: border-box;
+    width: 0.625rem;
+    height: 0.625rem;
+    margin: 0 0.25rem;
+    border-style: solid;
+    border-color: rgb(107, 113, 120);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
 }
 
 .recommendedReadingButtonSelected {
-  width: 0.625rem;
-  height: 0.625rem;
-  margin: 0 0.25rem;
-  border-style: solid;
-  border-color: rgb(251, 97, 101);
-  border-width: 1px;
-  border-radius: 50%;
-  box-sizing: border-box;
-  background-color: rgb(251, 97, 101);
+    width: 0.625rem;
+    height: 0.625rem;
+    margin: 0 0.25rem;
+    border-style: solid;
+    border-color: rgb(251, 97, 101);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background-color: rgb(251, 97, 101);
 }
 
 //列表区~
 .mainPageList {
-  display: flex;
-  flex-direction: column;
-  width: 25rem;
-  margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    width: 25rem;
+    margin-top: 2rem;
 }
 
 .mainPageListContent1 {
-  display: flex;
-  flex-direction: column;
-  height: 20rem;
-  margin-top: 1rem;
-  padding: 1rem 1.25rem;
-  border-width: 8px 1px 1px 1px;
-  border-style: solid;
-  border-color: $color_main;
-  box-sizing: border-box;
-  background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    border-width: 8px 1px 1px 1px;
+    border-style: solid;
+    border-color: $color_main;
+    box-sizing: border-box;
+    background-color: #fff;
 }
 
 .mainPageListContent2 {
-  display: flex;
-  flex-direction: column;
-  height: 20rem;
-  margin-top: 1rem;
-  padding: 1rem 1.25rem;
-  border-width: 8px 1px 1px 1px;
-  border-style: solid;
-  border-color: $color_sec;
-  box-sizing: border-box;
-  background-color: rgb(252, 252, 252);
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    border-width: 8px 1px 1px 1px;
+    border-style: solid;
+    border-color: $color_sec;
+    box-sizing: border-box;
+    background-color: rgb(252, 252, 252);
 }
 
 .mainPageListRow {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
-  align-content: center;
-  white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
-  overflow: hidden; //不显示超过对象尺寸的内容
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
+    align-content: center;
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
 }
 
 .mainPageListBoardName {
-  margin-right: 0.375rem;
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: rgb(251, 97, 101);
-
-  a {
+    margin-right: 0.375rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
     color: rgb(251, 97, 101);
-  }
+
+    a {
+        font-size: 0.75rem;
+        font-family: 微软雅黑;
+        color: rgb(251, 97, 101);
+    }
 }
 
 .mainPageListTitle {
-  flex-grow: 1;
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: rgb(102, 102, 102);
-  white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
-  overflow: hidden; //不显示超过对象尺寸的内容
-  text-overflow: ellipsis; //当文本对象溢出时显示...
-  a {
+    flex-grow: 1;
     font-size: 0.75rem;
     font-family: 微软雅黑;
     color: rgb(102, 102, 102);
-  }
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    text-overflow: ellipsis; //当文本对象溢出时显示...
+    a {
+        font-size: 0.75rem;
+        font-family: 微软雅黑;
+        color: rgb(102, 102, 102);
+    }
 }
 
 //推荐功能
 .recommendedFunction {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 0.75rem;
 }
 
 .recommendedFunctionContent {
-  display: flex;
-  flex-direction: column;
-  height: 21.25rem;
-  margin-top: 1rem;
-  padding: 1rem 1.25rem;
-  box-sizing: border-box;
-  background-color: $color_main;
+    display: flex;
+    flex-direction: column;
+    height: 21.25rem;
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    box-sizing: border-box;
+    background-color: $color_main;
 }
 
 .recommendedFunctionRow {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  height: 4rem; //部分浏览器用了flex-grow后还要限制高度……
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    height: 4rem; //部分浏览器用了flex-grow后还要限制高度……
+    align-items: center;
 }
 
 .recommendedFunctionImage {
-  margin-right: 1.25rem;
+    margin-right: 1.25rem;
 
-  img {
-    border-radius: 50%;
-    width: 3.125rem;
-    height: 3.125rem;
-  }
+    img {
+        border-radius: 50%;
+        width: 3.125rem;
+        height: 3.125rem;
+    }
 }
 
 .recommendedFunctionTitle {
-  flex-grow: 1;
-  font-size: 1rem;
-  font-family: 微软雅黑;
-  color: rgb(255, 255, 255);
-
-  a {
+    flex-grow: 1;
     font-size: 1rem;
     font-family: 微软雅黑;
     color: rgb(255, 255, 255);
-  }
+
+    a {
+        font-size: 1rem;
+        font-family: 微软雅黑;
+        color: rgb(255, 255, 255);
+    }
 }
 
 //校园新闻
 .schoolNews {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: 2rem;
-  margin-bottom: 2.5rem; //封装的广告组件没有任何margin
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 2.5rem; //封装的广告组件没有任何margin
 }
 
 .schoolNewsContent {
-  display: flex;
-  flex-direction: column;
-  height: 20rem;
-  margin-top: 1rem;
-  padding: 1.5rem 1.25rem 1rem 1.25rem;
-  box-sizing: border-box;
-  background-color: $color_sec;
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    margin-top: 1rem;
+    padding: 1.5rem 1.25rem 1rem 1.25rem;
+    box-sizing: border-box;
+    background-color: $color_sec;
 }
 
 .schoolNewsRow {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
 }
 
 .schoolNewsTitle {
-  flex-grow: 1;
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: rgb(255, 255, 255);
-  white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
-  overflow: hidden; //不显示超过对象尺寸的内容
-  text-overflow: ellipsis; //当文本对象溢出时显示...
-  a {
+    flex-grow: 1;
     font-size: 0.75rem;
     font-family: 微软雅黑;
     color: rgb(255, 255, 255);
-  }
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    text-overflow: ellipsis; //当文本对象溢出时显示...
+    a {
+        font-size: 0.75rem;
+        font-family: 微软雅黑;
+        color: rgb(255, 255, 255);
+    }
 }
 
 //首页广告
 .mainPageAd {
-  margin-top: 3.125rem;
-  width: 100%;
+    margin-top: 3.125rem;
+    width: 100%;
 }
 
 .adButtons {
-  display: flex;
-  width: 16rem;
-  height: 0.625rem;
-  flex-direction: row;
-  justify-content: center;
+    display: flex;
+    width: 16rem;
+    height: 0.625rem;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .adButton {
-  width: 0.625rem;
-  height: 0.625rem;
-  margin: 0 0.25rem;
-  border-style: solid;
-  border-color: rgba(255, 255, 255, 0.5);
-  border-width: 1px;
-  border-radius: 50%;
-  box-sizing: border-box;
+    width: 0.625rem;
+    height: 0.625rem;
+    margin: 0 0.25rem;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.5);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
 }
 
 .adButtonSelected {
-  width: 0.625rem;
-  height: 0.625rem;
-  margin: 0 0.25rem;
-  border-style: solid;
-  border-color: rgba(255, 255, 255, 0.5);
-  border-width: 1px;
-  border-radius: 50%;
-  box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.5);
+    width: 0.625rem;
+    height: 0.625rem;
+    margin: 0 0.25rem;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.5);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 //论坛统计
 .mainPageCount {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 2rem;
 }
 
 .mainPageCountContent {
-  display: flex;
-  flex-direction: column;
-  height: 10rem;
-  margin-top: 1rem;
-  padding: 1.5rem 1.25rem 1rem 1.25rem;
-  box-sizing: border-box;
-  background-color: $color_sec;
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    margin-top: 1rem;
+    padding: 1.5rem 1.25rem 1rem 1.25rem;
+    box-sizing: border-box;
+    background-color: $color_sec;
 }
 
 .mainPageCountRow {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
+    justify-content: space-between;
 }
 
 .mainPageCountTitle {
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: rgb(255, 255, 255);
-
-  a {
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #444444;
-  }
+    color: rgb(255, 255, 255);
+
+    a {
+        font-size: 0.75rem;
+        font-family: 微软雅黑;
+        color: #444444;
+    }
 }
 
 //------------------------- 首页就到此为止啦 ----------------------
 
 //------------------------- 以下是新头部的样式 ---------------------
 .header {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  min-width: 71.25rem;
-  height: 12rem;
-  margin-bottom: 1.25rem;
-  padding: 0px;
-  background: $background_image no-repeat center;
-  z-index: 2;
-  background-size: 120rem, 12rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    min-width: 71.25rem;
+    height: 12rem;
+    margin-bottom: 1.25rem;
+    padding: 0px;
+    background: $background_image no-repeat center;
+    z-index: 2;
+    background-size: 120rem, 12rem;
 }
 
 .headerWithoutImage {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  min-width: 71.25rem;
-  height: 3rem;
-  margin-bottom: 1.25rem;
-  padding: 0px;
-  z-index: 2;
-  opacity: 1.25;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    min-width: 71.25rem;
+    height: 3rem;
+    margin-bottom: 1.25rem;
+    padding: 0px;
+    z-index: 2;
+    opacity: 1.25;
 }
 
 .topBar {
-  display: flex;
-  flex-direction: row;
-  height: 3rem;
-  width: 100%;
-  justify-content: center;
-  background-color: $color_main; //仅背景条半透明，内层元素无半透明效果
+    display: flex;
+    flex-direction: row;
+    height: 3rem;
+    width: 100%;
+    justify-content: center;
+    background-color: $color_main; //仅背景条半透明，内层元素无半透明效果
 }
 
 .topBar-mainPage {
-  display: flex;
-  flex-direction: row;
-  height: 3rem;
-  width: 100%;
-  justify-content: center;
-  background-color: $topBar_o; //仅背景条半透明，内层元素无半透明效果
+    display: flex;
+    flex-direction: row;
+    height: 3rem;
+    width: 100%;
+    justify-content: center;
+    background-color: $topBar_o; //仅背景条半透明，内层元素无半透明效果
 }
 
 .topBarRow {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 71.25rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 71.25rem;
 }
 
 //左上角的部分
 .topBarLogo {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 
-  img {
-    width: 2.125rem;
-    height: 1.5rem;
-    margin-right: 1rem;
-  }
+    img {
+        width: 2.125rem;
+        height: 1.5rem;
+        margin-right: 1rem;
+    }
 }
 
 .topBarCC98 {
-  font-size: 1.25rem;
-  font-family: 微软雅黑;
-  color: #ffffff;
-  margin-right: 1rem;
-
-  a {
     font-size: 1.25rem;
     font-family: 微软雅黑;
     color: #ffffff;
-  }
+    margin-right: 1rem;
+
+    a {
+        font-size: 1.25rem;
+        font-family: 微软雅黑;
+        color: #ffffff;
+    }
 }
 
 .topBarText {
-  font-size: 1rem;
-  font-family: 微软雅黑;
-  color: #ffffff;
-  margin-right: 1rem;
-
-  a {
     font-size: 1rem;
     font-family: 微软雅黑;
     color: #ffffff;
-  }
+    margin-right: 1rem;
+
+    a {
+        font-size: 1rem;
+        font-family: 微软雅黑;
+        color: #ffffff;
+    }
 }
 
 //右上角的部分
 .topBarUserInfo {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .topBarUserImg {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 3rem;
-  height: 3rem;
-  cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
 
-  img {
-    height: 2rem;
-    width: 2rem;
-    border-radius: 50%;
-  }
+    img {
+        height: 2rem;
+        width: 2rem;
+        border-radius: 50%;
+    }
 }
 
 .topBarUserName {
-  display: flex;
-  justify-content: center;
-  width: 6rem;
-  height: 3rem;
-  line-height: 3rem;
-  font-size: 1rem;
-  font-family: 微软雅黑;
-  color: #ffffff;
-  cursor: pointer;
+    display: flex;
+    justify-content: center;
+    width: 6rem;
+    height: 3rem;
+    line-height: 3rem;
+    font-size: 1rem;
+    font-family: 微软雅黑;
+    color: #ffffff;
+    cursor: pointer;
 }
 
 .topBarMessage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 3rem;
-  height: 3rem;
-  font-size: 1.25rem;
-  font-family: 微软雅黑;
-  color: #ffffff;
-  position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+    font-family: 微软雅黑;
+    color: #ffffff;
+    position: relative;
 }
 
 .topBarBell {
-  display: flex;
-  height: 1.5rem;
-  width: 1.5rem;
-  border-radius: 50%;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(107, 113, 120);
-  font-size: 1rem;
-  font-family: 微软雅黑;
-  color: #ffffff;
+    display: flex;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(107, 113, 120);
+    font-size: 1rem;
+    font-family: 微软雅黑;
+    color: #ffffff;
 }
 
 //鼠标移至用户名时弹出的下拉菜单
 .topBarUserCenter {
-  position: absolute;
-  top: 3rem;
-  margin-left: 6rem;
-  width: 6rem;
-  z-index: 100;
-  font-size: 0.875rem;
-  font-family: 微软雅黑;
-  color: rgb(255, 255, 255);
-
-  a {
+    position: absolute;
+    top: 3rem;
+    margin-left: 6rem;
+    width: 6rem;
+    z-index: 100;
     font-size: 0.875rem;
     font-family: 微软雅黑;
     color: rgb(255, 255, 255);
-  }
 
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: $color_main;
-  }
+    a {
+        font-size: 0.875rem;
+        font-family: 微软雅黑;
+        color: rgb(255, 255, 255);
+    }
 
-  li {
-    display: flex;
-    height: 2rem;
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-  }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: $color_main;
+    }
 
-  li:hover {
-    background-color: rgb(251, 97, 101);
-  }
+    li {
+        display: flex;
+        height: 2rem;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+    }
+
+    li:hover {
+        background-color: rgb(251, 97, 101);
+    }
 }
 
 .topBarUserCenter-mainPage {
-  position: absolute;
-  top: 3rem;
-  margin-left: 6rem;
-  width: 6rem;
-  z-index: 100;
-  font-size: 0.875rem;
-  font-family: 微软雅黑;
-  color: rgb(255, 255, 255);
-
-  a {
+    position: absolute;
+    top: 3rem;
+    margin-left: 6rem;
+    width: 6rem;
+    z-index: 100;
     font-size: 0.875rem;
     font-family: 微软雅黑;
     color: rgb(255, 255, 255);
-  }
 
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: $topBar_o;
-  }
+    a {
+        font-size: 0.875rem;
+        font-family: 微软雅黑;
+        color: rgb(255, 255, 255);
+    }
 
-  li {
-    display: flex;
-    height: 2rem;
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-  }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: $topBar_o;
+    }
 
-  li:hover {
-    background-color: rgb(251, 97, 101);
-  }
+    li {
+        display: flex;
+        height: 2rem;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+    }
+
+    li:hover {
+        background-color: rgb(251, 97, 101);
+    }
 }
 
 //鼠标移至消息时弹出的下拉菜单
 .topBarMessageDetails {
-  position: absolute;
-  top: 3rem;
-  width: 8rem;
-  margin-left: -5rem;
-  z-index: 100;
-  font-size: 0.875rem;
-  font-family: 微软雅黑;
-  color: rgb(255, 255, 255);
-
-  a {
+    position: absolute;
+    top: 3rem;
+    width: 8rem;
+    margin-left: -5rem;
+    z-index: 100;
     font-size: 0.875rem;
     font-family: 微软雅黑;
     color: rgb(255, 255, 255);
-  }
 
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: $color_main;
-  }
+    a {
+        font-size: 0.875rem;
+        font-family: 微软雅黑;
+        color: rgb(255, 255, 255);
+    }
 
-  li {
-    display: flex;
-    height: 2rem;
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    position: relative;
-  }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: $color_main;
+    }
 
-  li:hover {
-    background-color: rgb(251, 97, 101);
-  }
+    li {
+        display: flex;
+        height: 2rem;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        position: relative;
+    }
+
+    li:hover {
+        background-color: rgb(251, 97, 101);
+    }
 }
 
 .topBarMessageDetails-mainPage {
-  position: absolute;
-  top: 3rem;
-  width: 8rem;
-  margin-left: -5rem;
-  z-index: 100;
-  font-size: 0.875rem;
-  font-family: 微软雅黑;
-  color: rgb(255, 255, 255);
-
-  a {
+    position: absolute;
+    top: 3rem;
+    width: 8rem;
+    margin-left: -5rem;
+    z-index: 100;
     font-size: 0.875rem;
     font-family: 微软雅黑;
     color: rgb(255, 255, 255);
-  }
 
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: $topBar_o;
-  }
+    a {
+        font-size: 0.875rem;
+        font-family: 微软雅黑;
+        color: rgb(255, 255, 255);
+    }
 
-  li {
-    display: flex;
-    height: 2rem;
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    position: relative;
-  }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: $topBar_o;
+    }
 
-  li:hover {
-    background-color: rgb(251, 97, 101);
-  }
+    li {
+        display: flex;
+        height: 2rem;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        position: relative;
+    }
+
+    li:hover {
+        background-color: rgb(251, 97, 101);
+    }
 }
 
 //搜索框
 #search .box {
-  display: flex;
-  flex-direction: row;
-  height: 1.5rem;
-  width: 33rem;
-  border-radius: 0.625rem;
-  align-items: center;
-  background-color: #fff;
-  padding: 0 1rem;
-  margin-left: 1rem;
+    display: flex;
+    flex-direction: row;
+    height: 1.5rem;
+    width: 33rem;
+    border-radius: 0.625rem;
+    align-items: center;
+    background-color: #fff;
+    padding: 0 1rem;
+    margin-left: 1rem;
 }
 
 #search .searchBoxSelect {
-  display: flex;
-  width: 2rem;
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: $color_main;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+    display: flex;
+    width: 2rem;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: $color_main;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 #search .caret-down {
-  display: flex;
-  width: 1rem;
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: $color_main;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+    display: flex;
+    width: 1rem;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: $color_main;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 #search input {
-  display: flex;
-  border: 0;
-  flex-grow: 1;
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: $color_main;
-  background-color: #fff;
-  outline: none;
+    display: flex;
+    border: 0;
+    flex-grow: 1;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: $color_main;
+    background-color: #fff;
+    outline: none;
 }
 
 #search .searchIco {
-  display: flex;
-  flex-direction: row;
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: $color_main;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: $color_main;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 #search ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 #search .searchBoxSub {
-  display: none;
-  width: 2rem;
-  margin-left: 2rem;
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: #fff;
-  background-color: $color_main;
-  position: absolute;
-  z-index: 1000;
+    display: none;
+    width: 2rem;
+    margin-left: 2rem;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: #fff;
+    background-color: $color_main;
+    position: absolute;
+    z-index: 1000;
 }
 
 #search .searchBoxSub li {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: 1.5rem;
-  cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 1.5rem;
+    cursor: pointer;
 }
 
 #search .searchBoxSub li:hover {
-  background-color: rgb(107, 113, 120);
+    background-color: rgb(107, 113, 120);
 }
 
 //头部中未读数的样式
 
 .message-counter {
-  display: flex;
-  position: absolute;
-  height: 1.5rem;
-  width: 1.5rem;
-  border-radius: 50%;
-  justify-content: center;
-  align-items: center;
-  background-color: #fb6165;
-  font-size: 0.75rem;
-  font-family: 微软雅黑;
-  color: #ffffff;
-  top: 0.75rem;
-  left: 0.75rem;
+    display: flex;
+    position: absolute;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    background-color: #fb6165;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: #ffffff;
+    top: 0.75rem;
+    left: 0.75rem;
 }
 
 .message-counterLi {
-  display: flex;
-  position: absolute;
-  height: 0.75rem;
-  min-width: 1.25rem;
-  border-radius: 0.5rem;
-  justify-content: center;
-  align-items: center;
-  background-color: #fb6165;
-  font-size: 0.625rem;
-  font-family: 微软雅黑;
-  color: #ffffff;
-  line-height: 0.625rem;
-  top: 0.75rem;
-  left: 6rem;
+    display: flex;
+    position: absolute;
+    height: 0.75rem;
+    min-width: 1.25rem;
+    border-radius: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    background-color: #fb6165;
+    font-size: 0.625rem;
+    font-family: 微软雅黑;
+    color: #ffffff;
+    line-height: 0.625rem;
+    top: 0.75rem;
+    left: 6rem;
 }
 
 .pwa-redirect-background {
-  display: flex;
-  position: fixed;
-  top: 0%;
-  left: 0%;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 2000;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
 }
 
 .pwa-redirect-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 2001;
-  background-color: white;
-  font-size: 48px;
-  font-family: '微软雅黑';
-  width: 80%;
-  min-height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 2001;
+    background-color: white;
+    font-size: 48px;
+    font-family: "微软雅黑";
+    width: 80%;
+    min-height: 80%;
 }
 
 .pwa-redirect-image {
-  display: block;
-  width: 80%;
-  margin-top: 20px;
+    display: block;
+    width: 80%;
+    margin-top: 20px;
 }
 
 .pwa-redirect-text-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
 }
 
 .pwa-redirect-button {
-  box-sizing: border-box;
-  border: 2px solid #007acc;
-  border-radius: 8px;
-  background-color: #007acc;
-  margin-bottom: 20px;
-  padding: 8px 32px;
-  color: white;
-  font-size: 48px;
+    box-sizing: border-box;
+    border: 2px solid #007acc;
+    border-radius: 8px;
+    background-color: #007acc;
+    margin-bottom: 20px;
+    padding: 8px 32px;
+    color: white;
+    font-size: 48px;
 }
 
 .pwa-redirect-button-container {
-  display: flex;
-  flex-direction: column;
-}
-
-// v4 board topicitem
-.cc98 {
-  text-align: center;
-}
-.topic-sum {
-  margin: 2px;
-  border-color: ruby;
-  border-width: 2px;
-  border: 2px;
-  border-style: solid;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.topic-button {
-  margin: 2px;
-  border-color: red;
-  border-width: 2px;
-  border: 2px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.cc98button {
-  width: 50%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-.cc98topicbar {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  background-color: rgb(230, 231, 236);
-  margin-bottom: 1px;
-  margin-top: 1px;
-}
-.cc98topicbar:hover {
-  background-color: #e1975a;
-}
-.cc98userpic {
-  width: 64px;
-  height: 64px;
-}
-.cc98userpicture {
-  width: 50px;
-  height: 50px;
-  border-radius: 64px;
-  margin: 7px;
-}
-.cc98topicinfo {
-  height: 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-.cc98topictitle {
-  height: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0px;
-}
-.cc98topicinfos {
-  height: 32px;
-  display: flex;
-  flex-direction: row;
-}
-.cc98nomargin {
-  width: 250px;
-  margin: 0px 15px 0px 0px;
-}
-.cc98nomarginlong {
-  width: 200px;
-  margin: 0px 0px 0px 0px;
-}
-.cc98nomargintime {
-  width: 400px;
-  margin: 0px 0px 0px 0px;
-}
-a {
-  text-decoration: none;
-  color: black;
-}
-
-.board-body {
-  width: 80%;
-  height: 4rem;
-}
-.board-lastReply{
-    text-align: right;
-}
-.board-topic-title{
-    font-size: 1.3rem;
-}
-.board-topic-options{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 4rem;
-}
-.board-row-first{
-    height: 3rem;
-}
-.boaed-row-second{
-    height: 1rem;
 }

@@ -18,7 +18,7 @@ import { Pager } from '../Pager';
 import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard, ServerError } from '../Status';
 import { AdsComponent } from '../MainPage';
 import { isLogOn } from '../../Utility';
-import * as dayjs from 'dayjs';
+import * as moment from 'moment';
 import Modal from 'antd/es/modal';
 import List from 'antd/es/list';
 import Button from 'antd/es/button';
@@ -150,7 +150,7 @@ export class BList extends RouteComponent<{}, { page: number, boardId: number, b
                             <List.Item key={item.userId}>
                                 <List.Item.Meta
                                     title={<a href={`https://cc98.org/user/${item.userId}`}>{item.userName}</a>}
-                                    description={<div><span>天数:{item.days}</span><span style={{marginLeft:"2rem",marginRight:"2rem"}}>到期时间:{dayjs(item.expiredTime).format('YYYY-MM-DD HH:mm:ss')}</span><Button onClick={this.cancelTp.bind(this,item)} type="primary" style={{display:this.state.isMaster?"":"none"}}>解除tp</Button></div>}
+                                    description={<div><span>天数:{item.days}</span><span style={{marginLeft:"2rem",marginRight:"2rem"}}>到期时间:{moment(item.expiredTime).format('YYYY-MM-DD HH:mm:ss')}</span><Button onClick={this.cancelTp.bind(this,item)} type="primary" style={{display:this.state.isMaster?"":"none"}}>解除tp</Button></div>}
                                 />
                                 <div>操作人:{item.operatorUserName}</div>
                             </List.Item>
@@ -1236,7 +1236,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                             </div>
 
                             <div className="lastReply" >
-                                <span>{this.props.lastPostUser}/{dayjs(this.props.lastPostTime).format('YY-MM-DD HH:mm')}</span>
+                                <span>{this.props.lastPostUser}/{moment(this.props.lastPostTime).format('YY-MM-DD HH:mm')}</span>
                             </div>
                         </div>
 
@@ -1285,7 +1285,7 @@ export class BoardRecordContent extends React.Component<BoardEvent> {
         return <div className="boardRecord" id="changeColor">
             <div className="boardRecord-1">{targetUserName}</div>
             <div className="boardRecord-2"><a href={`/topic/${this.props.topicId}`} target="_blank">{this.props.content}</a></div>
-            <div className="boardRecord-3">{dayjs(this.props.time).format('YY-MM-DD HH:mm')}</div>
+            <div className="boardRecord-3">{moment(this.props.time).format('YY-MM-DD HH:mm')}</div>
             <div className="boardRecord-4" onMouseOver={this.ipOver} onMouseOut={this.ipOut}><a href={`/user/name/${this.props.operatorUserName}`} target="_blank">{this.props.operatorUserName}</a></div>
             <div className="boardRecord-ip displaynone" id={`ip_${this.props.id}`}>{this.props.ip}</div>
         </div>;

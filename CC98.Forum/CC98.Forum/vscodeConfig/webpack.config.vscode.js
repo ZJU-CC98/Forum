@@ -81,7 +81,7 @@ module.exports = {
 
         new ExtractTextPlugin('static/content/[name].css'),
 
-        new webpack.IgnorePlugin(/^\.\/locale$/, /dayjs$/),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 
     ],
 

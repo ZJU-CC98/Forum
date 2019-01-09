@@ -5,7 +5,7 @@ import * as React from 'react';
 import { MessageSystemProps } from '../../Props/MessageSystemProps';
 import { UbbContainer } from '../UbbContainer';
 import { UbbCompatiblityMode } from '../../Ubb/UbbCodeExtension';
-import * as dayjs from 'dayjs';
+import * as moment from 'moment';
 
 export class MessageSystembox extends React.Component<MessageSystemProps> {
 
@@ -51,7 +51,7 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
                                 {this.props.title}
                             </div>
                             <div className="message-system-box-date" >
-                                {dayjs(this.props.time).format('YYYY-MM-DD HH:mm:ss')}
+                                {moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}
                         </div>
                     </div>
             <div className="message-system-box-content">
