@@ -79,10 +79,6 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(TrTagHandler);
 	engine.handlers.register(TopicTagHandler);
 	engine.handlers.register(MdTagHandler);
-<<<<<<< HEAD
-=======
-	// engine.handlers.register(SandBoxTagHandler);
->>>>>>> 3b5f388118e9626046cab548ac3478e3d72c7d1d
 	engine.handlers.register(LineTagHandler);
 	engine.handlers.register(PmTagHandler);
 	engine.handlers.register(NoUbbTagHandler);
