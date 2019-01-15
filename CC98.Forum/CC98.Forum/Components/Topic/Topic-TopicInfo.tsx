@@ -82,7 +82,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
                         <div className="followTopic" onClick={this.state.isFollow ? this.unFollow : this.follow}>
                             {this.state.isFollow ? "已收藏" : "收藏"}
                         </div>
-                        <div className="followTopic" style={{width:"5rem"}} onClick={this.showAllImg}>
+                        <div className="followTopic" style={{width:"6rem"}} onClick={this.showAllImg}>
                            显示所有图片
                         </div>
                     </div>
