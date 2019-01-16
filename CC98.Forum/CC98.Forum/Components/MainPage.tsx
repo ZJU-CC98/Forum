@@ -539,6 +539,10 @@ export class MainPageCountComponent extends React.Component<{ data }, {}> {
                     <div className="mainPageCountTitle">{data.postCount}</div>
                 </div>
                 <div className="mainPageCountRow">
+                    <div className="mainPageCountTitle">在线用户数</div>
+                    <div className="mainPageCountTitle">{data.onlineUserCount || 0}</div>
+                </div>
+                <div className="mainPageCountRow">
                     <div className="mainPageCountTitle">总用户数</div>
                     <div className="mainPageCountTitle">{data.userCount}</div>
                 </div>

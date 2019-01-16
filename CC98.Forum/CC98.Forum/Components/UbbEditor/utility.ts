@@ -114,7 +114,7 @@ export function getTagName(file: File) {
         switch(true) {
             case file.type.indexOf('image') !== -1: return 'img'
             case file.type.indexOf('video') !== -1: return 'video'
-            case file.type.indexOf('video') !== -1: return 'audio'
+            case file.type.indexOf('audio') !== -1: return 'audio'
         }
 
         const fileExtendName = file.name.match(/\.(\w+)$/)[1]
