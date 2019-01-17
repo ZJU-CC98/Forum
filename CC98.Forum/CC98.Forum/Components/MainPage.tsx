@@ -10,20 +10,20 @@ import { CountDown } from './CountDown'
  * 全站公告组件
  **/
 export class AnnouncementComponent extends React.Component<{ data }, {}> {
-    render() {
-        const data = this.props.data;
-        if (data == "") return <div></div>
-        else return <div className="announcement">
-            <div className="mainPageTitle1">
-                <div className="mainPageTitleRow" style={{ width: '100%' }}>
-                    <i className="fa fa-volume-up"></i>
-                    <div style={{ flexGrow: 1 }} className="mainPageTitleText">全站公告</div>
-                    {/*<CountDown endDate={new Date('05/26/2018 05:30 PM')} />*/}
-                </div>
-            </div>
-            <div className="announcementContent"><UbbContainer code={data} /></div>
+  render() {
+    const data = this.props.data;
+    if (data == "") return <div></div>
+    else return <div className="announcement">
+      <div className="mainPageTitle1">
+        <div className="mainPageTitleRow" style={{ width: '100%' }}>
+          <i className="fa fa-volume-up"></i>
+          <div style={{ flexGrow: 1 }} className="mainPageTitleText">全站公告</div>
+          {/*<CountDown endDate={new Date('05/26/2018 05:30 PM')} />*/}
         </div>
-    }
+      </div>
+      <div className="announcementContent"><UbbContainer code={data} /></div>
+    </div>
+  }
 }
 
 /**
@@ -31,68 +31,68 @@ export class AnnouncementComponent extends React.Component<{ data }, {}> {
  **/
 export class RecommendedReadingComponent extends React.Component<{ data }, { index: number }> {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            index: 0,
-        };
-        this.handleMouseEnter = this.handleMouseEnter.bind(this);
-        this.convertButton = this.convertButton.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: 0,
+    };
+    this.handleMouseEnter = this.handleMouseEnter.bind(this);
+    this.convertButton = this.convertButton.bind(this);
+  }
 
-    async componentWillReceiveProps(nextProps) {
-        const length: number = nextProps.data.length;
-        this.setState({
-            index: Math.floor(Math.random() * length),
-        })
-    }
+  async componentWillReceiveProps(nextProps) {
+    const length: number = nextProps.data.length;
+    this.setState({
+      index: Math.floor(Math.random() * length),
+    })
+  }
 
-    handleMouseEnter(index) {
-        this.setState({
-            index: index,
-        })
-    }
+  handleMouseEnter(index) {
+    this.setState({
+      index: index,
+    })
+  }
 
-    convertButton(value: number, index: number, array: number[]) {
-        const className: string = value ? "recommendedReadingButtonSelected" : "recommendedReadingButton";
-        return <div className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
-    }
+  convertButton(value: number, index: number, array: number[]) {
+    const className: string = value ? "recommendedReadingButtonSelected" : "recommendedReadingButton";
+    return <div className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
+  }
 
-    render() {
-        const recommendedReading = this.props.data;
-        const length = recommendedReading.length;     //推荐阅读的长度
+  render() {
+    const recommendedReading = this.props.data;
+    const length = recommendedReading.length;     //推荐阅读的长度
 
-        const index = this.state.index;
-        let styles = new Array(length);
-        styles.fill(0);     //将数组元素全部填充为0
-        styles[index] = 1;      //选中下标的内容对应的数组元素值为1
-        const buttons = styles.map(this.convertButton);
+    const index = this.state.index;
+    let styles = new Array(length);
+    styles.fill(0);     //将数组元素全部填充为0
+    styles[index] = 1;      //选中下标的内容对应的数组元素值为1
+    const buttons = styles.map(this.convertButton);
 
-        const imageUrl = length ? recommendedReading[index].imageUrl : "";
-        const url = length ? recommendedReading[index].url : "";
-        const title = length ? recommendedReading[index].title : "";
-        const content = length ? recommendedReading[index].content : "";
+    const imageUrl = length ? recommendedReading[index].imageUrl : "";
+    const url = length ? recommendedReading[index].url : "";
+    const title = length ? recommendedReading[index].title : "";
+    const content = length ? recommendedReading[index].content : "";
 
-        return <div className="recommendedReading">
-            <div className="mainPageTitle2">
-                <div className="mainPageTitleRow">
-                    <i className="fa fa-volume-up"></i>
-                    <div className="mainPageTitleText">推荐阅读</div>
-                </div>
-            </div>
-            <div className="recommendedReadingContent">
-                <div className="recommendedReadingImage">
-                    <img src={imageUrl} />
-                </div>
-                <div className="column" style={{ flexGrow: 1 }}>
-                    <div className="recommendedReadingTitle"><a href={url} target="_blank">{title}</a></div>
-                    <div className="recommendedReadingAbstract">{content}</div>
-                    <div className="recommendedReadingButtons">{buttons}</div>
-                </div>
-            </div>
+    return <div className="recommendedReading">
+      <div className="mainPageTitle2">
+        <div className="mainPageTitleRow">
+          <i className="fa fa-volume-up"></i>
+          <div className="mainPageTitleText">推荐阅读</div>
         </div>
+      </div>
+      <div className="recommendedReadingContent">
+        <div className="recommendedReadingImage">
+          <img src={imageUrl} />
+        </div>
+        <div className="column" style={{ flexGrow: 1 }}>
+          <div className="recommendedReadingTitle"><a href={url} target="_blank">{title}</a></div>
+          <div className="recommendedReadingAbstract">{content}</div>
+          <div className="recommendedReadingButtons">{buttons}</div>
+        </div>
+      </div>
+    </div>
 
-    }
+  }
 }
 
 /**
@@ -101,19 +101,19 @@ export class RecommendedReadingComponent extends React.Component<{ data }, { ind
  **/
 export class HotTopicState {
 
-    //属性
-    title: string;
-    id: number;
-    boardName: string;
-    boardId: number;
+  //属性
+  title: string;
+  id: number;
+  boardName: string;
+  boardId: number;
 
-    //构造方法
-    constructor(title, id, boardName, boardId) {
-        this.title = title;
-        this.id = id;
-        this.boardName = boardName;
-        this.boardId = boardId;
-    }
+  //构造方法
+  constructor(title, id, boardName, boardId) {
+    this.title = title;
+    this.id = id;
+    this.boardName = boardName;
+    this.boardId = boardId;
+  }
 }
 
 /**
@@ -121,47 +121,47 @@ export class HotTopicState {
  **/
 export class HotTopicComponent extends React.Component<{ data }, { mainPageTopicState: HotTopicState[] }> {
 
-    convertMainPageTopic(item: HotTopicState) {
-        if (!item.id) return <div>{item.title}</div>
-        const boardUrl = `/list/${item.boardId}`;
-        const topicUrl = `/topic/${item.id}/1`;
-        return <div className="mainPageListRow">
-            <div className="mainPageListBoardName"> <a href={boardUrl} target="_blank">[{item.boardName}]</a></div>
-            <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
-        </div >;
-    }
+  convertMainPageTopic(item: HotTopicState) {
+    if (!item.id) return <div>{item.title}</div>
+    const boardUrl = `/list/${item.boardId}`;
+    const topicUrl = `/topic/${item.id}/1`;
+    return <div className="mainPageListRow">
+      <div className="mainPageListBoardName"> <a href={boardUrl} target="_blank">[{item.boardName}]</a></div>
+      <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
+    </div >;
+  }
 
-    render() {
-        // 数据库计算新的十大需要一定时间，这时API去查询更新，就会查到空的十大（返回一个空数组）
-        // 因此这里检查获得的十大是否为空数组，如果是，则显示上一次获取非空十大时的缓存
-        let data = this.props.data;
-        if (data === []) {
-            const hotTopic = Utility.getLocalStorage("mainPageHotTopic")
-            const defaultData = {
-                title: "数据库正在计算新的十大数据，请前辈等会再来~",
-                id: 0,
-                boardName: "错误提示",
-                boardId: 0
-            }
-            data = hotTopic ? hotTopic : [defaultData]
-        }
-        return <div className="mainPageList">
-            <div className="mainPageTitle1">
-                <div className="mainPageTitleRow">
-                    <i className="fa fa-volume-up"></i>
-                    <div className="mainPageTitleText">热门话题</div>
-                </div>
-                <div className="mainPageTitleRow">
-                    <div className="mainPageTitleText"><a href="/topic/hot-weekly" target="_blank">本周</a></div>
-                    <div className="mainPageTitleText"><a href="/topic/hot-monthly" target="_blank">本月</a></div>
-                    <div className="mainPageTitleText"><a href="/topic/hot-history" target="_blank">历史上的今天</a></div>
-                </div>
-            </div>
-            <div className="mainPageListContent1">
-                {data.map(this.convertMainPageTopic)}
-            </div>
-        </div>
+  render() {
+    // 数据库计算新的十大需要一定时间，这时API去查询更新，就会查到空的十大（返回一个空数组）
+    // 因此这里检查获得的十大是否为空数组，如果是，则显示上一次获取非空十大时的缓存
+    let data = this.props.data;
+    if (data === []) {
+      const hotTopic = Utility.getLocalStorage("mainPageHotTopic")
+      const defaultData = {
+        title: "数据库正在计算新的十大数据，请前辈等会再来~",
+        id: 0,
+        boardName: "错误提示",
+        boardId: 0
+      }
+      data = hotTopic ? hotTopic : [defaultData]
     }
+    return <div className="mainPageList">
+      <div className="mainPageTitle1">
+        <div className="mainPageTitleRow">
+          <i className="fa fa-volume-up"></i>
+          <div className="mainPageTitleText">热门话题</div>
+        </div>
+        <div className="mainPageTitleRow">
+          <div className="mainPageTitleText"><a href="/topic/hot-weekly" target="_blank">本周</a></div>
+          <div className="mainPageTitleText"><a href="/topic/hot-monthly" target="_blank">本月</a></div>
+          <div className="mainPageTitleText"><a href="/topic/hot-history" target="_blank">历史上的今天</a></div>
+        </div>
+      </div>
+      <div className="mainPageListContent1">
+        {data.map(this.convertMainPageTopic)}
+      </div>
+    </div>
+  }
 }
 
 /**
@@ -170,15 +170,15 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
  **/
 export class MainPageTopicState {
 
-    //属性
-    title: string;
-    id: number;
+  //属性
+  title: string;
+  id: number;
 
-    //构造方法
-    constructor(title, id) {
-        this.title = title;
-        this.id = id;
-    }
+  //构造方法
+  constructor(title, id) {
+    this.title = title;
+    this.id = id;
+  }
 }
 
 /**
@@ -186,13 +186,13 @@ export class MainPageTopicState {
  * 拥有名称和链接两个属性
  */
 export class MainPageTopicMoreProps {
-    name: string;
-    url: string;
+  name: string;
+  url: string;
 
-    constructor(name, url) {
-        this.name = name;
-        this.url = url;
-    }
+  constructor(name, url) {
+    this.name = name;
+    this.url = url;
+  }
 
 }
 
@@ -202,137 +202,137 @@ export class MainPageTopicMoreProps {
  **/
 export class MainPageTopicComponent extends React.Component<{ data, name: string, fetchUrl: string, style: string, mores: MainPageTopicMoreProps[] }, {}>{
 
-    convertMainPageTopic(item: MainPageTopicState) {
-        const topicUrl = `/topic/${item.id}/1`;
-        return <div className="mainPageListRow">
-            <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
+  convertMainPageTopic(item: MainPageTopicState) {
+    const topicUrl = `/topic/${item.id}/1`;
+    return <div className="mainPageListRow">
+      <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
+    </div>
+  }
+
+  render() {
+
+    let moresHTML = this.props.mores.map((item) => {
+      return <div className="mainPageTitleText"><a href={item.url} target="_blank">{item.name}</a></div>
+    })
+
+    const style: string = this.props.style;
+
+    if (style === "black") {
+      return <div className="mainPageList">
+        <div className="mainPageTitle2">
+          <div className="mainPageTitleRow">
+            <i className="fa fa-volume-up"></i>
+            <div className="mainPageTitleText">{this.props.name}</div>
+          </div>
+          <div className="mainPageTitleRow">{moresHTML}</div>
         </div>
+        <div className="mainPageListContent2">
+          {this.props.data.map(this.convertMainPageTopic)}
+        </div>
+      </div>
+    } else if (style === "blue") {
+      return <div className="mainPageList">
+        <div className="mainPageTitle1">
+          <div className="mainPageTitleRow">
+            <i className="fa fa-volume-up"></i>
+            <div className="mainPageTitleText">{this.props.name}</div>
+          </div>
+          <div className="mainPageTitleRow">{moresHTML}</div>
+        </div>
+        <div className="mainPageListContent1">
+          {this.props.data.map(this.convertMainPageTopic)}
+        </div>
+      </div>
     }
-
-    render() {
-
-        let moresHTML = this.props.mores.map((item) => {
-            return <div className="mainPageTitleText"><a href={item.url} target="_blank">{item.name}</a></div>
-        })
-
-        const style: string = this.props.style;
-
-        if (style === "black") {
-            return <div className="mainPageList">
-                <div className="mainPageTitle2">
-                    <div className="mainPageTitleRow">
-                        <i className="fa fa-volume-up"></i>
-                        <div className="mainPageTitleText">{this.props.name}</div>
-                    </div>
-                    <div className="mainPageTitleRow">{moresHTML}</div>
-                </div>
-                <div className="mainPageListContent2">
-                    {this.props.data.map(this.convertMainPageTopic)}
-                </div>
-            </div>
-        } else if (style === "blue") {
-            return <div className="mainPageList">
-                <div className="mainPageTitle1">
-                    <div className="mainPageTitleRow">
-                        <i className="fa fa-volume-up"></i>
-                        <div className="mainPageTitleText">{this.props.name}</div>
-                    </div>
-                    <div className="mainPageTitleRow">{moresHTML}</div>
-                </div>
-                <div className="mainPageListContent1">
-                    {this.props.data.map(this.convertMainPageTopic)}
-                </div>
-            </div>
-        }
-    }
+  }
 }
 
 /**
  * 测试用组件~
  **/
 export class Test extends React.Component<{}, { testContent: string }>{
-    constructor(props) {
-        super(props);
-        this.state = {
-            testContent: '',
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.urlTextHanderler = this.urlTextHanderler.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      testContent: '',
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.urlTextHanderler = this.urlTextHanderler.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      testContent: e.target.value
+    });
+  }
+
+  async urlTextHanderler() {
+    const reg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/gim;
+    const reg2 = /cc98\.org/i;
+    const reg3 = /zju\.edu\.cn/i;
+    const reg4 = /nexushd\.org/i;
+    const url = this.state.testContent;
+    const matchResult = url.match(reg);
+    if (matchResult) {
+      const domainName = matchResult[0];
+      let isInternalLink = reg2.test(domainName) || reg3.test(domainName) || reg4.test(domainName);
+
+      //return isInternalLink;
+    } else {
+      //console.log("这不是链接！");
     }
+  }
 
-    handleChange(e) {
-        this.setState({
-            testContent: e.target.value
-        });
+  async postAd() {
+    const url = `/index/column/24`;
+    const content = {
+      type: 4,
+      title: "一个图片不一样的广告",
+      url: "www.cc98.org",
+      imageUrl: "/images/推荐功能.jpg",
+      enable: true,
+      days: 10,
     }
+    const postForumIndexColumnInfo = JSON.stringify(content);
+    const token = Utility.getLocalStorage("accessToken");
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", 'application/json');
+    let response = await Utility.cc98Fetch(url, {
+      method: 'PUT',
+      headers: myHeaders,
+      body: postForumIndexColumnInfo,
+    });
+    //console.log("发送成功！")
+  }
+  async signIn() {
+    const url = `/me/signin`;
 
-    async urlTextHanderler() {
-        const reg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/gim;
-        const reg2 = /cc98\.org/i;
-        const reg3 = /zju\.edu\.cn/i;
-        const reg4 = /nexushd\.org/i;
-        const url = this.state.testContent;
-        const matchResult = url.match(reg);
-        if (matchResult) {
-            const domainName = matchResult[0];
-            let isInternalLink = reg2.test(domainName) || reg3.test(domainName) || reg4.test(domainName);
+    const token = Utility.getLocalStorage("accessToken");
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", 'application/json');
+    myHeaders.append("Content-Type", "application/json");
 
-            //return isInternalLink;
-        } else {
-            //console.log("这不是链接！");
-        }
-    }
+    let content = "日常";
+    const response = await Utility.cc98Fetch(url, { method: "POST", headers: myHeaders, body: content });
+  }
 
-    async postAd() {
-        const url = `/index/column/24`;
-        const content = {
-            type: 4,
-            title: "一个图片不一样的广告",
-            url: "www.cc98.org",
-            imageUrl: "/images/推荐功能.jpg",
-            enable: true,
-            days: 10,
-        }
-        const postForumIndexColumnInfo = JSON.stringify(content);
-        const token = Utility.getLocalStorage("accessToken");
-        let myHeaders = new Headers();
-        myHeaders.append("Authorization", token);
-        myHeaders.append("Content-Type", 'application/json');
-        let response = await Utility.cc98Fetch(url, {
-            method: 'PUT',
-            headers: myHeaders,
-            body: postForumIndexColumnInfo,
-        });
-        //console.log("发送成功！")
-    }
-    async signIn() {
-        const url = `/me/signin`;
-
-        const token = Utility.getLocalStorage("accessToken");
-        let myHeaders = new Headers();
-        myHeaders.append("Authorization", token);
-        myHeaders.append("Content-Type", 'application/json');
-        myHeaders.append("Content-Type", "application/json");
-
-        let content = "日常";
-        const response = await Utility.cc98Fetch(url, { method: "POST", headers: myHeaders, body: content });
-    }
-
-    render() {
-        return <div className="mainPageList">
-            <div className="mainPageTitle2">
-                <div className="mainPageTitleRow">
-                    <i className="fa fa-volume-up"></i>
-                    <div className="mainPageTitleText">测试区</div>
-                </div>
-            </div>
-            <div className="mainPageListContent2">
-                <div>这里是可爱的adddna测试的地方~</div>
-                <input name="testContent" type="text" id="loginName" onChange={this.handleChange} value={this.state.testContent} />
-                <div>封印封印</div>
-            </div>
+  render() {
+    return <div className="mainPageList">
+      <div className="mainPageTitle2">
+        <div className="mainPageTitleRow">
+          <i className="fa fa-volume-up"></i>
+          <div className="mainPageTitleText">测试区</div>
         </div>
-    }
+      </div>
+      <div className="mainPageListContent2">
+        <div>这里是可爱的adddna测试的地方~</div>
+        <input name="testContent" type="text" id="loginName" onChange={this.handleChange} value={this.state.testContent} />
+        <div>封印封印</div>
+      </div>
+    </div>
+  }
 }
 
 /**
@@ -343,19 +343,19 @@ export class Test extends React.Component<{}, { testContent: string }>{
  **/
 export class MainPageColumn {
 
-    //属性
-    imageUrl: string;
-    title: string;
-    url: string;
-    content: string;
+  //属性
+  imageUrl: string;
+  title: string;
+  url: string;
+  content: string;
 
-    //构造方法
-    constructor(imageUrl, title, url, content) {
-        this.imageUrl = imageUrl;
-        this.title = title;
-        this.url = url;
-        this.content = content;
-    }
+  //构造方法
+  constructor(imageUrl, title, url, content) {
+    this.imageUrl = imageUrl;
+    this.title = title;
+    this.url = url;
+    this.content = content;
+  }
 }
 
 /**
@@ -363,25 +363,25 @@ export class MainPageColumn {
  */
 export class RecommendedFunctionComponent extends React.Component<{ data }, {}>{
 
-    convertRecommendedFunction(item: MainPageColumn) {
-        return <div className="recommendedFunctionRow">
-            <div className="recommendedFunctionImage"><img src={item.imageUrl}></img></div>
-            <div className="recommendedFunctionTitle"><a href={item.url} target="_blank">{item.title}</a></div>
+  convertRecommendedFunction(item: MainPageColumn) {
+    return <div className="recommendedFunctionRow">
+      <div className="recommendedFunctionImage"><img src={item.imageUrl}></img></div>
+      <div className="recommendedFunctionTitle"><a href={item.url} target="_blank">{item.title}</a></div>
+    </div>
+  }
+  render() {
+    return <div className="recommendedFunction">
+      <div className="mainPageTitle1">
+        <div className="mainPageTitleRow">
+          <i className="fa fa-volume-up"></i>
+          <div className="mainPageTitleText">推荐功能</div>
         </div>
-    }
-    render() {
-        return <div className="recommendedFunction">
-            <div className="mainPageTitle1">
-                <div className="mainPageTitleRow">
-                    <i className="fa fa-volume-up"></i>
-                    <div className="mainPageTitleText">推荐功能</div>
-                </div>
-            </div>
-            <div className="recommendedFunctionContent">
-                {this.props.data.map(this.convertRecommendedFunction)}
-            </div>
-        </div>
-    }
+      </div>
+      <div className="recommendedFunctionContent">
+        {this.props.data.map(this.convertRecommendedFunction)}
+      </div>
+    </div>
+  }
 }
 
 /**
@@ -389,26 +389,26 @@ export class RecommendedFunctionComponent extends React.Component<{ data }, {}>{
  */
 export class SchoolNewsComponent extends React.Component<{ data }, {}>{
 
-    convertSchoolNews(item: MainPageColumn) {
-        return <div className="schoolNewsRow">
-            <div className="schoolNewsTitle"><a href={item.url} target="_blank">{item.title}</a></div>
-        </div>
-    }
+  convertSchoolNews(item: MainPageColumn) {
+    return <div className="schoolNewsRow">
+      <div className="schoolNewsTitle"><a href={item.url} target="_blank">{item.title}</a></div>
+    </div>
+  }
 
-    render() {
+  render() {
 
-        return <div className="schoolNews">
-            <div className="mainPageTitle2">
-                <div className="mainPageTitleRow">
-                    <i className="fa fa-volume-up"></i>
-                    <div className="mainPageTitleText">校园新闻</div>
-                </div>
-            </div>
-            <div className="schoolNewsContent">
-                {this.props.data.map(this.convertSchoolNews)}
-            </div>
+    return <div className="schoolNews">
+      <div className="mainPageTitle2">
+        <div className="mainPageTitleRow">
+          <i className="fa fa-volume-up"></i>
+          <div className="mainPageTitleText">校园新闻</div>
         </div>
-    }
+      </div>
+      <div className="schoolNewsContent">
+        {this.props.data.map(this.convertSchoolNews)}
+      </div>
+    </div>
+  }
 }
 
 /**
@@ -417,95 +417,95 @@ export class SchoolNewsComponent extends React.Component<{ data }, {}>{
  */
 export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], index: number }>{
 
-    private timer: any;
+  private timer: any;
 
-    constructor(props) {
-        super(props);
-        let data = Utility.getStorage('mainAds');
-        if (!data) { data = new Array<MainPageColumn>(); }
-        this.state = {
-            ads: data,
-            index: 0,
-        };
-        this.changeIndex = this.changeIndex.bind(this);
-        this.handleMouseEnter = this.handleMouseEnter.bind(this);
-        this.convertButton = this.convertButton.bind(this);
+  constructor(props) {
+    super(props);
+    let data = Utility.getStorage('mainAds');
+    if (!data) { data = new Array<MainPageColumn>(); }
+    this.state = {
+      ads: data,
+      index: 0,
+    };
+    this.changeIndex = this.changeIndex.bind(this);
+    this.handleMouseEnter = this.handleMouseEnter.bind(this);
+    this.convertButton = this.convertButton.bind(this);
+  }
+
+  async getAds() {
+    let ads: MainPageColumn[] = Utility.getStorage('mainAds');
+    if (ads) { return ads }
+    else {
+      ads = new Array<MainPageColumn>();
+      const response = await Utility.cc98Fetch('/config/global/advertisement');
+      const data = await response.json();
+      for (let i = 0; i < data.length; i++) {
+        ads[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+      }
+      Utility.setStorage('mainAds', ads);
+      return ads;
     }
+  }
 
-    async getAds() {
-        let ads: MainPageColumn[] = Utility.getStorage('mainAds');
-        if (ads) { return ads }
-        else {
-            ads = new Array<MainPageColumn>();
-            const response = await Utility.cc98Fetch('/config/global/advertisement');
-            const data = await response.json();
-            for (let i = 0; i < data.length; i++) {
-                ads[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
-            }
-            Utility.setStorage('mainAds', ads);
-            return ads;
-        }
-    }
+  async componentWillMount() {
+    const x = await this.getAds();
+    const length = x.length;
+    this.setState({
+      ads: x,
+      index: Math.floor(Math.random() * length)
+    });
+  }
 
-    async componentWillMount() {
-        const x = await this.getAds();
-        const length = x.length;
-        this.setState({
-            ads: x,
-            index: Math.floor(Math.random() * length)
-        });
-    }
+  //设定定时器 每20s调用一次changeIndex()
+  componentDidMount() {
+    this.timer = setInterval(() => { this.changeIndex(this.state.index) }, 20000);
+  }
 
-    //设定定时器 每20s调用一次changeIndex()
-    componentDidMount() {
-        this.timer = setInterval(() => { this.changeIndex(this.state.index) }, 20000);
-    }
+  //当组件从页面上移除时移除定时器
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
 
-    //当组件从页面上移除时移除定时器
-    componentWillUnmount() {
-        clearInterval(this.timer);
-    }
+  //根据当前广告角标返回下一角标
+  changeIndex(index) {
+    let total = this.state.ads.length;
+    let nextIndex = index + 1;
+    if (nextIndex >= total) nextIndex = 0;
+    this.setState({
+      index: nextIndex,
+    })
+  }
 
-    //根据当前广告角标返回下一角标
-    changeIndex(index) {
-        let total = this.state.ads.length;
-        let nextIndex = index + 1;
-        if (nextIndex >= total) nextIndex = 0;
-        this.setState({
-            index: nextIndex,
-        })
-    }
+  //绑定鼠标进入事件
+  handleMouseEnter(index) {
+    this.setState({
+      index: index,
+    })
+  }
 
-    //绑定鼠标进入事件
-    handleMouseEnter(index) {
-        this.setState({
-            index: index,
-        })
-    }
+  convertButton(value: number, index: number, array: number[]) {
+    let className: string = value ? "adButtonSelected" : "adButton";
+    return <div key={index} className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
+  }
 
-    convertButton(value: number, index: number, array: number[]) {
-        let className: string = value ? "adButtonSelected" : "adButton";
-        return <div key={index} className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
-    }
+  render() {
+    let ads = this.state.ads;
+    let index = this.state.index;
 
-    render() {
-        let ads = this.state.ads;
-        let index = this.state.index;
+    let length = ads.length;
+    let styles = new Array(length);
+    styles.fill(0);     //将数组元素全部填充为0
+    styles[index] = 1;      //选中下标的内容对应的数组元素值为1
+    let buttons = styles.map(this.convertButton);
 
-        let length = ads.length;
-        let styles = new Array(length);
-        styles.fill(0);     //将数组元素全部填充为0
-        styles[index] = 1;      //选中下标的内容对应的数组元素值为1
-        let buttons = styles.map(this.convertButton);
+    let url = ads.length ? ads[index].url : "";
+    let imageUrl = ads.length ? ads[index].imageUrl : "";
 
-        let url = ads.length ? ads[index].url : "";
-        let imageUrl = ads.length ? ads[index].imageUrl : "";
-
-        return <div style={{ position: 'relative', width: '18.75rem', height: '6.25rem' }}>
-            <div><a href={url} target="_blank"><img src={imageUrl} style={{ width: '18.75rem', height: '6.25rem' }} /></a></div>
-            <div className="adButtons" style={{ position: 'absolute', left: '50%', marginLeft: '-8rem', bottom: '0.25rem' }}>{buttons}</div>
-        </div>;
-    }
+    return <div style={{ position: 'relative', width: '18.75rem', height: '6.25rem' }}>
+      <div><a href={url} target="_blank"><img src={imageUrl} style={{ width: '18.75rem', height: '6.25rem' }} /></a></div>
+      <div className="adButtons" style={{ position: 'absolute', left: '50%', marginLeft: '-8rem', bottom: '0.25rem' }}>{buttons}</div>
+    </div>;
+  }
 }
 
 /**
@@ -513,53 +513,53 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
  **/
 export class MainPageCountComponent extends React.Component<{ data }, {}> {
 
-    render() {
-        const data = this.props.data;
-        return <div className="mainPageCount">
-            <div className="mainPageTitle2">
-                <div className="mainPageTitleRow">
-                    <i className="fa fa-volume-up"></i>
-                    <div className="mainPageTitleText">论坛统计</div>
-                </div>
-            </div>
-            <div className="mainPageCountContent" style={{ height: "10rem" }}>
-                <div className="mainPageCountRow">
-                    <div className="mainPageCountTitle">今日帖数</div>
-                    <div className="mainPageCountTitle">{data.todayCount}</div>
-                </div>
-                <div className="mainPageCountRow">
-                    <div className="mainPageCountTitle">论坛总主题数</div>
-                    <div className="mainPageCountTitle">{data.topicCount}</div>
-                </div>
-                <div className="mainPageCountRow">
-                    <div className="mainPageCountTitle">论坛总回复数</div>
-                    <div className="mainPageCountTitle">{data.postCount}</div>
-                </div>
-                <div className="mainPageCountRow">
-                    <div className="mainPageCountTitle">在线用户数</div>
-                    <div className="mainPageCountTitle">{data.onlineUserCount || 0}</div>
-                </div>
-                <div className="mainPageCountRow">
-                    <div className="mainPageCountTitle">总用户数</div>
-                    <div className="mainPageCountTitle">{data.userCount}</div>
-                </div>
-                <div className="mainPageCountRow">
-                    <div className="mainPageCountTitle">欢迎新用户</div>
-                    <div className="mainPageCountTitle"><Link to={`/user/name/${encodeURIComponent(data.lastUserName)}`}>{data.lastUserName}</Link></div>
-                </div>
-            </div>
+  render() {
+    const data = this.props.data;
+    return <div className="mainPageCount">
+      <div className="mainPageTitle2">
+        <div className="mainPageTitleRow">
+          <i className="fa fa-volume-up"></i>
+          <div className="mainPageTitleText">论坛统计</div>
         </div>
+      </div>
+      <div className="mainPageCountContent" style={{ height: "10rem" }}>
+        <div className="mainPageCountRow">
+          <div className="mainPageCountTitle">今日帖数</div>
+          <div className="mainPageCountTitle">{data.todayCount || 0}</div>
+        </div>
+        <div className="mainPageCountRow">
+          <div className="mainPageCountTitle">论坛总主题数</div>
+          <div className="mainPageCountTitle">{data.topicCount || 0}</div>
+        </div>
+        <div className="mainPageCountRow">
+          <div className="mainPageCountTitle">论坛总回复数</div>
+          <div className="mainPageCountTitle">{data.postCount || 0}</div>
+        </div>
+        <div className="mainPageCountRow">
+          <div className="mainPageCountTitle">在线用户数</div>
+          <div className="mainPageCountTitle">{data.onlineUserCount || 0}</div>
+        </div>
+        <div className="mainPageCountRow">
+          <div className="mainPageCountTitle">总用户数</div>
+          <div className="mainPageCountTitle">{data.userCount || 0}</div>
+        </div>
+        <div className="mainPageCountRow">
+          <div className="mainPageCountTitle">欢迎新用户</div>
+          <div className="mainPageCountTitle"><Link to={`/user/name/${encodeURIComponent(data.lastUserName)}`}>{data.lastUserName}</Link></div>
+        </div>
+      </div>
+    </div>
 
-    }
+  }
 }
 
 /**
  * 推荐版面组件
  */
 export class RecommendedBoardComponent extends React.Component<{}, {}>{
-    render() {
-        return <div></div>
-    }
+  render() {
+    return <div></div>
+  }
 }
 
 /**
@@ -568,21 +568,23 @@ export class RecommendedBoardComponent extends React.Component<{}, {}>{
  */
 export class MainPageCountProps {
 
-    //属性
-    todayCount: number;
-    topicCount: number;
-    postCount: number;
-    userCount: number;
-    lastUserName: string;
+  //属性
+  todayCount: number;
+  topicCount: number;
+  postCount: number;
+  onlineUserCount: number;
+  userCount: number;
+  lastUserName: string;
 
-    //构造方法
-    constructor(todayCount, topicCount, postCount, userCount, lastUserName) {
-        this.todayCount = todayCount;
-        this.topicCount = topicCount;
-        this.postCount = postCount;
-        this.userCount = userCount;
-        this.lastUserName = lastUserName;
-    }
+  //构造方法
+  constructor(todayCount, topicCount, postCount, onlineUserCount, userCount, lastUserName) {
+    this.todayCount = todayCount;
+    this.topicCount = topicCount;
+    this.postCount = postCount;
+    this.onlineUserCount = onlineUserCount;
+    this.userCount = userCount;
+    this.lastUserName = lastUserName;
+  }
 
 }
 
@@ -591,101 +593,101 @@ export class MainPageCountProps {
  */
 export class MainPage extends React.Component<{}, { data }> {
 
-    constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
-        super(props);       //super 表示调用基类（Component系统类型）构造方法  
-        let data = {
-            academics: [],
-            announcement: "",
-            emotion: [],
-            fleaMarket: [],
-            fullTimeJob: [],
-            hotTopic: [],
-            lastUserName: "",
-            partTimeJob: [],
-            postCount: 0,
-            recommendationFunction: [],
-            recommendationReading: [],
-            schoolEvent: [],
-            schoolNews: [],
-            study: [],
-            todayCount: 0,
-            topicCount: 0,
-            userCount: 0
-        };
-        this.state = {
-            data: data
-        };
+  constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
+    super(props);       //super 表示调用基类（Component系统类型）构造方法  
+    let data = {
+      academics: [],
+      announcement: "",
+      emotion: [],
+      fleaMarket: [],
+      fullTimeJob: [],
+      hotTopic: [],
+      lastUserName: "",
+      partTimeJob: [],
+      postCount: 0,
+      recommendationFunction: [],
+      recommendationReading: [],
+      schoolEvent: [],
+      schoolNews: [],
+      study: [],
+      todayCount: 0,
+      topicCount: 0,
+      userCount: 0
+    };
+    this.state = {
+      data: data
+    };
+  }
+
+  async getData() {
+    let data = Utility.getLocalStorage("mainPageData");
+    if (!data) {
+      const response = await Utility.cc98Fetch('/config/index');
+      data = await response.json();
+      let hotTopicData = data.hotTopic;
+      //若获取到的首页数据中的十大数据为空，则不缓存首页数据，这样用户立即刷新页面就可以获取最新的十大数据
+      //当然，该次获取的十大数据为空，这则由十大组件处理（显示之前缓存的十大数据）
+      //若获取了正常的首页数据（十大不为空），则缓存60s，这样可以避免用户短时间内频繁访问首页产生大量请求
+      if (hotTopicData && hotTopicData.length) {
+        Utility.setLocalStorage("mainPageData", data, 60);
+        Utility.setLocalStorage("mainPageHotTopic", data);
+      }
+      return data;
+    } else {
+      return data
     }
+  }
 
-    async getData() {
-        let data = Utility.getLocalStorage("mainPageData");
-        if (!data) {
-            const response = await Utility.cc98Fetch('/config/index');
-            data = await response.json();
-            let hotTopicData = data.hotTopic;
-            //若获取到的首页数据中的十大数据为空，则不缓存首页数据，这样用户立即刷新页面就可以获取最新的十大数据
-            //当然，该次获取的十大数据为空，这则由十大组件处理（显示之前缓存的十大数据）
-            //若获取了正常的首页数据（十大不为空），则缓存60s，这样可以避免用户短时间内频繁访问首页产生大量请求
-            if (hotTopicData && hotTopicData.length) {
-                Utility.setLocalStorage("mainPageData", data, 60);
-                Utility.setLocalStorage("mainPageHotTopic", data);
-            }
-            return data;
-        } else {
-            return data
-        }
-    }
+  async componentDidMount() {
+    const x = await this.getData();
+    this.setState({
+      data: x,
+    });
+  }
 
-    async componentDidMount() {
-        const x = await this.getData();
-        this.setState({
-            data: x,
-        });
-    }
+  render() {
 
-    render() {
+    let data = this.state.data;
 
-        let data = this.state.data;
+    let study: MainPageTopicMoreProps[] = new Array({ name: "学习", url: "/list/68" }, { name: "外语", url: "/list/304" }, { name: "考研", url: "/list/263" }, { name: "出国", url: "/list/102" });
+    let emotion: MainPageTopicMoreProps[] = new Array({ name: "缘分", url: "/list/152" }, { name: "小屋", url: "/list/114" }, { name: "感性", url: "/list/81" });
+    let fleaMarket: MainPageTopicMoreProps[] = new Array({ name: "数码", url: "/list/562" }, { name: "生活", url: "/list/80" }, { name: "服饰", url: "/list/563" });
+    let fullTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/235" });
+    let partTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/459" });
 
-        let study: MainPageTopicMoreProps[] = new Array({ name: "学习", url: "/list/68" }, { name: "外语", url: "/list/304" }, { name: "考研", url: "/list/263" }, { name: "出国", url: "/list/102" });
-        let emotion: MainPageTopicMoreProps[] = new Array({ name: "缘分", url: "/list/152" }, { name: "小屋", url: "/list/114" }, { name: "感性", url: "/list/81" });
-        let fleaMarket: MainPageTopicMoreProps[] = new Array({ name: "数码", url: "/list/562" }, { name: "生活", url: "/list/80" }, { name: "服饰", url: "/list/563" });
-        let fullTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/235" });
-        let partTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/459" });
+    let count: MainPageCountProps = new MainPageCountProps(data.todayCount, data.topicCount, data.postCount, data.onlineUserCount, data.userCount, data.lastUserName);
 
-        let count: MainPageCountProps = new MainPageCountProps(data.todayCount, data.topicCount, data.postCount, data.userCount, data.lastUserName);
+    return <div className="mainPage">
+      <DocumentTitle title={`CC98论坛`} />
+      <div className="leftPart">
+        <AnnouncementComponent data={data.announcement} />
+        <RecommendedReadingComponent data={data.recommendationReading} />
+        <div className="row" style={{ justifyContent: "space-between" }}>
+          <HotTopicComponent data={data.hotTopic} />
+          <MainPageTopicComponent data={data.schoolEvent} name="校园活动" fetchUrl="/topic/school-event" style="blue" mores={[]} />
+        </div>
+        <div className="row" style={{ justifyContent: "space-between" }}>
 
-        return <div className="mainPage">
-            <DocumentTitle title={`CC98论坛`} />
-            <div className="leftPart">
-                <AnnouncementComponent data={data.announcement} />
-                <RecommendedReadingComponent data={data.recommendationReading} />
-                <div className="row" style={{ justifyContent: "space-between" }}>
-                    <HotTopicComponent data={data.hotTopic} />
-                    <MainPageTopicComponent data={data.schoolEvent} name="校园活动" fetchUrl="/topic/school-event" style="blue" mores={[]} />
-                </div>
-                <div className="row" style={{ justifyContent: "space-between" }}>
+          <MainPageTopicComponent data={data.academics} name="学术信息" fetchUrl="/topic/academics" style="black" mores={[]} />
+          <MainPageTopicComponent data={data.study} name="学习园地" fetchUrl="/topic/study" style="black" mores={study} />
+        </div>
+        <div className="row" style={{ justifyContent: "space-between" }}>
+          <MainPageTopicComponent data={data.emotion} name="感性·情感" fetchUrl="/topic/emotion" style="blue" mores={emotion} />
+          <MainPageTopicComponent data={data.fleaMarket} name="跳蚤市场" fetchUrl="/topic/flea-market" style="blue" mores={fleaMarket} />
 
-                    <MainPageTopicComponent data={data.academics} name="学术信息" fetchUrl="/topic/academics" style="black" mores={[]} />
-                    <MainPageTopicComponent data={data.study} name="学习园地" fetchUrl="/topic/study" style="black" mores={study} />
-                </div>
-                <div className="row" style={{ justifyContent: "space-between" }}>
-                    <MainPageTopicComponent data={data.emotion} name="感性·情感" fetchUrl="/topic/emotion" style="blue" mores={emotion} />
-                    <MainPageTopicComponent data={data.fleaMarket} name="跳蚤市场" fetchUrl="/topic/flea-market" style="blue" mores={fleaMarket} />
-
-                </div>
-                <div className="row" style={{ justifyContent: "space-between" }}>
-                    <MainPageTopicComponent data={data.fullTimeJob} name="求职广场" fetchUrl="/topic/full-time-job" style="black" mores={fullTimeJob} />
-                    <MainPageTopicComponent data={data.partTimeJob} name="实习兼职" fetchUrl="/topic/part-time-job" style="black" mores={partTimeJob} />
-                </div>
-            </div>
-            <div className="rightPart">
-                <RecommendedFunctionComponent data={data.recommendationFunction} />
-                <SchoolNewsComponent data={data.schoolNews} />
-                <AdsComponent />
-                <MainPageCountComponent data={count} />
-            </div>
-        </div>;
-    }
+        </div>
+        <div className="row" style={{ justifyContent: "space-between" }}>
+          <MainPageTopicComponent data={data.fullTimeJob} name="求职广场" fetchUrl="/topic/full-time-job" style="black" mores={fullTimeJob} />
+          <MainPageTopicComponent data={data.partTimeJob} name="实习兼职" fetchUrl="/topic/part-time-job" style="black" mores={partTimeJob} />
+        </div>
+      </div>
+      <div className="rightPart">
+        <RecommendedFunctionComponent data={data.recommendationFunction} />
+        <SchoolNewsComponent data={data.schoolNews} />
+        <AdsComponent />
+        <MainPageCountComponent data={count} />
+      </div>
+    </div>;
+  }
 
 }
