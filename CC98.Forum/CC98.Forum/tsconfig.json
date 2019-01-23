@@ -1,5 +1,7 @@
 {
 	"compilerOptions": {
+		"module": "esnext",
+		"moduleResolution": "node",
 		"noImplicitAny": false,
 		"noEmitOnError": true,
 		"removeComments": false,
@@ -15,7 +17,7 @@
 		"importHelpers": true,
 	
 	},
-	"include": [
+	"exclude": [
 		"webpack.config.debug.ts",
 		"webpack.config.release.ts"
 	]
