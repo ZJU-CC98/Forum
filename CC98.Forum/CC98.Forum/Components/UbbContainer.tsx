@@ -41,7 +41,7 @@ export class UbbContainer extends React.PureComponent<UbbContainerProps, {}> {
         //let r = /&#(\d{5});/gi;
         //code = code.replace(r, (match, grp) => (String.fromCharCode(grp)));
 
-        const ubbHtml = engine.exec(code || '', options);
+        const ubbHtml = engine.exec(String(code), options);
         
 		//打开回车与空格
 		const style = {
