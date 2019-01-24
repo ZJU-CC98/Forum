@@ -36,6 +36,9 @@ import { RootState } from '../Store';
 import { errorKeys } from '../Reducers/Error';
 import { connect } from 'react-redux';
 
+// 重构
+import RBoard from '../Pages/Board/index';
+
 type Props = {
   isError: boolean;
   errorMessage: errorKeys;
@@ -68,7 +71,12 @@ class App extends React.Component<Props> {
         <Route path="/signin" component={Signin} />
         <Route path="/sitemanage" component={SiteManage} />
         <Route path="/editor/:mode/:id?" component={ShowEdit} />
+
+        <Route path="/board/:id/:page?" component={RBoard} />
+
         <Route component={Status.PageNotFound} />
+
+
       </Switch>
     );
 
