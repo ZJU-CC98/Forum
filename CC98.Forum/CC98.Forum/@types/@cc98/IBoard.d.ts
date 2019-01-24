@@ -3,58 +3,62 @@ declare module '@cc98/api' {
     /**
      * 版面id
      */
-    id: number
+    id: number;
     /**
      * 版面名称
      */
-    name: string
+    name: string;
     /**
      * 版面名称
      */
-    description: string
+    description: string;
     /**
      * 发帖总数
      */
-    topicCount: number
+    topicCount: number;
     /**
      * 回复总数
      */
-    postCount: number
+    postCount: number;
     /**
      * 今日回复总数
      */
-    todayCount: number
+    todayCount: number;
     /**
      * 版主
      */
-    boardMasters: string[]
+    boardMasters: string[];
     /**
      * 是否关注
      */
-    isUserCustomBoard?: boolean
+    isUserCustomBoard?: boolean;
     /**
      * 是否仅内网可见
      */
-    internalState: number
+    internalState: number;
     /**
      * 是否已锁定
      */
-    isLock: boolean
+    isLock: boolean;
     /**
      * 父版面id
      */
-    parentId: number
+    parentId: number;
     /**
      * 是否匿名
      */
-    anonymousState: number
+    anonymousState: number;
     /**
      * 是否能进入
      */
-    canEntry: boolean
+    canEntry: boolean;
     /**
      * 是否能投票
      */
-    canVote: boolean
+    canVote: boolean;
+    /**
+     * 大字报
+     */
+    bigPaper: string;
   }
 }

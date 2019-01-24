@@ -210,6 +210,7 @@ input[type='radio'] {
 
 .row {
   display: flex;
+  align-items: center;
 }
 
 .column {
@@ -3920,7 +3921,7 @@ ol {
 }
 
 .board-list-body {
-  border: #79b8ca solid thin;
+  border: $color_main solid thin;
   width: 100%;
 }
 
@@ -3932,11 +3933,20 @@ ol {
   background-color: #ebf5f8;
 }
 
+.board-postItem-head-left-part {
+  display: flex;
+  align-items: center;
+}
+
 .board-postItem-body {
   display: flex;
   width: 100%;
   height: 3rem;
   align-items: center;
+}
+
+.board-postItem-body:hover {
+  background-color: #eaeaea;
 }
 
 .board-postItem-icon {
@@ -3988,7 +3998,7 @@ ol {
   align-items: center;
   background-color: $color_main;
   color: #fff;
-  border: #79b8ca solid thin;
+  border: $color_main solid thin;
 }
 
 .board-postItem-head-left {
@@ -3999,6 +4009,7 @@ ol {
 
 .board-postItem-head-option {
   margin-right: 1rem;
+  cursor: pointer;
 }
 
 .board-postItem-head-right {
@@ -4023,11 +4034,95 @@ ol {
   width: 12rem;
 }
 
-.ant-pagination-options-quick-jumper input{
+.ant-pagination-options-quick-jumper input {
   padding: 0 0 0 5px;
 }
 
-.board-pagination{
+.board-pagination {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.board-postItem-card-information {
+  display: flex;
+}
+
+.board-postItem-card-username {
+  margin-left: 1rem;
+}
+
+.board-postItem-card-content {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.board-postItem-card-body {
+  margin-bottom: 1rem;
+}
+
+.board-postItem-cards {
+  max-height: 40rem;
+  overflow-y: scroll;
+  width: 40rem;
+}
+
+.board-list-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.board-head-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.board-head-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.board-head-button {
+  height: 4rem;
+  width: 7rem;
+  background-color: $color_main;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.board-head-button:hover {
+  background-color: $color_main;
+}
+
+.board-head-button:before {
+  background-color: $color_main;
+}
+
+.board-head-button:focus {
+  background-color: $color_main;
+}
+
+.board-bigpaper {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.board-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: $color_main;
+}
+
+.board-head-name {
+  margin-left: 1rem;
+  font-size: 1.25rem;
 }

@@ -1,9 +1,12 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
+import { Link } from 'react-router-dom';
 import { ITopic, IPost } from '@cc98/api';
-import { Tag, Popover } from 'antd';
+import { Tag, Popover, Tooltip } from 'antd';
 import dayjs from 'dayjs';
-import { getTopic } from './action';
+import { getShortTopic } from './action';
+import { UbbContainer } from '../../Components/UbbContainer';
+import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
 
 interface Props {
   data: ITopic;
@@ -12,6 +15,7 @@ interface Props {
 const Item: React.SFC<Props> = ({ data, order }) => {
   // 普通帖子
   let icon = 'normal';
+  let iconText = '普通帖子';
 
   // 自己发的
   let curName;
@@ -19,30 +23,36 @@ const Item: React.SFC<Props> = ({ data, order }) => {
     curName = Utility.getLocalStorage('userInfo').name;
   if (data.userName === curName) {
     icon = 'my';
+    iconText = '我的帖子';
   }
 
   // 热门
   if (data.replyCount > 100) {
     icon = 'hot';
+    iconText = '热帖';
   }
 
   // 被锁
   if (data.state === 1) {
     icon = 'lock';
+    iconText = '已被锁定';
   }
 
   // 精华
   if (data.bestState === 1) {
     icon = 'star';
+    iconText = '精华';
   }
 
   // 置顶
   switch (data.topState) {
     case 4:
       icon = 'top-red';
+      iconText = '全站置顶';
       break;
     case 2:
       icon = 'top-orange';
+      iconText = '版面置顶';
       break;
     default:
   }
@@ -60,23 +70,38 @@ const Item: React.SFC<Props> = ({ data, order }) => {
 
   const content = <Card data={data} />;
   return (
-    <Popover title={data.title} content={content}>
+    <Link to={`/topic/${data.id}`}>
       <div className={bodyClass}>
-        <div className="board-postItem-icon">
-          <img src={iconSrc} />
-        </div>
+        <Tooltip title={iconText}>
+          <div className="board-postItem-icon">
+            <img src={iconSrc} />
+          </div>
+        </Tooltip>
 
-        <div className="board-postItem-title">{data.title}</div>
+        <Tooltip title={data.title}>
+          <div className="board-postItem-title">{data.title}</div>
+        </Tooltip>
+        <Popover title={data.title} content={content}>
+          <Tag style={{ marginLeft: '1rem' }} color="magenta">
+            速览
+          </Tag>
+        </Popover>
 
         <div className="board-postItem-right">
           <div className="board-postItem-userName">{data.userName}</div>
 
           <div className="board-postItem-tags">
             <div className="board-postItem-tag">
-              <Tag color="blue">{data.hitCount}</Tag>
+              <Tag style={{ width: 50, textAlign: 'right' }} color="blue">
+                {data.hitCount > 10000
+                  ? `${(data.hitCount / 10000).toFixed(1)}万`
+                  : data.hitCount}
+              </Tag>
             </div>
             <div className="board-postItem-tag">
-              <Tag color="cyan">{data.replyCount}</Tag>
+              <Tag style={{ width: 30, textAlign: 'right' }} color="cyan">
+                {data.replyCount}
+              </Tag>
             </div>
           </div>
 
@@ -86,7 +111,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
           </div>
         </div>
       </div>
-    </Popover>
+    </Link>
   );
 };
 
@@ -102,29 +127,34 @@ class Card extends React.Component<ChildProps, ChildState> {
   };
   async componentDidMount() {
     const { data } = this.props;
-    const posts = await getTopic(data.id);
+    const posts = await getShortTopic(data.id);
     this.setState({ posts });
   }
 
   render() {
     const { posts } = this.state;
     return (
-      <>
+      <div className="board-postItem-cards">
         {posts.map(item => (
           <PItem key={item.id} item={item} />
         ))}
-      </>
+      </div>
     );
   }
 }
 
 const PItem: React.SFC<{ item: IPost }> = ({ item }) => (
-  <div>
-    <div>
+  <div className="board-postItem-card-body">
+    <div className="board-postItem-card-information">
       <div>{item.floor}L</div>
-      <div>{item.userName}</div>
+      <div className="board-postItem-card-username">{item.userName}</div>
     </div>
-    <div>{item.content}</div>
+    <div className="board-postItem-card-content">
+      <UbbContainer
+        code={item.content}
+        options={{ ...new UbbCodeOptions(), allowLightbox: true }}
+      />
+    </div>
   </div>
 );
 
