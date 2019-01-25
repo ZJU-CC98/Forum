@@ -162,11 +162,11 @@ export class ChildBoard extends React.Component<{ id: number, boards: ChildBoard
     convertChildBoard(item: ChildBoardState) {
         const url = `/static/images/_${item.name}.png`
         return <div className="boardContent">
-            <Link to={`/list/${item.id}`}><div className="greenBackdrop" >
+            <Link to={`/board/${item.id}`}><div className="greenBackdrop" >
                 <img style={{ width: "6rem", height: "6rem" }} src={url} onError={this.onError}></img>
             </div></Link>
             <div className="column boardBlock" >
-                <Link to={`/list/${item.id}`}><div className="boardName2" style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{item.name}</div></Link>
+                <Link to={`/board/${item.id}`}><div className="boardName2" style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{item.name}</div></Link>
                 <div className="boardInfo">
                     <div className="row">今日  {item.todayCount} </div>
                     <div className="row">总数  {item.postCount}</div>
@@ -178,7 +178,7 @@ export class ChildBoard extends React.Component<{ id: number, boards: ChildBoard
 
     convertNoImgChildBoard(item: ChildBoardState) {
         return <div className="noImgBoardContent">
-            <Link to={`/list/${item.id}`}><div className="boardName2">{item.name}</div></Link>
+            <Link to={`/board/${item.id}`}><div className="boardName2">{item.name}</div></Link>
         </div>;
     }
 
