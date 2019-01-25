@@ -73,7 +73,7 @@ export default class extends React.Component<Props, State> {
     const isMaster = Utility.isMaster(data.boardMasters);
     return (
       <>
-        <div className="row">
+        <div className="row" style={{ width: '100%' }}>
           <Link to={`/list/${data.id}/record/`}>
             <Button>查看版面事件</Button>
           </Link>
