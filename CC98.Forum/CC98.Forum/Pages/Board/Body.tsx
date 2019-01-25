@@ -10,9 +10,10 @@ import {
   getTags,
   getTagTopics
 } from './action';
-import { Pagination } from 'antd';
+import { Pagination, Spin } from 'antd';
 import List from './PostList';
 import Head from './ListHead';
+import Footer from './Footer'
 
 interface Props {
   data: IBoard;
@@ -128,7 +129,9 @@ class Body extends RouteComponent<Props, State, Match> {
 
     const boardList = [].concat(topList).concat(list);
 
-    return boardList.length === 0 ? null : (
+    return boardList.length === 0 ? (
+      <Spin size="large" />
+    ) : (
       <>
         <div className="board-list-bar">
           <Pagination
@@ -157,7 +160,7 @@ class Body extends RouteComponent<Props, State, Match> {
             onChange={this.onChange}
           />
         </div>
-        ,
+        <Footer data={data} list={list} />
       </>
     );
   }

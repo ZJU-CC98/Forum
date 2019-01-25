@@ -1,12 +1,19 @@
 import * as React from 'react';
+import * as Utility from '../../Utility';
 import { Collapse, Button, Divider } from 'antd';
 import { IBoard } from '@cc98/api';
 import { UbbContainer } from '../../Components/UbbContainer';
 import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
+
 const Panel = Collapse.Panel;
 
 interface Props {
   data: IBoard;
+  isFirstPage: boolean;
+}
+interface State {
+  isFollow: boolean;
+  loading: boolean;
 }
 
 const customPanelStyle = {
@@ -18,7 +25,11 @@ const customPanelStyle = {
   width: '100%'
 };
 
-export default class extends React.Component<Props> {
+export default class extends React.Component<Props, State> {
+  state = {
+    isFollow: Utility.isFollowThisBoard(this.props.data.id),
+    loading: false
+  };
   onError(e) {
     e.preventDefault();
     e.target.src = `/static/images/_CC98.png`;
@@ -33,8 +44,19 @@ export default class extends React.Component<Props> {
       </div>
     );
   }
+  async follow() {
+    this.setState({ loading: true });
+    await Utility.followBoard(this.props.data.id);
+    this.setState({ isFollow: true, loading: false });
+  }
+  async unfollow() {
+    this.setState({ loading: true });
+    await Utility.unfollowBoard(this.props.data.id);
+    this.setState({ isFollow: false, loading: false });
+  }
   render() {
-    const { data } = this.props;
+    const { data, isFirstPage } = this.props;
+    const { isFollow, loading } = this.state;
     const url = `/static/images/_${data.name}.png`;
     const shortHand = (
       <div className="row">
@@ -48,15 +70,29 @@ export default class extends React.Component<Props> {
 
         <div
           className="column"
-          style={{ marginLeft: '1rem', marginRight: 'auto' }}
+          style={{ marginLeft: '1rem', marginRight: '1rem' }}
         >
           <div>版面简介：{data.description}</div>
           <div className="row">
             版主：{data.boardMasters.map(this.generateMasters)}
           </div>
         </div>
+
+        <div
+          className="column"
+          style={{ marginLeft: '1rem', marginRight: 'auto' }}
+        >
+          <div>今日贴数：{data.todayCount}</div>
+          <div>总贴数：{data.topicCount}</div>
+        </div>
+
         <div style={{ marginRight: '1rem' }}>
-          <Button> 关注</Button>
+          <Button
+            loading={loading}
+            onClick={isFollow ? () => this.unfollow() : () => this.follow()}
+          >
+            {isFollow ? '取关' : '关注'}
+          </Button>
         </div>
       </div>
     );
@@ -65,7 +101,7 @@ export default class extends React.Component<Props> {
         <Collapse
           className="board-bigpaper"
           bordered={false}
-          defaultActiveKey={['1']}
+          defaultActiveKey={isFirstPage ? ['1'] : []}
         >
           <Panel
             key="1"

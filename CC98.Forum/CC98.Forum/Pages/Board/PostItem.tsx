@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 import { ITopic, IPost } from '@cc98/api';
-import { Tag, Popover, Tooltip } from 'antd';
+import { Tag, Popover, Tooltip, Spin } from 'antd';
 import dayjs from 'dayjs';
 import { getShortTopic } from './action';
 import { UbbContainer } from '../../Components/UbbContainer';
@@ -133,7 +133,9 @@ class Card extends React.Component<ChildProps, ChildState> {
 
   render() {
     const { posts } = this.state;
-    return (
+    return posts.length === 0 ? (
+      <Spin size="large" />
+    ) : (
       <div className="board-postItem-cards">
         {posts.map(item => (
           <PItem key={item.id} item={item} />

@@ -105,3 +105,27 @@ export async function getTags(boardId: number) {
   const data = await response.json();
   return data;
 }
+
+export async function multiDelete(topicIds: number[], reason: string) {
+  const headers = await formAuthorizeHeader();
+  let query = 'id=';
+  query += topicIds.join('&id=');
+  const url = `/topic/multi-delete?${query}`;
+  const body = JSON.stringify({ reason });
+  const response = await cc98Fetch(url, { method: 'PUT', headers, body });
+  return response;
+}
+
+export async function multiLock(
+  topicIds: number[],
+  reason: string,
+  value: number
+) {
+  const headers = await formAuthorizeHeader();
+  let query = 'id=';
+  query += topicIds.join('&id=');
+  const url = `/topic/multi-lock?${query}`;
+  const body = JSON.stringify({ reason, value });
+  const response = await cc98Fetch(url, { method: 'PUT', headers, body });
+  return response;
+}

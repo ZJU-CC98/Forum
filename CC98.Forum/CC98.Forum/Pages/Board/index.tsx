@@ -27,7 +27,7 @@ export default class extends React.Component<Props, State> {
 
     return data ? (
       <div className="board-body">
-        <Head data={data} />
+        <Head data={data} page={page || '1'} />
         <Body data={data} page={page || '1'} />
       </div>
     ) : null;
