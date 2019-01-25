@@ -13,7 +13,7 @@ import {
 import { multiDelete as aDelete, multiLock as aLock } from './action';
 import { Link } from 'react-router-dom';
 import { IBoard, ITopic } from '@cc98/api';
-import dayjs from 'dayjs';
+import moment from 'moment';
 
 const Option = Select.Option;
 
@@ -122,7 +122,7 @@ export default class extends React.Component<Props, State> {
                       <span>天数:{item.days}</span>
                       <span style={{ marginLeft: '2rem', marginRight: '2rem' }}>
                         到期时间:
-                        {dayjs(item.expiredTime).format('YYYY-MM-DD HH:mm:ss')}
+                        {moment(item.expiredTime).format('YYYY-MM-DD HH:mm:ss')}
                       </span>
                       <Button
                         onClick={this.cancelTp.bind(this, item)}

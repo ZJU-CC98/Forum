@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 import { ITopic, IPost } from '@cc98/api';
 import { Tag, Popover, Tooltip, Spin } from 'antd';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import { getShortTopic } from './action';
 import { UbbContainer } from '../../Components/UbbContainer';
 import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
@@ -107,7 +107,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
 
           <div className="board-postItem-lastReply">
             <span>{data.lastPostUser}</span>/
-            <span>{dayjs(data.lastPostTime).format('YY-MM-DD hh:mm')}</span>
+            <span>{moment(data.lastPostTime).format('YY-MM-DD hh:mm')}</span>
           </div>
         </div>
       </div>
