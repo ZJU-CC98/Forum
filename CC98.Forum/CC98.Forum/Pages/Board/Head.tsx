@@ -51,7 +51,7 @@ export default class extends React.Component<Props, State> {
       <div className="board-head-body">
         <Category data={data} />
 
-        <BigPaper data={data} isFirstPage={page==='1'} />
+        <BigPaper key={page} data={data} isFirstPage={page==='1'} />
 
         <div className="board-head-bar">
           {isLogOn && isVerified && !isLocked ? (
