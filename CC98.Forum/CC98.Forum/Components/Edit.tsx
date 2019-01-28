@@ -464,7 +464,7 @@ export class Edit extends RouteComponent<
         const contentCache = Utility.getLocalStorage("contentCache");
         const mode = this.match.params.mode;
         const id = this.match.params.id;
-        const url = `/list/${this.state.boardId}`;
+        const url = `/board/${this.state.boardId}`;
         let editor;
         let titleInput = null;
         if (mode === "postTopic" || mode === 'postVoteTopic') {

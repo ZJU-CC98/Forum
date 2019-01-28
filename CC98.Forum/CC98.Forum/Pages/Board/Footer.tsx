@@ -77,7 +77,7 @@ export default class extends React.Component<Props, State> {
           className="row"
           style={{ width: '100%', justifyContent: 'flex-end' }}
         >
-          <Link to={`/list/${data.id}/record/`}>
+          <Link to={`/board/${data.id}/record/`}>
             <Button>查看版面事件</Button>
           </Link>
           <Button onClick={this.showModal}>小黑屋</Button>
@@ -138,7 +138,7 @@ export default class extends React.Component<Props, State> {
                   }
                 />
                 <div>操作人:{item.operatorUserName}</div>
-              </List.Item>
+              </board.Item>
             )}
           >
             {this.state.loading && this.state.hasMore && (
@@ -146,7 +146,7 @@ export default class extends React.Component<Props, State> {
                 <Spin />
               </div>
             )}
-          </List>
+          </board>
         </Modal>
       </>
     );

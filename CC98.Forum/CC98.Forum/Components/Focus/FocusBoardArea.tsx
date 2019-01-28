@@ -77,7 +77,7 @@ export class FocusBoardArea extends React.Component<{history}, FocusBoardAreaSta
         $('.focus-board').dblclick(function () {
             //双击事件的执行代码
             let boardId = this.id.slice(11);
-            window.location.href=`/list/${boardId}`;
+            window.location.href=`/board/${boardId}`;
         });
     }
 

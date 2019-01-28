@@ -125,7 +125,7 @@ export class RootBoard extends React.Component<{ data: RootBoardState }, { isExp
         let display = this.state.isExpanded ? "flex" : "none";    //根据 isExpanded 状态定义样式
         let buttonContent = this.state.isExpanded ? "收起" : "展开";      //根据 isExpanded 状态定义按钮内容
         let data = this.props.data;
-        const boardUrl = `/list/${data.id}`;
+        const boardUrl = `/board/${data.id}`;
         const masters = data.masters;
         let mastersText = (data.masters.length) ? "主管：" : "";
 

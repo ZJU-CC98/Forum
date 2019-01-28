@@ -61,7 +61,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         const overflowLen = 65;
 
         const url = `/static/images/_${this.props.boardInfo.name}.png`;
-        const boardUrl = `/list/${this.props.boardInfo.id}`;
+        const boardUrl = `/board/${this.props.boardInfo.id}`;
         let tags = null;
 
         if (this.props.tag1 || this.props.tag2) {

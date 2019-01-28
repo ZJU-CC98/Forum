@@ -108,20 +108,20 @@ export class BList extends RouteComponent<{}, { page: number, boardId: number, b
             case 'server error':
                 return <ServerError />
         }
-        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
+        const recordTopicsUrl = `/board/${this.match.params.boardId}/record/`;
         return <div id="listRoot">
             <DocumentTitle title={`${this.state.boardInfo.name} - CC98论坛`} />
             <Category boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
             <ListHead key={this.state.page} boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
             <ListButtonAndAds boardInfo={this.state.boardInfo} adsUrl={null} />
             <Switch>
-                <Route exact path="/list/:boardid/tags/:tag1Id/:tag2Id/:page?" component={ListTagsContent} />
-                <Route exact path="/list/:boardId/tag/tag1/:tagId/:page?" component={ListTagContent} />
-                <Route exact path="/list/:boardId/tag/tag2/:tagId/:page?" component={ListTagContent} />
-                <Route exact path="/list/:boardId/best/:page?" component={ListBestContent} />
-                <Route exact path="/list/:boardId/save/:page?" component={ListSaveContent} />
-                <Route exact path="/list/:boardId/record/:page?" component={BoardRecord} />
-                <Route exact path="/list/:boardId/:page?" component={ListContent} />
+                <Route exact path="/board/:boardid/tags/:tag1Id/:tag2Id/:page?" component={ListTagsContent} />
+                <Route exact path="/board/:boardId/tag/tag1/:tagId/:page?" component={ListTagContent} />
+                <Route exact path="/board/:boardId/tag/tag2/:tagId/:page?" component={ListTagContent} />
+                <Route exact path="/board/:boardId/best/:page?" component={ListBestContent} />
+                <Route exact path="/board/:boardId/save/:page?" component={ListSaveContent} />
+                <Route exact path="/board/:boardId/record/:page?" component={BoardRecord} />
+                <Route exact path="/board/:boardId/:page?" component={ListContent} />
             </Switch>
             <div style={{ display: 'flex',width:"100%",justifyContent:"flex-end" }}>
                 <Link to={recordTopicsUrl}><Button type="primary">查看版面事件</Button></Link>
@@ -153,7 +153,7 @@ export class BList extends RouteComponent<{}, { page: number, boardId: number, b
                                     description={<div><span>天数:{item.days}</span><span style={{marginLeft:"2rem",marginRight:"2rem"}}>到期时间:{moment(item.expiredTime).format('YYYY-MM-DD HH:mm:ss')}</span><Button onClick={this.cancelTp.bind(this,item)} type="primary" style={{display:this.state.isMaster?"":"none"}}>解除tp</Button></div>}
                                 />
                                 <div>操作人:{item.operatorUserName}</div>
-                            </List.Item>
+                            </board.Item>
                         )}
                     >
                         {this.state.loading && this.state.hasMore && (
@@ -161,7 +161,7 @@ export class BList extends RouteComponent<{}, { page: number, boardId: number, b
                                 <Spin />
                             </div>
                         )}
-                    </List>
+                    </board>
           
 
             </Modal>
@@ -174,7 +174,7 @@ export class BList extends RouteComponent<{}, { page: number, boardId: number, b
 
 export class Category extends React.Component<{ boardId, boardInfo }, {}>{
     render() {
-        const listUrl = `/list/${this.props.boardId}`;
+        const listUrl = `/board/${this.props.boardId}`;
         return <div className="row" style={{ alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
             <i className="fa fa-chevron-right"></i>
@@ -243,7 +243,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow,
     }
 
     render() {
-        const boardUrl = `/list/${this.props.boardId}`;
+        const boardUrl = `/board/${this.props.boardId}`;
         const id = `boardImg_${this.props.boardId}`;
         const url = `/static/images/_${this.props.boardInfo.name}.png`;
         const isMaster = Utility.isMaster(this.props.boardInfo.boardMasters)
@@ -336,17 +336,17 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
         super(props, content);
     }
     generateTagButton(item) {
-        const url = `/list/${this.props.boardid}/tag/tag1/${item.id}`;
+        const url = `/board/${this.props.boardid}/tag/tag1/${item.id}`;
         return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
     }
     generateTag2Button(item) {
-        const url = `/list/${this.props.boardid}/tag/tag2/${item.id}`;
+        const url = `/board/${this.props.boardid}/tag/tag2/${item.id}`;
         return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
     }
     render() {
         let tag1Btn = null;
         let tag2Btn = null;
-        const url = `/list/${this.props.boardid}`;
+        const url = `/board/${this.props.boardid}`;
         if (this.props.tag && this.props.tag.length >= 1) {
             tag1Btn = <div style={{ maxWidth: "35rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
                 <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth: "35rem" }}>
@@ -550,7 +550,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         let target = this.getCheckValue();
         var status = await Utility.mutliLock(days, reason, target);
         if (status == 200)
-            document.location.href = `/list/${this.match.params.boardId}`;
+            document.location.href = `/board/${this.match.params.boardId}`;
     }
     async delete() {
         let reason = $("#opReason").val();
@@ -560,7 +560,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         let target = this.getCheckValue();
         var status = await Utility.mutliDelete(reason, target);
         if (status == 200)
-            document.location.href = `/list/${this.match.params.boardId}`;
+            document.location.href = `/board/${this.match.params.boardId}`;
     }
     changeReason() {
         let value = $("#opReason").val();
@@ -596,9 +596,9 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         }
         const topics = (this.state.items || []).map(this.convertTopicToElement);
 
-        const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
-        const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
+        const bestTopicsUrl = `/board/${this.match.params.boardId}/best/`;
+        const saveTopicsUrl = `/board/${this.match.params.boardId}/save/`;
+        const normalTopicsUrl = `/board/${this.match.params.boardId}/`;
 
         let reasonUI = <div ><ControlLabel>处理理由</ControlLabel>
             <select id="opReason" onChange={this.changeReason.bind(this)} className="react-bootstrap-select" >
@@ -735,11 +735,11 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
         }
         const topics = (this.state.items || []).map(this.convertTopicToElement);
 
-        const tagUrl = `/list/${this.match.params.boardId}/tag/tag${this.state.layer}/${this.match.params.tagId}/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
-        const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
-        const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
+        const tagUrl = `/board/${this.match.params.boardId}/tag/tag${this.state.layer}/${this.match.params.tagId}/`;
+        const normalTopicsUrl = `/board/${this.match.params.boardId}/`;
+        const bestTopicsUrl = `/board/${this.match.params.boardId}/best/`;
+        const saveTopicsUrl = `/board/${this.match.params.boardId}/save/`;
+        const recordTopicsUrl = `/board/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={tagUrl} tag={this.state.tags} />
             <div className="column tagColumn">
@@ -815,11 +815,11 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
         }
         const topics = (this.state.items || []).map(this.convertTopicToElement);
 
-        const tagUrl = `/list/${this.match.params.boardId}/tags/tag1/${this.match.params.tag1Id}/tag2/${this.match.params.tag2Id}/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
-        const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
-        const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
+        const tagUrl = `/board/${this.match.params.boardId}/tags/tag1/${this.match.params.tag1Id}/tag2/${this.match.params.tag2Id}/`;
+        const normalTopicsUrl = `/board/${this.match.params.boardId}/`;
+        const bestTopicsUrl = `/board/${this.match.params.boardId}/best/`;
+        const saveTopicsUrl = `/board/${this.match.params.boardId}/save/`;
+        const recordTopicsUrl = `/board/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={tagUrl} tag={this.state.tags} />
             <div className="column tagColumn">
@@ -896,7 +896,7 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
         const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
    
         let topics = this.state.data.map(this.convertRecordToElement);
-        let boardRecordUrl = `/list/${this.match.params.boardId}/record/`;
+        let boardRecordUrl = `/board/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <div style={{ display: "flex", justifyContent: "flex-end" }}><Pager page={curPage} totalPage={this.state.totalPage} url={boardRecordUrl} /></div>
             <div className="column tagColumn">
@@ -958,10 +958,10 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
         }
         const topics = (this.state.items || []).map(this.convertTopicToElement);
-        const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
-        const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
-        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
+        const bestTopicsUrl = `/board/${this.match.params.boardId}/best/`;
+        const saveTopicsUrl = `/board/${this.match.params.boardId}/save/`;
+        const normalTopicsUrl = `/board/${this.match.params.boardId}/`;
+        const recordTopicsUrl = `/board/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={bestTopicsUrl} tag={this.state.tags} />
             <div className="column tagColumn">
@@ -1023,10 +1023,10 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         }
 
         const topics = (this.state.items || []).map(this.convertTopicToElement);
-        const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
-        const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
-        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
+        const bestTopicsUrl = `/board/${this.match.params.boardId}/best/`;
+        const saveTopicsUrl = `/board/${this.match.params.boardId}/save/`;
+        const normalTopicsUrl = `/board/${this.match.params.boardId}/`;
+        const recordTopicsUrl = `/board/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={saveTopicsUrl} tag={this.state.tags} />
             <div className="column tagColumn">

@@ -58,7 +58,7 @@ class App extends React.Component<Props> {
           path="/topic/:topicId/postid/:postId/:page?"
           component={CurUserPost}
         />
-        <Route path="/list/:boardId/:type?/:page?" component={BList} />
+        <Route path="/board/:boardId/:type?/:page?" component={BList} />
         <Route exact path="/boardlist" component={BoardList} />
         <Route path="/usercenter" component={UserCenter} />
         <Route path="/message" component={Message} />

@@ -269,7 +269,7 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
                 else if (searchBoxSelect.text() === '版内') {
                     //查看当前是全站还是某版，如果是某版就查询到某版id
                     let url1 = location.href.match(/\/topic\/(\d+)/);
-                    let url2 = location.href.match(/\/list\/(\d+)/);
+                    let url2 = location.href.match(/\/board\/(\d+)/);
                     let url3 = location.href.match(/\/search\?boardId=(\d+)&/);
                     let boardId = 0;
                     if (url1) {
@@ -321,7 +321,7 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
     render() {
         //查看当前是全站还是某版
         let url1 = location.href.match(/\/topic\/(\d+)/);
-        let url2 = location.href.match(/\/list\/(\d+)/);
+        let url2 = location.href.match(/\/board\/(\d+)/);
         let url3 = location.href.match(/\/(searchBoard)/);
         let url4 = location.href.match(/\/search\?boardId=(\d+)/);
         let flag = 1;
@@ -446,8 +446,8 @@ class Redirect extends React.Component<{}, { isShowed: boolean }>{
             PWAURL = `${basicURL}boardList`
         }
         //版面跳转到pwa相应版
-        else if (url.match(/\/list\//i)) {
-            const boardID = url.match(/list\/\d+/i)[0].match(/\d+/)[0]
+        else if (url.match(/\/board\//i)) {
+            const boardID = url.match(/board\/\d+/i)[0].match(/\d+/)[0]
             PWAURL = `${basicURL}board/${boardID}`
         }
         //用户页跳转到pwa相应页

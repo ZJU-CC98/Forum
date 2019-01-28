@@ -80,7 +80,7 @@ export default class extends React.Component<Props, State> {
 
 class Category extends React.Component<{ data: IBoard }, {}> {
   render() {
-    const listUrl = `/list/${this.props.data.id}`;
+    const listUrl = `/board/${this.props.data.id}`;
     return (
       <div
         className="row"

@@ -93,7 +93,7 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
                             <span style={{ color: 'red'}}>{item.title}</span>
                         </p> : 
                         <p key={item.boardId}> {/* 站务主管*/}
-                            <Link to={`/list/${item.boardId}`}>{item.boardName}</Link>
+                            <Link to={`/board/${item.boardId}`}>{item.boardName}</Link>
                             <span>{item.title}</span>
                         </p>
                     )}

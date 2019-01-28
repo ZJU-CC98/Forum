@@ -123,7 +123,7 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
 
   convertMainPageTopic(item: HotTopicState) {
     if (!item.id) return <div>{item.title}</div>
-    const boardUrl = `/list/${item.boardId}`;
+    const boardUrl = `/board/${item.boardId}`;
     const topicUrl = `/topic/${item.id}/1`;
     return <div className="mainPageListRow">
       <div className="mainPageListBoardName"> <a href={boardUrl} target="_blank">[{item.boardName}]</a></div>
@@ -649,11 +649,11 @@ export class MainPage extends React.Component<{}, { data }> {
 
     let data = this.state.data;
 
-    let study: MainPageTopicMoreProps[] = new Array({ name: "学习", url: "/list/68" }, { name: "外语", url: "/list/304" }, { name: "考研", url: "/list/263" }, { name: "出国", url: "/list/102" });
-    let emotion: MainPageTopicMoreProps[] = new Array({ name: "缘分", url: "/list/152" }, { name: "小屋", url: "/list/114" }, { name: "感性", url: "/list/81" });
-    let fleaMarket: MainPageTopicMoreProps[] = new Array({ name: "数码", url: "/list/562" }, { name: "生活", url: "/list/80" }, { name: "服饰", url: "/list/563" });
-    let fullTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/235" });
-    let partTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/459" });
+    let study: MainPageTopicMoreProps[] = new Array({ name: "学习", url: "/board/68" }, { name: "外语", url: "/board/304" }, { name: "考研", url: "/board/263" }, { name: "出国", url: "/board/102" });
+    let emotion: MainPageTopicMoreProps[] = new Array({ name: "缘分", url: "/board/152" }, { name: "小屋", url: "/board/114" }, { name: "感性", url: "/board/81" });
+    let fleaMarket: MainPageTopicMoreProps[] = new Array({ name: "数码", url: "/board/562" }, { name: "生活", url: "/board/80" }, { name: "服饰", url: "/board/563" });
+    let fullTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/board/235" });
+    let partTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/board/459" });
 
     let count: MainPageCountProps = new MainPageCountProps(data.todayCount, data.topicCount, data.postCount, data.onlineUserCount, data.userCount, data.lastUserName);
 

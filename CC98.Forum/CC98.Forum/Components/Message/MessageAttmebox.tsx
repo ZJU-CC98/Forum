@@ -11,7 +11,7 @@ import * as moment from 'moment';
 export class MessageAttmebox extends React.Component<MessageResponseProps> {
 
     render() {
-        let boardName = `[url=/list/${this.props.boardId}][color=dodgerblue]${this.props.boardName}[/color][/url]`;
+        let boardName = `[url=/board/${this.props.boardId}][color=dodgerblue]${this.props.boardName}[/color][/url]`;
         //有可能出错后返回boardId为0，未知版面
         if (this.props.boardId === 0) {
             boardName = `[color=dodgerblue]${this.props.boardName}[/color]`;

@@ -21,7 +21,7 @@ export class Category extends React.Component<Props, { boardId, topicId, boardNa
         this.setState({ boardId: newProps.topicInfo.boardId, topicId: newProps.topicId, boardName: newProps.boardInfo.name, title: newProps.topicInfo.title });
     }
     render() {
-        const listUrl = `/list/${this.state.boardId}`;
+        const listUrl = `/board/${this.state.boardId}`;
         const topicUrl = `/topic/${this.state.topicId}`;
         return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to="/">首页</Link>
