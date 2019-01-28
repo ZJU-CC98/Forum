@@ -138,7 +138,7 @@ export default class extends React.Component<Props, State> {
                   }
                 />
                 <div>操作人:{item.operatorUserName}</div>
-              </board.Item>
+              </List.Item>
             )}
           >
             {this.state.loading && this.state.hasMore && (
@@ -146,7 +146,7 @@ export default class extends React.Component<Props, State> {
                 <Spin />
               </div>
             )}
-          </board>
+          </List>
         </Modal>
       </>
     );

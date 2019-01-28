@@ -125,7 +125,7 @@ export class BList extends RouteComponent<{}, { page: number, boardId: number, b
             </Switch>
             <div style={{ display: 'flex',width:"100%",justifyContent:"flex-end" }}>
                 <Link to={recordTopicsUrl}><Button type="primary">查看版面事件</Button></Link>
-                <Button style={{ marginLeft: "2rem" }} type="primary" onClick={this.showModal}>小黑屋</Button>
+                <Button style={{ marginLeft: "2rem"}} type="primary" onClick={this.showModal}>小黑屋</Button>
             </div>
             <Modal
                 title="小黑屋"
@@ -153,7 +153,7 @@ export class BList extends RouteComponent<{}, { page: number, boardId: number, b
                                     description={<div><span>天数:{item.days}</span><span style={{marginLeft:"2rem",marginRight:"2rem"}}>到期时间:{moment(item.expiredTime).format('YYYY-MM-DD HH:mm:ss')}</span><Button onClick={this.cancelTp.bind(this,item)} type="primary" style={{display:this.state.isMaster?"":"none"}}>解除tp</Button></div>}
                                 />
                                 <div>操作人:{item.operatorUserName}</div>
-                            </board.Item>
+                            </List.Item>
                         )}
                     >
                         {this.state.loading && this.state.hasMore && (
@@ -161,7 +161,7 @@ export class BList extends RouteComponent<{}, { page: number, boardId: number, b
                                 <Spin />
                             </div>
                         )}
-                    </board>
+                    </List>
           
 
             </Modal>
