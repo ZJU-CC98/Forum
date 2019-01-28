@@ -3964,6 +3964,8 @@ ol {
   text-overflow: ellipsis;
   white-space: nowrap;
   flex-grow: 2;
+  height: 100%;
+  line-height: 3rem;
 }
 
 .board-postItem-right {
@@ -4023,15 +4025,20 @@ ol {
 }
 
 .board-postItem-head-hitcount {
-  width: 4.5rem;
+  width: 3rem;
+  text-align: center;
+  margin-right: 1rem;
 }
 
 .board-postItem-head-reply {
-  width: 4.5rem;
+  width: 3rem;
+  text-align: center;
+  margin-right: 1rem;
 }
 
 .board-postItem-head-lastReply {
   width: 12rem;
+  text-align: center;
 }
 
 .ant-pagination-options-quick-jumper input {

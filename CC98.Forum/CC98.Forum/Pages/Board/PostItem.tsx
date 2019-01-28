@@ -70,48 +70,48 @@ const Item: React.SFC<Props> = ({ data, order }) => {
 
   const content = <Card data={data} />;
   return (
-    <Link to={`/topic/${data.id}`}>
-      <div className={bodyClass}>
-        <Tooltip title={iconText}>
-          <div className="board-postItem-icon">
-            <img src={iconSrc} />
+    <div className={bodyClass}>
+      <Tooltip title={iconText}>
+        <div className="board-postItem-icon">
+          <img src={iconSrc} />
+        </div>
+      </Tooltip>
+      <Tooltip title={data.title}>
+        <Link className="board-postItem-title" to={`/topic/${data.id}`}>
+          {data.title}
+        </Link>
+      </Tooltip>
+      <Popover title={data.title} content={content}>
+        <Tag style={{ marginLeft: '1rem' }} color="magenta">
+          速览
+        </Tag>
+      </Popover>
+      <div className="board-postItem-right">
+        <Link className="board-postItem-userName" to={`/user/${data.userId}`}>
+          {data.userName}
+        </Link>
+        <div className="board-postItem-tags">
+          <div className="board-postItem-tag">
+            <Tag style={{ width: 50, textAlign: 'center' }} color="blue">
+              {data.hitCount > 10000
+                ? `${(data.hitCount / 10000).toFixed(1)}万`
+                : data.hitCount}
+            </Tag>
           </div>
-        </Tooltip>
-
-        <Tooltip title={data.title}>
-          <div className="board-postItem-title">{data.title}</div>
-        </Tooltip>
-        <Popover title={data.title} content={content}>
-          <Tag style={{ marginLeft: '1rem' }} color="magenta">
-            速览
-          </Tag>
-        </Popover>
-
-        <div className="board-postItem-right">
-          <div className="board-postItem-userName">{data.userName}</div>
-
-          <div className="board-postItem-tags">
-            <div className="board-postItem-tag">
-              <Tag style={{ width: 50, textAlign: 'right' }} color="blue">
-                {data.hitCount > 10000
-                  ? `${(data.hitCount / 10000).toFixed(1)}万`
-                  : data.hitCount}
-              </Tag>
-            </div>
-            <div className="board-postItem-tag">
-              <Tag style={{ width: 30, textAlign: 'right' }} color="cyan">
-                {data.replyCount}
-              </Tag>
-            </div>
+          <div className="board-postItem-tag">
+            <Tag style={{ width: 50, textAlign: 'center' }} color="cyan">
+              {data.replyCount}
+            </Tag>
           </div>
-
+        </div>
+        <Link to={`/topic/${data.id}/${Math.ceil((data.replyCount + 1) / 10)}`}>
           <div className="board-postItem-lastReply">
             <span>{data.lastPostUser}</span>/
             <span>{moment(data.lastPostTime).format('YY-MM-DD hh:mm')}</span>
           </div>
-        </div>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 };
 
