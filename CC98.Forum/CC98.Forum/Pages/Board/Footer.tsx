@@ -73,7 +73,10 @@ export default class extends React.Component<Props, State> {
     const isMaster = Utility.isMaster(data.boardMasters);
     return (
       <>
-        <div className="row" style={{ width: '100%' }}>
+        <div
+          className="row"
+          style={{ width: '100%', justifyContent: 'flex-end' }}
+        >
           <Link to={`/list/${data.id}/record/`}>
             <Button>查看版面事件</Button>
           </Link>
