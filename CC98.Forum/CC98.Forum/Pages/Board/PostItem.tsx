@@ -78,52 +78,55 @@ const Item: React.SFC<Props> = ({ data, order }) => {
     if (data.highlightInfo.color) c = data.highlightInfo.color;
   }
   return (
-    <div className={bodyClass}>
-      <Tooltip title={iconText}>
-        <div className="board-postItem-icon">
-          <img src={iconSrc} />
-        </div>
-      </Tooltip>
-      <Tooltip title={data.title}>
+    <Popover title={data.title} content={content} mouseEnterDelay={1.5}>
+      <div className={bodyClass}>
+        <Tooltip title={iconText}>
+          <div className="board-postItem-icon">
+            <img src={iconSrc} />
+          </div>
+        </Tooltip>
+
         <Link
           className="board-postItem-title"
           to={`/topic/${data.id}`}
           style={{ color: c, fontWeight: b, fontStyle: i }}
         >
-          {data.title}
+          <Tooltip title={data.title}>{data.title}</Tooltip>
         </Link>
-      </Tooltip>
-      <Popover title={data.title} content={content}>
-        <Tag style={{ marginLeft: '1rem' }} color="magenta">
+
+        {/* <Tag style={{ marginLeft: '1rem' }} color="magenta">
           速览
-        </Tag>
-      </Popover>
-      <div className="board-postItem-right">
-        <Link className="board-postItem-userName" to={`/user/${data.userId}`}>
-          {data.userName || '匿名'}
-        </Link>
-        <div className="board-postItem-tags">
-          <div className="board-postItem-tag">
-            <Tag style={{ width: 50, textAlign: 'center' }} color="blue">
-              {data.hitCount > 10000
-                ? `${(data.hitCount / 10000).toFixed(1)}万`
-                : data.hitCount}
-            </Tag>
+        </Tag> */}
+
+        <div className="board-postItem-right">
+          <Link className="board-postItem-userName" to={`/user/${data.userId}`}>
+            {data.userName || '匿名'}
+          </Link>
+          <div className="board-postItem-tags">
+            <div className="board-postItem-tag">
+              <Tag style={{ width: 60, textAlign: 'center' }} color="blue">
+                {data.hitCount > 10000
+                  ? `${(data.hitCount / 10000).toFixed(0)}万`
+                  : data.hitCount}
+              </Tag>
+            </div>
+            <div className="board-postItem-tag">
+              <Tag style={{ width: 60, textAlign: 'center' }} color="cyan">
+                {data.replyCount}
+              </Tag>
+            </div>
           </div>
-          <div className="board-postItem-tag">
-            <Tag style={{ width: 50, textAlign: 'center' }} color="cyan">
-              {data.replyCount}
-            </Tag>
-          </div>
+          <Link
+            to={`/topic/${data.id}/${Math.ceil((data.replyCount + 1) / 10)}`}
+          >
+            <div className="board-postItem-lastReply">
+              <span>{data.lastPostUser}</span>/
+              <span>{moment(data.lastPostTime).format('YY-MM-DD hh:mm')}</span>
+            </div>
+          </Link>
         </div>
-        <Link to={`/topic/${data.id}/${Math.ceil((data.replyCount + 1) / 10)}`}>
-          <div className="board-postItem-lastReply">
-            <span>{data.lastPostUser}</span>/
-            <span>{moment(data.lastPostTime).format('YY-MM-DD hh:mm')}</span>
-          </div>
-        </Link>
       </div>
-    </div>
+    </Popover>
   );
 };
 
@@ -139,6 +142,7 @@ class Card extends React.Component<ChildProps, ChildState> {
   };
   async componentDidMount() {
     const { data } = this.props;
+
     const posts = await getShortTopic(data.id);
     this.setState({ posts });
   }
