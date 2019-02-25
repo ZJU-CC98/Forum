@@ -14,11 +14,6 @@
 			"es6"
 		],
 		"allowSyntheticDefaultImports": true,
-		"importHelpers": true,
-	
-	},
-	"exclude": [
-		"webpack.config.debug.ts",
-		"webpack.config.release.ts"
-	]
+		"importHelpers": true
+	}
 }
