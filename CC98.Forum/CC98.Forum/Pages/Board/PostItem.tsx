@@ -69,6 +69,14 @@ const Item: React.SFC<Props> = ({ data, order }) => {
   // 气泡内容
 
   const content = <Card data={data} />;
+  let c: any = '#000';
+  let b: any = 'normal';
+  let i: any = 'normal';
+  if (data.highlightInfo) {
+    if (data.highlightInfo.isBold) b = 'bold';
+    if (data.highlightInfo.isItalic) i = 'italic';
+    if (data.highlightInfo.color) c = data.highlightInfo.color;
+  }
   return (
     <div className={bodyClass}>
       <Tooltip title={iconText}>
@@ -77,7 +85,11 @@ const Item: React.SFC<Props> = ({ data, order }) => {
         </div>
       </Tooltip>
       <Tooltip title={data.title}>
-        <Link className="board-postItem-title" to={`/topic/${data.id}`}>
+        <Link
+          className="board-postItem-title"
+          to={`/topic/${data.id}`}
+          style={{ color: c, fontWeight: b, fontStyle: i }}
+        >
           {data.title}
         </Link>
       </Tooltip>
@@ -88,7 +100,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
       </Popover>
       <div className="board-postItem-right">
         <Link className="board-postItem-userName" to={`/user/${data.userId}`}>
-          {data.userName}
+          {data.userName || '匿名'}
         </Link>
         <div className="board-postItem-tags">
           <div className="board-postItem-tag">
