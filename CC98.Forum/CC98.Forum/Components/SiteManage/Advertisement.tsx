@@ -306,7 +306,7 @@ export default class extends React.Component<props, State> {
               this.handleTdChange(
                 'enable',
                 (e.target as HTMLInputElement).checked,
-                index
+                (current - 1) * 10 + index
               )
             }
           />
