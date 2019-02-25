@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "webpack-dev-server --progress --hot --inline --config vscodeConfig/webpack.config.vscode.js",
     "bundle-analyze": "webpack --config vscodeConfig/webpack.config.bundle.js",
-    "build:debug": "tsc webpack.config.debug.ts| webpack --config webpack.config.debug.js",
-    "build:release": "tsc webpack.config.release.ts| webpack --config webpack.config.release.js"
+    "build:debug": "webpack --config webpack.config.debug.js",
+    "build:release": "webpack --config webpack.config.release.js"
   },
   "dependencies": {
     "@aspnet/signalr": "^1.0.3",

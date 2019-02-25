@@ -15,10 +15,6 @@
 		],
 		"allowSyntheticDefaultImports": true,
 		"importHelpers": true,
-	
-	},
-	"exclude": [
-		"webpack.config.debug.ts",
-		"webpack.config.release.ts"
-	]
+	  "compileOnSave": false
+	}
 }
