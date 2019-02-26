@@ -129,3 +129,10 @@ export async function multiLock(
   const response = await cc98Fetch(url, { method: 'PUT', headers, body });
   return response;
 }
+
+export async function getBoardRecords(boardId: string, from: number) {
+  const url = `/board/${boardId}/events?from=${from}&size=7`;
+  const headers = await formAuthorizeHeader();
+  const response = await cc98Fetch(url, { headers });
+  return await response.json();
+}

@@ -10,7 +10,11 @@ import {
   notification,
   Icon
 } from 'antd';
-import { multiDelete as aDelete, multiLock as aLock } from './action';
+import {
+  multiDelete as aDelete,
+  multiLock as aLock,
+  getBoardRecords
+} from './action';
 import { Link } from 'react-router-dom';
 import { IBoard, ITopic } from '@cc98/api';
 import moment from 'moment';
@@ -28,6 +32,7 @@ interface State {
   loading: boolean;
   hasMore: boolean;
   manageVisible: boolean;
+  recordVisible: boolean;
 }
 export default class extends React.Component<Props, State> {
   state = {
@@ -35,7 +40,8 @@ export default class extends React.Component<Props, State> {
     tpList: [],
     loading: false,
     hasMore: true,
-    manageVisible: false
+    manageVisible: false,
+    recordVisible: false
   };
   showModal = async () => {
     let res = await Utility.getTpUsers(this.props.data.id, 0, 20);
@@ -46,7 +52,7 @@ export default class extends React.Component<Props, State> {
   };
   handleOk = () => {
     this.setState({
-      visible: false
+      manageVisible: false
     });
   };
 
@@ -67,6 +73,8 @@ export default class extends React.Component<Props, State> {
       alert('操作失败,原因：' + response);
     }
   };
+
+  openRecord = () => this.setState({ recordVisible: true });
   render() {
     const { data, list } = this.props;
     const id = data.id;
@@ -77,9 +85,7 @@ export default class extends React.Component<Props, State> {
           className="row"
           style={{ width: '100%', justifyContent: 'flex-end' }}
         >
-          <Link to={`/board/${data.id}/record/`}>
-            <Button>查看版面事件</Button>
-          </Link>
+          <Button onClick={this.openRecord}>查看版面事件</Button>
           <Button onClick={this.showModal}>小黑屋</Button>
           {isMaster && (
             <Button onClick={() => this.setState({ manageVisible: true })}>
@@ -89,6 +95,7 @@ export default class extends React.Component<Props, State> {
         </div>
 
         <Manage
+          key={this.state.manageVisible.toString()}
           data={data}
           list={list}
           visible={this.state.manageVisible}
@@ -147,6 +154,15 @@ export default class extends React.Component<Props, State> {
               </div>
             )}
           </List>
+        </Modal>
+        <Modal
+          title="版面事件"
+          visible={this.state.recordVisible}
+          onOk={() => this.setState({ recordVisible: false })}
+          onCancel={() => this.setState({ recordVisible: false })}
+          width={'60rem'}
+        >
+          <Record id={id.toString()} />
         </Modal>
       </>
     );
@@ -313,6 +329,77 @@ class Manage extends React.Component<ChildProps, ChildState> {
           </Select>
         </Modal>
       </>
+    );
+  }
+}
+interface RecordProps {
+  id: string;
+}
+interface RecordState {
+  current: number;
+  data: any;
+  loading: boolean;
+}
+class Record extends React.Component<RecordProps, RecordState> {
+  state = {
+    current: 1,
+    data: null,
+    loading: false
+  };
+  async componentDidMount() {
+    this.setState({ loading: true });
+    const data = await getBoardRecords(this.props.id, this.state.current);
+    this.setState({ data, loading: false });
+  }
+
+  render() {
+    const { id } = this.props;
+    const { loading, data } = this.state;
+    return (
+      data && (
+        <List
+          dataSource={data ? data.boardEvents : []}
+          pagination={{
+            onChange: async page => {
+              this.setState({ loading: true });
+              const from = (page - 1) * 7;
+              let res = await getBoardRecords(id, from);
+              let list = data.boardEvents.concat(res.boardEvents);
+              res.boardEvents = list;
+              this.setState({ data: res, loading: false });
+            },
+            pageSize: 7,
+            total: data.count
+          }}
+          renderItem={item => (
+            <List.Item key={item.id}>
+              <List.Item.Meta
+                title={
+                  <a href={`https://cc98.org/topic/${item.topicId}`}>
+                    {item.content}
+                  </a>
+                }
+                description={
+                  <div>
+                    <span>对象:{item.targetUserName}</span>
+                    <span style={{ marginLeft: '2rem', marginRight: '2rem' }}>
+                      时间:
+                      {moment(item.time).format('YYYY-MM-DD HH:mm:ss')}
+                    </span>
+                  </div>
+                }
+              />
+              <div>操作人:{item.operatorUserName}</div>
+            </List.Item>
+          )}
+        >
+          {loading && (
+            <div className="demo-loading-container">
+              <Spin />
+            </div>
+          )}
+        </List>
+      )
     );
   }
 }
