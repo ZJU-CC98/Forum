@@ -12,6 +12,22 @@ interface Props {
   data: ITopic;
   order: number;
 }
+
+function generateListPager(item: number, id: number) {
+  const url = `/topic/${id}/${item}`;
+  if (item != -1) {
+    return (
+      <div style={{ marginRight: '0.3rem' }}>
+        <Link style={{ color: '#79b8ca' }} to={url}>
+          {item}
+        </Link>
+      </div>
+    );
+  } else {
+    return <div style={{ marginRight: '0.3rem' }}>...</div>;
+  }
+}
+
 const Item: React.SFC<Props> = ({ data, order }) => {
   // 普通帖子
   let icon = 'normal';
@@ -77,6 +93,20 @@ const Item: React.SFC<Props> = ({ data, order }) => {
     if (data.highlightInfo.isItalic) i = 'italic';
     if (data.highlightInfo.color) c = data.highlightInfo.color;
   }
+
+  const count = data.replyCount + 1;
+  let totalPage =
+    count % 10 === 0 ? count / 10 : (count - (count % 10)) / 10 + 1;
+
+  const pager = [];
+  if (totalPage === 1) {
+    // pager to be []
+  } else if (totalPage <= 7) {
+    for (let i = 1; i <= totalPage; i++) pager.push(i);
+  } else {
+    pager.push(1, 2, 3, 4, -1, totalPage - 2, totalPage - 1, totalPage);
+  }
+
   return (
     <Popover title={data.title} content={content} mouseEnterDelay={1.5}>
       <div className={bodyClass}>
@@ -85,18 +115,24 @@ const Item: React.SFC<Props> = ({ data, order }) => {
             <img src={iconSrc} />
           </div>
         </Tooltip>
+        <div className="board-postItem-title" style={{ display: 'flex' }}>
+          <Link
+            to={`/topic/${data.id}`}
+            style={{
+              color: c,
+              fontWeight: b,
+              fontStyle: i,
+              marginRight: '0.3rem'
+            }}
+          >
+            <Tooltip title={data.title}>{data.title}</Tooltip>
+          </Link>
 
-        <Link
-          className="board-postItem-title"
-          to={`/topic/${data.id}`}
-          style={{ color: c, fontWeight: b, fontStyle: i }}
-        >
-          <Tooltip title={data.title}>{data.title}</Tooltip>
-        </Link>
-
-        {/* <Tag style={{ marginLeft: '1rem' }} color="magenta">
+          {/* <Tag style={{ marginLeft: '1rem' }} color="magenta">
           速览
         </Tag> */}
+          {pager.map(page => generateListPager(page, data.id))}
+        </div>
 
         <div className="board-postItem-right">
           <Link className="board-postItem-userName" to={`/user/${data.userId}`}>
