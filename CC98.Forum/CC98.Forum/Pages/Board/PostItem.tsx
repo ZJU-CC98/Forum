@@ -108,7 +108,15 @@ const Item: React.SFC<Props> = ({ data, order }) => {
   }
 
   return (
-    <Popover title={data.title} content={content} mouseEnterDelay={1.5}>
+    <Popover
+      title={
+        <Link style={{ lineHeight: '1rem' }} to={`/topic/${data.id}`}>
+          {data.title}
+        </Link>
+      }
+      content={content}
+      mouseEnterDelay={1.5}
+    >
       <div className={bodyClass}>
         <Tooltip title={iconText}>
           <div className="board-postItem-icon">
@@ -205,7 +213,9 @@ const PItem: React.SFC<{ item: IPost }> = ({ item }) => (
   <div className="board-postItem-card-body">
     <div className="board-postItem-card-information">
       <div>{item.floor}L</div>
-      <div className="board-postItem-card-username">{item.userName}</div>
+      <Link to={`/user/id/${item.userId}`}>
+        <div className="board-postItem-card-username">{item.userName}</div>
+      </Link>
     </div>
     <div className="board-postItem-card-content">
       <UbbContainer
