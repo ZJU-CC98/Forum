@@ -367,7 +367,7 @@ class Record extends React.Component<RecordProps, RecordState> {
               this.setState({ loading: true });
               const from = (page - 1) * 7;
               let res = await getBoardRecords(id, from);
-              let list = data.boardEvents.concat(res.boardEvents);
+              let list = res.boardEvents;
               res.boardEvents = list;
               this.setState({ data: res, loading: false });
             },
