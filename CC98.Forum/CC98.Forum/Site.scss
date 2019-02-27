@@ -3960,12 +3960,16 @@ ol {
 }
 
 .board-postItem-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   flex-grow: 2;
   height: 100%;
   line-height: 3rem;
+  overflow: hidden;
+}
+
+.board-postItem-title a{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .board-postItem-right {
