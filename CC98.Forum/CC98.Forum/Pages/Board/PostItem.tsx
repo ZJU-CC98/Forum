@@ -118,10 +118,11 @@ const Item: React.SFC<Props> = ({ data, order }) => {
       mouseEnterDelay={1.5}
     >
       <div className={bodyClass}>
-        <div className="board-postItem-icon">
-          <img src={iconSrc} />
-        </div>
-
+        <Tooltip title={iconText}>
+          <div className="board-postItem-icon">
+            <img src={iconSrc} />
+          </div>
+        </Tooltip>
         <div className="board-postItem-title" style={{ display: 'flex' }}>
           <Link
             to={`/topic/${data.id}`}
@@ -133,7 +134,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
               fontSize: '1rem'
             }}
           >
-            <Tooltip title={data.title}>{data.title}</Tooltip>
+            {data.title}
           </Link>
 
           {/* <Tag style={{ marginLeft: '1rem' }} color="magenta">
@@ -151,7 +152,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
               {data.userName}
             </Link>
           ) : (
-            '匿名'
+            <div className="board-postItem-userName">匿名</div>
           )}
           <div className="board-postItem-tags">
             <div className="board-postItem-tag">
