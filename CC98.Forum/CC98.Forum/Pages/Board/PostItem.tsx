@@ -118,11 +118,10 @@ const Item: React.SFC<Props> = ({ data, order }) => {
       mouseEnterDelay={1.5}
     >
       <div className={bodyClass}>
-        <Tooltip title={iconText}>
-          <div className="board-postItem-icon">
-            <img src={iconSrc} />
-          </div>
-        </Tooltip>
+        <div className="board-postItem-icon">
+          <img src={iconSrc} />
+        </div>
+
         <div className="board-postItem-title" style={{ display: 'flex' }}>
           <Link
             to={`/topic/${data.id}`}
