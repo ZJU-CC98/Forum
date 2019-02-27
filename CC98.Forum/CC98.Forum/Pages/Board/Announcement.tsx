@@ -1,11 +1,13 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
-import { Collapse, Button, Divider, Tag } from 'antd';
+import { Collapse, Button, Divider, Tag, Input, Modal } from 'antd';
 import { IBoard } from '@cc98/api';
 import { UbbContainer } from '../../Components/UbbContainer';
 import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
+import { editBigPaper as eBP } from './action';
 
 const Panel = Collapse.Panel;
+const TextArea = Input.TextArea;
 
 interface Props {
   data: IBoard;
@@ -14,6 +16,8 @@ interface Props {
 interface State {
   isFollow: boolean;
   loading: boolean;
+  editVisible: boolean;
+  content: string;
 }
 
 const customPanelStyle = {
@@ -28,7 +32,9 @@ const customPanelStyle = {
 export default class extends React.Component<Props, State> {
   state = {
     isFollow: Utility.isFollowThisBoard(this.props.data.id),
-    loading: false
+    loading: false,
+    editVisible: false,
+    content: this.props.data.bigPaper
   };
   onError(e) {
     e.preventDefault();
@@ -54,10 +60,16 @@ export default class extends React.Component<Props, State> {
     await Utility.unfollowBoard(this.props.data.id);
     this.setState({ isFollow: false, loading: false });
   }
+  async editBigPaper() {
+    await eBP(this.props.data.id.toString(), this.state.content);
+    this.setState({ editVisible: false });
+  }
+
   render() {
     const { data, isFirstPage } = this.props;
-    const { isFollow, loading } = this.state;
+    const { isFollow, loading, editVisible, content } = this.state;
     const url = `/static/images/_${data.name}.png`;
+    const isMaster = Utility.isMaster(data.boardMasters);
     const shortHand = (
       <div className="row" style={{ height: '4rem' }}>
         <div>
@@ -159,11 +171,34 @@ export default class extends React.Component<Props, State> {
           >
             {isFollow ? '取关' : '关注'}
           </Button>
+          {isMaster && (
+            <Button onClick={() => this.setState({ editVisible: true })}>
+              编辑
+            </Button>
+          )}
         </div>
       </div>
     );
     return (
       <div style={{ width: '100%' }}>
+        <Modal
+          title="编辑大字报"
+          visible={editVisible}
+          onOk={() => this.editBigPaper()}
+          onCancel={() => this.setState({ editVisible: false })}
+          width={'50rem'}
+        >
+          支持UBB代码
+          <TextArea
+            rows={6}
+            defaultValue={data.bigPaper}
+            onChange={v => this.setState({ content: v.target.value })}
+          />
+          <UbbContainer
+            code={content}
+            options={{ ...new UbbCodeOptions(), allowLightbox: true }}
+          />
+        </Modal>
         <Collapse
           className="board-bigpaper"
           bordered={false}
@@ -175,6 +210,7 @@ export default class extends React.Component<Props, State> {
             header={shortHand}
             style={customPanelStyle}
           >
+            <Divider />
             <UbbContainer
               code={data.bigPaper}
               options={{ ...new UbbCodeOptions(), allowLightbox: true }}

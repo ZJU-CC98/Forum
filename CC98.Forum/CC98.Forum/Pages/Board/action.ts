@@ -136,3 +136,12 @@ export async function getBoardRecords(boardId: string, from: number) {
   const response = await cc98Fetch(url, { headers });
   return await response.json();
 }
+
+export async function editBigPaper(boardId: string, content: string) {
+  const url = `/board/${boardId}/big-paper`;
+  let headers = await formAuthorizeHeader();
+  headers.append('Content-Type', 'application/json');
+  const body = JSON.stringify({ content });
+  const response = await cc98Fetch(url, { method: 'PUT', headers, body });
+  return response;
+}
