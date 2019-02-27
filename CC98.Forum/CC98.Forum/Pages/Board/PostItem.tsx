@@ -144,12 +144,16 @@ const Item: React.SFC<Props> = ({ data, order }) => {
         </div>
 
         <div className="board-postItem-right">
-          <Link
-            className="board-postItem-userName"
-            to={`/user/id/${data.userId}`}
-          >
-            {data.userName || '匿名'}
-          </Link>
+          {data.userName ? (
+            <Link
+              className="board-postItem-userName"
+              to={`/user/id/${data.userId}`}
+            >
+              {data.userName}
+            </Link>
+          ) : (
+            '匿名'
+          )}
           <div className="board-postItem-tags">
             <div className="board-postItem-tag">
               <Tag style={{ width: 60, textAlign: 'center' }} color="blue">
