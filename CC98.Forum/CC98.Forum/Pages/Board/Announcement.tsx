@@ -173,7 +173,7 @@ export default class extends React.Component<Props, State> {
           </Button>
           {isMaster && (
             <Button
-              style={{ marginLeft: '1rem' }}
+              style={{ marginLeft: '0.5rem' }}
               onClick={() => this.setState({ editVisible: true })}
             >
               编辑
