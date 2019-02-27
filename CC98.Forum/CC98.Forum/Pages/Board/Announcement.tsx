@@ -172,7 +172,10 @@ export default class extends React.Component<Props, State> {
             {isFollow ? '取关' : '关注'}
           </Button>
           {isMaster && (
-            <Button onClick={() => this.setState({ editVisible: true })}>
+            <Button
+              style={{ marginLeft: '1rem' }}
+              onClick={() => this.setState({ editVisible: true })}
+            >
               编辑
             </Button>
           )}

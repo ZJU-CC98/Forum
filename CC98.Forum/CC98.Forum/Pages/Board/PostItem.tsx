@@ -122,7 +122,8 @@ const Item: React.SFC<Props> = ({ data, order }) => {
               color: c,
               fontWeight: b,
               fontStyle: i,
-              marginRight: '0.3rem'
+              marginRight: '0.3rem',
+              fontSize: '1rem'
             }}
           >
             <Tooltip title={data.title}>{data.title}</Tooltip>
@@ -135,7 +136,10 @@ const Item: React.SFC<Props> = ({ data, order }) => {
         </div>
 
         <div className="board-postItem-right">
-          <Link className="board-postItem-userName" to={`/user/${data.userId}`}>
+          <Link
+            className="board-postItem-userName"
+            to={`/user/id/${data.userId}`}
+          >
             {data.userName || '匿名'}
           </Link>
           <div className="board-postItem-tags">
