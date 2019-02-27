@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
-import { Collapse, Button, Divider } from 'antd';
+import { Collapse, Button, Divider, Tag } from 'antd';
 import { IBoard } from '@cc98/api';
 import { UbbContainer } from '../../Components/UbbContainer';
 import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
@@ -59,7 +59,7 @@ export default class extends React.Component<Props, State> {
     const { isFollow, loading } = this.state;
     const url = `/static/images/_${data.name}.png`;
     const shortHand = (
-      <div className="row">
+      <div className="row" style={{ height: '4rem' }}>
         <div>
           <img className="board-avatar" onError={this.onError} src={url} />
         </div>
@@ -79,14 +79,80 @@ export default class extends React.Component<Props, State> {
         </div>
 
         <div
-          className="column"
-          style={{ marginLeft: '1rem', marginRight: 'auto' }}
+          className="row"
+          style={{
+            marginRight: '1rem',
+            flexGrow: 2,
+            justifyContent: 'flex-end',
+            height: '100%'
+          }}
         >
-          <div>今日贴数：{data.todayCount}</div>
-          <div>总贴数：{data.topicCount}</div>
-        </div>
+          <div
+            className="column"
+            style={{
+              marginLeft: '1rem',
+              marginRight: '1rem',
+              height: '100%',
+              justifyContent: 'space-around'
+            }}
+          >
+            <div className="row">
+              <Tag
+                color="grey"
+                style={{
+                  width: '5rem',
+                  textAlign: 'center',
+                  marginRight: 0,
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0
+                }}
+              >
+                今日贴数
+              </Tag>
+              <Tag
+                className="board-head-information"
+                style={{
+                  width: '5rem',
+                  textAlign: 'center',
+                  marginRight: 0,
+                  borderLeft: 0,
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0
+                }}
+              >
+                {data.todayCount}
+              </Tag>
+            </div>
+            <div className="row">
+              <Tag
+                color="grey"
+                style={{
+                  width: '5rem',
+                  textAlign: 'center',
+                  marginRight: 0,
 
-        <div style={{ marginRight: '1rem' }}>
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0
+                }}
+              >
+                总主题数
+              </Tag>
+              <Tag
+                className="board-head-information"
+                style={{
+                  width: '5rem',
+                  textAlign: 'center',
+                  marginRight: 0,
+
+                  borderLeft: 0,
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0
+                }}
+              >
+                {data.topicCount}
+              </Tag>
+            </div>
+          </div>
           <Button
             loading={loading}
             onClick={isFollow ? () => this.unfollow() : () => this.follow()}

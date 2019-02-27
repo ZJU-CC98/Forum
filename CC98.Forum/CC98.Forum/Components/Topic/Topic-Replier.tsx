@@ -221,7 +221,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
             if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.topicInfo.isAnonymous) {
                 const email = `/message/message?id=${this.props.userInfo.id}`;
                 btn = <div className="row userMessageBtn" >
-                    <div style={{ marginLeft: "0.85rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{ marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button></div>
+                    <div style={{ marginLeft: "0.85rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button></div>
                     <div style={{ marginLeft: "0.5rem" }}> <Link to={email}><button className="replierBtn">私信</button></Link></div>
                 </div>;
             }

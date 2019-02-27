@@ -13,7 +13,7 @@ import {
 import { Pagination, Spin } from 'antd';
 import List from './PostList';
 import Head from './ListHead';
-import Footer from './Footer'
+import Footer from './Footer';
 
 interface Props {
   data: IBoard;
@@ -127,7 +127,8 @@ class Body extends RouteComponent<Props, State, Match> {
     const { list, topList, topicCount, tags } = this.state;
     const page = parseInt(this.props.page);
 
-    const boardList = [].concat(topList).concat(list);
+    const boardList =
+      page === 1 ? [].concat(topList).concat(list) : [].concat(list);
 
     return boardList.length === 0 ? (
       <Spin size="large" />

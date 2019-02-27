@@ -251,7 +251,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           onCancel={() => this.props.onClose()}
           width={'50rem'}
           footer={[
-            <Button>取消</Button>,
+            <Button onClick={() => this.props.onClose()}>取消</Button>,
             <Button
               type="primary"
               onClick={() => this.setState({ lockVisible: true })}
@@ -287,7 +287,10 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <Select
             style={{ width: 120 }}
             defaultValue="重复发帖"
-            onChange={v => this.setState({ reason: v.toString() })}
+            onSelect={v => {
+              this.setState({ reason: v.toString() });
+              console.log(v);
+            }}
           >
             <Option value="重复发帖">重复发帖</Option>
             <Option value="管理要求">管理要求</Option>
@@ -307,7 +310,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <Select
             style={{ width: 120 }}
             defaultValue="重复发帖"
-            onChange={v => this.setState({ reason: v.toString() })}
+            onSelect={v => this.setState({ reason: v.toString() })}
           >
             <Option value="重复发帖">重复发帖</Option>
             <Option value="管理要求">管理要求</Option>
@@ -320,7 +323,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <Select
             style={{ width: 120 }}
             defaultValue="7"
-            onChange={v => this.setState({ value: parseInt(v.toString()) })}
+            onSelect={v => this.setState({ value: parseInt(v.toString()) })}
           >
             <Option value="7">7</Option>
             <Option value="30">30</Option>

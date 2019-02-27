@@ -3991,6 +3991,14 @@ ol {
 .board-postItem-lastReply {
   width: 12rem;
   white-space: nowrap;
+  text-align: right;
+  opacity: 0.7;
+}
+
+.board-head-information {
+  background-color: $color_main;
+  color: white;
+  border-color: $color_main;
 }
 
 .board-postItem-head {
