@@ -51,7 +51,7 @@ export async function getTagTopics(
     query += `tag1=${tag1}&`;
   }
   if (tag2 !== -1) {
-    query += `tag2=${tag1}&`;
+    query += `tag2=${tag2}&`;
   }
   const url = `/topic/search/board/${boardId}/tag?${query}from=${from}&size=20`;
   return await getTopics(url);

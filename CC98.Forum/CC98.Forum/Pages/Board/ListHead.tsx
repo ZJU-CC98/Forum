@@ -30,16 +30,24 @@ const Head: React.SFC<Props> = ({
       </div>
       <div className="board-postItem-head-left-part">
         {tags.length > 0 ? (
-          <Select defaultValue="-1" style={{ width: 80 }} onChange={handleTag1Change}>
-            <Option value="-1">全部</Option>
+          <Select
+            defaultValue="-1"
+            style={{ width: 80 }}
+            onChange={handleTag1Change}
+          >
+            <Option value={-1}>全部</Option>
             {tags[0].tags.map(item => (
               <Option value={item.id}>{item.name}</Option>
             ))}
           </Select>
         ) : null}
         {tags.length > 1 ? (
-          <Select defaultValue="-1" style={{ width: 80, marginLeft: 20 }} onChange={handleTag2Change}>
-            <Option value="-1">全部</Option>
+          <Select
+            defaultValue="-1"
+            style={{ width: 80, marginLeft: 20 }}
+            onChange={handleTag2Change}
+          >
+            <Option value={-1}>全部</Option>
             {tags[1].tags.map(item => (
               <Option value={item.id}>{item.name}</Option>
             ))}
