@@ -4,6 +4,16 @@
 CC98 Durian开发组
 
 *[Auser](https://github.com/sgjsakura), [Madridista](https://github.com/Tsukiko15), [董松松松](https://github.com/AsukaSong), [明一gg](https://github.com/mingyigg), [adddna](https://github.com/adddna), [Dearkano](https://github.com/Dearkano), SummerD, [Deturium](https://github.com/Deturium)*
+
+## How To Run
+
+```
+git clone https://github.com/ZJU-CC98/Forum.git
+cd Forum/CC98.Forum/CC98.Forum
+yarn install
+yarn run dev
+```
+
 ## File Intro
 
 ### ./wwwroot
@@ -64,7 +74,6 @@ react-redux的异步action（用户中心）
 * /LogOn.tsx 登录组件
 * /MainPage.tsx 网站主页
 * /NoticeMessage.tsx 消息提醒
-* /PageModel.tsx 翻页器模板
 * /Pager.tsx 翻页器
 * /RouteComponent.tsx 路由组件基类
 * /SignIn.tsx 签到

@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 import * as Ubb from '../Ubb/UbbCodeExtension';
-
+import * as $ from 'jquery';
 /**
  * 定义 UBBContainer 组件需要使用的属性。
  */
@@ -26,7 +26,7 @@ export class UbbContainerProps {
 /**
  * 提供用于解析 UBB 的核心组件。
  */
-export class UbbContainer extends React.Component<UbbContainerProps, {}> {
+export class UbbContainer extends React.PureComponent<UbbContainerProps, {}> {
 
 	render() {
 
@@ -41,13 +41,13 @@ export class UbbContainer extends React.Component<UbbContainerProps, {}> {
         //let r = /&#(\d{5});/gi;
         //code = code.replace(r, (match, grp) => (String.fromCharCode(grp)));
 
-        const ubbHtml = engine.exec(code || '', options);
+        const ubbHtml = engine.exec(String(code), options);
         
 		//打开回车与空格
 		const style = {
 			whiteSpace: 'pre-wrap',
             width: "100%"
-		};
+		} as React.CSSProperties;
 
 		// 注意兼容性设置， HTML4 不支持 article 标签
 		if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {

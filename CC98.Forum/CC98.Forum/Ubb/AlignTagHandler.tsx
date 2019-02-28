@@ -17,7 +17,7 @@ export class AlignTagHandler extends Ubb.RecursiveTagHandler {
 
         const style = {
             textAlign: align
-        };
+        } as React.CSSProperties;
 
         return <span style={style}><div>{innerContent}</div></span>;
     }

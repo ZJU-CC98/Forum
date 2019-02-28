@@ -6,12 +6,12 @@ import { MessageResponseProps } from '../../Props/MessageResponseProps';
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { UbbCompatiblityMode } from '../../Ubb/UbbCodeExtension';
-declare let moment: any;
+import * as moment from 'moment';
 
 export class MessageAttmebox extends React.Component<MessageResponseProps> {
 
     render() {
-        let boardName = `[url=/list/${this.props.boardId}][color=dodgerblue]${this.props.boardName}[/color][/url]`;
+        let boardName = `[url=/board/${this.props.boardId}][color=dodgerblue]${this.props.boardName}[/color][/url]`;
         //有可能出错后返回boardId为0，未知版面
         if (this.props.boardId === 0) {
             boardName = `[color=dodgerblue]${this.props.boardName}[/color]`;
@@ -70,7 +70,7 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
                     </div>
                 </div>
                 <div className="message-response-box-middle-content">
-                    <UbbContainer code={content} options={{ allowAutoPlay: false, autoDetectUrl: true, allowExternalUrl: true, allowImage: false, allowMediaContent: false, compatibility: UbbCompatiblityMode.Recommended, allowEmotion: false }} />
+                    <UbbContainer code={content} options={{ allowExternalImage: false, allowAutoPlay: false, autoDetectUrl: true, allowExternalUrl: true, allowImage: false, allowMediaContent: false, compatibility: UbbCompatiblityMode.Recommended, allowEmotion: false, allowLightbox: false }} />
                 </div>
             </div>
         </div>

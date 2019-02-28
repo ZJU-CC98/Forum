@@ -33,7 +33,7 @@ import { TopicTagHandler } from './TopicTagHandler';
 import { MdTagHandler } from './MdTagHandler';
 import { PmTagHandler } from './PmTagHandler'
 import { BiliTagHandler } from './BiliTagHandler'
-import SandBoxTagHandler from './SandboxTagHandler';
+// import SandBoxTagHandler from './SandboxTagHandler';
 import LineTagHandler from './LineTagHandler';
 import EmTagHandler from './EmTagHandler';
 import AcTagHandler from './AcTagHandler';
@@ -41,6 +41,8 @@ import MahjongTagHandler from './MahjongTagHandler';
 import TbTagHandler from './TbTagHandler';
 import UrlTextHandler from './UrlTextHandler';
 import UrlTextHandler2 from './UrlTextHandler2';
+import NeedReplyTagHandler from './needReplyTagHandler'; 
+import Ms from './MsTagHandler';
 
 /**
  * 创建一个具有所有功能的默认引擎。
@@ -77,7 +79,6 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(TrTagHandler);
 	engine.handlers.register(TopicTagHandler);
 	engine.handlers.register(MdTagHandler);
-	engine.handlers.register(SandBoxTagHandler);
 	engine.handlers.register(LineTagHandler);
 	engine.handlers.register(PmTagHandler);
 	engine.handlers.register(NoUbbTagHandler);
@@ -87,7 +88,9 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(EmTagHandler);
 	engine.handlers.register(AcTagHandler);
 	engine.handlers.register(MahjongTagHandler);
+	engine.handlers.register(Ms);
 	engine.handlers.register(TbTagHandler);
+	engine.handlers.register(NeedReplyTagHandler);
 
 
 	// 以下是文字处理程序，注意文字的处理顺序完全取决于处理程序，请注意控制处理程序的顺序

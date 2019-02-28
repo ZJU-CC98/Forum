@@ -1,20 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <AssemblyName>CC98.Forum</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="img\**" />
-    <Compile Remove="wwwroot\images\**" />
     <Content Remove="img\**" />
-    <Content Remove="wwwroot\images\**" />
     <EmbeddedResource Remove="img\**" />
-    <EmbeddedResource Remove="wwwroot\images\**" />
     <None Remove="img\**" />
-    <None Remove="wwwroot\images\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +42,7 @@
     <None Remove="Components\Topic\Topic-Hot-Weekly.tsx" />
     <None Remove="Components\Topic\Topic-Judge.tsx" />
     <None Remove="Components\Topic\Topic-Pager.tsx" />
+    <None Remove="Components\Topic\Topic-PostManagement-v2.tsx" />
     <None Remove="Components\Topic\Topic-Replier.tsx" />
     <None Remove="Components\Topic\Topic-ReplierSignature.tsx" />
     <None Remove="Components\Topic\Topic-ReplyContent.tsx" />
@@ -96,6 +93,7 @@
     <None Remove="Ubb\LineTagHandler.tsx" />
     <None Remove="Ubb\MahjongTagHandler.tsx" />
     <None Remove="Ubb\mdTagHandler.tsx" />
+    <None Remove="Ubb\needReplyTagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
     <None Remove="Ubb\PmTagHandler.tsx" />
     <None Remove="Ubb\RightTagHandler.tsx" />
@@ -112,11 +110,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
+    <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -127,7 +125,6 @@
     <TypeScriptCompile Include="Components\FindIP.tsx" />
     <TypeScriptCompile Include="Components\Focus\FocusTopicArea.tsx" />
     <TypeScriptCompile Include="Components\NoticeMessage.tsx" />
-    <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
     <TypeScriptCompile Include="Components\Signin.tsx" />
@@ -145,6 +142,7 @@
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\Search\Search.tsx" />
     <TypeScriptCompile Include="Components\Status.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-PostManagement-v2.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-PostManagement.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-AwardInfo.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Category.tsx" />
@@ -157,7 +155,6 @@
     <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-TopicManagement.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
-    <TypeScriptCompile Include="Components\UbbEditor.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\Manage\DeleteTopicsAndPosts.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\Manage\Operation.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\Manage\ShowPost.tsx" />
@@ -182,6 +179,7 @@
     <TypeScriptCompile Include="Ubb\DelTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EmTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EnglishTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\NeedReplyTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
     <TypeScriptCompile Include="Ubb\LeftTagHandler.tsx" />
@@ -213,5 +211,7 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="node &quot;$(ProjectDir)node_modules\webpack\bin\webpack.js&quot; --config &quot;$(ProjectDir)webpack.config.$(ConfigurationName).js&quot;" />
   </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties package_1json__JSONSchema="http://json.schemastore.org/project-1.0.0-beta3" /></VisualStudio></ProjectExtensions>
 
 </Project>

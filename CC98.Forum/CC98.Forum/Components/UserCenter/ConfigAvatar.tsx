@@ -499,7 +499,7 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 							'default_avatar_girl2.jpg',
 							'default_avatar_boy3.jpg',
 							'default_avatar_girl3.jpg'
-						].map(item => <img key={item} style={{ margin: '3rem 5rem', cursor: 'pointer', height: '10rem', width: '10rem' }} onClick={this.setDefaultAvatar} src={`/static/images/${item}`} />)}
+						].map(item => <img key={item} style={{ margin: '3rem 5rem', cursor: 'pointer', height: '10rem', width: '10rem' }} onClick={this.setDefaultAvatar} src={`//www.cc98.org/static/images/${item}`} />)}
 					</div>
 				</div>
 			</div>

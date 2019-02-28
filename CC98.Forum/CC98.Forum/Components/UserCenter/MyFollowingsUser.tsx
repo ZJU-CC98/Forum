@@ -102,7 +102,7 @@ class Fan extends React.Component<Props, State> {
                 <img src={this.props.userFanInfo.portraitUrl} />
                 <p>
                     <span className="user-center-myfollowings-user-id"><Link to={`/user/id/${this.props.userFanInfo.id}`}>{this.props.userFanInfo.name}</Link></span>
-                    主题
+                    帖数
                     <span className="user-center-myfollowings-user-posts">{this.props.userFanInfo.postCount}</span>
                     粉丝
                     <span className="user-center-myfollowings-user-fans">{this.props.userFanInfo.fanCount}</span>

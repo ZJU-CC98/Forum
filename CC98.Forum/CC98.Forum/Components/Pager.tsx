@@ -3,9 +3,42 @@ import {
     Link
 } from 'react-router-dom';
 
-import { PageModel } from './PageModel'
 
-export class Pager extends React.Component<{ page: number, url: string, totalPage: number }, { nextPage: number }> {
+type ModelProps = { 
+    text: string
+    url: string 
+    active?: boolean 
+}
+
+class PageModel extends React.PureComponent<ModelProps, {}> {
+    render() {
+        const { text, url, active } = this.props
+
+        return (
+            <li className="page-item">
+                <Link
+                    className={`page-link${active ? " active" : ""}`}
+                    to={url}
+                >
+                    {text}
+                </Link>
+            </li>
+        )
+    }
+}
+
+
+type Porps = {
+    page: number
+    url: string
+    totalPage: number
+}
+
+type State = {
+    nextPage: number
+}
+
+export class Pager extends React.Component<Porps, State> {
     constructor(props, content) {
         super(props, content)
         this.state = {
@@ -16,10 +49,9 @@ export class Pager extends React.Component<{ page: number, url: string, totalPag
     handleInput = (event) => {
         const nextPage = parseInt(event.target.value, 10)
 
-        if (isNaN(nextPage) || nextPage < 1
-            || nextPage > this.props.totalPage
-        )
+        if (isNaN(nextPage) || nextPage < 1 || nextPage > this.props.totalPage) {
             return 
+        }
 
         this.setState({
             nextPage
@@ -27,14 +59,13 @@ export class Pager extends React.Component<{ page: number, url: string, totalPag
     }
 
     render() {
-        const pageSize: number = 8
-        const pageLen: number = 3
+        const pageLen = 3
 
         const { page: curPage, url, totalPage } = this.props
         const pageList: number[] = []
 
-        let left: number = Math.max(1, curPage - pageLen)
-        let right: number = Math.min(totalPage, curPage + pageLen)
+        let left = Math.max(1, curPage - pageLen)
+        let right = Math.min(totalPage, curPage + pageLen)
 
         if (right - left !== pageLen * 2) {
             let l = pageLen * 2 - (right - curPage)
@@ -48,11 +79,11 @@ export class Pager extends React.Component<{ page: number, url: string, totalPag
             pageList.push(page)
         }
 
-        const first: boolean = pageList[0] !== 1
-        const last: boolean = pageList[pageList.length-1] !== totalPage
-        const prev: boolean = left !== 1
-        const next: boolean = right !== totalPage
-        const goto: boolean = totalPage > 20
+        const first = pageList[0] !== 1
+        const last = pageList[pageList.length-1] !== totalPage
+        const prev = left !== 1
+        const next = right !== totalPage
+        const goto = totalPage > 20
 
         return (
             <div className="pagination">
@@ -73,6 +104,7 @@ export class Pager extends React.Component<{ page: number, url: string, totalPag
 
                     {pageList.map((page) =>
                         <PageModel
+                            key={page}
                             text={`${page}`}
                             url={`${url}${page}#1`}
                             active={curPage === page}

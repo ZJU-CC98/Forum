@@ -12,7 +12,7 @@ import {
     withRouter
 } from 'react-router-dom';
 import DocumentTitle from '../DocumentTitle';
-
+import Spin from 'antd/es/spin'
 /**
  * 表示全站最新主题列表
  */
@@ -42,9 +42,6 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
-        //更新未读消息数目
-        await Utility.refreshUnReadCount();
-
         let data = await Utility.getAllNewTopic(0, this.context.router);
 
         if (data) {
@@ -141,7 +138,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
                     <div className="focus-topic-area">
                         <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
                         <div className="focus-topic-loading" id="focus-topic-loading">
-                            <i style={{ marginTop: "1rem" }} className="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div>
+                            <Spin size='large' /></div>
                         <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">无法加载更多了，小水怡情，可不要沉迷哦~</div>
                     <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
                 </div>

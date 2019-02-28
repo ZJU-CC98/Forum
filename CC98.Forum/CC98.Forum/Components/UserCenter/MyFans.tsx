@@ -9,10 +9,11 @@ import Pager from './Pager';
 import * as Utility from '../../Utility';
 import * as Actions from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
-import { RootState } from '../../Store';
-import { Dispatch } from 'redux';
+import { RootState, RootAction, RootThunkAction } from '../../Store';
+import { Dispatch, AnyAction } from 'redux';
 import { withRouter, match, RouteComponentProps } from 'react-router-dom';
 import { getUserFansInfo } from '../../AsyncActions/UserCenter';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 
 type ownProps = {
@@ -79,7 +80,7 @@ function mapState(state: RootState) {
     };
 }
 
-function mapDispatch(dispatch: Dispatch<RootState>) {
+function mapDispatch(dispatch: ThunkDispatch<RootState, void, RootAction>) {
     return {
         changePage: () => {
             dispatch(Actions.changeUserCenterPage('myfans'));

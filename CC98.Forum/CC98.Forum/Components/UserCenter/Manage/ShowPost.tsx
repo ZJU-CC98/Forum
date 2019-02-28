@@ -135,7 +135,7 @@ export default class ShowTopic extends React.Component<Props, State> {
                             title={item.content.slice(0, 1000)}
                             target="_blank"
                         >{item.content}</Link>}
-                    <Link className="user-manage-post-board" to={`/list/${item.boardId}`} target="_blank">{item.boardName}</Link>
+                    <Link className="user-manage-post-board" to={`/board/${item.boardId}`} target="_blank">{item.boardName}</Link>
                     <p className="user-manage-post-floor">{item.floor === -1 ? '已删除' : item.floor}</p>
                     <p className="user-manage-post-ip">{item.ip}</p>
                 </div>))}

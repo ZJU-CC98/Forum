@@ -85,7 +85,10 @@ class UserExact extends React.Component<Props, States> {
                 key = Number.parseInt(id);
             }
             myHeaders.append('Authorization', await Utility.getToken());
-            let userInfo = await getUserInfo(key);
+            url = typeof key === 'number' ? `/user/${key}` : `/user/name/${encodeURIComponent(key)}`;
+            let headers = await Utility.formAuthorizeHeader();
+            let res = await Utility.cc98Fetch(url, { headers });
+            let userInfo = await res.json();
             //默认导航到以id表示的用户详情页
             this.props.history.replace(`/user/id/${userInfo.id}`);
             //改变store中当前访问位置与当前访问用户id

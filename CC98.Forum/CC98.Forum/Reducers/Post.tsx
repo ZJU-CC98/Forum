@@ -78,7 +78,7 @@ class PostState {
  * reducer接收到undefined的state时一定要初始化state
  * 这里用ES6方法，在函数定义中初始化state
  */
-export default async function post(state:TopicState = new TopicState(), action: Redux.Action) {
+export default async function post(state:TopicState = new TopicState(), action) {
     switch (action.type) {
         case ActionTypes.ADD_AWARD:
             return {

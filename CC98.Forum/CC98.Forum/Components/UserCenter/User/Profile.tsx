@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { UserInfo } from '../../../States/AppState';
 import { UbbContainer } from '../../UbbContainer';
 import * as Utility from '../../../Utility';
+import { UbbCodeOptions } from '../../../Ubb/Core';
 
 interface Props {
     /**
@@ -167,7 +168,7 @@ export default class extends React.Component<Props, States> {
                 {this.props.userInfo.signatureCode ?
                     <div className="user-description">
                         <p>个性签名</p>
-                        <UbbContainer code={this.props.userInfo.signatureCode} />
+                        <UbbContainer code={this.props.userInfo.signatureCode} options={{ ...new UbbCodeOptions(), allowExternalImage: false }} />
                     </div> : null
                 }
             </div>

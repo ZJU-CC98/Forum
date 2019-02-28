@@ -37,7 +37,7 @@ class Boards extends React.Component<Props> {
         const style = {
             marginTop: '2rem',
             textAlign: 'center'
-        };
+        } as React.CSSProperties;
         if (this.props.isLoading) {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
         }

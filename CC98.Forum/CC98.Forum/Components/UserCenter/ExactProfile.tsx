@@ -6,6 +6,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { UserInfo } from '../../States/AppState';
 import { UbbContainer } from '../UbbContainer'
+import { UbbCodeOptions } from '../../Ubb/Core';
 
 /**
  * 用户中心主页个人资料组件
@@ -53,7 +54,7 @@ export default class extends React.Component<UserCenterExactProfileProps> {
                 {this.props.userInfo.signatureCode ?
                     <div className="user-description">
                         <p>个性签名</p>
-                        <UbbContainer code={this.props.userInfo.signatureCode} />
+                        <UbbContainer code={this.props.userInfo.signatureCode} options={{ ...new UbbCodeOptions(), allowExternalImage: false }} />
                     </div> : null
                 }
             </div>

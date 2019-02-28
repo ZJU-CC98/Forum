@@ -91,6 +91,14 @@ export class UbbCodeOptions {
 	 * 是否允许显示图像。
 	 */
     allowImage = true;
+    /**
+     * 是否允许显示外部图像
+     */
+    allowExternalImage = true;
+    /**
+     * 是否允许点击图片后弹出灯箱以显示完整图片
+     */
+    allowLightbox = false;
 	/**
 	 * 是否允许多媒体资源，如视频，音频，Flash 等。
 	 */
@@ -1064,7 +1072,22 @@ export class UbbCodeEngine {
 	 */
     private buildSegmentsCore(content: string, parent: UbbTagSegment) {
 
-        const tagMatchRegExp = /([\s\S]*?)\[(.+?)]/gi;
+        // const tagMatchRegExp = /([\s\S]*?)\[(.+?)]/gi;
+        const tagMatchRegExp = {
+            lastIndex: 0,
+            exec(content: string) {
+                const i1 = this.lastIndex
+                const i2 = content.indexOf('[', i1)
+                if (i2 === -1) 
+                    return null
+                
+                const i3 = content.indexOf(']', i2)
+                if (i3 === -1) 
+                    return null
+                this.lastIndex = i3 + 1
+                return [content.slice(i1, i2), content.slice(i2 + 1, i3)]
+            }
+        }
 
         while (true) {
 
@@ -1082,7 +1105,7 @@ export class UbbCodeEngine {
                 }
                 return;
             }
-            const [, beforeText, tagString] = tagMatch;
+            const [beforeText, tagString] = tagMatch;
 
             // 添加前面的文字。
             if (beforeText) {

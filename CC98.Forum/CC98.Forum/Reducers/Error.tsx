@@ -20,6 +20,7 @@ export type errorKeys =
     'ContentNeeded' | 
     'OperationForbidden' | 
     'PageNotFound' | 
+    'TooFrequentSearch' |
     ''
 ;
 

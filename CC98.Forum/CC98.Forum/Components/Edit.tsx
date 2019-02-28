@@ -15,10 +15,20 @@ import { UbbEditor } from './UbbEditor';
 import { Constants } from './Constant';
 import store from '../Store';
 import * as ErrorActions from '../Actions/Error';
-declare let editormd: any;
-declare let testEditor: any;
+import { Vote, props as VoteProps } from './EditVoteIput';
+import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "@cc98/hell-react-mde";
+import * as Showdown from "showdown";
+import CustomCommand from "./react-mde/imageUploaderCommand";
 
-export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[] }, { mode: string, id: number }> {
+
+
+
+export class Edit extends RouteComponent<
+    { history },
+    { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[], voteInfo: VoteProps['voteInfo'], mdeState, commands },
+    { mode: string, id: number }
+    > {
+    converter: Showdown.Converter;
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -29,8 +39,31 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
         this.changeAcademicType = this.changeAcademicType.bind(this);
         this.changeActivityType = this.changeActivityType.bind(this);
         this.changeNormalType = this.changeNormalType.bind(this);
+        this.onVoteInfoChange = this.onVoteInfoChange.bind(this);
+        this.converter = new Showdown.Converter({ tables: true, simplifiedAutoLink: true });
         this.state = ({
-            masters: [], tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1: "", tag2: "", fetchState: 'ok', boardId: 1, type: 0, topicInfo: {}
+            masters: [],
+            tags: [],
+            boardName: "",
+            ready: false,
+            mode: 0,
+            content: "",
+            title: "",
+            postInfo: { floor: 0, title: "", content: "", contentType: 0 },
+            tag1: "",
+            tag2: "",
+            fetchState: 'ok',
+            boardId: 1,
+            type: 0,
+            topicInfo: {},
+            voteInfo: {
+                voteItems: ['', ''],
+                expiredDays: 0,
+                maxVoteCount: 0,
+                needVote: false
+            },
+            mdeState: '',
+            commands: []
         });
     }
 
@@ -41,8 +74,17 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
         const headers = new Headers();
         headers.append("Authorization", token);
         let url, response, data, tags;
+        CustomCommand.editor = this;
+        const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
+            { commands: [CustomCommand] },
+        ];
+        const defaultCommands = ReactMdeCommands.getDefaultCommands();
+        const myCommands = defaultCommands.concat(getCommands());
+        myCommands[1].commands.length = 3;
+        this.setState({ commands: myCommands })
         switch (mode) {
             case 'postTopic':
+            case 'postVoteTopic':
                 url = `/Board/${id}`;
                 response = await Utility.cc98Fetch(url, { headers });
                 data = await response.json();
@@ -76,18 +118,21 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
                 url = `/Board/${data.boardId}`;
                 response = await Utility.cc98Fetch(url, { headers });
                 let masters = (await response.json()).boardMasters;
-                if (!(Utility.isMaster(masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) && type === 1) {
+                if (Utility.getLocalStorage('userInfo') && !(Utility.isMaster(masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) && type === 1) {
                     type = 0;
                 }
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
                     this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 0 });
                 } else
-                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 1 });
+                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 1, mdeState: data.content });
                 break;
         }
 
     }
+    handleValueChange = (value) => {
+        this.setState({ mdeState: value });
+    };
     changeNormalType() {
 
         this.setState({ type: 0 });
@@ -116,13 +161,20 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
         this.setState({ content: value });
     }
     async sendMdTopic() {
+        if (this.match.params.mode === 'postVoteTopic') { // 投票内容发布前检查合法性
+            const info = Vote.isFormIllegal(this.state.voteInfo);
+            if (info) {
+                alert(info);
+                return null;
+            }
+        }
         if (this.state.title == "") {
             alert("请输入标题!");
         } else {
             try {
                 let tag1Id, tag2Id;
                 let url = `/board/${this.match.params.id}/topic`;
-                let c = Constants.testEditor.getMarkdown();
+                let c = this.state.mdeState;
                 let content;
                 const type = this.state.type;
                 tag1Id = await Utility.getTagIdbyName(this.state.tag1);
@@ -156,7 +208,13 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
                         type: this.state.type
                     };
                 }
-
+                if (this.match.params.mode === 'postVoteTopic') { // 投票内容
+                    content = {
+                        ...content,
+                        isVote: true,
+                        voteInfo: this.state.voteInfo
+                    }
+                }
                 let contentJson = JSON.stringify(content);
                 let token = await Utility.getToken();
                 let myHeaders = new Headers();
@@ -202,6 +260,13 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
 
     }
     async sendUbbTopic() {
+        if (this.match.params.mode === 'postVoteTopic') { // 投票内容发布前检查合法性
+            const info = Vote.isFormIllegal(this.state.voteInfo);
+            if (info) {
+                alert(info);
+                return null;
+            }
+        }
         if (this.state.title == "") {
             alert("请输入标题！");
         } else {
@@ -238,6 +303,13 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
                     title: this.state.title,
                     type: this.state.type
                 };
+            }
+            if (this.match.params.mode === 'postVoteTopic') { // 投票内容
+                content = {
+                    ...content,
+                    isVote: true,
+                    voteInfo: this.state.voteInfo
+                }
             }
             const contentJson = JSON.stringify(content);
             const token = await Utility.getToken();
@@ -326,8 +398,7 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
     }
     async editMd() {
         const url = `/post/${this.match.params.id}`;
-        let c = Constants.testEditor.getMarkdown();
-        Constants.testEditor.setMarkdown("");
+        let c = this.state.mdeState;
         let content, tag1Id, tag2Id;
         tag1Id = await Utility.getTagIdbyName(this.state.tag1);
         tag2Id = await Utility.getTagIdbyName(this.state.tag2);
@@ -383,23 +454,25 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
     onUbbChange(content) {
         this.setState({ content: content });
     }
+    onVoteInfoChange(voteInfo: VoteProps['voteInfo']) {
+        this.setState({ voteInfo });
+    }
+    setValue = (v) => {
+        this.setState({ mdeState: this.state.mdeState + v }, () => { this.setState({ mdeState: this.state.mdeState }) })
+    }
     render() {
         const contentCache = Utility.getLocalStorage("contentCache");
-        console.log("in render");
-        console.log("mode = " + this.state.mode);
-        console.log("content = " + this.state.content);
-        console.log("cache = " + contentCache);
         const mode = this.match.params.mode;
         const id = this.match.params.id;
-        const url = `/list/${this.state.boardId}`;
+        const url = `/board/${this.state.boardId}`;
         let editor;
         let titleInput = null;
-        if (mode === "postTopic") {
+        if (mode === "postTopic" || mode === 'postVoteTopic') {
             titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} tag1={0} tag2={0} />;
             if (this.state.mode === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginTop: "0rem" }}>
                         切换到Markdown编辑器</div>
                 </div>
                     <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic.bind(this) }} />
@@ -408,17 +481,35 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
                     </div></div>
                     ;
             } else {
-                editor = <div><div className="createTopicContent">
+                editor = <div style={{ display: 'flex', flexDirection: 'column' }}><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginTop: "0rem" }}>切换到UBB编辑器</div>
                 </div>
-                    <InputMdContent postInfo={this.state.postInfo} content={contentCache} onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
+                    <ReactMde
+                        value={this.state.mdeState}
+                        onChange={this.handleValueChange}
+                        generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
+                        commands={this.state.commands}
+                        minEditorHeight={330}
+                        maxEditorHeight={500}
+                        buttonContentOptions={{
+                            iconProvider: name => {
+                                console.log(name);
+                                if (name === 'heading') return <i className={`fa fa-header`} />;
+
+                                return <i className={`fa fa-${name}`} />
+                            },
+                        }}
+
+                    />
+                    <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
+                </div>;
             }
         } else if (mode === "edit") {
             if (this.state.mode === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginTop: "0rem" }}>切换到Markdown编辑器</div>
                 </div>
                     <UbbEditor update={this.update} value={this.state.content} option={{ submit: this.editUBB.bind(this) }} />
                     <div className="row" style={{ justifyContent: "center" }}>
@@ -426,11 +517,29 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
                     </div></div>
                     ;
             } else if (this.state.mode === 1) {
-                editor = <div><div className="createTopicContent">
+                editor = <div style={{ display: 'flex', flexDirection: 'column' }} ><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginTop: "0rem" }}>切换到UBB编辑器</div>
                 </div>
-                    <InputMdContent postInfo={this.state.postInfo} content={contentCache} onChange={this.editMd.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
+                    <ReactMde
+                        value={this.state.mdeState}
+                        onChange={this.handleValueChange}
+                        generateMarkdownPreview={(markdown) => Promise.resolve(this.converter.makeHtml(markdown))}
+                        commands={this.state.commands}
+                        minEditorHeight={330}
+                        maxEditorHeight={500}
+                        buttonContentOptions={{
+                            iconProvider: name => {
+                                console.log(name);
+                                if (name === 'heading') return <i className={`fa fa-header`} />;
+
+                                return <i className={`fa fa-${name}`} />
+                            },
+                        }}
+
+                    />
+                    <div id="post-topic-button" onClick={this.editMd.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>编辑</div>
+                </div>;
             }
             if (this.state.postInfo.floor === 1) {
                 titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} />;
@@ -447,7 +556,7 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
         console.log(Utility.isMaster(this.state.masters))
 
         // issue #38 普通用户不显示校园活动
-        if (Utility.isMaster(this.state.masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) {
+        if (Utility.getLocalStorage('userInfo') && (Utility.isMaster(this.state.masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1)) {
             topicType = <div className="createTopicType">
                 <div className="createTopicListName">发帖类型</div>
                 <input type="radio" name="type" value="普通" onClick={this.changeNormalType} checked={this.state.type === 0 ? true : false} /> 普通
@@ -463,6 +572,7 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
             <Category url={url} boardName={this.state.boardName} mode={mode} />
             {titleInput}
             {topicType}
+            {mode === 'postVoteTopic' ? <Vote voteInfo={this.state.voteInfo} onVoteInfoChange={this.onVoteInfoChange} /> : null}
             {editor}
         </div>;
     }
@@ -478,7 +588,7 @@ export class Category extends React.Component<{ url: string, boardName: string, 
         super(props);
         this.state = ({
             url: "",
-            boardName: "",       
+            boardName: "",
         });
     }
     //在子组件中，this.props的值不会自动更新，每当父组件的传值发生变化时，需要在子组件的的componentWillReceiveProps中去手动更新
@@ -486,13 +596,14 @@ export class Category extends React.Component<{ url: string, boardName: string, 
         this.setState({
             url: nextProps.url,
             boardName: nextProps.boardName,
-   
+
         });
     }
     render() {
         let categoryText: string;
         if (this.props.mode === "postTopic") categoryText = "发表主题";
         else if (this.props.mode === "edit") categoryText = "编辑主题";
+        else if (this.props.mode === 'postVoteTopic') categoryText = "发表投票主题";
         return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
             <i className="fa fa-chevron-right"></i>
@@ -570,6 +681,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
     }
 
     componentDidMount() {
+
         //如果有默认tags就绑定事件
         if (this.state.tags.length > 0) {
             this.bindEvent();
@@ -701,28 +813,24 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             let defaultTag2 = this.state.tags[1].tags[0].name;
             if (this.state.tag1) defaultTag1 = this.state.tag1;
             if (this.state.tag2) defaultTag2 = this.state.tag2;
-            tagInfo = <div className="row"><div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
-                <div style={{ display: "flex" }}>
+            tagInfo = <div className="row">
+                <div className="row">
                     <div className="tagBoxSelect">{defaultTag1}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
+                    {drop1}
                 </div>
-                {drop1}
-            </div>
-                <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
-                    <div style={{ display: "flex" }}>
-                        <div className="tagBoxSelect1">{defaultTag2}</div>
-                        <div className="downArrow1"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
-                    </div>
+                <div className="row">
+                    <div className="tagBoxSelect1">{defaultTag2}</div>
+                    <div className="downArrow1"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                     {drop2}
-                </div></div >;
+                </div>
+            </div>;
         } else if (this.state.tags.length == 1) {
             let defaultTag1 = this.state.tags[0].tags[0].name;
             if (this.state.tag1) defaultTag1 = this.state.tag1;
-            tagInfo = <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
-                <div style={{ display: "flex" }}>
-                    <div className="tagBoxSelect">{defaultTag1}</div>
-                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
-                </div>
+            tagInfo = <div className="row">
+                <div className="tagBoxSelect">{defaultTag1}</div>
+                <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 {drop1}
             </div>
                 ;
@@ -761,68 +869,4 @@ export class Options extends React.Component<{}, {}>{
     }
 }
 
-
-export class InputMdContent extends React.Component<{ mode, content, postInfo, ready, onChange }, { content }>{
-    constructor(props) {
-        super(props);
-        this.state = ({ content: "" });
-    }
-
-    componentDidMount() {
-        let content = '';
-        if (this.props.postInfo.content) {
-            content = this.props.content;
-        }
-        editormd.emoji.path = '/static/images/emoji/';
-        Constants.testEditor = editormd("testEditor", {
-            width: "100%",
-            height: 450,
-            path: "/static/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false,
-            emoji: true,
-            appendMarkdown: content,
-            toc: true,
-            tocm: true,
-            toolbarIcons: function () {
-                return [
-                    "undo", "redo", "|", "emoji",
-                    "bold", "del", "italic", "quote", "|",
-                    "h1", "h2", "h3", "h4", "|",
-                    "list-ul", "list-ol", "hr", "|",
-                    "link", "testIcon", "image", "code", "table", "html-entities",
-                ]
-            },
-            toolbarIconsClass: {
-                testIcon: "fa-upload"  // 指定一个FontAawsome的图标类
-            },
-            // 自定义工具栏按钮的事件处理
-            toolbarHandlers: {
-                testIcon: function (cm, icon, cursor, selection) {
-                    var str = $("#upload-files").click();
-
-                }
-            },
-        });
-
-        this.setState({});
-    }
-    send() {
-        const content = Constants.testEditor.getMarkdown();
-        this.props.onChange(content);
-    }
-    render() {
-        return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
-            <form>
-                <input type='file' id='upload-files' style={{ display: 'none ' }} onChange={Utility.uploadEvent} />
-                <div id="testEditor" className="editormd">
-                    <textarea className="editormd-markdown-textarea" name="testEditor-markdown-doc"  ></textarea>
-                </div>
-            </form>
-            <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-                <div id="post-topic-button" className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }} onClick={this.send.bind(this)}>{this.props.mode === 'postTopic' ? "发帖" : "编辑"}</div>
-            </div>
-        </div>
-        </div>;
-    }
-}
 export const ShowEdit = withRouter(Edit);

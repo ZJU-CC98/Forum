@@ -2,7 +2,7 @@
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 import { AdsComponent } from '../MainPage';
-declare let moment: any;
+import * as moment from 'moment';
 interface Props {
     topicInfo;
     boardInfo;
@@ -20,8 +20,10 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
     showAllImg() {
         let btns = document.getElementsByClassName("hiddenImage");
         for (let btnId in btns) {
-            let btn:any = btns[btnId];
-            btn.click();
+            if (btns.hasOwnProperty(btnId)) {
+                let btn:any = btns[btnId];
+                btn.click();
+            }
         }
     }
     async follow() {
@@ -54,8 +56,12 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         e.target.src = `/static/images/_CC98协会.png`;
     }
     render() {
+        const title = this.props.topicInfo.title || '';
+        /* 过长字符串截断，65 是纯中文情况下的经验值 */
+        const overflowLen = 65;
+
         const url = `/static/images/_${this.props.boardInfo.name}.png`;
-        const boardUrl = `/list/${this.props.boardInfo.id}`;
+        const boardUrl = `/board/${this.props.boardInfo.id}`;
         let tags = null;
 
         if (this.props.tag1 || this.props.tag2) {
@@ -64,9 +70,10 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         return <div className="topicInfo-info">
             <div className="topicInfo-title">
                 <div className="column" id="topicTitleProp" >
-                    <div id="essay1" className="row">
-                        {this.props.topicInfo.title}
-
+                    <div id="essay1" className="row" title={title.length > overflowLen ? title : undefined}>
+                        {
+                            title.length <= overflowLen ? title : title.slice(0, overflowLen) + ' ...'
+                        }
                     </div>
                     <div className="row" id="essayProp">
                         {tags}
@@ -75,7 +82,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
                         <div className="followTopic" onClick={this.state.isFollow ? this.unFollow : this.follow}>
                             {this.state.isFollow ? "已收藏" : "收藏"}
                         </div>
-                        <div className="followTopic" style={{width:"5rem"}} onClick={this.showAllImg}>
+                        <div className="followTopic" style={{width:"6rem"}} onClick={this.showAllImg}>
                            显示所有图片
                         </div>
                     </div>

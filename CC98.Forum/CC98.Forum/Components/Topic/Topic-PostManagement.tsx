@@ -67,32 +67,26 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
         this.setState({ UI: "Other" });
     }
     async  confirm() {
+        let id = `#opPostReason_${this.props.postId}`
+        let id1 = `#hidePostReason_${this.props.postId}`
         let status = 'ok';
         let status1 = 'ok';
         let status2 = 'ok';
         switch (this.state.UI) {
             case 'Award':
-                if ($("input[name='reason']:checked").val()) {
-                    if ($("input[name='reason']:checked").val() !== '自定义') {
-                        if (this.state.wealth !== 0) {
-                            status = await Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
-                        }
-                        if (this.state.prestige !== 0) {
-                            status1 = await Utility.addPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
-                        }
-
-                    } else {
-                        if (this.state.wealth !== 0) {
-                            status = await Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
-
-                        }
-
-                        if (this.state.prestige !== 0) {
-                            status1 = await Utility.addPrestige(this.props.postId, this.state.prestige, this.state.reason);
-
-                        }
-
+                if ($(id).val()) {
+                    let value = $(id).val();
+                    if (value == "自定义") {
+                        value = $(id1).val();
                     }
+                        if (this.state.wealth != 0) {
+                            status = await Utility.awardWealth(value, this.state.wealth, this.props.postId);
+                        }
+                        if (this.state.prestige != 0) {
+                            status1 = await Utility.addPrestige(this.props.postId, this.state.prestige, value);
+                        }
+
+                    
                     if (status === 'ok' && status1 === 'ok') {
                         this.setState({ tips: "操作成功" });
                         const UIId = `#manage${this.props.postId}`;
@@ -123,35 +117,22 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
                 }
                 break;
             case 'Punish':
-                if ($("input[name='reason']:checked").val()) {
-                    if ($("input[name='reason']:checked").val() !== '自定义') {
+                if ($(id).val()) {
+                    let value = $(id).val();
+                    if (value == "自定义") {
+                        value = $(id1).val();
+                    }
                         if (this.state.wealth!==0)
-                        status = await Utility.deductWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
+                        status = await Utility.deductWealth(value, this.state.wealth, this.props.postId);
 
                         if (this.state.prestige !== 0)
-                            status1 = await Utility.deductPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
+                            status1 = await Utility.deductPrestige(this.props.postId, this.state.prestige,value);
 
 
                         if (this.state.tpdays !== 0)
 
-                            status2 = await Utility.stopBoardPost(this.props.postId, $("input[name='reason']:checked").val(), this.state.tpdays);
-                    }
-
-                    else {
-                        if (this.state.reason) {
-                            if (this.state.wealth!==0)
-                            status = await Utility.deductWealth(this.state.reason, this.state.wealth, this.props.postId);
-                            if (this.state.prestige !== 0)
-                                status1 = await Utility.deductPrestige(this.props.postId, this.state.prestige, this.state.reason);
-                            if (this.state.tpdays !== 0)
-
-                                status2 = await Utility.stopBoardPost(this.props.postId, this.state.reason, this.state.tpdays);
-                        } else {
-                            this.setState({ tips: "请输入原因！" });
-                        }
-                       
-                    }
-                  
+                            status2 = await Utility.stopBoardPost(this.props.postId,value, this.state.tpdays);
+                   
                     if (status === 'ok' && status1 === 'ok' && status2 === 'ok') {
                         this.setState({ tips: "操作成功" });
                         const UIId = `#manage${this.props.postId}`;
@@ -282,8 +263,20 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
             $(".managePrestige").css("display", "");
         }
     }
+    changeReason() {
+        let id = `#opPostReason_${this.props.postId}`
+        let id1 = `#hidePostReason_${this.props.postId}`
+        let value = $(id).val();
+        console.log(value);
+        if (value == "自定义") {
+            $(id1).css("display", "");
+        } else {
+            $(id1).css("display", "none");
+        }
+    }
     render() {
-
+        let id = `opPostReason_${this.props.postId}`
+        let id1 = `hidePostReason_${this.props.postId}`
         let UI;
         let m_wealth:any = 0;
         if (!this.props.m_wealth) m_wealth = '不限';
@@ -294,7 +287,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
                 <div className="manageObject">财富值</div>
 
-                <input type="text" value={this.state.wealth} onChange={this.wealthInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.wealth} onChange={this.wealthInput} />
 
             </div>
             <div className="row" style={{color:"white"}}>您今天在{this.props.boardName}已经发了{this.props.d_wealth}财富值，最多可发{m_wealth}</div>
@@ -303,7 +296,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
                 <div className="manageObject">威望</div>
 
-                <input type="text" value={this.state.prestige} onChange={this.prestigeInput} />
+                <input type="text" className="react-bootstrap-smalltext" value={this.state.prestige} onChange={this.prestigeInput} />
 
             </div>
 
@@ -313,31 +306,17 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
                 <div className="row" style={{ justifyContent: "flex-start", marginLeft: "3rem", marginTop: "1rem", color: "#fff" }}>
                     <div >原因</div>
-                    <div className="row" >
-
-                        <input type="radio" name="reason" value="好文章" /><div>好文章</div>
-
-                    </div>
-
-                    <div className="row">
-
-                        <input type="radio" name="reason" value="有用资源" /><div>有用资源</div>
-
-                    </div>
-
-                    <div className="row">
-
-                        <input type="radio" name="reason" value="热心回复" /><div>热心回复</div></div>
-
-                </div>
-                <div className="row" style={{ justifyContent: "flex-start", marginLeft:"3rem",color:"#fff", marginTop: "1rem" }}>
-                    <div className="row">
-                        <input type="radio" name="reason" value="自定义" /><div>自定义</div>
-                    </div>
-                    <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                    
                 </div>
                 <div>{this.state.tips}</div>
+                <select id={id} onChange={this.changeReason.bind(this)} className="react-bootstrap-select" >
 
+                    <option className="react-bootstrap-option" value="好文章">好文章</option>
+                    <option className="react-bootstrap-option" value="有用资源">有用资源</option>
+                    <option className="react-bootstrap-option" value="热心回复">热心回复</option>
+                    <option className="react-bootstrap-option" value="自定义">自定义</option>
+                </select>
+                <input id={id1} className="react-bootstrap-smalltext" style={{ display: "none" }} />
             </div>
 
         </div>;
@@ -347,14 +326,14 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
                 <div className="manageObject">扣财富值</div>
 
-                <input type="text" value={this.state.wealth} onChange={this.wealthInput} />
+                <input type="text" className="react-bootstrap-smalltext" value={this.state.wealth} onChange={this.wealthInput} />
 
             </div>
             <div className="row manageOperation managePrestige">
 
                 <div className="manageObject">扣威望</div>
 
-                <input type="text" value={this.state.prestige} onChange={this.prestigeInput} />
+                <input type="text" className="react-bootstrap-smalltext" value={this.state.prestige} onChange={this.prestigeInput} />
 
             </div>
 
@@ -362,7 +341,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
                 <div className="manageObject">禁止发言(天)</div>
 
-                <input type="text" value={this.state.tpdays} onChange={this.tpdaysInput} />
+                <input type="text" className="react-bootstrap-smalltext" value={this.state.tpdays} onChange={this.tpdaysInput} />
 
             </div>
 
@@ -373,28 +352,14 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
                     justifyContent: "flex-start", marginLeft: "3rem", color:"#fff", marginTop: "1rem"
                 }}>
                     <div >原因</div>
-                    <div className="row" >
+                    <select id={id} onChange={this.changeReason.bind(this)} className="react-bootstrap-select" >
 
-                        <input type="radio" name="reason" value="人身攻击" /><div>人身攻击</div>
-
-                    </div>
-
-                    <div className="row">
-
-                        <input type="radio" name="reason" value="恶意灌水" /><div>恶意灌水</div>
-
-                    </div>
-
-                    <div className="row">
-
-                        <input type="radio" name="reason" value="违反版规" /><div>违反版规</div></div>
-
-                </div>
-                <div className="row" style={{ justifyContent: "flex-start", marginLeft: "3rem",color:"#fff", marginTop: "1rem" }}>
-                    <div className="row">
-                        <input type="radio" name="reason" value="自定义" /><div>自定义</div>
-                    </div>
-                    <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                        <option className="react-bootstrap-option" value="人身攻击">人身攻击</option>
+                        <option className="react-bootstrap-option" value="违反版规">违反版规</option>
+                        <option className="react-bootstrap-option" value="恶意灌水">恶意灌水</option>
+                        <option className="react-bootstrap-option" value="自定义">自定义</option>
+                    </select>
+                    <input id={id1} className="react-bootstrap-smalltext" style={{ display: "none" }} />
                 </div>
                 <div>{this.state.tips}</div>
 
@@ -405,7 +370,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
             <div className="manageObject">删除原因</div>
 
-            <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+            <input type="text" className="react-bootstrap-smalltext" value={this.state.reason} onChange={this.reasonInput} />
 
         </div>;
         if (this.props.floor === 1) deleteAllow = <div>删除主题帖请在底部进行操作</div>;

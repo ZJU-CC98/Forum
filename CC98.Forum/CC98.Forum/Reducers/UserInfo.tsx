@@ -6,6 +6,7 @@ import * as ActionTypes from '../ActionTypes';
 import * as Utility from '../Utility';
 import * as Appstate from '../States/AppState';
 import { RootAction } from '../Store';
+import { addUserInfo } from '../IndexedDB/UserStorage';
 
 /**
  * 用户中心用Store
@@ -114,8 +115,7 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
             return { ...state, isLogOn: false };
         case ActionTypes.CHANGE_USERINFO:
             Utility.setLocalStorage("userInfo", action.payload.newInfo, 2592000);
-            Utility.setLocalStorage(`userId_${action.payload.newInfo.id}`, action.payload.newInfo, 3600);
-            Utility.setLocalStorage(`userName_${action.payload.newInfo.name}`, action.payload.newInfo.id);
+            addUserInfo(action.payload.newInfo)
             return { ...state, currentUserInfo: action.payload.newInfo };
         case ActionTypes.CHANGE_VISITING_USER:
             return { ...state, currentVisitingUserPage: action.payload.page, currentVisitingUserId: action.payload.id };

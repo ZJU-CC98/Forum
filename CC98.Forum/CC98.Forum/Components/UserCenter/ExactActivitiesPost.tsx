@@ -13,7 +13,7 @@ export default class extends React.Component<UserCenterExactActivitiesPostProps>
         return (
             <div className="user-post">
                 <div className="user-post-info">
-                    <Link className="user-post-board" to={`/list/${this.props.userRecentPost.boardId}`}>{this.props.userRecentPost.boardName}</Link>
+                    <Link className="user-post-board" to={`/board/${this.props.userRecentPost.boardId}`}>{this.props.userRecentPost.boardName}</Link>
                     <a className="user-post-date">{this.props.userRecentPost.time.slice(0, 19).replace('T', ' ')}</a>
                 </div>
                 <div className="user-post-content">

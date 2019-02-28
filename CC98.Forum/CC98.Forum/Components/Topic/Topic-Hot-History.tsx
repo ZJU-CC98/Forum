@@ -50,9 +50,6 @@ export class HistoryHotTopic extends React.Component<{}, FocusTopicAreaState> {
     }
 
     async componentDidMount() {
-        //更新一下未读消息数目
-        Utility.refreshHoverUnReadCount();
-
         let data = await Utility.getMonthlyHotTopic("history");
         this.setState({
             data: data,

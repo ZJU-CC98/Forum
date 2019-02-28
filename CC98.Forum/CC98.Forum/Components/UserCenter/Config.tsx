@@ -117,7 +117,7 @@ class Config extends React.Component<Props, States> {
             birthdayMonth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)) : 0,
             birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)) : 0,
             DisplayTitleId: info.displayTitleId,
-            userTitleIds: info.userTitleIds
+            userTitleIds: info.userTitleIds|| []
         };
         this.setState({
             userInfo

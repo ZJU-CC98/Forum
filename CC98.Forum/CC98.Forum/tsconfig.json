@@ -1,5 +1,7 @@
 {
 	"compilerOptions": {
+		"module": "esnext",
+		"moduleResolution": "node",
 		"noImplicitAny": false,
 		"noEmitOnError": true,
 		"removeComments": false,
@@ -13,9 +15,5 @@
 		],
 		"allowSyntheticDefaultImports": true,
 		"importHelpers": true
-	},
-	"include": [
-		"webpack.config.debug.ts",
-		"webpack.config.release.ts"
-	]
+	}
 }

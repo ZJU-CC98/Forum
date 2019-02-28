@@ -34,7 +34,7 @@ export class SearchTopicSingle extends React.Component<FocusTopic> {
         }
         let topicUrl = `/topic/${this.props.id}`;
         let userUrl = `/user/id/${this.props.userId}`;
-        let boardUrl = `/list/${this.props.boardId}`;
+        let boardUrl = `/board/${this.props.boardId}`;
         let a: any = (this.props.floorCount / 10) + 1;
         let b = parseInt(a);
         let c = this.props.floorCount + 10 - b * 10;
@@ -70,7 +70,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
    
     render() {
         let topicUrl = `/topic/${this.props.id}`;
-        let boardUrl = `/list/${this.props.boardId}`;
+        let boardUrl = `/board/${this.props.boardId}`;
         return (<div className="focus-topic">
                     <PortaritrUrl userId={this.props.userId} portraitUrl={this.props.portraitUrl} />
                     <div className="focus-topic-info1">

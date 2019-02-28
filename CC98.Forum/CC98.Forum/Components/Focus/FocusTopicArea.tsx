@@ -7,6 +7,7 @@ import { FocusBoard } from '../../Props/FocusBoard';
 import { FocusTopicSingle } from './FocusTopicSingle';
 import { FocusTopicAreaState } from '../../States/FocusTopicAreaState';
 import * as Utility from '../../Utility';
+import Spin from 'antd/es/spin'
 /**
  * 表示我关注的版面的主题列表
  */
@@ -133,7 +134,7 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
     render() { 
         return <div className="focus-topic-area">
             <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-            <div className="focus-topic-loading" id="focus-topic-loading"><i style={{ marginTop: "1rem" }} className="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div>
+            <div className="focus-topic-loading" id="focus-topic-loading"><Spin size="large" /></div>
             <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">无法加载更多了，小水怡情，可不要沉迷哦~</div>
             <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
         </div>;

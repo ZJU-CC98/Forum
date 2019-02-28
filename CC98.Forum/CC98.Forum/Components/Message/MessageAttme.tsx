@@ -8,6 +8,7 @@ import { MessageAttmebox } from './MessageAttmebox';
 import * as Utility from '../../Utility';
 import { Pager } from '../Pager';
 import DocumentTitle from '../DocumentTitle';
+import Store from '../../Store';
 
 /**
  * @我的消息
@@ -46,13 +47,11 @@ export class MessageAttme extends React.Component<{match}, MessageResponseState>
             let atState = { data: data, from: curPage + 1, totalPage: totalPage };
             Utility.setStorage("atState", atState);
         }
-        //更新消息数量
-        await Utility.refreshUnReadCount();
     }
 
     async componentDidMount() {
         //如果没有新消息而且第一页有缓存就用缓存数据
-        let unreadCount = Utility.getStorage("unreadCount");
+        let unreadCount = Store.getState().message;
         let atState = Utility.getStorage("atState");
         if (unreadCount.atCount === 0 && atState) {
             this.setState(atState);

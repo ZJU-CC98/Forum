@@ -9,10 +9,11 @@ import * as Utility from '../../Utility';
 import Pager from './Pager';
 import * as Actions from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
-import { RootState } from '../../Store';
+import { RootState, RootAction } from '../../Store';
 import { Dispatch } from 'redux';
 import { withRouter, match, RouteComponentProps } from 'react-router-dom';
 import { getFavoritePosts } from '../../AsyncActions/UserCenter';
+import { ThunkDispatch } from 'redux-thunk';
 
 type ownProps = {
     userRecentPosts: UserRecentPost[];
@@ -79,7 +80,7 @@ function mapState(store: RootState) {
     };
 }
 
-function mapDispatch(dispatch: Dispatch<RootState>) {
+function mapDispatch(dispatch: ThunkDispatch<RootState, void, RootAction>) {
     return {
         changePage: () => {
             dispatch(Actions.changeUserCenterPage('myfavoriteposts'));

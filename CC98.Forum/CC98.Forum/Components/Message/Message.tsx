@@ -12,6 +12,7 @@ import {
     Route,
     NavLink
 } from 'react-router-dom';
+import Store from '../../Store';
 
 /**
  * 网站的主页面对象。
@@ -19,10 +20,7 @@ import {
 export class Message extends React.Component<{}, AppState> {
 
     render() {
-        let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
-        if (Utility.getStorage("unreadCount")) {
-            unreadCount = Utility.getStorage("unreadCount")
-        }
+        let unreadCount = Store.getState().message;
         return (<div className="message-root">
                     <DocumentTitle title={`CC98论坛-我的消息`} />
             <div className="message">

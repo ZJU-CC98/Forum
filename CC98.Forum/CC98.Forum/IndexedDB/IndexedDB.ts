@@ -35,7 +35,7 @@ export namespace IndexedDB {
                 db = req.result;
                 resolve();
             };
-            req.onerror = e => reject();
+            req.onerror = e => reject(e);
         });
     }
 }

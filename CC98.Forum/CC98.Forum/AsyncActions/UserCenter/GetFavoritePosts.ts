@@ -1,8 +1,8 @@
 import { Action, ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from '../../Store';
+import { ThunkAction } from 'redux-thunk';
 import * as Actions from '../../Actions/UserCenter';
 import * as Appstate from '../../States/AppState';
-import { RootState } from '../../Store';
+import { RootState, RootAction } from '../../Store';
 import * as Utility from '../../Utility';
 
 /**
@@ -10,7 +10,7 @@ import * as Utility from '../../Utility';
  * @param page 当前页数
  * @author AsukaSong
  */
-export const getFavoritePosts: ActionCreator<ThunkAction<Promise<Action>, RootState, void>> = (page: number) => async (dispatch, getState) => {
+export const getFavoritePosts: ActionCreator<ThunkAction<Promise<Action>, RootState, void, RootAction>> = (page: number) => async (dispatch, getState) => {
     try {
         dispatch(Actions.userCenterLoading());
         const recentPosts = getState().userInfo.currentUserFavoritePosts;

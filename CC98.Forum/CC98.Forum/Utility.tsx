@@ -1,26 +1,19 @@
-﻿import * as Prop from './Props/AppProps'
+import * as Prop from './Props/AppProps'
 import * as State from './States/AppState'
-import store from './Store';
+import store, { Actions } from './Store';
 import * as UserCenterActions from './Actions/UserCenter';
 import * as ErrorActions from './Actions/Error';
-
 import { TopicTitleAndContent } from './Components/Board/Board'
 import { Constants } from './Components/Constant';
+import { removeUserInfo as removeUserInfoInIndexDB } from './IndexedDB/UserStorage';
 
 
 // lib
 
 import * as React from 'react';
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
 import * as $ from 'jquery';
 
-declare let editormd: any;
-declare let moment: any;
-declare let urljoin: any;
+import * as moment from 'moment';
 
 
 // -------- TBC --------
@@ -83,7 +76,7 @@ export async function getBoardTopicAsync(curPage, boardId, totalTopicCount) {
                 return 'not found';
         }
         const data: State.TopicTitleAndContentState[] = await response.json();
-        for (let i = 0; i < topicNumberInPage; i++) {
+        for (let i = 0; i < data.length; i++) {
             boardtopics[i] = {
                 ...data[i], replyCount: data[i].replyCount || 0
             }
@@ -319,7 +312,7 @@ export async function getHotReplyContent(topicid: number) {
 
 
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} topState={item.topState} state={item.state} hitCount={item.hitCount} bestState={item.bestState} />
+    return <TopicTitleAndContent key={item.id} {...item} />
         ;
 }
 export async function getCurUserTopic(topicid: number, userId: number) {
@@ -649,7 +642,8 @@ export async function getBoardName(boardId: number) {
 
 export function isLogOn(): boolean {
     const token = getLocalStorage("refresh_token");
-    return !!token;
+    const userInfo = getLocalStorage("userInfo");
+    return !!(token && userInfo);
 }
 
 /*
@@ -1289,13 +1283,25 @@ export function clickUploadIcon() {
 
     $("#upload-files").click();
 }
+
 export async function uploadEvent(e) {
+    localStorage.setItem("react-mde-imageurl-status","pending");
     const files = e.target.files;
     const res = await uploadFile(files[0]);
-    const url = res.content;
-    const baseUrl = getApiUrl();
-    const str = `![](${url})`;
-    Constants.testEditor.appendMarkdown(str);
+    if(res.isSuccess){
+        const url = res.content;
+        localStorage.setItem("react-mde-imageurl-status","success");
+        localStorage.setItem("react-mde-imageurl",url);
+        return url;
+    }else{
+        localStorage.setItem("react-mde-imageurl-status","fail");
+      return "";
+    }
+
+    // const baseUrl = getApiUrl();
+    // const str = `![](${url})`;
+    // console.log("in func "+str);
+    // return url;
 }
 /**
  * 关注指定id的用户
@@ -1425,7 +1431,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     case 401:
                         store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
                     case 403:
-                        store.dispatch(ErrorActions.throwError('OperationForbidden'));
+                        store.dispatch(ErrorActions.throwError('TooFrequentSearch'));
                     case 404:
                     //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
                     case 500:
@@ -1638,6 +1644,14 @@ export async function getPortraitUrl(userName) {
     const response = await cc98Fetch(url);
     const data = await response.json();
     return data.portraitUrl;
+}
+export async function getBoards() {
+    if (!localStorage.getItem("boardsInfo")) {
+        const url = '/board/all';
+        const response = await cc98Fetch(url);
+        const data = await response.json();
+        localStorage.setItem("boardsInfo", JSON.stringify(data));
+    }
 }
 export async function getBoardId(boardName: string) {
     let boardInfo = getStorage('boardInfo') || await fetch('/static/boardinfo.json').then(res => res.json());
@@ -1934,7 +1948,10 @@ export async function minus1(topicId, postId, reason) {
         case 401:
             return 'not allowed';
         case 403:
-            return 'already';
+            if (await response.text() === 'you_cannot_rate')
+                return 'not allowed';
+            else
+                return 'already';
         case 500:
             return 'server error';
     }
@@ -2055,7 +2072,7 @@ export async function addBoardTopTopic(topicId, boardId, topState, days, reason)
 export async function removeBoardTopTopic(topicId, boardId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const content = reason;
+    const content = { "reason": reason };
     const response = await cc98Fetch(
 
         `/topic/${topicId}/top`,
@@ -2108,9 +2125,10 @@ export async function deleteTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const url = `/topic/${topicId}`;
-    const bodyInfo = reason;
+    const bodyInfo = { "reason": reason };
     const body = JSON.stringify(bodyInfo);
-    const response = await cc98Fetch(url, { method: "DELETE", headers, body }); switch (response.status) {
+    const response = await cc98Fetch(url, { method: "DELETE", headers, body });
+    switch (response.status) {
         case 401:
             return 'unauthorized';
         case 404:
@@ -2399,197 +2417,6 @@ export async function getFavState(topicId) {
     return data;
 }
 
-//更新未读消息数量
-export async function refreshUnReadCount() {
-    let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
-
-    //如果未登录,直接不获取未读消息数目
-    if (!isLogOn()) {
-        setStorage("unreadCount", unreadCount);
-        return unreadCount;
-    }
-
-    //查看用户个人消息偏好设置
-    let noticeSetting = getLocalStorage("noticeSetting");
-    if (noticeSetting && noticeSetting.response === "否" && noticeSetting.system === "否" && noticeSetting.message === "否" && noticeSetting.attme === "否") {
-        setStorage("unreadCount", unreadCount);
-        return unreadCount;
-    }
-    const headers = await formAuthorizeHeader();
-    const url = `/me/unread-count`;
-    let response = await cc98Fetch(url, { headers });
-    if (response.status === 200) {
-        unreadCount = await response.json();
-    }
-    //根据消息偏好设置修改未读消息数目
-    if (noticeSetting) {
-        if (noticeSetting.response === "否") {
-            unreadCount.replyCount = 0;
-        }
-        if (noticeSetting.system === "否") {
-            unreadCount.systemCount = 0;
-        }
-        if (noticeSetting.message === "否") {
-            unreadCount.messageCount = 0;
-        }
-        if (noticeSetting.attme === "否") {
-            unreadCount.atCount = 0;
-        }
-    }
-    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
-    //console.log("未读消息数量", unreadCount);
-    if (unreadCount.totalCount > 0) {
-        $('#unreadCount-totalCount').removeClass('displaynone');
-        $('#unreadCount-totalCount').text(unreadCount.totalCount);
-    }
-    else {
-        $('#unreadCount-totalCount').addClass('displaynone');
-        $('#unreadCount-replyCount').addClass('displaynone');
-        $('#unreadCount-replyCount1').addClass('displaynone');
-        $('#unreadCount-atCount').addClass('displaynone');
-        $('#unreadCount-atCount1').addClass('displaynone');
-        $('#unreadCount-systemCount').addClass('displaynone');
-        $('#unreadCount-systemCount1').addClass('displaynone');
-        $('#unreadCount-messageCount').addClass('displaynone');
-        $('#unreadCount-messageCount1').addClass('displaynone');
-        setStorage("unreadCount", unreadCount);
-        return unreadCount;
-    }
-    if (unreadCount.replyCount > 0) {
-        $('#unreadCount-replyCount').removeClass('displaynone');
-        $('#unreadCount-replyCount').text(unreadCount.replyCount);
-        $('#unreadCount-replyCount1').removeClass('displaynone');
-        $('#unreadCount-replyCount1').text(unreadCount.replyCount);
-    }
-    else {
-        $('#unreadCount-replyCount').addClass('displaynone');
-        $('#unreadCount-replyCount1').addClass('displaynone');
-    }
-    if (unreadCount.atCount > 0) {
-        $('#unreadCount-atCount').removeClass('displaynone');
-        $('#unreadCount-atCount').text(unreadCount.atCount);
-        $('#unreadCount-atCount1').removeClass('displaynone');
-        $('#unreadCount-atCount1').text(unreadCount.atCount);
-    }
-    else {
-        $('#unreadCount-atCount').addClass('displaynone');
-        $('#unreadCount-atCount1').addClass('displaynone');
-    }
-    if (unreadCount.systemCount > 0) {
-        $('#unreadCount-systemCount').removeClass('displaynone');
-        $('#unreadCount-systemCount').text(unreadCount.systemCount);
-        $('#unreadCount-systemCount1').removeClass('displaynone');
-        $('#unreadCount-systemCount1').text(unreadCount.systemCount);
-    }
-    else {
-        $('#unreadCount-systemCount').addClass('displaynone');
-        $('#unreadCount-systemCount1').addClass('displaynone');
-    }
-    if (unreadCount.messageCount > 0) {
-        $('#unreadCount-messageCount').removeClass('displaynone');
-        $('#unreadCount-messageCount').text(unreadCount.messageCount);
-        $('#unreadCount-messageCount1').removeClass('displaynone');
-        $('#unreadCount-messageCount1').text(unreadCount.messageCount);
-    }
-    else {
-        $('#unreadCount-messageCount').addClass('displaynone');
-        $('#unreadCount-messageCount1').addClass('displaynone');
-    }
-    setStorage("unreadCount", unreadCount);
-    return unreadCount;
-}
-
-//更新悬浮下拉未读消息数目
-export function refreshHoverUnReadCount() {
-    let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
-    //查看用户个人消息偏好设置
-    let noticeSetting = getLocalStorage("noticeSetting");
-    if (noticeSetting && noticeSetting.response === "否" && noticeSetting.system === "否" && noticeSetting.message === "否" && noticeSetting.attme === "否") {
-        setStorage("unreadCount", unreadCount);
-        return unreadCount;
-    }
-    //取缓存
-    if (getStorage("unreadCount")) {
-        unreadCount = getStorage("unreadCount");
-    }
-    //根据消息偏好设置修改未读消息数目
-    if (noticeSetting) {
-        if (noticeSetting.response === "否") {
-            unreadCount.replyCount = 0;
-        }
-        if (noticeSetting.system === "否") {
-            unreadCount.systemCount = 0;
-        }
-        if (noticeSetting.message === "否") {
-            unreadCount.messageCount = 0;
-        }
-        if (noticeSetting.attme === "否") {
-            unreadCount.atCount = 0;
-        }
-    }
-    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
-    //console.log("未读消息数量", unreadCount);
-    if (unreadCount.totalCount > 0) {
-        $('#unreadCount-totalCount').removeClass('displaynone');
-        $('#unreadCount-totalCount').text(unreadCount.totalCount);
-    }
-    else {
-        $('#unreadCount-totalCount').addClass('displaynone');
-        $('#unreadCount-replyCount').addClass('displaynone');
-        $('#unreadCount-replyCount1').addClass('displaynone');
-        $('#unreadCount-atCount').addClass('displaynone');
-        $('#unreadCount-atCount1').addClass('displaynone');
-        $('#unreadCount-systemCount').addClass('displaynone');
-        $('#unreadCount-systemCount1').addClass('displaynone');
-        $('#unreadCount-messageCount').addClass('displaynone');
-        $('#unreadCount-messageCount1').addClass('displaynone');
-        setStorage("unreadCount", unreadCount);
-        return unreadCount;
-    }
-    if (unreadCount.replyCount > 0) {
-        $('#unreadCount-replyCount').removeClass('displaynone');
-        $('#unreadCount-replyCount').text(unreadCount.replyCount);
-        $('#unreadCount-replyCount1').removeClass('displaynone');
-        $('#unreadCount-replyCount1').text(unreadCount.replyCount);
-    }
-    else {
-        $('#unreadCount-replyCount').addClass('displaynone');
-        $('#unreadCount-replyCount1').addClass('displaynone');
-    }
-    if (unreadCount.atCount > 0) {
-        $('#unreadCount-atCount').removeClass('displaynone');
-        $('#unreadCount-atCount').text(unreadCount.atCount);
-        $('#unreadCount-atCount1').removeClass('displaynone');
-        $('#unreadCount-atCount1').text(unreadCount.atCount);
-    }
-    else {
-        $('#unreadCount-atCount').addClass('displaynone');
-        $('#unreadCount-atCount1').addClass('displaynone');
-    }
-    if (unreadCount.systemCount > 0) {
-        $('#unreadCount-systemCount').removeClass('displaynone');
-        $('#unreadCount-systemCount').text(unreadCount.systemCount);
-        $('#unreadCount-systemCount1').removeClass('displaynone');
-        $('#unreadCount-systemCount1').text(unreadCount.systemCount);
-    }
-    else {
-        $('#unreadCount-systemCount').addClass('displaynone');
-        $('#unreadCount-systemCount1').addClass('displaynone');
-    }
-    if (unreadCount.messageCount > 0) {
-        $('#unreadCount-messageCount').removeClass('displaynone');
-        $('#unreadCount-messageCount').text(unreadCount.messageCount);
-        $('#unreadCount-messageCount1').removeClass('displaynone');
-        $('#unreadCount-messageCount1').text(unreadCount.messageCount);
-    }
-    else {
-        $('#unreadCount-messageCount').addClass('displaynone');
-        $('#unreadCount-messageCount1').addClass('displaynone');
-    }
-    setStorage("unreadCount", unreadCount);
-    return unreadCount;
-}
-
 export async function editPost(postId, contentType, title, content) {
     const headers = await formAuthorizeHeader();
     const url = `/post/${postId}`;
@@ -2634,26 +2461,25 @@ export async function getTagNamebyId(id) {
     return false;
 }
 export async function getTopicByOneTag(tagId, boardId, layer, page) {
-    const start = (page - 1) * 10;
+    const start = (page - 1) * 20;
     const url = `/topic/search/board/${boardId}/tag?tag${layer}=${tagId}&from=${start}&size=20`;
     const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });
     return await response.json();
 }
 export async function getTopicByTwoTags(tag1Id, tag2Id, boardId, page) {
-    const start = (page - 1) * 10;
+    const start = (page - 1) * 20;
     const url = `/topic/search/board/${boardId}/tag?tag1=${tag1Id}&tag2=${tag2Id}&from=${start}&size=20`;
     const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });
     return await response.json();
 }
-export async function updateUserInfo(id) {
+export async function updateUserInfo(id, name) {
     const key = `userId_${id}`;
-    const userInfo = await getUserInfo(id);
-    const name = userInfo.name;
     const key1 = `userName_${name}`;
     removeLocalStorage(key);
     removeLocalStorage(key1);
+    await removeUserInfoInIndexDB(id);
     await getUserInfo(id);
 }
 export function getTagLayer(tagId: number, tags) {
@@ -2931,7 +2757,7 @@ export function quoteJudger(content: string) {
 export async function readAll() {
     let path = location.pathname;
     let url = null;
-    let unreadCount = getStorage("unreadCount");
+    let unreadCount = store.getState().message;
     const headers = await formAuthorizeHeader();
     if (path === "/message/response") {
         if (unreadCount.replyCount === 0) {
@@ -2961,7 +2787,12 @@ export async function readAll() {
         return null;
     }
     const response = await cc98Fetch(url, { method: "PUT", headers, body: '' });
-    refreshUnReadCount();
+    store.dispatch(Actions.changeMessageCount({
+        messageCount: 0,
+        systemCount: 0,
+        atCount: 0,
+        replyCount: 0
+    }))
     return null;
 }
 
@@ -3104,4 +2935,56 @@ export async function getMonthlyHotTopic(type: string) {
         }
     }
     return data;
+}
+
+export async function mutliLock(day, reason, target) {
+    const url = `/topic/multi-lock?${target}`;
+    const headers = await formAuthorizeHeader();
+    headers.append("Content-Type", "application/json");
+    const body = JSON.stringify(
+        {
+            reason: reason,
+            value: day
+        }
+    )
+    $("#mutlilock-btn").attr("disabled", "disabled");
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
+    if (response.status == 200) {
+        $("#mutlilock-btn").removeAttr("disabled");
+        $("#mutlioptip").text("操作成功");
+    } else {
+        $("#mutlilock-btn").removeAttr("disabled");
+        $("#mutlioptip").text("操作失败");
+    }
+    return response.status;
+}
+
+export async function mutliDelete(reason, target) {
+    const url = `/topic/multi-delete?${target}`;
+    const headers = await formAuthorizeHeader();
+    headers.append("Content-Type", "application/json");
+    const body = JSON.stringify(
+        {
+            reason: reason,
+        }
+    )
+    $("#mutlidelete-btn").attr("disabled", "disabled");
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
+    if (response.status == 200) {
+        $("#mutlidelete-btn").removeAttr("disabled");
+        $("#mutliopdtip").text("操作成功");
+    } else {
+        $("#mutlidelete-btn").removeAttr("disabled");
+        $("#mutliopdtip").text("操作失败");
+    }
+    return response.status;
+}
+
+
+export async function getTpUsers(boardId, from, size) {
+    const url = `/board/${boardId}/stop-post-user?from=${from}&size=${size}`;
+    const headers = await formAuthorizeHeader();
+    headers.append("Content-Type", "application/json");
+    const response = await cc98Fetch(url, { headers });
+    return await response.json();
 }

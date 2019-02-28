@@ -142,12 +142,13 @@ class LogOnExact extends React.Component<Props, LogOnState> {
             //跳转
             setTimeout(() => {
                 if (this.props.history.length === 1) {
-                    this.props.history.push('/');
+                  //  this.props.history.push('/');
+                    document.location.href="/";
                 } else {
-                    this.props.history.go(-1);
+                    const url = localStorage.getItem("logOnRedirectUrl");
+                   // this.props.history.go(-1);
+                   document.location.href=url;
                 }
-                //登陆后刷新未读信息
-                Utility.refreshUnReadCount();
             }, 100);
         } catch (e) {
             let info: string;
@@ -182,11 +183,11 @@ class LogOnExact extends React.Component<Props, LogOnState> {
                             <div className="login-form">
                                 <p>密码</p><input name="password" type="password" id="loginPassword" onChange={this.handlePasswordChange} autoComplete="current-password"/>
                             </div>
-                            <p id="loginMessage">{this.state.loginMessage}</p>
+                            <p className="login-message" id="loginMessage">{this.state.loginMessage}</p>
                             <button type="submit" disabled={this.state.isLoging}>登录账号</button>
                         </form>
-                        <p><span>还没账号？我要 <a href="//account.cc98.org/" target="_blank">注册</a></span></p>
-                        <p><span>密码错误？我要 <a href="//account.cc98.org/" target="_blank">找回</a></span></p>
+                        <p className="login-message"><span>还没账号？我要 <a href="//account.cc98.org/" target="_blank">注册</a></span></p>
+                        <p className="login-message"><span>密码错误？我要 <a href="//account.cc98.org/" target="_blank">找回</a></span></p>
                     </div>
                 </div>
             </div>

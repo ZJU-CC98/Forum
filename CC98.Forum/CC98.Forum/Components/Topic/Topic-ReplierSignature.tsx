@@ -2,7 +2,13 @@
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
-declare let moment: any;
+import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
+import {QuoteContext} from './Topic';
+import {QuoteTraceContext} from './Topic-Trace'
+import {withRouter,RouteComponentProps} from 'react-router-dom';
+import * as moment from 'moment';
+import  * as Popover from 'antd/es/popover';
+import * as Button from 'antd/es/button';
 interface Props{
     postInfo;
     topicInfo;
@@ -11,8 +17,12 @@ interface Props{
     quote;
     userInfo;
     traceMode;
+    changePmVisible;
+    changeJudgeVisible;
+    page;
 }
-export class ReplierSignature extends React.Component<Props, {likeNumber,dislikeNumber,likeState}>{
+interface withRouterProps extends RouteComponentProps<{}>{}
+export default withRouter(class extends React.Component<withRouterProps&Props, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
@@ -28,13 +38,11 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
     quote() {
         this.props.quote(this.props.postInfo.content, this.props.userInfo.name, this.props.postInfo.time, this.props.postInfo.floor, this.props.postInfo.id);
     }
-    showManageUI() {
-        const UIId = `#manage${this.props.postInfo.id}`;
-        $(UIId).css("display", "");
+    showManageUI=()=> {
+        this.props.changePmVisible(true,this.props.postInfo);
     }
-    showJudgeUI() {
-        const UIId = `#judge${this.props.postInfo.id}`;    
-        $(UIId).css("display", "");
+    showJudgeUI=()=> {
+        this.props.changeJudgeVisible(true,this.props.postInfo);
     }
     edit() {
 
@@ -100,6 +108,7 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     async componentDidMount() {
+  
         const idLike = `#like${this.props.postInfo.id}`;
         const idDislike = `#dislike${this.props.postInfo.id}`;
         //const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
@@ -112,18 +121,28 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         const manageIcon = `icon${this.props.postInfo.id}`;
         const manageId = `#icon${this.props.postInfo.id}`;
         if (Utility.isMaster(this.props.boardInfo.boardMasters) || (this.props.boardInfo.id == 144 && this.props.postInfo.isLZ))
-        $(manageId).css("display", "");
+            $(manageId).css("display", "");
+
+       // console.log("img = "+$("img").);
       //  this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
- 
+    
+    handlePosition=()=>{
+        let page = this.props.page;
+        if(!this.props.page)page=1;
+        let url = `#sendTopicInfo`;
+        this.props.history.push(url);
+    }
     render() {
+
         const manageIcon = `icon${this.props.postInfo.id}`;
         const idLike = `like${this.props.postInfo.id}`;
         const idDislike = `dislike${this.props.postInfo.id}`;
-        let signature = <div className="signature" ><UbbContainer code={this.props.userInfo.signatureCode} /></div>;
+        let signature = <div className="signature" ><UbbContainer code={this.props.userInfo.signatureCode} options={{ ...new UbbCodeOptions(), allowExternalImage: false }} /></div>;
         if (!this.props.userInfo.signatureCode) {
             signature = null;
         }
+      
         let editIcon = null;
         const editUrl = `/editor/edit/${this.props.postInfo.id}`;
         if (Utility.getLocalStorage("userInfo"))
@@ -157,7 +176,19 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
                 <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩"  className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                 <div id="commentlike">
                         {judgeIcon}
-                        <div className="operation1" onClick={this.quote}>   引用</div>
+                        {window.location.pathname.indexOf('postid')===-1?
+                         <QuoteContext.Consumer>
+                         {(handleQuoteContextChange)=><div className="operation1" onClick={()=>{handleQuoteContextChange({content:this.props.postInfo.content,userName: this.props.userInfo.name, replyTime:this.props.postInfo.time, floor:this.props.postInfo.floor, postId:this.props.postInfo.id});
+                         this.handlePosition();
+                     }}>   引用</div>}
+                         </QuoteContext.Consumer>:
+                         <QuoteTraceContext.Consumer>
+                         {(handleQuoteContextChange)=><div className="operation1" onClick={()=>{handleQuoteContextChange({content:this.props.postInfo.content,userName: this.props.userInfo.name, replyTime:this.props.postInfo.time, floor:this.props.postInfo.floor, postId:this.props.postInfo.id});
+                         this.handlePosition();
+                     }}>   引用</div>}
+                         </QuoteTraceContext.Consumer>}
+                       
+                   
                         {traceIcon}
                         {editIcon}
                         {manageBtn}
@@ -170,3 +201,4 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         </div>;
     }
 }
+)

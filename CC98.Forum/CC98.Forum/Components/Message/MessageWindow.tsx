@@ -9,6 +9,8 @@ import { MessageReceiver } from './MessageReceiver';
 import { MessageWindowProps } from '../../Props/MessageWindowProps';
 import * as Utility from '../../Utility';
 import DocumentTitle from '../DocumentTitle';
+import Store from '../../Store';
+import { refreshCurrentMessageCount } from '../../AsyncActions/Message';
 
 export class MessageWindow extends React.Component<MessageWindowProps, MessageWindowState>{
 
@@ -30,9 +32,9 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
             //console.log("存在props.data");
             let data = await Utility.getRecentMessage(props.data.id, 0, 10, this.context.router);
             //如果此时有未读私信,看有没有清除掉未读私信
-            let unreadCount = Utility.getStorage("unreadCount");
+            let unreadCount = Store.getState().message;
             if (unreadCount != 0 && unreadCount.messageCount != 0) {
-                await Utility.refreshUnReadCount();
+                Store.dispatch(refreshCurrentMessageCount() as any);
             }
             if (data && data.length > 0) {
                 let oldData = props.data.message;
@@ -94,9 +96,9 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         //到顶了就继续获取10条私信
         let newData = await Utility.getRecentMessage(this.props.data.id, oldData.length, 10, this.context.router);
         //如果此时有未读私信,看有没有清除掉未读私信
-        let unreadCount = Utility.getStorage("unreadCount");
+        let unreadCount = Store.getState().message;
         if (unreadCount != 0 && unreadCount.messageCount != 0) {
-            await Utility.refreshUnReadCount();
+            Store.dispatch(refreshCurrentMessageCount() as any);
         }
         //跟之前的拼接一下
         if (newData && newData.length > 0) {

@@ -16,7 +16,7 @@ export class LeftTagHandler extends Ubb.RecursiveTagHandler {
 
         const style = {
             textAlign: 'left'
-        };
+        } as React.CSSProperties;
 
         return <span style={style}><div>{innerContent}</div></span>;
     }

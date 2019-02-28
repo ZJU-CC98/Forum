@@ -14,6 +14,7 @@ import {
     formAuthorizeHeader,
     cc98Fetch
 } from '../fetchUtility';
+import { shouldUseIndexedDb } from '../../config';
 
 /**
  * 使用用户id查询用户信息
@@ -33,7 +34,7 @@ export async function getUserInfo(key: number | string): Promise<UserInfo> {
     let userInfo: UserInfo;
     try {
         // 在缓存中查询
-        if(window.indexedDB) {
+        if(shouldUseIndexedDb) {
             userInfo = await getIndexedDBUserInfo(key);
             if(userInfo) return userInfo;
         } else {
@@ -48,7 +49,7 @@ export async function getUserInfo(key: number | string): Promise<UserInfo> {
         userInfo = await res.json();
 
         //缓存
-        if(window.indexedDB) {
+        if(shouldUseIndexedDb) {
             addUserInfo(userInfo);
         } else {
             setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);

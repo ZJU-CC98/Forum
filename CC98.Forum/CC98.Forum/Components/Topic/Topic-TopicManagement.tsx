@@ -9,7 +9,7 @@ interface Props {
     updateTime;
     topicInfo;
 }
-export class TopicManagement extends React.Component<Props, { state, reason, tips, days, board, topicInfo,fetchState ,color}>{
+export class TopicManagement extends React.Component<Props, { state, reason, tips, days, board, topicInfo,fetchState ,color,topBoardName,childBoards}>{
     constructor(props) {
         super(props);
         this.confirm = this.confirm.bind(this);
@@ -22,13 +22,13 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
         this.reasonInput = this.reasonInput.bind(this);
         this.daysInput = this.daysInput.bind(this);
         this.boardInput = this.boardInput.bind(this);
+        const data = JSON.parse(localStorage.getItem("boardsInfo"));
+
         this.state = {
-            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: this.props.topicInfo, fetchState: 'ok', color: "#fff"
+            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: this.props.topicInfo, fetchState: 'ok', color: "#fff",topBoardName:"",childBoards:data[0].boards
         };
     }
-    showIP() {
-        
-    }
+  
     showNormal() {
         this.setState({ state: 'normal' });
     }
@@ -98,8 +98,10 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                 if (this.state.reason !== "") {
                 
                    
-                    const bold = $("input[name='bold']:checked") ? true : false;
-                    const italic = $("input[name='italic']:checked") ? true : false;
+                    const bold = $("#hlbold").prop("checked") ? true : false;
+                    const italic = $("#hlitalic").prop("checked") ? true : false;
+                    console.log("bold=" + bold);
+                    console.log("itlic=" + italic);
                     await Utility.setHighlight(this.props.topicInfo.id, bold, italic, color, this.state.days, this.state.reason);
                 } else {
                     this.setState({ tips: "请输入原因！" });
@@ -163,7 +165,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
 
     }
     daysInput(e) {
-
+        
         this.setState({ days: e.target.value });
 
     }
@@ -173,62 +175,96 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
 
     }
 
-   async componentDidUpdate() {
-        
-        $("#custom").spectrum({
-            color: "#f00"
-        });
+    async componentDidUpdate() {
+        try {
+            let color = $("#custom").spectrum("get").toHexString($("#custom").spectrum("get"));
+            console.log(color);
+            $("#custom").spectrum({
+                color: color
+            });
+        } catch (e) {
+            $("#custom").spectrum({
+                color: "#f00"
+            });
+        }
+       
     }
     /*async componentWillReceiveProps(newProps) {
         const data = await Utility.getTopicInfo(newProps.topicInfo.id);
         this.setState({ topicInfo: data });
     }*/
+    returnBoardOption(board) {
+        if (board.id === 182) return null;
+        return <option value={board.id}>{board.name}</option>;
+  
+    }
+    handleTopBoardSelect(e) {
+        const boardId = e.target.value;
+        console.log("target="+boardId)
+        const boardsInfo = JSON.parse(localStorage.getItem("boardsInfo"));
+        for (let board of boardsInfo) {
+            
+            if (board.id == boardId) {
+                console.log("choose");
+                console.log(board.boards);
+                this.setState({ childBoards: board.boards});
+                break;
+            }
+        }
+    }
     render() {
       
         //console.log(this.props.topicInfo);
         let info;
+        let boardsInfo = JSON.parse(localStorage.getItem("boardsInfo")) || [];
+        let selectBoard = <select style={{marginRight:"1.5rem"}} onChange={this.handleTopBoardSelect.bind(this)}>
+            {boardsInfo.map(this.returnBoardOption)}
+        </select>;
+        console.log("state=" + this.state.childBoards);
+        let selectChildBoard = <select  onChange={(e) => { console.log(e.target.value); this.setState({board:e.target.value}) }}>{this.state.childBoards.map(this.returnBoardOption)}</select>;
 
         const normalInfo = <div className="column">
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >原因</div>
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
-            <div>{this.state.tips}</div>
+            <div style={{marginTop:"2rem"}}>{this.state.tips}</div>
         </div>;
         const noReasonInfo = null;
         const daysInfo = <div className="column">
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >(下沉)天数</div>
-                <input type="text" value={this.state.days} onChange={this.daysInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.days} onChange={this.daysInput} />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >原因</div>
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
-            <div>{this.state.tips}</div>
+            <div style={{ marginTop: "2rem" }}>{this.state.tips}</div>
         </div>;
         const boardInfo = <div className="column">
-            <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
-                <div >版面</div>
-                <input type="text" value={this.state.board} onChange={this.boardInput} />
+            <div  className="row manageOperation" style={{ justifyContent: "flex-start", marginTop: "1rem" }}>
+                <div style={{marginRight:"1.5rem",marginLeft:"3rem"}}>版面</div>
+                {selectBoard}
+                {selectChildBoard}
             </div>
-            <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
-                <div >原因</div>
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+            <div className="row manageOperation" style={{ justifyContent: "flex-start", marginTop: "1rem" }}>
+                <div style={{marginRight:"1.5rem",marginLeft:"3rem"}}>原因</div>
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
-            <div>{this.state.tips}</div>
+            <div style={{ marginTop: "2rem" }}>{this.state.tips}</div>
         </div>;
         const highlightInfo = <div className="column">
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >加粗</div>
-                <input type="radio" value='加粗' name='bold' />
+                <input type="checkbox" value='加粗' id='hlbold' />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >斜体</div>
-                <input type="radio" value='斜体' name='italic' />
+                <input type="checkbox" value='斜体' id='hlitalic' />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >颜色</div>
@@ -236,14 +272,14 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
             <div >天数</div>
-                <input type="text" value={this.state.days} onChange={this.daysInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.days} onChange={this.daysInput} />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >原因</div>
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
-            <div>{this.state.tips}</div>
+            <div style={{ marginTop: "2rem" }}>{this.state.tips}</div>
         </div>;
         switch (this.state.state) {
             case 'normal':
@@ -285,10 +321,10 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
 
 
 
-                    <div className="row">
+                    {this.props.boardId===182?null:<div className="row">
                         <input type="radio" name="option" value="移动" onClick={this.showBoard} />
                         <div>移动</div>
-                    </div>
+                    </div>}
 
                     <div className="row">
                         <input type="radio" name="option" value="提升" onClick={this.showNormal} />
@@ -327,7 +363,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
         const highlightOptionId = `manage${this.props.topicInfo.id}`;
         return <div style={{ display: "none" }} id={UIId} className="topicManagement" >
             {UI}
-            < div className="row" style={{ justifyContent: "space-around", marginTop:"1rem" }}>
+            < div className="row" style={{ justifyContent: "space-around", marginTop:"4rem" }}>
                 <button onClick={this.confirm} className="confirmManagement">确认</button>
                 <button onClick={this.close} className="confirmManagement">关闭</button>
             </div >
