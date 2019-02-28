@@ -31,7 +31,7 @@ const Head: React.SFC<Props> = ({
       <div className="board-postItem-head-left-part">
         {tags.length > 0 ? (
           <Select
-            defaultValue="-1"
+            defaultValue={-1}
             style={{ width: 80 }}
             onChange={handleTag1Change}
           >
@@ -43,7 +43,7 @@ const Head: React.SFC<Props> = ({
         ) : null}
         {tags.length > 1 ? (
           <Select
-            defaultValue="-1"
+            defaultValue={-1}
             style={{ width: 80, marginLeft: 20 }}
             onChange={handleTag2Change}
           >

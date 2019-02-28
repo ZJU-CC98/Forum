@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { getBoardInfo } from './action';
 import { IBoard } from '@cc98/api';
 
+import * as Utility from '../../Utility'
 import Head from './Head';
 import Body from './Body';
 import { RouteComponent } from '../../Components/RouteComponent';
@@ -21,6 +22,7 @@ export default withRouter(
   class extends RouteComponent<Props, State, Match> {
     state = { data: null };
     async componentDidMount() {
+      await Utility.getTagInfo()
       const { params } = this.match;
       const { id } = params;
       const data = await getBoardInfo(id);
