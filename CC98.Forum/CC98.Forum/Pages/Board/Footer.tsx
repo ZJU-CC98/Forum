@@ -351,7 +351,7 @@ class Record extends React.Component<RecordProps, RecordState> {
   };
   async componentDidMount() {
     this.setState({ loading: true });
-    const data = await getBoardRecords(this.props.id, this.state.current);
+    const data = await getBoardRecords(this.props.id, 0);
     this.setState({ data, loading: false });
   }
 
