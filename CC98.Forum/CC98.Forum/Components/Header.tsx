@@ -372,55 +372,66 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
     //获取搜索关键词
     let self = this;
     searchIco.click(async () => {
-        notification.warning({
-          message: '非常抱歉',
-          description: '搜索功能优化中，暂不可用。'
-        });
-      // let val: any = $('#searchText').val();
-      // if (val && val != '') {
-      //   if (
-      //     searchBoxSelect.text() === '主题' ||
-      //     searchBoxSelect.text() === '全站'
-      //   ) {
-      //     this.props.history.push(
-      //       `/search?boardId=0&keyword=${encodeURI(encodeURI(val))}`
-      //     );
-      //   } else if (searchBoxSelect.text() === '版内') {
-      //     //查看当前是全站还是某版，如果是某版就查询到某版id
-      //     let url1 = location.href.match(/\/topic\/(\d+)/);
-      //     let url2 = location.href.match(/\/board\/(\d+)/);
-      //     let url3 = location.href.match(/\/search\?boardId=(\d+)&/);
-      //     let boardId = 0;
-      //     if (url1) {
-      //       console.log('版内1');
-      //       let topicId = url1[1];
-      //       let response = await Utility.getTopicInfo(topicId);
-      //       boardId = response.boardId;
-      //     } else if (url2) {
-      //       console.log('版内2');
-      //       boardId = parseInt(url2[1]);
-      //     } else if (url3) {
-      //       boardId = parseInt(url3[1]);
-      //       console.log(url3);
-      //       console.log(url3[1]);
-      //       console.log('目前是在版内啊');
-      //     }
-      //     this.props.history.push(
-      //       `/search?boardId=${boardId}&keyword=${encodeURI(encodeURI(val))}`
-      //     );
-      //   } else if (searchBoxSelect.text() === '用户') {
-      //     let data = await Utility.getUserInfoByName(val);
-      //     if (data) {
-      //       this.props.history.push(`/user/id/${data.id}`);
-      //     } else {
-      //       this.props.history.push('/search');
-      //     }
-      //   } else if (searchBoxSelect.text() === '版面') {
-      //     this.props.history.push(
-      //       `/searchBoard?keyword=${encodeURI(encodeURI(val))}`
-      //     );
-      //   }
-      // }
+    
+      let val: any = $('#searchText').val();
+      if (val && val != '') {
+        if (
+          searchBoxSelect.text() === '主题' ||
+          searchBoxSelect.text() === '全站'
+        ) {
+          notification.warning({
+            message: '非常抱歉',
+            description: '搜索功能优化中，暂不可用。'
+          });
+          // this.props.history.push(
+          //   `/search?boardId=0&keyword=${encodeURI(encodeURI(val))}`
+          // );
+        } else if (searchBoxSelect.text() === '版内') {
+          notification.warning({
+            message: '非常抱歉',
+            description: '搜索功能优化中，暂不可用。'
+          });
+          // //查看当前是全站还是某版，如果是某版就查询到某版id
+          // let url1 = location.href.match(/\/topic\/(\d+)/);
+          // let url2 = location.href.match(/\/board\/(\d+)/);
+          // let url3 = location.href.match(/\/search\?boardId=(\d+)&/);
+          // let boardId = 0;
+          // if (url1) {
+          //   console.log('版内1');
+          //   let topicId = url1[1];
+          //   let response = await Utility.getTopicInfo(topicId);
+          //   boardId = response.boardId;
+          // } else if (url2) {
+          //   console.log('版内2');
+          //   boardId = parseInt(url2[1]);
+          // } else if (url3) {
+          //   boardId = parseInt(url3[1]);
+          //   console.log(url3);
+          //   console.log(url3[1]);
+          //   console.log('目前是在版内啊');
+          // }
+          // this.props.history.push(
+          //   `/search?boardId=${boardId}&keyword=${encodeURI(encodeURI(val))}`
+          // );
+        } else if (searchBoxSelect.text() === '用户') {
+          let data = await Utility.getUserInfoByName(val);
+          if (data) {
+            this.props.history.push(`/user/id/${data.id}`);
+          } else {
+            this.props.history.push('/search');
+          }
+        } else if (searchBoxSelect.text() === '版面') {
+          notification.warning({
+            message: '非常抱歉',
+            description: '搜索功能优化中，暂不可用。'
+          });
+          // this.props.history.push(
+          //   `/searchBoard?keyword=${encodeURI(encodeURI(val))}`
+          // ); // this.props.history.push(
+          //   `/searchBoard?keyword=${encodeURI(encodeURI(val))}`
+          // );
+        }
+      }
     });
   }
 
