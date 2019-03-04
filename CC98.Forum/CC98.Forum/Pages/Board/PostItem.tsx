@@ -183,7 +183,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
           >
             <div className="board-postItem-lastReply">
               <span>{data.lastPostUser}</span>/
-              <span>{moment(data.lastPostTime).format('YY-MM-DD hh:mm')}</span>
+              <span>{moment(data.lastPostTime).format('YY-MM-DD HH:mm')}</span>
             </div>
           </Link>
         </div>
