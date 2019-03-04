@@ -378,7 +378,7 @@ class Record extends React.Component<RecordProps, RecordState> {
             <List.Item key={item.id}>
               <List.Item.Meta
                 title={
-                  <a href={`https://cc98.org/topic/${item.topicId}`}>
+                  <a href={`https://www.cc98.org/topic/${item.topicId}`}>
                     {item.content}
                   </a>
                 }
