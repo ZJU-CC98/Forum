@@ -84,7 +84,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
 
   // 气泡内容
 
-  const content = <Card data={data} />;
+  const content = <Card key={data.id} data={data} />;
   let c: any = '#000';
   let b: any = 'normal';
   let i: any = 'normal';
