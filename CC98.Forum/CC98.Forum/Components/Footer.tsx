@@ -13,7 +13,7 @@ export class Footer extends React.Component<{}, AppState> {   //底部
                     <a href="http://www.zju88.org/agent/index.do">飘渺水云间</a>|
                     <a href="http://www.qsc.zju.edu.cn/">求是潮</a>|
                     <a href="http://luckweb.057101.com/bt2/index.asp">缘网</a>|
-                    <a href="http://www.nexushd.org/login.php">NexusHD</a>|
+                    <a href="http://www.nexushd.org">NexusHD</a>|
                     <a href="https://www.zdgd.zju.edu.cn/">浙江大学广播电视网</a>|
                     <a href="http://zy.zju.edu.cn/">浙大搜索</a></div>
                 <div className="footerRow">
