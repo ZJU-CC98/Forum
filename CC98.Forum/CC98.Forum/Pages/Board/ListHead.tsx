@@ -32,7 +32,7 @@ const Head: React.SFC<Props> = ({
         {tags.length > 0 ? (
           <Select
             defaultValue="-1"
-            style={{ width: 80 }}
+            style={{ width: 120 }}
             onChange={handleTag1Change}
           >
             <Option value={-1}>全部</Option>
@@ -44,7 +44,7 @@ const Head: React.SFC<Props> = ({
         {tags.length > 1 ? (
           <Select
             defaultValue="-1"
-            style={{ width: 80, marginLeft: 20 }}
+            style={{ width: 120, marginLeft: 20 }}
             onChange={handleTag2Change}
           >
             <Option value={-1}>全部</Option>
