@@ -108,6 +108,7 @@ export async function getTags(boardId: number) {
 
 export async function multiDelete(topicIds: number[], reason: string) {
   const headers = await formAuthorizeHeader();
+  headers.append('Content-Type', 'application/json')
   let query = 'id=';
   query += topicIds.join('&id=');
   const url = `/topic/multi-delete?${query}`;
@@ -126,6 +127,7 @@ export async function multiLock(
   query += topicIds.join('&id=');
   const url = `/topic/multi-lock?${query}`;
   const body = JSON.stringify({ reason, value });
+  headers.append('Content-Type', 'application/json')
   const response = await cc98Fetch(url, { method: 'PUT', headers, body });
   return response;
 }

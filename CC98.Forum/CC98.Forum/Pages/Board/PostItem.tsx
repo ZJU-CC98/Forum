@@ -84,7 +84,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
 
   // 气泡内容
 
-  const content = <Card data={data} />;
+  const content = <Card key={data.id} data={data} />;
   let c: any = '#000';
   let b: any = 'normal';
   let i: any = 'normal';
@@ -106,6 +106,16 @@ const Item: React.SFC<Props> = ({ data, order }) => {
   } else {
     pager.push(1, 2, 3, 4, -1, totalPage - 2, totalPage - 1, totalPage);
   }
+
+  const tagInfo = JSON.parse(localStorage.getItem('tagInfo').slice(4));
+  let tag1 = '',
+    tag2 = '';
+
+  for (let item of tagInfo) {
+    if (item.id === data.tag1) tag1 = `[${item.name}]`;
+    if (item.id === data.tag2) tag2 = `[${item.name}]`;
+  }
+  console.log(tag1);
 
   return (
     <Popover
@@ -134,7 +144,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
               fontSize: '1rem'
             }}
           >
-            {data.title}
+            {`${tag1}${tag2}${data.title}`}
           </Link>
 
           {/* <Tag style={{ marginLeft: '1rem' }} color="magenta">
@@ -173,7 +183,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
           >
             <div className="board-postItem-lastReply">
               <span>{data.lastPostUser}</span>/
-              <span>{moment(data.lastPostTime).format('YY-MM-DD hh:mm')}</span>
+              <span>{moment(data.lastPostTime).format('YY-MM-DD HH:mm')}</span>
             </div>
           </Link>
         </div>

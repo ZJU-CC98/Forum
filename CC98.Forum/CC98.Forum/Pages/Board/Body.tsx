@@ -30,7 +30,7 @@ interface State {
   tag1: number;
   tag2: number;
 }
-interface Match {}
+interface Match { }
 class Body extends RouteComponent<Props, State, Match> {
   state = {
     list: [],
@@ -127,42 +127,42 @@ class Body extends RouteComponent<Props, State, Match> {
     const { list, topList, topicCount, tags } = this.state;
     const page = parseInt(this.props.page);
 
-    const boardList = [].concat(topList).concat(list);
+    const boardList = page === 1 ?[].concat(topList).concat(list): [].concat(list);
 
     return boardList.length === 0 ? (
       <Spin size="large" />
     ) : (
-      <>
-        <div className="board-list-bar">
-          <Pagination
-            className="board-pagination"
-            showQuickJumper
-            current={page}
-            total={topicCount}
-            pageSize={20}
-            onChange={this.onChange}
+        <>
+          <div className="board-list-bar">
+            <Pagination
+              className="board-pagination"
+              showQuickJumper
+              current={page}
+              total={topicCount}
+              pageSize={20}
+              onChange={this.onChange}
+            />
+          </div>
+          <Head
+            onChange={type => this.changeType(type)}
+            tags={tags}
+            handleTag1Change={this.handleTag1Change}
+            handleTag2Change={this.handleTag2Change}
           />
-        </div>
-        <Head
-          onChange={type => this.changeType(type)}
-          tags={tags}
-          handleTag1Change={this.handleTag1Change}
-          handleTag2Change={this.handleTag2Change}
-        />
-        <List list={boardList} />
-        <div className="board-list-bar">
-          <Pagination
-            className="board-pagination"
-            showQuickJumper
-            current={page}
-            pageSize={20}
-            total={topicCount}
-            onChange={this.onChange}
-          />
-        </div>
-        <Footer data={data} list={list} />
-      </>
-    );
+          <List list={boardList} />
+          <div className="board-list-bar">
+            <Pagination
+              className="board-pagination"
+              showQuickJumper
+              current={page}
+              pageSize={20}
+              total={topicCount}
+              onChange={this.onChange}
+            />
+          </div>
+          <Footer data={data} list={list} />
+        </>
+      );
   }
 }
 export default withRouter(Body);

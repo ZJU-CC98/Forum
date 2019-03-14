@@ -190,7 +190,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
     lockVisible: false,
     deleteVisible: false,
     reason: '',
-    value: 0
+    value: 7
   };
   handleChange = nextTargetKeys => {
     this.setState({ targetKeys: nextTargetKeys });
@@ -286,7 +286,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <div>理由</div>
           <Select
             style={{ width: 120 }}
-            defaultValue="重复发帖"
+            mode="tags"
             onSelect={v => {
               this.setState({ reason: v.toString() });
               console.log(v);
@@ -297,7 +297,6 @@ class Manage extends React.Component<ChildProps, ChildState> {
             <Option value="已解决">已解决</Option>
             <Option value="内容不符">内容不符</Option>
             <Option value="违反版规">违反版规</Option>
-            <Option value="自定义">自定义</Option>
           </Select>
         </Modal>
         <Modal
@@ -309,7 +308,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <div>理由</div>
           <Select
             style={{ width: 120 }}
-            defaultValue="重复发帖"
+            mode="tags"
             onSelect={v => this.setState({ reason: v.toString() })}
           >
             <Option value="重复发帖">重复发帖</Option>
@@ -317,7 +316,6 @@ class Manage extends React.Component<ChildProps, ChildState> {
             <Option value="已解决">已解决</Option>
             <Option value="内容不符">内容不符</Option>
             <Option value="违反版规">违反版规</Option>
-            <Option value="自定义">自定义</Option>
           </Select>
           <div>天数</div>
           <Select
@@ -351,7 +349,7 @@ class Record extends React.Component<RecordProps, RecordState> {
   };
   async componentDidMount() {
     this.setState({ loading: true });
-    const data = await getBoardRecords(this.props.id, this.state.current);
+    const data = await getBoardRecords(this.props.id, 0);
     this.setState({ data, loading: false });
   }
 
@@ -378,7 +376,7 @@ class Record extends React.Component<RecordProps, RecordState> {
             <List.Item key={item.id}>
               <List.Item.Meta
                 title={
-                  <a href={`https://cc98.org/topic/${item.topicId}`}>
+                  <a href={`https://www.cc98.org/topic/${item.topicId}`}>
                     {item.content}
                   </a>
                 }
