@@ -348,7 +348,7 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
         let tag2Btn = null;
         const url = `/board/${this.props.boardid}`;
         if (this.props.tag && this.props.tag.length >= 1) {
-            tag1Btn = <div style={{ maxWidth: "35rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
+            tag1Btn = <div style={{ maxWidth: "35rem", lineHeight: "4rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
                 <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth: "35rem" }}>
                     <div><button className="chooseTag"><Link to={url}>全部</Link></button></div>
                     {this.props.tag[0].tags.map(this.generateTagButton.bind(this))}
@@ -356,7 +356,7 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
             </div >;
         }
         if (this.props.tag && this.props.tag.length === 2) {
-            tag2Btn = <div style={{ maxWidth: "35rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
+            tag2Btn = <div style={{ maxWidth: "35rem", lineHeight: "4rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
                 <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth: "35rem" }}>
                     <div><button className="chooseTag"><Link to={url}>全部</Link></button></div>
                     {this.props.tag[1].tags.map(this.generateTag2Button.bind(this))}
