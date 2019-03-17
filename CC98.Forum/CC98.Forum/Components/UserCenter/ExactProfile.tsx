@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { UserInfo } from '../../States/AppState';
 import { UbbContainer } from '../UbbContainer'
 import { UbbCodeOptions } from '../../Ubb/Core';
+import { Tag } from 'antd'
 
 /**
  * 用户中心主页个人资料组件
@@ -33,6 +34,41 @@ export default class extends React.Component<UserCenterExactProfileProps> {
             <div className="user-profile">
                 <div id="userId">
                     <p>{this.props.userInfo.name}<span style={{ fontSize: '12px', color: this.getPrivilegeColor(), marginLeft: '2rem' }}>{this.props.userInfo.privilege}</span></p>
+
+                    <div className="row" style={{ marginRight: '2rem' }}>
+                        <Tag
+                            color="grey"
+                            style={{
+                                width: '5rem',
+                                textAlign: 'center',
+                                marginRight: 0,
+                                height: '2rem',
+                                borderTopRightRadius: 0,
+                                borderBottomRightRadius: 0,
+                                fontSize: 16,
+                                lineHeight: '2rem'
+                            }}
+                        >
+                            收到的赞
+              </Tag>
+                        <Tag
+                            className="board-head-information"
+                            style={{
+                                width: '5rem',
+                                height: '2rem',
+                                textAlign: 'center',
+                                marginRight: 0,
+                                borderLeft: 0,
+                                borderTopLeftRadius: 0,
+                                borderBottomLeftRadius: 0,
+                                fontSize: 16,
+                                lineHeight: '2rem'
+                            }}
+                        >
+                            {this.props.userInfo.receivedLikeCount}
+                        </Tag>
+                    </div>
+
                     <Link to="/message/message"><button type="button">私信</button></Link>
                 </div>
                 <div id="userIntroducion">{this.props.userInfo.introduction}</div>
@@ -43,7 +79,6 @@ export default class extends React.Component<UserCenterExactProfileProps> {
                     <p><span className="user-profile-info">粉丝数</span>{this.props.userInfo.fanCount}</p>
                     <p><span className="user-profile-info">威望</span>{this.props.userInfo.prestige}</p>
                     <p><span className="user-profile-info">风评</span>{this.props.userInfo.popularity}</p>
-                    <p><span className="user-profile-info">获得的赞</span>{this.props.userInfo.receivedLikeCount}</p>
                     <p><span className="user-profile-info">注册时间</span>{this.props.userInfo.registerTime.replace('T', ' ')}</p>
                     <p><span className="user-profile-info">最后登录</span>{this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p>
                     {this.props.userInfo.birthday === null ? null : <p><span className="user-profile-info">生日</span>{this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')).replace('9999-', '')}{isBirthDay ? <span style={{ fontFamily: 'FontAwesome', marginLeft: '1rem' }} className="fa-birthday-cake" title="生日快乐~"></span> : null}</p>}
