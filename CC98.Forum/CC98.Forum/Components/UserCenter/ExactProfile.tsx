@@ -43,6 +43,7 @@ export default class extends React.Component<UserCenterExactProfileProps> {
                     <p><span className="user-profile-info">粉丝数</span>{this.props.userInfo.fanCount}</p>
                     <p><span className="user-profile-info">威望</span>{this.props.userInfo.prestige}</p>
                     <p><span className="user-profile-info">风评</span>{this.props.userInfo.popularity}</p>
+                    <p><span className="user-profile-info">获得的赞</span>{this.props.userInfo.receivedLikeCount}</p>
                     <p><span className="user-profile-info">注册时间</span>{this.props.userInfo.registerTime.replace('T', ' ')}</p>
                     <p><span className="user-profile-info">最后登录</span>{this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p>
                     {this.props.userInfo.birthday === null ? null : <p><span className="user-profile-info">生日</span>{this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')).replace('9999-', '')}{isBirthDay ? <span style={{ fontFamily: 'FontAwesome', marginLeft: '1rem' }} className="fa-birthday-cake" title="生日快乐~"></span> : null}</p>}
