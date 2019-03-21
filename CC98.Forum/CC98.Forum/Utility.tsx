@@ -328,7 +328,7 @@ export async function getCurUserTopic(topicid: number, userId: number) {
         //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
-export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string, userId: number) {
+export async function getCurUserTopicContent(topicid: number, curPage: number, userId: number) {
     try {
         const topicMessage = await getTopic(topicid);
         let start: number;
@@ -1130,12 +1130,41 @@ export async function getCurUserTotalReplyPage(topicId, userId) {
         //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
-export async function getAnonymousTraceTopicsCount(topicId, postId) {
+export async function getTraceTopicsCount(topicId, postId) {
     try {
         const headers = await formAuthorizeHeader();
-        const response = await cc98Fetch(`/post/topic/anonymous/user?topicid=${topicId}&postid=${postId}&from=0&size=1`, { headers });
+        const response = await cc98Fetch(`/post/topic/specific-user?topicid=${topicId}&postid=${postId}&from=0&size=1`, { headers });
         const data = await response.json();
         return data[0].count % 10 === 0 ? data[0].count / 10 : (data[0].count - data[0].count % 10) / 10 + 1;
+
+    } catch (e) {
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
+    }
+}
+export async function getTraceTopics(topicId, postId, page) {
+    const start = (page - 1) * 10;
+    try {
+        const headers = await formAuthorizeHeader();
+        const response = await cc98Fetch(`/post/topic/specific-user?topicid=${topicId}&postid=${postId}&from=${start}&size=10`, { headers });
+        const data = await response.json();
+        if (data[0] && data[0].isAnonymous) {
+            let purl = '/static/images/心灵头像.gif';
+            for (let i in data) {
+                const anonymousUserName = `匿名${data[i].userName.toUpperCase()}`;
+                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0, fanCount: 0 };
+                data[i].userInfo = userMesJson;
+                data[i].postId = postId
+            }
+        } else {
+            const userMesJson = await getUserInfo(data[0].userId);
+            for (let i in data) {
+                data[i].userInfo = userMesJson
+                data[i].postId = postId
+            }
+
+        }
+        console.log(data)
+        return data;
 
     } catch (e) {
         //store.dispatch(ErrorActions.throwError('Disconnected'));
@@ -1285,17 +1314,17 @@ export function clickUploadIcon() {
 }
 
 export async function uploadEvent(e) {
-    localStorage.setItem("react-mde-imageurl-status","pending");
+    localStorage.setItem("react-mde-imageurl-status", "pending");
     const files = e.target.files;
     const res = await uploadFile(files[0]);
-    if(res.isSuccess){
+    if (res.isSuccess) {
         const url = res.content;
-        localStorage.setItem("react-mde-imageurl-status","success");
-        localStorage.setItem("react-mde-imageurl",url);
+        localStorage.setItem("react-mde-imageurl-status", "success");
+        localStorage.setItem("react-mde-imageurl", url);
         return url;
-    }else{
-        localStorage.setItem("react-mde-imageurl-status","fail");
-      return "";
+    } else {
+        localStorage.setItem("react-mde-imageurl-status", "fail");
+        return "";
     }
 
     // const baseUrl = getApiUrl();

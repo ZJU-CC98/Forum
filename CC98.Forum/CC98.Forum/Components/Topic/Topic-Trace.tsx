@@ -6,7 +6,7 @@ import { SendTopic } from './Topic-SendTopic';
 import { Reply } from './Topic-Reply';
 import { TopicInfo } from './Topic-TopicInfo';
 import { Category } from './Topic-Category';
-export const QuoteTraceContext = React.createContext(context => {});
+export const QuoteTraceContext = React.createContext(context => { });
 export class CurUserPost extends RouteComponent<
   { history },
   {
@@ -21,8 +21,8 @@ export class CurUserPost extends RouteComponent<
     postId;
     quote;
   },
-  { topicId; page; postId }
-> {
+  { topicId; page; postId, userId }
+  > {
   constructor(props, context) {
     super(props, context);
     this.quote = this.quote.bind(this);
@@ -63,7 +63,10 @@ export class CurUserPost extends RouteComponent<
     });
   }
   async handleChange() {
-    const postInfo = await Utility.getPostInfo(this.match.params.postId);
+    console.log('handle')
+    //const postInfo = await Utility.getPostInfo(this.match.params.postId);
+    const userId = this.match.params.userId;
+    const postId = this.match.params.postId;
     const topicInfo = await Utility.getTopicInfo(this.match.params.topicId);
     let page: number;
     if (!this.match.params.page) {
@@ -73,7 +76,7 @@ export class CurUserPost extends RouteComponent<
     }
     const totalPage = await this.getTotalPage(
       this.state.topicInfo.replyCount,
-      postInfo
+      postId
     );
     this.setState({
       page: page,
@@ -89,25 +92,29 @@ export class CurUserPost extends RouteComponent<
     } else {
       page = parseInt(newProps.match.params.page);
     }
-    const userId = newProps.match.params.userId;
-    const postInfo = await Utility.getPostInfo(this.match.params.postId);
-    const topicInfo = await Utility.getTopicInfo(this.match.params.topicId);
-    const boardId = topicInfo.boardId;
-    const boardInfo = await Utility.getBoardInfo(boardId);
-    const isFav = await Utility.getFavState(newProps.match.params.topicId);
-    const totalPage = await this.getTotalPage.bind(this)(
-      this.match.params.topicId,
-      postInfo
-    );
-    this.setState({
-      page: page,
-      topicId: newProps.match.params.topicId,
-      totalPage: totalPage,
-      postId: newProps.match.params.postId,
-      topicInfo: topicInfo,
-      boardInfo: boardInfo,
-      isFav: isFav
-    });
+    if (page != this.match.params.page) {
+      console.log('will')
+      const userId = newProps.match.params.userId;
+      const postId = newProps.match.params.postId;
+      // const postInfo = await Utility.getPostInfo(this.match.params.postId);
+      const topicInfo = await Utility.getTopicInfo(this.match.params.topicId);
+      const boardId = topicInfo.boardId;
+      const boardInfo = await Utility.getBoardInfo(boardId);
+      const isFav = await Utility.getFavState(newProps.match.params.topicId);
+      const totalPage = await this.getTotalPage(
+        this.match.params.topicId,
+        postId
+      );
+      this.setState({
+        page: page,
+        topicId: newProps.match.params.topicId,
+        totalPage: totalPage,
+        postId: newProps.match.params.postId,
+        topicInfo: topicInfo,
+        boardInfo: boardInfo,
+        isFav: isFav
+      });
+    }
   }
   shouldRender(fetchState) {
     if (fetchState) {
@@ -117,7 +124,8 @@ export class CurUserPost extends RouteComponent<
     }
   }
   async componentDidMount() {
-    const postInfo = await Utility.getPostInfo(this.match.params.postId);
+    console.log('did')
+    const postId = this.match.params.postId;
     let page: number;
     if (!this.match.params.page) {
       page = 1;
@@ -129,7 +137,7 @@ export class CurUserPost extends RouteComponent<
     const boardInfo = await Utility.getBoardInfo(boardId);
     const totalPage = await this.getTotalPage.bind(this)(
       this.match.params.topicId,
-      postInfo
+      postId
     );
     console.log('totalpage=' + totalPage);
     this.setState({
@@ -140,20 +148,21 @@ export class CurUserPost extends RouteComponent<
       boardInfo: boardInfo
     });
   }
-  async getTotalPage(topicId, postInfo) {
+  async getTotalPage(topicId, postId) {
+    console.log(postId)
     const topicInfo = await Utility.getTopicInfo(topicId);
     const isAnonymous = topicInfo.isAnonymous;
     if (isAnonymous) {
-      return await Utility.getAnonymousTraceTopicsCount(topicId, postInfo.id);
+      return await Utility.getTraceTopicsCount(topicId, postId);
     } else {
-      return await Utility.getCurUserTotalReplyPage(topicId, postInfo.userId);
+      return await Utility.getTraceTopicsCount(topicId, postId);
     }
   }
 
   render() {
     const url = `/topic/${this.match.params.topicId}/postId/${
       this.match.params.postId
-    }/`;
+      }/`;
     const pagerUrl = `/topic/${this.state.topicId}/`;
     return (
       <div className="center" style={{ width: '1140px' }}>

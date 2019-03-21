@@ -8,6 +8,7 @@ import { UserInfo } from '../../../States/AppState';
 import { UbbContainer } from '../../UbbContainer';
 import * as Utility from '../../../Utility';
 import { UbbCodeOptions } from '../../../Ubb/Core';
+import { Tag } from 'antd'
 
 interface Props {
     /**
@@ -46,7 +47,7 @@ export default class extends React.Component<Props, States> {
         this.state = {
             isFollowing: props.userInfo.isFollowing,
             buttonIsDisabled: false,
-            buttonInfo: props.userInfo.isFollowing ? '已关注' :'关注'
+            buttonInfo: props.userInfo.isFollowing ? '已关注' : '关注'
         }
         this.unfollow = this.unfollow.bind(this);
         this.follow = this.follow.bind(this);
@@ -128,6 +129,41 @@ export default class extends React.Component<Props, States> {
                 <div id="userId">
                     <div id="userId"><p>{this.props.userInfo.name}
                         <span style={{ fontSize: '12px', color: this.getPrivilegeColor(), marginLeft: '2rem' }}>{this.props.userInfo.privilege}</span></p>
+
+                        <div className="row">
+                            <Tag
+                                color="grey"
+                                style={{
+                                    width: '5rem',
+                                    textAlign: 'center',
+                                    marginRight: 0,
+                                    height: '2rem',
+                                    borderTopRightRadius: 0,
+                                    borderBottomRightRadius: 0,
+                                    fontSize: 16,
+                                    lineHeight: '2rem'
+                                }}
+                            >
+                                收到的赞
+              </Tag>
+                            <Tag
+                                className="board-head-information"
+                                style={{
+                                    width: '5rem',
+                                    height: '2rem',
+                                    textAlign: 'center',
+                                    marginRight: 0,
+                                    borderLeft: 0,
+                                    borderTopLeftRadius: 0,
+                                    borderBottomLeftRadius: 0,
+                                    fontSize: 16,
+                                    lineHeight: '2rem'
+                                }}
+                            >
+                                {this.props.userInfo.receivedLikeCount}
+                            </Tag>
+                        </div>
+
                         <Link to={`/message/message?id=${this.props.userInfo.id}`}><button type="button">私信</button></Link>
                         <button type="button"
                             id={this.state.isFollowing ? 'unfollow' : ''}

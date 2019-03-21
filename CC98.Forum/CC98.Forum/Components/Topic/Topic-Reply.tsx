@@ -48,9 +48,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             realContents = await Utility.getHotReplyContent(this.props.topicId);
 
         } else if (this.props.isTrace) {
-            const data = await Utility.getUserInfo(this.props.postId);
-            const userName = data.name;
-            realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.postId);
+            realContents = await Utility.getCurUserTopicContent(this.props.topicId, page,this.props.postId);
         } else {
             realContents = await Utility.getTopicContent(this.props.topicId, page);
         }
@@ -69,18 +67,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             realContents = await Utility.getTopicContent(this.props.topicId, page);
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         } else {
-            const postInfo = await Utility.getPostInfo(this.props.postId);
-            const userId = postInfo.userId;
-            //心灵追踪if
-            if (userId>0) {
-     
-                const userInfo = await Utility.getUserInfo(userId);
-                const userName = userInfo.name;
-                realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, userId);
-            } else {
-      
-                realContents = await Utility.getAnonymousTraceTopics(this.props.topicId, this.props.postId, page);
-            }
+                realContents = await Utility.getTraceTopics(this.props.topicId, this.props.postId, page);
         }
         const masters = this.props.boardInfo.boardMasters;
         let data = { rewardMaxValue: 20000, rewardTotalValue: 0, boardName: this.props.boardInfo.name };
@@ -97,17 +84,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
                 realContents = await Utility.getHotReplyContent(newProps.topicId);
                 if (!realContents) this.setState({ inWaiting: false, contents: [] });
             } else if (newProps.isTrace) {
-                const postInfo = await Utility.getPostInfo(newProps.postId);
-                const userId = postInfo.userId;
-                //心灵追踪if
-                if (userId>0) {
-                    const userInfo = await Utility.getUserInfo(userId);
-                    const userName = userInfo.name;
-                    realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, userId);
-                } else {
-                    realContents = await Utility.getAnonymousTraceTopics(newProps.topicId, newProps.postId, page);
-                }
-              
+                realContents = await Utility.getTraceTopics(this.props.topicId, this.props.postId, page);
             } else {
                 realContents = await Utility.getTopicContent(newProps.topicId, page);
                 if (!realContents) this.setState({ inWaiting: false, contents: [] });
