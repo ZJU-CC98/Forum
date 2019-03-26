@@ -21,7 +21,8 @@ export class AudioTagHandler extends Ubb.TextTagHandler {
       return innerContent;
     }
     const title = tagData.value('title');
-    return <AudioComponent src={innerContent} title={title} />;
+    const author = tagData.value('author');
+    return <AudioComponent src={innerContent} title={title} author={author} />;
   }
 }
 
@@ -34,6 +35,7 @@ interface IProps {
   * 音频文件标题
   */
   title: string | null;
+  author:string | null;
 }
 class AudioComponent extends React.Component<IProps> {
   /**
@@ -56,7 +58,7 @@ class AudioComponent extends React.Component<IProps> {
         music: {
           url: encodeURI(this.props.src),
           title: this.props.title ? this.props.title : encodeURI(this.props.src),
-          author: '',
+          author: this.prps.author ? this.props.author : '',
           pic: '/static/images/audio_cover.png'
         }
       });
