@@ -45,6 +45,36 @@ import NeedReplyTagHandler from './needReplyTagHandler';
 import Ms from './MsTagHandler';
 
 /**
+ * 创建一个解析签名档用的engine
+ */
+export function createSignatureEngine(): Ubb.UbbCodeEngine {
+	const engine = new Ubb.UbbCodeEngine();
+
+	engine.handlers.register(BTagHandler);
+	engine.handlers.register(ImageTagHandler);
+	engine.handlers.register(ITagHandler);
+	engine.handlers.register(SizeTagHandler);
+	engine.handlers.register(ColorTagHandler);
+	engine.handlers.register(UrlTagHandler);
+	engine.handlers.register(UTagHandler);
+	engine.handlers.register(DelTagHandler);
+	engine.handlers.register(AudioTagHandler);
+	engine.handlers.register(FontTagHandler);
+	engine.handlers.register(AlignTagHandler);
+	engine.handlers.register(LeftTagHandler);
+	engine.handlers.register(CenterTagHandler);
+	engine.handlers.register(RightTagHandler);
+	engine.handlers.register(TopicTagHandler);
+	engine.handlers.register(PmTagHandler);
+	engine.handlers.register(NoUbbTagHandler);
+
+	engine.handlers.registerText(UrlTextHandler);
+	engine.handlers.registerText(UrlTextHandler2);
+
+	return engine;
+}
+
+/**
  * 创建一个具有所有功能的默认引擎。
  */
 export function createEngine(): Ubb.UbbCodeEngine {

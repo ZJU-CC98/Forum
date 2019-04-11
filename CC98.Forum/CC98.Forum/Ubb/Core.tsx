@@ -21,6 +21,11 @@ export class UbbCodeContextData {
      * 用来定制样式
      */
     islastQuote: boolean = false;
+
+    /**
+     * 图片计数
+     */
+    imageCount = 0;
 }
 
 /**
@@ -119,6 +124,11 @@ export class UbbCodeOptions {
      * 是否允许解析markdown
      */
     allowMarkDown? = true;
+    /**
+     * 最大允许的图片数量
+     * 
+     */
+    maxImageCount = Infinity;
 }
 
 /**
