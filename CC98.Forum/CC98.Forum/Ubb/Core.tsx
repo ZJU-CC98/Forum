@@ -115,6 +115,10 @@ export class UbbCodeOptions {
 	 * UBB 处理中的兼容性控制选项。
 	 */
     compatibility = UbbCompatiblityMode.Recommended;
+    /**
+     * 是否允许解析markdown
+     */
+    allowMarkDown? = true;
 }
 
 /**

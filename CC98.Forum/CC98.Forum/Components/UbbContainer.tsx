@@ -20,7 +20,7 @@ export class UbbContainerProps {
 	/**
 	 * UBB 解析时使用的相关选项。
 	 */
-	options?: Ubb.UbbCodeOptions;
+	options?: Partial<Ubb.UbbCodeOptions>;
 }
 
 /**
@@ -41,7 +41,7 @@ export class UbbContainer extends React.PureComponent<UbbContainerProps, {}> {
         //let r = /&#(\d{5});/gi;
         //code = code.replace(r, (match, grp) => (String.fromCharCode(grp)));
 
-        const ubbHtml = engine.exec(String(code), options);
+        const ubbHtml = engine.exec(String(code), options as Ubb.UbbCodeOptions);
         
 		//打开回车与空格
 		const style = {
