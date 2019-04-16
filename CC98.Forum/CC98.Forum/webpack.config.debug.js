@@ -49,8 +49,6 @@ var config = {
     devtool: 'source-map',
     externals: {
         'jquery': '$',
-        'editor.md': 'editormd',
-        'codemirror': 'CodeMirror'
     },
     plugins: [
         // generate index.html
@@ -69,8 +67,6 @@ var config = {
             { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
             { from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
             { from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
-            { from: 'node_modules/editor.md', to: 'static/scripts/lib/editor.md/' },
-            { from: 'node_modules/codemirror', to: 'static/scripts/lib/editor.md/lib/codemirror/' },
             { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
             { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' },
             { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' },
