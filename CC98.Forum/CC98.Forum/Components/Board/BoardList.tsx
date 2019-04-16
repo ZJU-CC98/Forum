@@ -97,7 +97,7 @@ export class RootBoard extends React.Component<{ data: RootBoardState }, { isExp
         let boards = this.props.data;
 
         //四个民工区默认状态为折叠，其他区默认状态为展开
-        if (boards.id === 2 || boards.id === 29 || boards.id === 35 || boards.id === 37) { this.state = { isExpanded: false, }; }
+        if (boards.id === 2 || boards.id === 37) { this.state = { isExpanded: false, }; }
         else { this.state = { isExpanded: true, }; }
 
         this.toggleIsExpanded = this.toggleIsExpanded.bind(this);//JS的this是可变的，取决于调用方法的地方，bind方法用于此刻的this值
