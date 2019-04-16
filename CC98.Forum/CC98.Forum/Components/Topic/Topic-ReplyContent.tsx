@@ -44,7 +44,9 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
     parseContent = parseContent.replace(/发言：\*\*\n/g, "发言：**\n\n");
     const converter = new showdown.Converter({ extensions: [showdownExtension] });
     const html = converter.makeHtml(parseContent)
-    document.getElementById(domId).innerHTML = html
+    if (document.getElementById(domId)) {
+      document.getElementById(domId).innerHTML = html
+    }
     if (this.props.floor === 1 && this.props.topicInfo.isVote && !this.state.vote) this.getVote();
     // const divid = `doc-content${this.props.postId}`;
     // editormd.markdownToHTML(divid, {
@@ -92,9 +94,8 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
     const ubbMode = <UbbContainer code={ubbUrlContent} options={{ ...new UbbCodeOptions(), allowLightbox: true }} />;
     let mdUrlContent = Utility.atUserMdUrl(this.props.content);
     const mdMode = <div
-      id={domId}
-      className="markdown-container"
-    >
+      className="markdown-container mde-preview"
+    ><div id={domId} className="mde-preview-content"></div>
       {/* {remark().use(reactRenderer).processSync(parseContent).contents} */}
 
     </div>;
