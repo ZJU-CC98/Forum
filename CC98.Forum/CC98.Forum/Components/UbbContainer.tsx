@@ -4,7 +4,6 @@
 
 import * as React from 'react';
 import * as Ubb from '../Ubb/UbbCodeExtension';
-import * as $ from 'jquery';
 /**
  * 定义 UBBContainer 组件需要使用的属性。
  */
@@ -20,7 +19,11 @@ export class UbbContainerProps {
 	/**
 	 * UBB 解析时使用的相关选项。
 	 */
-	options?: Ubb.UbbCodeOptions;
+	options?: Partial<Ubb.UbbCodeOptions>;
+	/**
+	 * 签名档特供
+	 */
+	isSignature?: boolean;
 }
 
 /**
@@ -29,9 +32,9 @@ export class UbbContainerProps {
 export class UbbContainer extends React.PureComponent<UbbContainerProps, {}> {
 
 	render() {
-
+		const { isSignature } = this.props;
 		// 获取引擎对象，如果不使用引擎对象则创建一个默认的
-		const engine = this.props.engine || Ubb.createEngine();
+		const engine = this.props.engine || isSignature ? Ubb.createSignatureEngine() : Ubb.createEngine();
 		// 获取选项，如果不设置选项则创建一个默认的
 		const options = this.props.options || new Ubb.UbbCodeOptions();
         //code为一段UBB字符串
@@ -41,7 +44,7 @@ export class UbbContainer extends React.PureComponent<UbbContainerProps, {}> {
         //let r = /&#(\d{5});/gi;
         //code = code.replace(r, (match, grp) => (String.fromCharCode(grp)));
 
-        const ubbHtml = engine.exec(String(code), options);
+        const ubbHtml = engine.exec(String(code), options as Ubb.UbbCodeOptions);
         
 		//打开回车与空格
 		const style = {

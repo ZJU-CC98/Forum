@@ -22,9 +22,11 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
         }
 
         // 不允许显示图像
-        if (!allowImage) {
+        if (!allowImage || context.data.imageCount >= context.options.maxImageCount) {
             return <a href={imageUri}>{imageUri}</a>
         }
+
+        context.data.imageCount += 1;
 
         //[img=1]默认不显示图片，[img]或[img=0]默认显示图片
         // HTML5 模式下，使用 figure 表示插图

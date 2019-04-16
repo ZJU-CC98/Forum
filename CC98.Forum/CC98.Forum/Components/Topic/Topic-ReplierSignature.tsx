@@ -138,7 +138,7 @@ export default withRouter(class extends React.Component<withRouterProps&Props, {
         const manageIcon = `icon${this.props.postInfo.id}`;
         const idLike = `like${this.props.postInfo.id}`;
         const idDislike = `dislike${this.props.postInfo.id}`;
-        let signature = <div className="signature" ><UbbContainer code={this.props.userInfo.signatureCode} options={{ ...new UbbCodeOptions(), allowExternalImage: false }} /></div>;
+        let signature = <div className="signature" ><UbbContainer isSignature code={this.props.userInfo.signatureCode} options={{ ...new UbbCodeOptions(), allowExternalImage: false, allowMarkDown: false, maxImageCount: 1 }} /></div>;
         if (!this.props.userInfo.signatureCode) {
             signature = null;
         }
