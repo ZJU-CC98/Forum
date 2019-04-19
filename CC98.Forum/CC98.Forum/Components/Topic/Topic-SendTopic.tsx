@@ -13,6 +13,7 @@ import ReactMde, { ReactMdeTypes, ReactMdeCommands } from "@cc98/hell-react-mde"
 import * as Showdown from "showdown";
 import CustomCommand from "./topic-react-mde/imageUploaderCommand";
 import { RightTagHandler } from '../../Ubb/RightTagHandler';
+import IPTable from './Topic-IPData'
 var xssFilter = require('showdown-xss-filter')
 interface Props {
 	boardInfo;
@@ -22,7 +23,7 @@ interface Props {
 }
 
 
-export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[], buttonInfo, buttonDisabled, manageVisible, mdeState, commands }>{
+export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[], buttonInfo, buttonDisabled, manageVisible, mdeState, commands, IPData }>{
 	converter: Showdown.Converter;
 	constructor(props) {
 		super(props);
@@ -31,13 +32,13 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		this.showManagement = this.showManagement.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.close = this.close.bind(this);
-		this.update = this.update.bind(this); 
+		this.update = this.update.bind(this);
 		let initContent = "";
 		if (Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id)) {
 			initContent = Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id);
 		}
 		this.converter = new Showdown.Converter({ tables: true, simplifiedAutoLink: true, extensions: [xssFilter] });
-		this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复", manageVisible: false, mdeState: initContent, commands: [] });
+		this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复", manageVisible: false, mdeState: initContent, commands: [], IPData: [] });
 	}
 	// handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
 	// 	console.log(mdeState);
@@ -276,8 +277,9 @@ ${newProps.content.content}[/quote]
 		}
 	}
 
-	showIP() {
-		$('.findIP').css('display', 'flex');
+	showIP = async () => {
+		const IPData = await Utility.findIP(this.props.topicInfo.id);
+		this.setState({ IPData })
 	}
 	changeEditor() {
 		if (this.state.mode === 0) {
@@ -292,7 +294,7 @@ ${newProps.content.content}[/quote]
 	}
 
 	setValue = (v) => {
-		this.setState({ mdeState: this.state.mdeState+v },()=>{this.setState({mdeState:this.state.mdeState })})
+		this.setState({ mdeState: this.state.mdeState + v }, () => { this.setState({ mdeState: this.state.mdeState }) })
 	}
 	render() {
 		console.log('in reader')
@@ -320,8 +322,7 @@ ${newProps.content.content}[/quote]
 						value={this.state.mdeState}
 						onChange={this.handleValueChange}
 						generateMarkdownPreview={
-							(markdown) => 
-							{
+							(markdown) => {
 								console.log(this.converter.makeHtml(markdown))
 								return Promise.resolve(this.converter.makeHtml(markdown))
 							}
@@ -350,6 +351,7 @@ ${newProps.content.content}[/quote]
 		let manageBTN = null;
 		if (Utility.isMaster(this.props.boardInfo.boardMasters))
 			manageBTN = <div><Button type="primary" onClick={this.showManagement}>管理</Button>
+				<Button type="primary" onClick={this.showIP} style={{marginLeft:'2rem'}}>查看IP</Button>
 			</div>;
 
 		return <div id="sendTopicInfo" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -360,10 +362,11 @@ ${newProps.content.content}[/quote]
 			{editor}
 			{manageBTN}
 			<TopicManagement update={this.onChange} boardId={this.props.boardInfo.id} topicInfo={this.props.topicInfo} onCancel={this.handleCancel} visible={this.state.manageVisible} />
+			{this.state.IPData.length !== 0 && <IPTable IPData={this.state.IPData} />}
 			<NoticeMessage text="回复失败, 10s之内仅可进行一次回帖，请稍作休息" id="postFast" top="26%" left="38%" />
-			<NoticeMessage text="回复失败, 请输入内容" id="postNone" top="26%" left="44%" />
-			<NoticeMessage text="操作成功" id="operationSuccess" top="26%" left="44%" />
-			<Prompt message={location => (this.state.content && location.pathname.indexOf(this.props.topicInfo.id)) === -1 ? "确定要离开吗？" : true} />
+				<NoticeMessage text="回复失败, 请输入内容" id="postNone" top="26%" left="44%" />
+				<NoticeMessage text="操作成功" id="operationSuccess" top="26%" left="44%" />
+				<Prompt message={location => (this.state.content && location.pathname.indexOf(this.props.topicInfo.id)) === -1 ? "确定要离开吗？" : true} />
 		</div>;
-	}
-}
+			}
+		}
