@@ -43,6 +43,7 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
     }
     parseContent = parseContent.replace(/发言：\*\*\n/g, "发言：**\n\n");
     const converter = new showdown.Converter({ extensions: [showdownExtension] });
+    converter.setOption('tables',true);
     const html = converter.makeHtml(parseContent)
     if (document.getElementById(domId)) {
       document.getElementById(domId).innerHTML = html
