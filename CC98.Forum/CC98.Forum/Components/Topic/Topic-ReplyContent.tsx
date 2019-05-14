@@ -8,7 +8,8 @@ import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
 import { VoteContent, voteInfo } from './VoteInfo';
 var remark = require('remark');
 var reactRenderer = require('remark-react');
-
+const showdown = require('showdown'),
+      showdownExtension = require('showdown-xss-filter');
 interface Props {
   postId;
   content;
@@ -27,10 +28,33 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
 
     this.getVote = this.getVote.bind(this);
   }
+
+  // async componentWillReceiveProps(newProps){
+  //   console.log('----------')
+  //   const domId = `doc-content${newProps.postId}`;
+  //   let parseContent = newProps.content.replace(/\n>[\s\S]*?\n\n/g, (v) => v.replace(/\n[^\n](?!>)/g, (v1) => v1.replace(/\n(?!>)/, '\n>')));
+  //   if (parseContent[0] === '>') {
+  //     const index = parseContent.indexOf('\n\n');
+  //     if (index === -1) {
+  //       parseContent = parseContent.replace(/\n[^\n](?!>)/g, (v1) => v1.replace(/\n(?!>)/, '\n>'));
+  //     } else {
+  //       const substr = parseContent.substr(0, index);
+  //       parseContent = substr.replace(/\n[^\n](?!>)/g, (v1) => v1.replace(/\n(?!>)/, '\n>')) + parseContent.substr(index + 1, parseContent.length);
+  //     }
+  //   }
+  //   parseContent = parseContent.replace(/发言：\*\*\n/g, "发言：**\n\n");
+  //   const converter = new showdown.Converter({ extensions: [showdownExtension] });
+  //   converter.setOption('tables',true);
+  //   const html = converter.makeHtml(parseContent)
+  //   if (document.getElementById(domId)) {
+  //     document.getElementById(domId).innerHTML = html
+  //   }
+  //   if (newProps.floor === 1 && newProps.topicInfo.isVote && !this.state.vote) this.getVote();
+  // }
   async componentDidMount() {
-    const showdown = require('showdown'),
-      showdownExtension = require('showdown-xss-filter');
-    const domId = `doc-content${this.props.postId}`;
+    console.log('00000000000000')
+    console.log(this.props.content)
+    const domId = `doc-content${this.props.postId}-${this.props.floor}`;
     let parseContent = this.props.content.replace(/\n>[\s\S]*?\n\n/g, (v) => v.replace(/\n[^\n](?!>)/g, (v1) => v1.replace(/\n(?!>)/, '\n>')));
     if (parseContent[0] === '>') {
       const index = parseContent.indexOf('\n\n');
@@ -90,7 +114,8 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
 
   render() {
 
-    const domId = `doc-content${this.props.postId}`;
+    
+    const domId = `doc-content${this.props.postId}-${this.props.floor}`;
     let ubbUrlContent = Utility.atUserUbbUrl(this.props.content);
     const ubbMode = <UbbContainer code={ubbUrlContent} options={{ ...new UbbCodeOptions(), allowLightbox: true }} />;
     let mdUrlContent = Utility.atUserMdUrl(this.props.content);

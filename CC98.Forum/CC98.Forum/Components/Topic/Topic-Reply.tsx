@@ -10,12 +10,12 @@ import { RouteComponent } from '../RouteComponent';
 import { Replier } from './Topic-Replier';
 import { ReplyContent } from './Topic-ReplyContent';
 import { Award } from './Topic-Award';
-import  PostManagement  from './Topic-PostManagement-v2';
-import Judge   from './Topic-Judge-v2';
-import  ReplierSignature  from './Topic-ReplierSignature';
+import PostManagement from './Topic-PostManagement-v2';
+import Judge from './Topic-Judge-v2';
+import ReplierSignature from './Topic-ReplierSignature';
 import Spin from 'antd/es/spin';
 import * as moment from 'moment';
-interface Props{
+interface Props {
     topicId;
     page;
     topicInfo;
@@ -25,7 +25,8 @@ interface Props{
     isHot;
     postId;
 }
-export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealth:number,inWaiting, contents, masters ,pmVisible,item,judgeVisible}>{
+export class
+    Reply extends React.Component<Props, { boardName, m_wealth, d_wealth: number, inWaiting, contents, masters, pmVisible, item, judgeVisible }>{
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
@@ -34,10 +35,10 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             inWaiting: true,
             contents: [],
             masters: [],
-            boardName: "", m_wealth: 20000, d_wealth: 0,pmVisible:false,item:{},judgeVisible:false
+            boardName: "", m_wealth: 20000, d_wealth: 0, pmVisible: false, item: {}, judgeVisible: false
         };
     }
-    
+
     quote(content, userName, replyTime, floor, postId) {
         this.props.quote(content, userName, replyTime, floor, postId);
     }
@@ -48,7 +49,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             realContents = await Utility.getHotReplyContent(this.props.topicId);
 
         } else if (this.props.isTrace) {
-            realContents = await Utility.getCurUserTopicContent(this.props.topicId, page,this.props.postId);
+            realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, this.props.postId);
         } else {
             realContents = await Utility.getTopicContent(this.props.topicId, page);
         }
@@ -67,7 +68,8 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             realContents = await Utility.getTopicContent(this.props.topicId, page);
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         } else {
-                realContents = await Utility.getTraceTopics(this.props.topicId, this.props.postId, page);
+            realContents = await Utility.getTraceTopics(this.props.topicId, this.props.postId, page);
+
         }
         const masters = this.props.boardInfo.boardMasters;
         let data = { rewardMaxValue: 20000, rewardTotalValue: 0, boardName: this.props.boardInfo.name };
@@ -76,7 +78,8 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
         this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, boardName: data.boardName, inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
-        if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount ) {
+        console.log('this = ' + this.props.page + 'new=' + newProps.page)
+        if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
             this.setState({ inWaiting: true });
             const page = newProps.page || 1;
             let realContents;
@@ -96,43 +99,43 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, inWaiting: false, contents: realContents, masters: masters });
         }
     }
-    showPm=(v,item)=>{
-        this.setState({pmVisible:v,item:item});
+    showPm = (v, item) => {
+        this.setState({ pmVisible: v, item: item });
     }
-    showJudge=(v,item)=>{
-        this.setState({judgeVisible:v,item:item});
+    showJudge = (v, item) => {
+        this.setState({ judgeVisible: v, item: item });
     }
     handleCancel = () => {
         this.setState({ pmVisible: false });
     }
-    handleJudgeCancel=()=>{
+    handleJudgeCancel = () => {
         this.setState({ judgeVisible: false });
     }
 
     private generateContents(item) {
-      
-      
+
+
         const id = item.floor % 10;
         let likeInfo = { likeCount: item.likeCount, dislikeCount: item.dislikeCount, likeState: item.likeState };
         //判断加不加热评
         let hotReply = null;
         let awards = <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />;
-        if (!item.awards||item.awards.length === 0) awards = null;
+        if (!item.awards || item.awards.length === 0) awards = null;
         if (item.floor === 1 && !this.props.isTrace) {
             hotReply = <Reply topicInfo={this.props.topicInfo} page={this.props.page} boardInfo={this.props.boardInfo} quote={this.quote} isTrace={false} isHot={true} postId={null} topicId={this.props.topicId} />;
             return <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                 <div className="reply" key={id.toString()} id={id.toString()} >
                     <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                     <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
-                  
+
                         <ReplyContent floor={item.floor} topicInfo={this.props.topicInfo} key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                         {awards}
-                        <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} 
-                        changePmVisible={this.showPm} changeJudgeVisible={this.showJudge} />
+                        <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo}
+                            changePmVisible={this.showPm} changeJudgeVisible={this.showJudge} />
                     </div>
                     <FloorSize isHot={this.props.isHot} floor={item.floor} />
                 </div>
-           
+
                 {hotReply}
             </div>;
         } else {
@@ -141,20 +144,20 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
                 replyId = `hot_${id}`;
             }
             return <div className="reply" key={replyId} id={replyId} >
-                <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo}   traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
+                <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                 <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                     <ReplyContent floor={item.floor} topicInfo={this.props.topicInfo} key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                     {awards}
-                    <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} changePmVisible={this.showPm} changeJudgeVisible={this.showJudge} page={this.props.page}/>
+                    <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} changePmVisible={this.showPm} changeJudgeVisible={this.showJudge} page={this.props.page} />
                 </div>
                 <FloorSize isHot={this.props.isHot} floor={item.floor} />
             </div>;
         }
-        
+
     }
 
     componentDidUpdate() {
-   
+
         if (window.location.hash && window.location.hash !== '#') {
             const hash = window.location.hash;
             const eleId = hash.split("#");
@@ -168,37 +171,39 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
                 let top = document.getElementById(Id).offsetTop;
                 let height = document.getElementById(Id).clientHeight;
                 let bigHeight = window.innerHeight;
-                let delta = (bigHeight - height)/2;
-                $(document).scrollTop(top-delta);
+                let delta = (bigHeight - height) / 2;
+                $(document).scrollTop(top - delta);
             }
         }
     }
- 
+
     render() {
         let privilege = null;
+        console.log('state')
+        console.log(this.state.contents)
         if (Utility.getLocalStorage("userInfo"))
             privilege = Utility.getLocalStorage("userInfo").privilege;
         if (this.props.isHot && this.state.inWaiting)
             return null;
         if (!this.state.inWaiting) {
-            if (!this.state.contents || !this.state.contents.length ) {
+            if (!this.state.contents || !this.state.contents.length) {
                 return <div></div>;
             }
-            return <div className="center" style={{ width: "71rem", marginRight:"1px" }}>
+            return <div className="center" style={{ width: "71rem", marginRight: "1px" }}>
                 {this.state.contents.map(this.generateContents.bind(this))}
-                <PostManagement  m_wealth={this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName}  update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} item={this.state.item} visible={this.state.pmVisible} onCancel={this.handleCancel} />
-                <Judge item={this.state.item} update={this.update} onCancel={this.handleJudgeCancel} visible={this.state.judgeVisible} />                     
+                <PostManagement m_wealth={this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} item={this.state.item} visible={this.state.pmVisible} onCancel={this.handleCancel} />
+                <Judge item={this.state.item} update={this.update} onCancel={this.handleJudgeCancel} visible={this.state.judgeVisible} />
             </div>
                 ;
         }
         else
-            return <Spin style={{marginTop:"4rem"}} size="large" />;
+            return <Spin style={{ marginTop: "4rem" }} size="large" />;
 
     }
 }
 
 //楼层显示的控件
-export class FloorSize extends React.Component<{isHot:boolean, floor: number }> {
+export class FloorSize extends React.Component<{ isHot: boolean, floor: number }> {
     render() {
         if (!this.props.isHot) {
             if (this.props.floor > 9999)
@@ -207,13 +212,13 @@ export class FloorSize extends React.Component<{isHot:boolean, floor: number }> 
                 return <div className="reply-floor">{this.props.floor}</div>;
             }
         } else {
-            return <div style={{ backgroundColor: "#FF4040" }} className="reply-floor"><img style={{ width: "20px", height: "30px"}} src="/static/images/hot.png" /></div>;
+            return <div style={{ backgroundColor: "#FF4040" }} className="reply-floor"><img style={{ width: "20px", height: "30px" }} src="/static/images/hot.png" /></div>;
         }
-      
+
     }
 }
 
- 
+
 /**
  * 文章内容
  */
