@@ -304,7 +304,7 @@ ${newProps.content.content}[/quote]
         const f = (s/1000/60/60/24).toFixed(0)
         let ft = null
         if(Number(f)>365){
-            ft = <div className="row" style={{color:'red'}}>这是{f}天前发表的主题，如无必要请勿回复。</div>
+            ft = <div className="row" style={{color:'red'}}>提示：该贴发布于{f}天前，如无必要请勿回复。</div>
         }
 		let mode, editor;
 		if (this.state.mode === 0) {
