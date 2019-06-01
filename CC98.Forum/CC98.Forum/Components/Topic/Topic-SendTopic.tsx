@@ -297,13 +297,21 @@ ${newProps.content.content}[/quote]
 		this.setState({ mdeState: this.state.mdeState + v }, () => { this.setState({ mdeState: this.state.mdeState }) })
 	}
 	render() {
-		console.log('in reader')
-		console.log(this.state.mdeState)
+        console.log('in reader')
+        const s1 = new Date()
+        const s2 = new Date(this.props.topicInfo.lastPostTime)
+        const s = s1.getTime()-s2.getTime()
+        const f = (s/1000/60/60/24).toFixed(0)
+        let ft = null
+        if(Number(f)>365){
+            ft = <div className="row" style={{color:'red'}}>这是{f}天前发表的主题，如无必要请勿回复。</div>
+        }
 		let mode, editor;
 		if (this.state.mode === 0) {
 			mode = '使用UBB模式编辑';
 			editor =
 				<div >
+                        {ft}
 					<UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }} />
 					<div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
 						<button id="post-topic-button" onClick={this.sendUbbTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>{this.state.buttonInfo}
@@ -317,7 +325,7 @@ ${newProps.content.content}[/quote]
 			console.log(this.state.mdeState)
 			editor = <div >
 				<div>
-
+{ft}
 					<ReactMde
 						value={this.state.mdeState}
 						onChange={this.handleValueChange}
@@ -340,7 +348,7 @@ ${newProps.content.content}[/quote]
 						}}
 
 					/></div>
-
+                
 				<div className="row" style={{ justifyContent: 'center', marginTop: '5rem ' }}>
 					<button id="post-topic-button" onClick={this.sendMdTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>{this.state.buttonInfo}
 					</button>
