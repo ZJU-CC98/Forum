@@ -299,7 +299,7 @@ ${newProps.content.content}[/quote]
 	render() {
         console.log('in reader')
         const s1 = new Date()
-        const s2 = new Date(this.props.topicInfo.lastPostTime)
+        const s2 = new Date(this.props.topicInfo.time)
         const s = s1.getTime()-s2.getTime()
         const f = (s/1000/60/60/24).toFixed(0)
         let ft = null
