@@ -25,7 +25,7 @@ import CustomCommand from "./react-mde/imageUploaderCommand";
 
 export class Edit extends RouteComponent<
     { history },
-    { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[], voteInfo: VoteProps['voteInfo'], mdeState, commands },
+    { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[], voteInfo: VoteProps['voteInfo'], mdeState, commands, notice },
     { mode: string, id: number }
     > {
     converter: Showdown.Converter;
@@ -63,7 +63,8 @@ export class Edit extends RouteComponent<
                 needVote: false
             },
             mdeState: '',
-            commands: []
+            commands: [],
+            notice: true
         });
     }
 
@@ -123,9 +124,9 @@ export class Edit extends RouteComponent<
                 }
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
-                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 0 });
+                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 0, notice: topicInfo.notifyPoster });
                 } else
-                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 1, mdeState: data.content });
+                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 1, mdeState: data.content, notice: topicInfo.notifyPoster  });
                 break;
         }
 
@@ -186,7 +187,8 @@ export class Edit extends RouteComponent<
                         contentType: 1,
                         title: this.state.title,
                         tag1: tag1Id,
-                        type: this.state.type
+                        type: this.state.type,
+                        notifyPoster: this.state.notice
                     };
                 }
                 else if (tag2Id) {
@@ -197,7 +199,8 @@ export class Edit extends RouteComponent<
                         title: this.state.title,
                         tag1: tag1Id,
                         tag2: tag2Id,
-                        type: this.state.type
+                        type: this.state.type,
+                        notifyPoster: this.state.notice
                     };
                 }
                 else {
@@ -205,7 +208,8 @@ export class Edit extends RouteComponent<
                         content: c,
                         contentType: 1,
                         title: this.state.title,
-                        type: this.state.type
+                        type: this.state.type,
+                        notifyPoster: this.state.notice
                     };
                 }
                 if (this.match.params.mode === 'postVoteTopic') { // 投票内容
@@ -283,7 +287,8 @@ export class Edit extends RouteComponent<
                     contentType: 0,
                     title: this.state.title,
                     tag1: tag1Id,
-                    type: this.state.type
+                    type: this.state.type,
+                    notifyPoster: this.state.notice
                 };
             }
             else if (tag2Id) {
@@ -293,7 +298,8 @@ export class Edit extends RouteComponent<
                     title: this.state.title,
                     tag1: tag1Id,
                     tag2: tag2Id,
-                    type: this.state.type
+                    type: this.state.type,
+                    notifyPoster: this.state.notice
                 };
             }
             else {
@@ -301,7 +307,8 @@ export class Edit extends RouteComponent<
                     content: this.state.content,
                     contentType: 0,
                     title: this.state.title,
-                    type: this.state.type
+                    type: this.state.type,
+                    notifyPoster: this.state.notice
                 };
             }
             if (this.match.params.mode === 'postVoteTopic') { // 投票内容
@@ -363,7 +370,8 @@ export class Edit extends RouteComponent<
                 contentType: 0,
                 title: this.state.title,
                 tag1: tag1Id,
-                type: this.state.type
+                type: this.state.type,
+                notifyPoster: this.state.notice
             };
         }
         else if (tag2Id) {
@@ -373,7 +381,8 @@ export class Edit extends RouteComponent<
                 title: this.state.title,
                 tag1: tag1Id,
                 tag2: tag2Id,
-                type: this.state.type
+                type: this.state.type,
+                notifyPoster: this.state.notice
             };
         }
         else {
@@ -381,9 +390,11 @@ export class Edit extends RouteComponent<
                 content: this.state.content,
                 contentType: 0,
                 title: this.state.title,
-                type: this.state.type
+                type: this.state.type,
+                notifyPoster: this.state.notice
             };
         }
+
         const body = JSON.stringify(content);
         const token = await Utility.getToken();
         const headers = await Utility.formAuthorizeHeader();
@@ -409,7 +420,8 @@ export class Edit extends RouteComponent<
                 contentType: 1,
                 title: this.state.title,
                 tag1: tag1Id,
-                type: this.state.type
+                type: this.state.type,
+                notifyPoster: this.state.notice
             };
         }
         else if (tag2Id) {
@@ -420,7 +432,8 @@ export class Edit extends RouteComponent<
                 title: this.state.title,
                 tag1: tag1Id,
                 tag2: tag2Id,
-                type: this.state.type
+                type: this.state.type,
+                notifyPoster: this.state.notice
             };
         }
         else {
@@ -428,7 +441,8 @@ export class Edit extends RouteComponent<
                 content: c,
                 contentType: 1,
                 title: this.state.title,
-                type: this.state.type
+                type: this.state.type,
+                notifyPoster: this.state.notice
             };
         }
         const body = JSON.stringify(content);
@@ -459,6 +473,9 @@ export class Edit extends RouteComponent<
     }
     setValue = (v) => {
         this.setState({ mdeState: this.state.mdeState + v }, () => { this.setState({ mdeState: this.state.mdeState }) })
+    }
+    notNotice = async () => {
+        this.setState({ notice: !this.state.notice })
     }
     render() {
         const contentCache = Utility.getLocalStorage("contentCache");
@@ -565,13 +582,26 @@ export class Edit extends RouteComponent<
                 <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
             </div>;
         }
+
+
+        // 开启消息提醒
+        let noticeOption = <div className="createTopicType">
+            <div className="createTopicListName">高级选项</div>
+            <input style={{ marginLeft: '5px' }} type="checkbox" name="option" value="notNotice" onClick={this.notNotice} checked={this.state.notice} /> 接收消息提醒
+                </div>
+
         if (this.state.postInfo.floor !== 1 && mode === 'edit') {
             topicType = null;
+            noticeOption = null
         }
+
+
+
         return <div className="createTopic">
             <Category url={url} boardName={this.state.boardName} mode={mode} />
             {titleInput}
             {topicType}
+            {noticeOption}
             {mode === 'postVoteTopic' ? <Vote voteInfo={this.state.voteInfo} onVoteInfoChange={this.onVoteInfoChange} /> : null}
             {editor}
         </div>;

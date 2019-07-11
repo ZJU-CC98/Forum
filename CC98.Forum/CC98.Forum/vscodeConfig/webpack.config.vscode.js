@@ -86,7 +86,7 @@ module.exports = {
     devServer: {
         // contentBase: path.resolve(__dirname, "wwwroot"),
         historyApiFallback: true,
-        port: 8082,
+        port: 8083,
         host: '0.0.0.0',
 
         // proxy: {
