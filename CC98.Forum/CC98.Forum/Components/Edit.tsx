@@ -567,7 +567,7 @@ export class Edit extends RouteComponent<
             <div className="createTopicListName">发帖类型</div>
             <input type="radio" name="type" value="普通" onClick={this.changeNormalType} checked={this.state.type === 0 ? true : false} /> 普通
             <input type="radio" name="type" value="学术信息" onClick={this.changeAcademicType} checked={this.state.type === 2 ? true : false} /> 学术信息
-            <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
+            <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术帖请选择正确的发帖类型)</div>
         </div>;
 
         console.log(Utility.isMaster(this.state.masters))
@@ -579,7 +579,7 @@ export class Edit extends RouteComponent<
                 <input type="radio" name="type" value="普通" onClick={this.changeNormalType} checked={this.state.type === 0 ? true : false} /> 普通
                 <input type="radio" name="type" value="学术信息" onClick={this.changeAcademicType} checked={this.state.type === 2 ? true : false} /> 学术信息
                 <input type="radio" name="type" value="校园活动" onClick={this.changeActivityType} checked={this.state.type === 1 ? true : false} /> 校园活动
-                <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
+                <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术帖请选择正确的发帖类型)</div>
             </div>;
         }
 
