@@ -21,6 +21,18 @@ $color-black: rgb(32, 32, 32);
 $color-url: #0b5394;
 $color-urlVisited: #741b47;
 
+//主容器的样式
+.main-container {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 1140px;
+  background-color: $background_color_page;
+}
+
+
 blockquote {
   color: #666;
   margin: 0;
@@ -87,6 +99,7 @@ input[type='radio'] {
 }
 
 .urlStyle {
+
   /* 未访问的链接 */
   &:link {
     color: $color-url;
@@ -243,8 +256,7 @@ input[type='radio'] {
   font-size: 1rem;
 }
 
-.authorImg {
-}
+.authorImg {}
 
 .authorImg img {
   margin-left: 20px;
@@ -324,7 +336,7 @@ input[type='radio'] {
   margin-left: 1.4rem;
   display: flex;
   font-size: 0.75rem;
-  color: $color_main;
+  color: $theme_color_main;
 }
 
 #like {
@@ -423,7 +435,7 @@ input[type='radio'] {
   margin-left: 1.5rem;
   width: 52rem;
   word-wrap: break-word;
-  color: rgb(80, 80, 80);
+  color: rgb(0, 0, 0);
   font-family: 微软雅黑;
 }
 
@@ -456,7 +468,7 @@ input[type='radio'] {
 }
 
 .replierBtn {
-  background-color: $color_main;
+  background-color: $theme_color_main;
   color: #fff;
   border: #fff solid thin;
   border-radius: 0.63rem;
@@ -488,7 +500,7 @@ input[type='radio'] {
   margin-bottom: 1.25rem;
   padding-top: 1rem;
   word-break: break-all;
-  border-top: $color_main solid thin;
+  border-top: $theme_color_main solid thin;
   width: 100%;
   padding-left: 2rem;
   padding-right: 2rem;
@@ -498,7 +510,7 @@ input[type='radio'] {
 
 .tagColumn {
   width: 100%;
-  border: $color_main solid thin;
+  border: $theme_color_main solid thin;
 }
 
 .signature img {
@@ -538,7 +550,7 @@ input[type='radio'] {
   font-size: 0.75rem;
   align-items: flex-end;
   padding-bottom: 0.3rem;
-  color: $color_main;
+  color: $theme_color_main;
   align-items: center;
   justify-content: space-between;
 }
@@ -662,8 +674,8 @@ input[type='radio'] {
 .reply {
   width: 100%;
   margin-top: 1rem;
-  border: $color_main solid 1.5px;
-  background-color: #fff;
+  border: $theme_color_main solid 1.5px;
+  background-color: $background_color_textarea;
   flex-direction: row;
   display: flex;
   position: relative;
@@ -674,7 +686,7 @@ input[type='radio'] {
     height: 40px;
     border-radius: 50%;
     right: -0.8rem;
-    background-color: $color_main;
+    background-color: $theme_color_main;
     text-align: center;
     line-height: 40px;
     position: relative;
@@ -692,7 +704,7 @@ input[type='radio'] {
 
 .userMessage {
   align-items: flex-start;
-  background-color: $color_main;
+  background-color: $theme_color_main;
   color: #fff;
   width: 15.5rem;
   display: flex;
@@ -770,8 +782,8 @@ input[type='radio'] {
   color: #000000;
   outline: none;
   cursor: pointer;
-  color: $color_main;
-  border: $color_main solid thin;
+  color: $theme_color_main;
+  border: $theme_color_main solid thin;
   border-radius: 1rem;
   width: 2.25rem;
   height: 1.25rem;
@@ -780,7 +792,7 @@ input[type='radio'] {
   line-height: 1.25rem;
 
   a {
-    color: $color_main;
+    color: $theme_color_main;
   }
 }
 
@@ -912,7 +924,7 @@ input[type='radio'] {
 .followTopic {
   width: 3rem;
   margin-left: 1rem;
-  border: $color_main solid thin;
+  border: $theme_color_main solid thin;
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
@@ -1029,13 +1041,13 @@ a {
 
 .board-topBar {
   justify-content: space-between;
-  background-color: $color_main;
+  background-color: $theme_color_main;
   color: #fff;
 }
 
 .bgcolor {
   color: #fff;
-  background-color: $color_main;
+  background-color: $theme_color_main;
 }
 
 .orange {
@@ -1070,18 +1082,18 @@ a {
 
 .blue {
   color: #fff;
-  border: solid 1px $color_main;
-  background-color: $color_main;
+  border: solid 1px $theme_color_main;
+  background-color: $theme_color_main;
   opacity: 0.8;
 }
 
 .blue:hover {
-  background-color: $color_main;
+  background-color: $theme_color_main;
   opacity: 0.9;
 }
 
 .blue:active {
-  background-color: $color_main;
+  background-color: $theme_color_main;
 }
 
 .button:hover {
@@ -1119,7 +1131,7 @@ a {
   height: 26px;
   line-height: 26px;
   text-align: center;
-  color: $color_main;
+  color: $theme_color_main;
   background-color: #fff;
   border: 1px solid #ddd;
   font-family: 微软雅黑;
@@ -1127,14 +1139,14 @@ a {
 
   &:hover {
     color: #fff;
-    background-color: $color_main;
+    background-color: $theme_color_main;
     border-color: transparent;
   }
 }
 
 .page-link.active {
   color: #fff;
-  background-color: $color_main;
+  background-color: $theme_color_main;
   border-color: transparent;
 }
 
@@ -1158,11 +1170,11 @@ a {
     line-height: 26px;
     text-align: center;
     color: #fff;
-    background-color: $color_main;
+    background-color: $theme_color_main;
     border: 1px solid transparent;
 
     &:hover {
-      background-color: $color_main;
+      background-color: $theme_color_main;
     }
   }
 }
@@ -1203,7 +1215,7 @@ a {
   flex-direction: column;
   width: 1140px;
   box-sizing: border-box;
-  background-color: #fff;
+  background-color: $background_color_textarea;
   margin-bottom: 2rem;
 }
 
@@ -1279,16 +1291,15 @@ a {
   width: 6rem;
   background-size: 100%;
   border-radius: 50%;
-  background-color: $color_main;
+  background-color: $theme_color_main;
 }
 
-.listTitle {
-}
+.listTitle {}
 
 .boardName2 {
   font-size: 0.88rem;
   font-family: 微软雅黑;
-  color: rgb(80, 80, 80);
+  color: #000000;
   margin-top: 0.75rem;
   letter-spacing: 2px;
 }
@@ -1296,7 +1307,7 @@ a {
 .boardInfo {
   font-size: 0.75rem;
   font-family: 微软雅黑;
-  color: rgb(80, 80, 80);
+  color: #000000;
   margin-top: 8px;
   display: flex;
   flex-direction: column;
@@ -1512,7 +1523,7 @@ a {
 .message-message-wPostBtn {
   width: 100px;
   height: 30px;
-  background-color: $color_main;
+  background-color: $theme_color_main;
   color: $color-post;
   border: 0px;
   border-radius: 3px;
@@ -1768,7 +1779,7 @@ a {
 
       &:focus {
         outline: none;
-        border: 1px solid $color_main;
+        border: 1px solid $theme_color_main;
       }
     }
 
@@ -2041,11 +2052,11 @@ a {
 
   .focus-board {
     display: block;
-    color: $color_main;
+    color: $theme_color_main;
     background-color: transparent;
     text-align: center;
     vertical-align: middle; //设置元素的垂直对齐方式
-    border: 1px solid $color_main;
+    border: 1px solid $theme_color_main;
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     border-radius: 0.25rem;
@@ -2057,14 +2068,14 @@ a {
     flex-shrink: 0;
 
     &:hover {
-      background-color: $color_main;
+      background-color: $theme_color_main;
       color: rgb(255, 255, 255);
       cursor: pointer;
     }
   }
 
   .focus-hover {
-    background-color: $color_main;
+    background-color: $theme_color_main;
     color: #ffffff;
   }
 
@@ -2090,7 +2101,7 @@ a {
     flex-direction: column;
     text-align: center;
     cursor: pointer;
-    color: $color_main;
+    color: $theme_color_main;
     justify-content: center;
 
     div {
@@ -2178,14 +2189,14 @@ a {
   min-height: 80px;
   margin-top: 12px;
   overflow: hidden;
-  background-color: #ffffff;
-  border: solid 1px $color_main;
+  background-color: $background_color_textarea;
+  border: solid 1px $theme_color_main;
 
   .focus-topic-left {
     display: flex;
     flex-direction: row;
     flex-basis: 180px;
-    background-color: $color_main;
+    background-color: $theme_color_main;
     flex-shrink: 0;
 
     .focus-topic-portraitUrl {
@@ -2208,12 +2219,12 @@ a {
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 0;
-    background-color: #ffffff;
-    color: #6b7178;
+    background-color: $background_color_textarea;
+    color: #000;
 
     .focus-topic-title {
       font-size: 20px;
-      color: #6b7178;
+      color: #000;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -2236,10 +2247,10 @@ a {
         margin-right: 20px;
         overflow: hidden;
         position: relative;
-        color: #6b7178;
+        color: #000;
 
         a {
-          color: #6b7178;
+          color: #000;
 
           &:hover {
             text-decoration: underline;
@@ -2258,7 +2269,7 @@ a {
   .focus-topic-rightBar {
     width: 0px;
     height: 48px;
-    border-left: 1px solid #6b7178;
+    border-left: 1px solid #000;
     margin-top: 16px;
   }
 
@@ -2266,10 +2277,10 @@ a {
     text-align: center;
     flex-basis: 70px;
     height: 80px;
-    background-color: #ffffff;
+    background-color: $background_color_textarea;
     padding-left: 15px;
     padding-right: 15px;
-    color: #6b7178;
+    color: #000;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -2513,7 +2524,7 @@ a {
   flex-direction: column;
   margin-bottom: 6rem;
 
-  & > div {
+  &>div {
     margin-top: 30px;
     background-color: white;
     min-width: 1140px;
@@ -2521,24 +2532,24 @@ a {
     border: 1px solid rgb(204, 204, 204);
     height: 567px;
 
-    & > img {
+    &>img {
       margin: 30px;
     }
 
-    & > div {
+    &>div {
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
       margin-top: 50px;
 
-      & > img {
+      &>img {
         width: 123px;
         height: 26px;
         margin-right: 200px;
       }
 
-      & > p {
+      &>p {
         margin-right: 200px;
         font-size: 12px;
       }
@@ -2781,7 +2792,7 @@ a {
   border-radius: 0.5rem;
   -moz-border-radius: 0.5rem;
   -webkit-border-radius: 0.5rem;
-  background-color: $color_main;
+  background-color: $theme_color_main;
 }
 
 .judgeManagement {
@@ -2799,7 +2810,7 @@ a {
   border-radius: 0.5rem;
   -moz-border-radius: 0.5rem;
   -webkit-border-radius: 0.5rem;
-  background-color: $color_main;
+  background-color: $theme_color_main;
 }
 
 .manageUI {
@@ -3024,8 +3035,8 @@ a {
   width: 52.3rem;
   height: 6.25rem;
   display: flex;
-  background-color: #fff;
-  color: #6b7178;
+  background-color: $background_color_textarea;
+  color: #000;
   font-size: 1rem;
 }
 
@@ -3048,7 +3059,7 @@ a {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  background-color: $color_main;
+  background-color: $theme_color_main;
 }
 
 .boardMessageDetails {
@@ -3104,7 +3115,7 @@ a {
   width: 56.25rem;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background-color: $background_color_textarea;
   border: solid 1px #6b7178;
   padding: 1.5rem;
   font-size: 1rem;
@@ -3172,13 +3183,12 @@ a {
 .boardListHead {
   height: 3rem;
   align-items: center;
-  background-color: $color_main;
+  background-color: $theme_color_main;
   justify-content: space-between;
   cursor: pointer;
 }
 
-.boardListHead:hover {
-}
+.boardListHead:hover {}
 
 //配色方案
 variable {
@@ -3265,7 +3275,7 @@ variable {
   border: 1px solid transparent;
   box-sizing: border-box;
   font-size: 1rem;
-  background-color: $color-main;
+  background-color:$theme_color_main;
   color: #fff;
 }
 
@@ -3352,12 +3362,12 @@ variable {
 
 .react-bootstrap-button {
   display: block;
-  color: $color_main;
+  color: $theme_color_main;
   width: 7rem;
   background-color: transparent;
   text-align: center;
   vertical-align: middle; //设置元素的垂直对齐方式
-  border: 1px solid $color_main;
+  border: 1px solid $theme_color_main;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   border-radius: 0.25rem;
@@ -3521,10 +3531,7 @@ variable {
   }
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  button.tooltipped:hover::before {
+.mde-header ul.mde-header-group li.mde-header-item button.tooltipped:hover::before {
   animation-name: tooltip-appear;
   animation-duration: 0.2s;
   animation-delay: 0.5s;
@@ -3545,10 +3552,7 @@ variable {
   border-top-color: rgba(0, 0, 0, 0.8);
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  button.tooltipped:hover::after {
+.mde-header ul.mde-header-group li.mde-header-item button.tooltipped:hover::after {
   animation-name: tooltip-appear;
   animation-duration: 0.2s;
   animation-delay: 0.5s;
@@ -3588,23 +3592,12 @@ variable {
   display: block;
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  ul.react-mde-dropdown
-  li
-  button {
+.mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button {
   display: block;
   height: auto;
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  ul.react-mde-dropdown
-  li
-  button
-  p {
+.mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p {
   display: block;
   margin: 0;
   padding: 0;
@@ -3615,60 +3608,27 @@ variable {
   text-align: left;
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  ul.react-mde-dropdown
-  li
-  button
-  p:hover {
+.mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p:hover {
   color: #4078c0;
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  ul.react-mde-dropdown
-  li
-  button
-  p.header-1 {
+.mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-1 {
   font-size: 20px;
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  ul.react-mde-dropdown
-  li
-  button
-  p.header-2 {
+.mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-2 {
   font-size: 18px;
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  ul.react-mde-dropdown
-  li
-  button
-  p.header-3 {
+.mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-3 {
   font-size: 14px;
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  ul.react-mde-dropdown
-  li
-  button
-  p.header-4 {
+.mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown li button p.header-4 {
   font-size: 12px;
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  ul.react-mde-dropdown::before {
+.mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown::before {
   position: absolute;
   content: '';
   width: 0;
@@ -3680,10 +3640,7 @@ variable {
   transform: translateX(50%);
 }
 
-.mde-header
-  ul.mde-header-group
-  li.mde-header-item
-  ul.react-mde-dropdown::after {
+.mde-header ul.mde-header-group li.mde-header-item ul.react-mde-dropdown::after {
   position: absolute;
   content: '';
   width: 0;
@@ -3759,11 +3716,11 @@ variable {
   border-left: 0.25em solid #ddd;
 }
 
-.mde-preview .mde-preview-content blockquote > :first-child {
+.mde-preview .mde-preview-content blockquote> :first-child {
   margin-top: 0;
 }
 
-.mde-preview .mde-preview-content blockquote > :last-child {
+.mde-preview .mde-preview-content blockquote> :last-child {
   margin-bottom: 0;
 }
 
@@ -3806,7 +3763,7 @@ variable {
   content: none;
 }
 
-.mde-preview .mde-preview-content pre > code {
+.mde-preview .mde-preview-content pre>code {
   padding: 0;
   margin: 0;
   font-size: 100%;
@@ -3825,11 +3782,11 @@ variable {
   text-decoration: underline;
 }
 
-.mde-preview .mde-preview-content > *:first-child {
+.mde-preview .mde-preview-content>*:first-child {
   margin-top: 0 !important;
 }
 
-.mde-preview .mde-preview-content > *:last-child {
+.mde-preview .mde-preview-content>*:last-child {
   margin-bottom: 0 !important;
 }
 
@@ -3921,12 +3878,12 @@ ol {
 }
 
 .board-list-body {
-  border: $color_main solid thin;
+  border: $theme_color_main solid thin;
   width: 100%;
 }
 
 .board-postItem-body-odd {
-  background-color: #fcfcfc;
+  background-color: $background_color_textarea;
 }
 
 .board-postItem-body-even {
@@ -3966,7 +3923,7 @@ ol {
   overflow: hidden;
 }
 
-.board-postItem-title a{
+.board-postItem-title a {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -4000,9 +3957,9 @@ ol {
 }
 
 .board-head-information {
-  background-color: $color_main;
+  background-color: $theme_color_main;
   color: white;
-  border-color: $color_main;
+  border-color: $theme_color_main;
 }
 
 .board-postItem-head {
@@ -4010,9 +3967,9 @@ ol {
   width: 100%;
   height: 3rem;
   align-items: center;
-  background-color: $color_main;
+  background-color: $theme_color_main;
   color: #fff;
-  border: $color_main solid thin;
+  border: $theme_color_main solid thin;
 }
 
 .board-postItem-head-left {
@@ -4112,21 +4069,21 @@ ol {
 .board-head-button {
   height: 4rem;
   width: 7rem;
-  background-color: $color_main;
+  background-color: $theme_color_main;
   color: #fff;
   font-size: 1.5rem;
 }
 
 .board-head-button:hover {
-  background-color: $color_main;
+  background-color: $theme_color_main;
 }
 
 .board-head-button:before {
-  background-color: $color_main;
+  background-color: $theme_color_main;
 }
 
 .board-head-button:focus {
-  background-color: $color_main;
+  background-color: $theme_color_main;
 }
 
 .board-bigpaper {
@@ -4138,10 +4095,22 @@ ol {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  background-color: $color_main;
+  background-color: $theme_color_main;
 }
 
 .board-head-name {
   margin-left: 1rem;
   font-size: 1.25rem;
+}
+
+//签到的样式
+.sign-in {
+  display: flex;
+  flex-direction: column;
+  width: 1140px;
+  font-family: 微软雅黑;
+  padding: 2rem;
+  background-color: $background_color_textarea;
+  margin-bottom: 1rem;
+  font-size: 1rem;
 }

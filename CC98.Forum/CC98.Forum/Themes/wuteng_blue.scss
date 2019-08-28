@@ -1,6 +1,9 @@
-$color_main: #79b8ca;
-$color_sec: #6b7178;
-$topBar_o: rgba(121, 184, 202, 0.8);
+$theme_color_main: #79b8ca;
+$theme_color_sub: #6b7178;
+$theme_color_topbar: rgba(121, 184, 202, 0.8);
 $background_image: url(/static/images/winter.jpg);
+$background_color_page:#e6e7ec;
+$background_color_textarea:#ffffff;
+$font_color_text:#000000;
 
 @import '../Site.scss';

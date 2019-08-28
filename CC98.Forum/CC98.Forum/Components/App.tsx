@@ -85,15 +85,7 @@ class App extends React.Component<Props> {
       <div style={{ width: '100%' }}>
         <ConnectedRouter history={history}>
           <div
-            style={{
-              justifyContent: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              width: '100%',
-              minWidth: '1140px',
-              backgroundColor: '#e6e7ec'
-            }}
+          className="main-container"
           >
             <Header />
             <Route component={ErrorControl} />
