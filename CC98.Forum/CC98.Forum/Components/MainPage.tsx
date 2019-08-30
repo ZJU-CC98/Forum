@@ -516,7 +516,7 @@ export class MainPageCountComponent extends React.Component<{ data }, {}> {
   render() {
     const data = this.props.data;
     return <div className="mainPageCount">
-      <div className="mainPageTitle2">
+      <div className="mainPageTitle1">
         <div className="mainPageTitleRow">
           <i className="fa fa-volume-up"></i>
           <div className="mainPageTitleText">论坛统计</div>
@@ -597,15 +597,17 @@ export class QRCode extends React.Component<{}, {}>{
         display: "flex",
         flexDirection: "column",
         marginTop: "2rem",
-        alignItems: "center"
       }}
     >
-      <div className="mainPageTitle1">
+      <div className="mainPageTitle2">
         <div className="mainPageTitleRow">
-          <div className="mainPageTitleText">CC98小程序（需内网）</div>
+          <i className="fa fa-volume-up"></i>
+          <div className="mainPageTitleText">CC98小程序</div>
         </div>
       </div>
-      <img style={{ marginTop: "1rem" }} src="/static/images/QRCode.png"></img>
+      <div style={{ marginTop: "1rem" }} >
+        <img style={{ width: "100%" }} src="/static/images/QRCode.jpg"></img>
+      </div>
     </div>
   }
 }
