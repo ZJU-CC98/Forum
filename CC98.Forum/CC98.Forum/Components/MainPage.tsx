@@ -585,7 +585,29 @@ export class MainPageCountProps {
     this.userCount = userCount;
     this.lastUserName = lastUserName;
   }
+}
 
+/**
+ * 小程序二维码
+ */
+export class QRCode extends React.Component<{}, {}>{
+  render() {
+    return <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        marginTop: "2rem",
+        alignItems: "center"
+      }}
+    >
+      <div className="mainPageTitle1">
+        <div className="mainPageTitleRow">
+          <div className="mainPageTitleText">CC98小程序（需内网）</div>
+        </div>
+      </div>
+      <img style={{ marginTop: "1rem" }} src="/static/images/QRCode.png"></img>
+    </div>
+  }
 }
 
 /**
@@ -667,14 +689,12 @@ export class MainPage extends React.Component<{}, { data }> {
           <MainPageTopicComponent data={data.schoolEvent} name="校园活动" fetchUrl="/topic/school-event" style="blue" mores={[]} />
         </div>
         <div className="row" style={{ justifyContent: "space-between" }}>
-
           <MainPageTopicComponent data={data.academics} name="学术信息" fetchUrl="/topic/academics" style="black" mores={[]} />
           <MainPageTopicComponent data={data.study} name="学习园地" fetchUrl="/topic/study" style="black" mores={study} />
         </div>
         <div className="row" style={{ justifyContent: "space-between" }}>
           <MainPageTopicComponent data={data.emotion} name="感性·情感" fetchUrl="/topic/emotion" style="blue" mores={emotion} />
           <MainPageTopicComponent data={data.fleaMarket} name="跳蚤市场" fetchUrl="/topic/flea-market" style="blue" mores={fleaMarket} />
-
         </div>
         <div className="row" style={{ justifyContent: "space-between" }}>
           <MainPageTopicComponent data={data.fullTimeJob} name="求职广场" fetchUrl="/topic/full-time-job" style="black" mores={fullTimeJob} />
@@ -686,6 +706,7 @@ export class MainPage extends React.Component<{}, { data }> {
         <SchoolNewsComponent data={data.schoolNews} />
         <AdsComponent />
         <MainPageCountComponent data={count} />
+        <QRCode />
       </div>
     </div>;
   }
