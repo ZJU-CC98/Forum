@@ -606,7 +606,7 @@ export class QRCode extends React.Component<{}, {}>{
         </div>
       </div>
       <div style={{ marginTop: "1rem" }} >
-        <img style={{ width: "100%" }} src="/static/images/QRCode.jpg"></img>
+        <img style={{ width: "100%" }} src="/static/images/QRCode.png"></img>
       </div>
     </div>
   }
