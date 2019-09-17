@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <AssemblyName>CC98.Forum</AssemblyName>
+		<TypeScriptCompileBlocked>True</TypeScriptCompileBlocked>
+		<TypeScriptEnabled>False</TypeScriptEnabled>
   </PropertyGroup>
 
   <ItemGroup>
