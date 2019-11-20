@@ -1,4 +1,4 @@
-
+import { history } from '../Store';
 //与缓存相关的函数
 export function setStorage(key, value) {
     let v = value;
@@ -74,9 +74,19 @@ export function getLocalStorage(key) {
     if (!v) {
         return;
     }
+
     if (v.indexOf('obj-') === 0) {
         v = v.slice(4);
-        return JSON.parse(v);
+        const obj = JSON.parse(v);
+        // 锁定用户检测退出登录
+        if (key === 'userInfo') {
+            if (obj.lockState !== 0) {
+                localStorage.clear()
+                window.location.href = 'https://www.cc98.org/logon'
+                return obj
+            }
+        }
+        return obj
     } else if (v.indexOf('str-') === 0) {
         return v.slice(4);
     }

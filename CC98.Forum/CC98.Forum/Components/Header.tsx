@@ -131,7 +131,7 @@ class DropDownConnect extends React.Component<props, state> {
       //获取签到状态
       let signinInfo = '签到';
       let userInfo = Utility.getLocalStorage('userInfo');
-      if (Utility.getLocalStorage(`signin_${userInfo.id}`)) {
+      if (userInfo && Utility.getLocalStorage(`signin_${userInfo.id}`)) {
         signinInfo = '已签到';
       }
       return (
