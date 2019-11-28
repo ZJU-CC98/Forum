@@ -44,7 +44,9 @@ var config = {
         css_autumn_red: './Themes/autumn_red.scss',
         css_singleday: './Themes/singleday_pink.scss',
         css_mid_autumn:'./Themes/mid_autumn.scss',
-        css_mid_autumn_light:'./Themes/mid_autumn_light.scss'
+        css_mid_autumn_light:'./Themes/mid_autumn_light.scss',
+        css_light_snow_dark:'./Themes/light_snow_dark.scss',
+        css_light_snow_light:'./Themes/light_snow_light.scss',
     },
     output: {
         path: path.resolve(__dirname, 'wwwroot/'),
