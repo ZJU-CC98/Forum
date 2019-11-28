@@ -22,7 +22,7 @@ interface States{
 export default Form.create<Props>()(class extends React.Component< Props& FormComponentProps, States>{
     constructor(props) {
         super(props);
-        this.state = { current: "1", option: "" };
+        this.state = { current: "0", option: "" };
 
     }
     handleChange = (value) => {

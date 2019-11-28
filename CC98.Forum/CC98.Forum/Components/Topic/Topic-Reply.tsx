@@ -73,8 +73,8 @@ export class
         }
         const masters = this.props.boardInfo.boardMasters;
         let data = { rewardMaxValue: 20000, rewardTotalValue: 0, boardName: this.props.boardInfo.name };
-        //if (Utility.isMaster(this.props.boardInfo.boardMasters)) 
-        //data = await Utility.queryWealth(this.props.boardInfo.id);
+        if (Utility.isMaster(this.props.boardInfo.boardMasters)) 
+        data = await Utility.queryWealth(this.props.boardInfo.id);
         this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, boardName: data.boardName, inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
@@ -92,11 +92,8 @@ export class
                 realContents = await Utility.getTopicContent(newProps.topicId, page);
                 if (!realContents) this.setState({ inWaiting: false, contents: [] });
             }
-            const masters = newProps.boardInfo.boardMasters;
-            let data = { rewardMaxValue: 0, rewardTotalValue: 0, boardName: this.props.boardInfo.name };
-            if (Utility.isMaster(masters))
-                data = await Utility.queryWealth(this.props.boardInfo.id);
-            this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, inWaiting: false, contents: realContents, masters: masters });
+
+            this.setState({  inWaiting: false, contents: realContents });
         }
     }
     showPm = (v, item) => {

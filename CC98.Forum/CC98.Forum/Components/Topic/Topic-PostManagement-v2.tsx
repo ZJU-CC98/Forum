@@ -101,7 +101,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
         switch (this.state.current) {
             case 'wealth':
                 rcForm = <Form layout="vertical">
-                    <Tag color="blue">您今天在{this.props.boardName}已经发了{this.props.d_wealth}财富值，最多可发{m_wealth}</Tag>
+                    <Tag color="blue">您今天在{this.props.boardName}已经发了{this.props.d_wealth}财富值，最多可发{m_wealth} （单次最多1000）</Tag>
                     <FormItem label="财富值">
                         {getFieldDecorator('wealth', {
                             rules: [{ required: true, message: '请输入财富值' }]
