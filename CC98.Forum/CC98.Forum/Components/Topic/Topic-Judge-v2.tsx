@@ -45,6 +45,9 @@ export default Form.create<Props>()(class extends React.Component< Props& FormCo
                 case '2':
                     status = await Utility.minus1(this.props.item.topicId, this.props.item.id, value);
                     break;
+                case '0':
+                    alert("请选择加风评还是扣风评。")
+                    break;
             }
             if (status === 'ok') {
                 this.props.update();
