@@ -123,9 +123,9 @@ export default class extends React.Component<Props, State> {
               <List.Item key={item.userId}>
                 <List.Item.Meta
                   title={
-                    <a href={`https://cc98.org/user/${item.userId}`}>
+                    item.userName? <a href={`https://www.cc98.org/user/${item.userId}`}>
                       {item.userName}
-                    </a>
+                    </a>:<div>匿名</div>
                   }
                   description={
                     <div>
@@ -382,7 +382,7 @@ class Record extends React.Component<RecordProps, RecordState> {
                 }
                 description={
                   <div>
-                    <span>对象:{item.targetUserName}</span>
+                    <span>对象:{item.targetUserName||'匿名'}</span>
                     <span style={{ marginLeft: '2rem', marginRight: '2rem' }}>
                       时间:
                       {moment(item.time).format('YYYY-MM-DD HH:mm:ss')}
