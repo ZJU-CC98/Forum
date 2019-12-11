@@ -52,8 +52,6 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
   //   if (newProps.floor === 1 && newProps.topicInfo.isVote && !this.state.vote) this.getVote();
   // }
   async componentDidMount() {
-    console.log('00000000000000')
-    console.log(this.props.content)
     const domId = `doc-content${this.props.postId}-${this.props.floor}`;
     let parseContent = this.props.content.replace(/\n>[\s\S]*?\n\n/g, (v) => v.replace(/\n[^\n](?!>)/g, (v1) => v1.replace(/\n(?!>)/, '\n>')));
     if (parseContent[0] === '>') {

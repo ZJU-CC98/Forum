@@ -207,7 +207,8 @@ export async function like(topicid, postid, router) {
             store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
         }
         if (response.status === 403) {
-            store.dispatch(ErrorActions.throwError('OperationForbidden'));
+            // store.dispatch(ErrorActions.throwError('OperationForbidden'));
+            return
         }
         if (response.status === 404) {
             store.dispatch(ErrorActions.throwError('NotFoundTopic'));
@@ -233,7 +234,8 @@ export async function dislike(topicid, postid, router) {
         }
 
         if (response.status === 403) {
-            store.dispatch(ErrorActions.throwError('OperationForbidden'));
+            // store.dispatch(ErrorActions.throwError('OperationForbidden'));
+            return
         }
         if (response.status === 404) {
             store.dispatch(ErrorActions.throwError('NotFoundTopic'));
