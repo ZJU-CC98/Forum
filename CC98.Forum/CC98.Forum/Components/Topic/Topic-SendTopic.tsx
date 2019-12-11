@@ -105,7 +105,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		if (this.props.content) {
 			if (this.state.mode === 1) {
 				const str = `> **以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：**\n\n > ${this.props.content.content}
-`; console.log("in markdown ");
+`; 
 
 				this.setState({ masters: masters, content: str, mdeState: str });
 			} else {
@@ -114,8 +114,6 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 [quote][b]以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：
 [color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]${this.props.content.content}[/quote]
 `;
-				console.log("didmount setstate");
-				console.log(str);
 				this.setState({ masters: masters, content: str });
 			}
 		}
@@ -130,7 +128,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 			if (this.state.mode === 1) {
 				const str = `>**以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：**
 ${newProps.content.content}
-`; console.log("in markdown will ");
+`; 
 
 				this.setState({ content: str, mdeState: str });
 
@@ -297,7 +295,6 @@ ${newProps.content.content}[/quote]
 		this.setState({ mdeState: this.state.mdeState + v }, () => { this.setState({ mdeState: this.state.mdeState }) })
 	}
 	render() {
-        console.log('in reader')
         const s1 = new Date()
         const s2 = new Date(this.props.topicInfo.time)
         const s = s1.getTime()-s2.getTime()
