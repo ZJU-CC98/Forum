@@ -695,6 +695,21 @@ input[type='radio'] {
     font-family: '微软雅黑';
     font-size: 16px;
   }
+  .reply-floor-lz {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    right: -0.8rem;
+    background-color: $theme_color_main;
+    text-align: center;
+    line-height: 40px;
+    position: relative;
+    top: 90px;
+    color: #ffffff;
+    font-family: '微软雅黑';
+    font-size: 16px;
+  }
 
   .reply-floor-small {
     @extend .reply-floor;
