@@ -277,8 +277,9 @@ export class Reply extends React.Component<
             />
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
+          {item.isLZ && <FloorSize isHot={false} floor={-1} />}
             <FloorSize isHot={this.props.isHot} floor={item.floor} />
-            {item.isLZ && <FloorSize isHot={false} floor={-1} />}
+
           </div>
         </div>
       );
