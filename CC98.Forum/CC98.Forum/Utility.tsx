@@ -615,7 +615,6 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
 
 import { boardInfo } from './Utility/boardInfoJson'
 import { UserInfo } from './States/AppState';
-import { JsonHubProtocol } from '@aspnet/signalr';
 
 export async function getBoardName(boardId: number) {
 
@@ -1682,11 +1681,7 @@ export async function getBoards() {
         const url = '/board/all';
         const response = await cc98Fetch(url);
         const data = await response.json();
-        setLocalStorage("boardsInfo", JSON.stringify(data), 3600);
-        return JSON.stringify(data)
-    }else{
-        const boards = localStorage.getItem('boardsInfo');
-        return boards
+        localStorage.setItem("boardsInfo", JSON.stringify(data));
     }
 }
 export async function getBoardId(boardName: string) {
