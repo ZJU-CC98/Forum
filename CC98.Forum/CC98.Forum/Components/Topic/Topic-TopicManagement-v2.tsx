@@ -145,7 +145,10 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
     };
     handleBoardChange = (value) => {
         const boardId = value;
-        const boardsInfo = JSON.parse(localStorage.getItem("boardsInfo")) || [];
+        let boardsInfo = [];
+        if(localStorage.getItem("boardsInfo")){
+            boardsInfo = Utility.getLocalStorage("boardsInfo")
+        }
         for (let board of boardsInfo) {
             if (board.id == boardId) {
                 this.setState({ childBoards: board.boards, childBoard: board.boards[0].name });
@@ -189,7 +192,10 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
 
     render() {
         console.log(this.state.childBoard);
-        const boards = JSON.parse(localStorage.getItem("boardsInfo")) || [];
+        let boards = [];
+        if(localStorage.getItem("boardsInfo")){
+            boards = Utility.getLocalStorage("boardsInfo")
+        }
         const boardOptions = boards.map(board => <Option key={board.id}>{board.name}</Option>);
         const childBoardOptions = this.state.childBoards.map(board => { if (board.id !== 182) { return <Option key={board.id}>{board.name}</Option> } else return null; });
 

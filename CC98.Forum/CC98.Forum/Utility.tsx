@@ -1682,10 +1682,10 @@ export async function getBoards() {
         const url = '/board/all';
         const response = await cc98Fetch(url);
         const data = await response.json();
-        setLocalStorage("boardsInfo", JSON.stringify(data), 3600);
-        return JSON.stringify(data)
+        setLocalStorage("boardsInfo", data, 3600);
+        return data
     }else{
-        const boards = localStorage.getItem('boardsInfo');
+        const boards = getLocalStorage('boardsInfo');
         return boards
     }
 }
