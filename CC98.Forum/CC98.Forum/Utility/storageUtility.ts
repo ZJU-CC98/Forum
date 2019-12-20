@@ -78,6 +78,8 @@ export function getLocalStorage(key) {
     if (v.indexOf('obj-') === 0) {
         v = v.slice(4);
         const obj = JSON.parse(v);
+        console.log('===')
+        console.log(typeof obj)
         // 锁定用户检测退出登录
         if (key === 'userInfo') {
             if (obj.lockState !== 0) {
