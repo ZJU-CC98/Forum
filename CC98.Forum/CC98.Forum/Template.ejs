@@ -44,7 +44,7 @@
     themeNames.push("<%= htmlWebpackPlugin.files.css[cssFile].split('/').pop() %>");
     <% } %>
     // themeNames[0]为当前的默认主题
-    themeNames[0] = themeNames[11];
+    themeNames[0] = themeNames[1];
     try {
       (function () {
         var time = localStorage.getItem('refresh_token_expirationTime');

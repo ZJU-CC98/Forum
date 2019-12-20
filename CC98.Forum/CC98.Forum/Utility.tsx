@@ -615,7 +615,6 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
 
 import { boardInfo } from './Utility/boardInfoJson'
 import { UserInfo } from './States/AppState';
-import { JsonHubProtocol } from '@aspnet/signalr';
 
 export async function getBoardName(boardId: number) {
 
