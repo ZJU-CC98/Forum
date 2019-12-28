@@ -23,14 +23,14 @@
   },
   "版主": {
     "style": {
-      "width": "6rem",
-      "height": "6rem",
+      "width": "7.64rem",
       "position": "absolute",
-      "left": "-3rem",
-      "top": "-3rem"
+      "left": "-3.5rem",
+      "top": "-3.5rem",
+      "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/_01版主.png",
-    "portraitShadow": true
+    "imageUrl": "/static/images/相框/版主.png",
+    "portraitShadow": false
   },
   "编辑部": {
     "style": {
@@ -89,14 +89,14 @@
   },
   "站务组": {
     "style": {
-      "width": "6rem",
-      "height": "6rem",
+      "width": "8rem",
       "position": "absolute",
-      "left": "-3rem",
-      "top": "-3rem"
+      "left": "-4.2rem",
+      "top": "-3.9rem",
+      "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/_07站务组.png",
-    "portraitShadow": true
+    "imageUrl": "/static/images/相框/站务组.png",
+    "portraitShadow": false
   },
   "体育部": {
     "style": {
