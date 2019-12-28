@@ -22,10 +22,13 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
         this.reasonInput = this.reasonInput.bind(this);
         this.daysInput = this.daysInput.bind(this);
         this.boardInput = this.boardInput.bind(this);
-        const data = JSON.parse(localStorage.getItem("boardsInfo"));
-
+        let data = []
+        if(Utility.getLocalStorage('boardsInfo')){
+            data = JSON.parse(Utility.getLocalStorage("boardsInfo"));
+        }
+      
         this.state = {
-            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: this.props.topicInfo, fetchState: 'ok', color: "#fff",topBoardName:"",childBoards:data[0].boards
+            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: this.props.topicInfo, fetchState: 'ok', color: "#fff",topBoardName:"",childBoards:data.length>0?data[0].boards:null
         };
     }
   

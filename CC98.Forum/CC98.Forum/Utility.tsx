@@ -1681,7 +1681,11 @@ export async function getBoards() {
         const url = '/board/all';
         const response = await cc98Fetch(url);
         const data = await response.json();
-        localStorage.setItem("boardsInfo", JSON.stringify(data));
+        setLocalStorage("boardsInfo", data, 3600);
+        return data
+    }else{
+        const boards = getLocalStorage('boardsInfo');
+        return boards
     }
 }
 export async function getBoardId(boardName: string) {

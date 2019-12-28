@@ -318,7 +318,7 @@ export class Reply extends React.Component<
       return (
         <div className="center" style={{ width: "71rem", marginRight: "1px" }}>
           {this.state.contents.map(this.generateContents.bind(this))}
-          <PostManagement
+          {this.state.pmVisible&&<PostManagement
             m_wealth={this.state.m_wealth}
             d_wealth={this.state.d_wealth}
             boardName={this.state.boardName}
@@ -328,7 +328,7 @@ export class Reply extends React.Component<
             item={this.state.item}
             visible={this.state.pmVisible}
             onCancel={this.handleCancel}
-          />
+          />}
           <Judge
             item={this.state.item}
             update={this.update}

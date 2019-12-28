@@ -10,6 +10,7 @@ import Checkbox from 'antd/es/checkbox';
 import { SketchPicker } from 'react-color';
 import { FormComponentProps } from 'antd/es/form';
 import  Carousel from 'antd/es/carousel';
+import { setLocalStorage } from '../../Utility/storageUtility';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const Item = Menu.Item;
@@ -32,6 +33,7 @@ interface States {
     checkAll;
     indeterminate;
     days;
+    boardsData;
 }
 const plainOptions = ['加粗', '斜体'];
 const defaultCheckedList = [];
@@ -41,7 +43,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
         this.state = {
             current: "1", option: "", childBoard: "似水流年", childBoards: [{ name: "似水流年", id: 758 }], background: "#fff", checkedList: [],
             indeterminate: true,
-            checkAll: false, days: 0
+            checkAll: false, days: 0, boardsData: []
         }
     }
     onCreate = () => {
@@ -145,7 +147,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
     };
     handleBoardChange = (value) => {
         const boardId = value;
-        const boardsInfo = JSON.parse(localStorage.getItem("boardsInfo")) || [];
+        let boardsInfo =this.state.boardsData
         for (let board of boardsInfo) {
             if (board.id == boardId) {
                 this.setState({ childBoards: board.boards, childBoard: board.boards[0].name });
@@ -187,9 +189,19 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
         });
     }
 
+    async componentDidMount(){
+        let prevBoards = localStorage.getItem("boardsInfo")
+        if(prevBoards){
+            if(prevBoards.indexOf('obj-') !== 0){
+                localStorage.removeItem('boardsInfo')
+            }
+        }
+        const boardsData = await Utility.getBoards()
+        this.setState({boardsData})
+    }
+
     render() {
-        console.log(this.state.childBoard);
-        const boards = JSON.parse(localStorage.getItem("boardsInfo")) || [];
+        let boards = this.state.boardsData
         const boardOptions = boards.map(board => <Option key={board.id}>{board.name}</Option>);
         const childBoardOptions = this.state.childBoards.map(board => { if (board.id !== 182) { return <Option key={board.id}>{board.name}</Option> } else return null; });
 
@@ -237,7 +249,7 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                 )}
             </FormItem>
             <FormItem>
-                <Select defaultValue={boards[0].name} style={{ width: 90 }} onChange={this.handleBoardChange}>
+                <Select defaultValue={boards.length>0?boards[0].name:''} style={{ width: 90 }} onChange={this.handleBoardChange}>
                     {boardOptions}
                 </Select>
                 <Select style={{ marginLeft: "2rem", width: 90 }} onChange={this.onChildBoardChange}>

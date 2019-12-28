@@ -366,7 +366,7 @@ ${newProps.content.content}[/quote]
 				</div></div>
 			{editor}
 			{manageBTN}
-			<TopicManagement update={this.onChange} boardId={this.props.boardInfo.id} topicInfo={this.props.topicInfo} onCancel={this.handleCancel} visible={this.state.manageVisible} />
+			{this.state.manageVisible&&<TopicManagement update={this.onChange} boardId={this.props.boardInfo.id} topicInfo={this.props.topicInfo} onCancel={this.handleCancel} visible={this.state.manageVisible} />}
 			{this.state.IPData.length !== 0 && <IPTable IPData={this.state.IPData} />}
 			<NoticeMessage text="回复失败, 10s之内仅可进行一次回帖，请稍作休息" id="postFast" top="26%" left="38%" />
 				<NoticeMessage text="回复失败, 请输入内容" id="postNone" top="26%" left="44%" />
