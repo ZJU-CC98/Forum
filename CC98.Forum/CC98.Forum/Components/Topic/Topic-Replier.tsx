@@ -148,7 +148,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
       }
 
       let shadow = {};    //头像框底部的阴影
-      if (displayTitleId === 82)
+      if (displayTitleId === 82 || displayTitleId === 18 || displayTitleId === 22 || displayTitleId === 32 || displayTitleId === 21)
         shadow = { boxShadow: "0 0 0" };    //吉祥物无阴影
 
       return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
