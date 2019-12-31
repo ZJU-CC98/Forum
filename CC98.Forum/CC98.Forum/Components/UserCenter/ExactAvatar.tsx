@@ -77,6 +77,18 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
           url: imageUrl
         })
       }
+      else if (this.props.userInfo.displayTitleId === 28) {
+        imageUrl = data.贵宾.imageUrl;
+        this.setState({
+          url: imageUrl
+        })
+      }
+      else if (this.props.userInfo.displayTitleId === 16) {
+        imageUrl = data.贵宾.imageUrl;
+        this.setState({
+          url: imageUrl
+        })
+      }
     }
   }
 

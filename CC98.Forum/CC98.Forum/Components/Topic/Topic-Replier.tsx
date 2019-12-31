@@ -131,8 +131,8 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         case 29: imageUrl = data.编辑部.imageUrl; break;
         case 37: imageUrl = data.技术组.imageUrl; break;
         case 23: imageUrl = data.技术组.imageUrl; break;
-        case 28: imageUrl = data.贵宾.imageUrl; break;
-        case 16: imageUrl = data.贵宾.imageUrl; break;
+        case 28: style = data.贵宾.style; imageUrl = data.贵宾.imageUrl; break;
+        case 16: style = data.贵宾.style; imageUrl = data.贵宾.imageUrl; break;
         case 84: imageUrl = data.策划部.imageUrl; break;
         case 34: imageUrl = data.策划部.imageUrl; break;
         case 96: imageUrl = data.影音部.imageUrl; break;
@@ -148,7 +148,8 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
       }
 
       let shadow = {};    //头像框底部的阴影
-      if (displayTitleId === 82 || displayTitleId === 18 || displayTitleId === 22 || displayTitleId === 32 || displayTitleId === 21)
+      if (displayTitleId === 82 || displayTitleId === 18 || displayTitleId === 22 || displayTitleId === 32 || displayTitleId === 21 ||
+      displayTitleId === 28 || displayTitleId === 16)
         shadow = { boxShadow: "0 0 0" };    //吉祥物无阴影
 
       return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
