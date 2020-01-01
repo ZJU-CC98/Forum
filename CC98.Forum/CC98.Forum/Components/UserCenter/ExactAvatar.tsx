@@ -10,6 +10,10 @@ import { Link } from 'react-router-dom';
 interface State {
   displayTitles: DispalyTitle[];
   url: string;
+  /*
+  *头像框的样式
+  */
+  photoFrameStyle: React.CSSProperties;
 }
 
 interface DispalyTitle {
@@ -21,7 +25,8 @@ interface DispalyTitle {
 export default class extends React.Component<UserCenterExactAvatarProps, State> {
   state: State = {
     displayTitles: [],
-    url: ''
+    url: '',
+    photoFrameStyle: {}
   }
 
   componentDidMount() {
@@ -50,43 +55,84 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
       if (this.props.userInfo.displayTitleId === 82) {
         imageUrl = data.吉祥物.imageUrl;
         this.setState({
-          url: imageUrl
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '13.32rem',
+            position: 'absolute',
+            top: '-1.45rem'
+          }
         })
       }
       else if (this.props.userInfo.displayTitleId === 18) {
         imageUrl = data.版主.imageUrl;
         this.setState({
-          url: imageUrl
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
         })
       }
       else if (this.props.userInfo.displayTitleId === 22) {
         imageUrl = data.版主.imageUrl;
         this.setState({
-          url: imageUrl
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
         })
       }
       else if (this.props.userInfo.displayTitleId === 32) {
         imageUrl = data.站务组.imageUrl;
         this.setState({
-          url: imageUrl
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15.2rem',
+            position: 'absolute',
+            top: '-2.5rem',
+            left: '-2.75rem'
+          }
         })
       }
       else if (this.props.userInfo.displayTitleId === 21) {
         imageUrl = data.站务组.imageUrl;
         this.setState({
-          url: imageUrl
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15.2rem',
+            position: 'absolute',
+            top: '-2.5rem',
+            left: '-2.75rem'
+          }
         })
       }
       else if (this.props.userInfo.displayTitleId === 28) {
         imageUrl = data.贵宾.imageUrl;
         this.setState({
-          url: imageUrl
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
         })
       }
       else if (this.props.userInfo.displayTitleId === 16) {
         imageUrl = data.贵宾.imageUrl;
         this.setState({
-          url: imageUrl
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
         })
       }
     }
@@ -96,7 +142,10 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
     return (
       <div style={{ position: 'relative' }} className="user-avatar">
         <img className="user-avatar-img" src={this.props.userInfo.portraitUrl} />
-        {this.state.url ? <img style={{ width: '13.32rem', position: 'absolute', top: '-1.45rem' }} src={this.state.url} /> : null}
+        {/*是否有头像框*/}
+        {this.state.url ?
+          <img style={this.state.photoFrameStyle} src={this.state.url} /> :
+          null}
         <div className="user-badge">
           {this.state.displayTitles && this.props.userInfo.userTitleIds ?
             this.state.displayTitles.filter(item => this.props.userInfo.userTitleIds.indexOf(item.id) !== -1).map(item => [18, 81].indexOf(item.id) === -1 ?
