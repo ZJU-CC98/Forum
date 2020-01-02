@@ -163,7 +163,7 @@ export default withRouter(class extends React.Component<withRouterProps&Props, {
         
         let manageBtn = null;
 
-        if (Utility.isMaster(this.props.boardInfo.boardMasters) == true || (this.props.boardInfo.id === 144 && Utility.getLocalStorage("userInfo").name === this.props.topicInfo.userName)) {
+        if (Utility.isMaster(this.props.boardInfo.boardMasters) == true || (this.props.boardInfo.id === 144 && Utility.getLocalStorage("userInfo")&&Utility.getLocalStorage("userInfo").name === this.props.topicInfo.userName)) {
              manageBtn = <div className="operation1" id={manageIcon} style={{ cursor: "pointer" }} onClick={this.showManageUI}>管理</div>;
         }
         let judgeIcon = <div className="operation1" onClick={this.showJudgeUI}>   评分</div>;
