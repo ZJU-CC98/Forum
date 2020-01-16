@@ -6,8 +6,8 @@ export default class extends React.Component<{ data }> {
 
     return (
       <div className="annual-review-page">
-        <div style={{ fontWeight: "bolder" , marginTop: '2rem'}}>
-          亲爱的CC98用户 {data.userInfo.name}
+        <div style={{ fontWeight: "bolder", marginTop: '3rem' }}>
+          亲爱的CC98用户 {data.userInfo.name}：
         </div>
         <img
           style={{ borderRadius: "50%", marginTop: "1rem" }}
@@ -21,21 +21,21 @@ export default class extends React.Component<{ data }> {
           </span>
         </div>
 
-        <div>在论坛留下了痕迹</div>
+        <div>在CC98论坛上留下了痕迹。</div>
 
-        <div style={{marginTop: '2rem'}}>
+        <div style={{ marginTop: '1rem' }}>
           你发表了
           <span className="annual-review-page2-topicCount">
             {data.topicCount}个
           </span>
-          主题帖
+          主题帖，
         </div>
         <div>
           进行了
           <span className="annual-review-page2-replyCount">
             {data.replyCount}次
           </span>
-          回复
+          回复，
         </div>
         {data.hotTopicCount !== 0 && (
           <div>
@@ -43,14 +43,17 @@ export default class extends React.Component<{ data }> {
             <span className="annual-review-page2-hotTopicCount">
               {data.hotTopicCount}次
             </span>
-            十大热门话题
+            十大热门话题。
           </div>
         )}
         {data.hotTopicCount === 0 && (
-          <div>很遗憾，你的主题帖没上过十大热门话题</div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '1rem' }}>
+            <div>很遗憾，</div>
+            <div>你的主题帖没上过十大热门话题。</div>
+          </div>
         )}
 
-    
+
       </div>
     );
   }

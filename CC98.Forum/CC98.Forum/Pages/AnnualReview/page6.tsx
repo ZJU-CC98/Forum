@@ -8,7 +8,7 @@ export default class extends React.Component<{ data }> {
     return (
       <div className="annual-review-page">
         <div>你获得了以下成就：</div>
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <div style={{ display: "flex", justifyContent: "space-around",marginTop:"0.5rem" }}>
           {achievements.map((item, index) => (
             <Tag
               style={{ fontSize: "2vh", height: "3vh", lineHeight: "2.5vh" }}
@@ -18,11 +18,11 @@ export default class extends React.Component<{ data }> {
             </Tag>
           ))}
         </div>
-        <div style={{ marginTop: "2rem" }}>在新春佳节到来之际</div>
-        <div>CC98论坛祝你</div>
-        <div>身体健康</div>
-        <div>学习生活顺利</div>
-        <div>幸福2020！</div>
+        <div style={{ marginTop: "2rem" }}>在新春佳节到来之际，</div>
+        <div>CC98论坛祝你：</div>
+        <div><span className="annual-review-page6-congratulation">身体健康</span></div>
+        <div><span className="annual-review-page6-congratulation">学习生活顺利</span></div>
+        <div><span className="annual-review-page6-congratulation">幸福2020</span></div>
       </div>
     );
   }

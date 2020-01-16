@@ -1,76 +1,74 @@
 import React from "react";
+import { syncGetBoardNameById } from "../../Utility";
 import moment from "moment";
 import "moment/locale/zh-cn";
-
-import {
-  G2,
-  Chart,
-  Geom,
-  Axis,
-  Tooltip,
-  Coord,
-  Label,
-  Legend,
-  View,
-  Guide,
-  Shape,
-  Facet,
-  Util
-} from "bizcharts";
 
 moment.locale("zh-cn");
 
 export default class extends React.Component<{ data }> {
+
+  getBoardUrlById(boardId) {
+    return "/board/" + boardId;
+  }
+
   render() {
     const { data } = this.props;
-    
-    let during = "深夜";
-    if (data.postCount612 > data.postCount06) {
-      during = "上午";
+    //最爱发言的版面
+    let boards = null
+    if (data.board1 || data.board2 || data.board3) {
+      boards = (
+        <>
+          <div style={{ marginTop: "2rem" }}>你最爱发言的版面是：</div>
+          <div>
+            <a href={this.getBoardUrlById(data.board1)}>
+              <span className="annual-review-page2-topicCount">
+                {syncGetBoardNameById(data.board1)}
+              </span>
+            </a>
+          </div>
+          <div>
+            {data.board2 && (
+              <a href={this.getBoardUrlById(data.board2)}>
+                <span className="annual-review-page2-replyCount">
+                  {syncGetBoardNameById(data.board2)}
+                </span>
+              </a>
+            )}
+          </div>
+          <div>
+            {data.board3 && (
+              <a href={this.getBoardUrlById(data.board3)}>
+                <span className="annual-review-page2-hotTopicCount">
+                  {syncGetBoardNameById(data.board3)}
+                </span>
+              </a>
+            )}
+          </div>
+        </>
+      );
     }
-    if (data.postCount1218 > data.postCount612) {
-      during = "下午";
+    else {
+      boards = (
+        <>
+          <div>你在过去的一年中没有发言，</div>
+          <div>新的一年要加油哦~</div>
+        </>
+      )
     }
-    if (data.postCount1824 > data.postCount1218) {
-      during = "晚上";
-    }
-
-
-
-    let max = data.postCount06;
-    if (data.postCount612 > data.postCount06) {
-      max = data.postCount612;
-    }
-    if (data.postCount1218 > data.postCount612) {
-      max = data.postCount1218;
-    }
-    if (data.postCount1824 > data.postCount1218) {
-      max = data.postCount1824;
-    }
-
-    const postData = [
-      { time: "上午", posts: data.postCount612 },
-      { time: "下午", posts: data.postCount1218 },
-      { time: "晚上", posts: data.postCount1824 },
-      { time: "深夜", posts: data.postCount06 }
-    ];
-    const cols = {
-      posts: {
-        alias: "帖数"
-      }
-    };
+   
     return (
       <div className="annual-review-page">
+        {boards}
         {data.latestPostTime && (
-          <div style={{marginTop: '5rem'}}>
+          <div style={{ marginTop: '1rem' }}>
             在{" "}
             <span className="annual-review-page2-hotTopicCount">
               {moment(data.latestPostTime).format("LL")}
             </span>
-            这天
+            这天，
           </div>
         )}
-        {data.latestPostTime && <div>你熬夜得最晚</div>}
+        {data.latestPostTime && <div>你熬夜得最晚，</div>}
 
         {data.latestPostTime && (
           <div>
@@ -78,33 +76,9 @@ export default class extends React.Component<{ data }> {
             <span className="annual-review-page2-topicCount">
               {moment(data.latestPostTime).format("a h [点] mm [分]")}
             </span>
-            还在98发言
+            还在98发言。
           </div>
         )}
-       
-        <div style={{ marginTop: "1rem" }}>
-          你最喜欢在<span className="annual-review-page1-during">{during}</span>
-          水98
-        </div>
-        <div style={{ marginTop: "1rem", marginRight: "3rem" }}>
-          <Chart
-            width={document.body.clientHeight * 0.5}
-            height={document.body.clientHeight * 0.3}
-            data={postData}
-            scale={cols}
-            forceFit
-          >
-            <Axis name="time" />
-            <Axis name="posts" />
-            <Tooltip
-              crosshairs={{
-                type: "y"
-              }}
-            />
-            <Geom type="interval" position="time*posts" />
-          </Chart>
-        </div>
-   
       </div>
     );
   }

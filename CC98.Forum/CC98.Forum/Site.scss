@@ -695,6 +695,7 @@ input[type='radio'] {
     font-family: '微软雅黑';
     font-size: 16px;
   }
+
   .reply-floor-lz {
     flex-shrink: 0;
     width: 40px;
@@ -3290,7 +3291,7 @@ variable {
   border: 1px solid transparent;
   box-sizing: border-box;
   font-size: 1rem;
-  background-color:$theme_color_main;
+  background-color: $theme_color_main;
   color: #fff;
 }
 
@@ -4132,42 +4133,42 @@ ol {
 
 // 年度报告
 .annual-review-body {
-    display: flex;
-    min-width: 71.25rem;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #000;
+  display: flex;
+  min-width: 71.25rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #000;
 }
 
-.annual-review-board-back{
-    height: 60px;
-    width: 60px;
-    background-color: #5198d8;
-    background-size: contain;
-    border-radius: 50%;
+.annual-review-board-back {
+  height: 60px;
+  width: 60px;
+  background-color: #5198d8;
+  background-size: contain;
+  border-radius: 50%;
 }
 
 .annual-review-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 48vh;
-    height: 76.8vh;
-    font-size: 2.5vh;
-    background-image: url('/static/images/annual-review/bg.jpg');
-    background-size: contain;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 48vh;
+  height: 76.8vh;
+  font-size: 2.5vh;
+  background-image: url('/static/images/annual-review/bg.jpg');
+  background-size: contain;
 }
 
-.annual-review-page1-days{
-    display: flex;
-    margin-top: 0.6rem;
-    margin-bottom: 0.6rem;
+.annual-review-page1-days {
+  display: flex;
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
 }
 
-.annual-review-page1-day{
-    text-decoration: none;
+.annual-review-page1-day {
+  text-decoration: none;
   position: relative;
   width: 3rem;
   height: 5rem;
@@ -4181,37 +4182,42 @@ ol {
   border-radius: 5px;
 }
 
-.annual-review-page1-during{
-    background-color: #191970;
-    color: #ff69b4;
-    padding-left: 2px;
-    padding-right: 2px;
-    font-weight: bolder;
+.annual-review-page1-during {
+  color: #ff69b4;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-weight: bolder;
+  font-size: 1.25em;
 }
 
-.annual-review-page2-topicCount{
-
-    color: #ff69b4;
-    padding-left: 2px;
-    padding-right: 2px;
-    font-weight: bolder;
-    font-size: 1.25rem;
+.annual-review-page2-topicCount {
+  color: #ff69b4;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-weight: bolder;
+  font-size: 1.25em;
 }
 
-.annual-review-page2-replyCount{
-
-    color: #ff69b4;
-    padding-left: 2px;
-    padding-right: 2px;
-    font-weight: bolder;
-    font-size: 1.25rem;
+.annual-review-page2-replyCount {
+  color: #ff69b4;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-weight: bolder;
+  font-size: 1.25em;
 }
 
-.annual-review-page2-hotTopicCount{
+.annual-review-page2-hotTopicCount {
+  color: #ff69b4;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-weight: bolder;
+  font-size: 1.25em;
+}
 
-    color: #ff69b4;
-    padding-left: 2px;
-    padding-right: 2px;
-    font-weight: bolder;
-    font-size: 1.25rem;
+.annual-review-page6-congratulation {
+  color: #ff69b4;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-weight: bolder;
+  font-size: 1.25em;
 }

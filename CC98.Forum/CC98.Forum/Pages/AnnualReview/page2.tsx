@@ -5,25 +5,25 @@ export default class extends React.Component<{ data }> {
     const { data } = this.props;
     return (
       <div className="annual-review-page">
-        <div>
+        <div style={{ marginTop: "1rem" }}>
           你送出了
           <span className="annual-review-page2-topicCount">
             {data.sendLikeCount}个
           </span>
-          赞
+          赞，
         </div>
         <div>
           收到他人给你的
           <span className="annual-review-page2-replyCount">
             {data.receiveLikeCount}个
           </span>
-          赞
+          赞。
         </div>
 
-        <div style={{ marginTop: "2rem" }}>
+        <div style={{ marginTop: "1.5rem" }}>
           你给他人评分
           <span className="annual-review-page2-topicCount">
-            {data.sendRateCount}次
+            {data.sendRateCount}次，
           </span>
         </div>
         <div>
@@ -31,27 +31,27 @@ export default class extends React.Component<{ data }> {
           <span className="annual-review-page2-replyCount">
             {data.receiveRateCount}次
           </span>
-          评分
+          评分。
         </div>
 
         {data.sofaCount > 0 && (
           <>
-            <div style={{marginTop: '2rem'}}>你眼疾手快</div>
+            <div style={{ marginTop: '1.5rem' }}>你眼疾手快,</div>
             <div>
               抢到了
               <span className="annual-review-page2-replyCount">
                 {data.sofaCount}次
               </span>
-              沙发
+              沙发。
             </div>
           </>
         )}
 
         {data.sofaCount === 0 && (
           <>
-            <div style={{marginTop: '2rem'}}>你从未抢到过沙发</div>
-            <div>2020年，给自己一个目标</div>
-            <div>抢到一次沙发</div>
+            <div style={{ marginTop: '1.5rem' }}>你从未抢到过沙发。</div>
+            <div>2020年，给自己一个目标：</div>
+            <div>抢到一次沙发！</div>
           </>
         )}
       </div>
