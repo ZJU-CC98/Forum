@@ -15,6 +15,8 @@ import { IndexedDB } from './IndexedDB/IndexedDB';
 import { shouldUseIndexedDb } from './config';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
 import { LocaleProvider } from 'antd';
+import moment from 'moment'
+moment.locale('zh-cn')
 /**
  * 项目初始化代码
  */

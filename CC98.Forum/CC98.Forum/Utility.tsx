@@ -616,6 +616,15 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
 import { boardInfo } from './Utility/boardInfoJson'
 import { UserInfo } from './States/AppState';
 
+export function syncGetBoardNameById(boardId){
+    
+    for (let item of boardInfo) {
+        if (boardId === item.id) {
+            return item.name;
+        }
+    }
+    return '未知版面'
+}
 export async function getBoardName(boardId: number) {
 
     for (let item of boardInfo) {
@@ -3020,6 +3029,17 @@ export async function getTpUsers(boardId, from, size) {
     const url = `/board/${boardId}/stop-post-user?from=${from}&size=${size}`;
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
+    const response = await cc98Fetch(url, { headers });
+    return await response.json();
+}
+
+export async function getAnnualReview() {
+    if (!isLogOn()) {
+        store.dispatch(ErrorActions.throwError('LogOut'));
+        return null;
+    }
+    const url = '/me/annual-review'
+    const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });
     return await response.json();
 }

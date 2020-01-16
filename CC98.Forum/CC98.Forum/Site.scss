@@ -4129,3 +4129,89 @@ ol {
   margin-bottom: 1rem;
   font-size: 1rem;
 }
+
+// 年度报告
+.annual-review-body {
+    display: flex;
+    min-width: 71.25rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+}
+
+.annual-review-board-back{
+    height: 60px;
+    width: 60px;
+    background-color: #5198d8;
+    background-size: contain;
+    border-radius: 50%;
+}
+
+.annual-review-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 48vh;
+    height: 76.8vh;
+    font-size: 2.5vh;
+    background-image: url('/static/images/annual-review/bg.jpg');
+    background-size: contain;
+}
+
+.annual-review-page1-days{
+    display: flex;
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+.annual-review-page1-day{
+    text-decoration: none;
+  position: relative;
+  width: 3rem;
+  height: 5rem;
+  background-image: linear-gradient(-180deg, #62D7F5 0%, #7FADF7 100%);
+  display: inline-block;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  line-height: 5rem;
+  border-radius: 5px;
+}
+
+.annual-review-page1-during{
+    background-color: #191970;
+    color: #ff69b4;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-weight: bolder;
+}
+
+.annual-review-page2-topicCount{
+
+    color: #ff69b4;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-weight: bolder;
+    font-size: 1.25rem;
+}
+
+.annual-review-page2-replyCount{
+
+    color: #ff69b4;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-weight: bolder;
+    font-size: 1.25rem;
+}
+
+.annual-review-page2-hotTopicCount{
+
+    color: #ff69b4;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-weight: bolder;
+    font-size: 1.25rem;
+}

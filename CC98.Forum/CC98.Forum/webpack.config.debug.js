@@ -77,7 +77,10 @@ var config = {
             { from: 'node_modules/hls.js/dist/hls.min.js', to: 'static/content/hls.min.js' },
         ]),
         new ExtractTextPlugin('static/content/[name].css'),
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new webpack.ContextReplacementPlugin(
+            /moment[\\\/]locale$/,
+            /(zh-cn)\.js/
+        )
     ],
     optimization: {
         splitChunks: {
