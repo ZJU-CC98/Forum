@@ -74,7 +74,7 @@ export default class extends React.Component<{ data }> {
           <div>
             {" "}
             <span className="annual-review-page2-topicCount">
-              {moment(data.latestPostTime).format("a h [点] mm [分]")}
+              {moment(data.latestPostTime).format("a hh [:] mm")}
             </span>
             还在98发言。
           </div>

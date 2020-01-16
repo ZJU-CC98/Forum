@@ -62,7 +62,7 @@ export default class extends React.Component<{ data }> {
         )}
 
         <div style={{ marginTop: "3rem" }}>
-          你发言的时间段统计如下:
+          你发言的时间段统计如下：
         </div>
 
         <div style={{ marginTop: "1rem", marginRight: "2rem" }}>

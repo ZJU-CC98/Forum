@@ -8,50 +8,63 @@ export default class extends React.Component<{ data }> {
         <div style={{ marginTop: "1rem" }}>
           你送出了
           <span className="annual-review-page2-topicCount">
-            {data.sendLikeCount}个
+            {data.sendLikeCount}
           </span>
-          赞，
+          个赞，
         </div>
         <div>
           收到他人给你的
           <span className="annual-review-page2-replyCount">
-            {data.receiveLikeCount}个
+            {data.receiveLikeCount}
           </span>
-          赞。
+          个赞。
         </div>
 
         <div style={{ marginTop: "1.5rem" }}>
           你给他人评分
           <span className="annual-review-page2-topicCount">
-            {data.sendRateCount}次，
+            {data.sendRateCount}
           </span>
+          次，
         </div>
         <div>
           收到了他人给你的
           <span className="annual-review-page2-replyCount">
-            {data.receiveRateCount}次
+            {data.receiveRateCount}
           </span>
-          评分。
+          次评分。
         </div>
 
-        {data.sofaCount > 0 && (
+        {data.sofaCount > 20 && (
           <>
-            <div style={{ marginTop: '1.5rem' }}>你眼疾手快,</div>
+            <div style={{ marginTop: '1.5rem' }}>你眼疾手快，</div>
             <div>
               抢到了
               <span className="annual-review-page2-replyCount">
-                {data.sofaCount}次
+                {data.sofaCount}
               </span>
-              沙发。
+              次沙发。
+            </div>
+          </>
+        )}
+
+        {data.sofaCount <= 20 && data.sofaCount > 0 &&(
+          <>
+            <div style={{ marginTop: '1.5rem' }}>你手速尚可，</div>
+            <div>
+              抢到了
+              <span className="annual-review-page2-replyCount">
+                {data.sofaCount}
+              </span>
+              次沙发。
             </div>
           </>
         )}
 
         {data.sofaCount === 0 && (
           <>
-            <div style={{ marginTop: '1.5rem' }}>你从未抢到过沙发。</div>
-            <div>2020年，给自己一个目标：</div>
-            <div>抢到一次沙发！</div>
+            <div style={{ marginTop: '1.5rem' }}>你佛系水帖，</div>
+            <div>从未抢到过沙发。</div>
           </>
         )}
       </div>

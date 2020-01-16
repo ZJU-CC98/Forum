@@ -17,8 +17,9 @@ export default class extends React.Component<{ data }> {
         <div>
           在过去的2019年里，你有
           <span className="annual-review-page2-topicCount">
-            {data.postDay}天
+            {data.postDay}
           </span>
+          天
         </div>
 
         <div>在CC98论坛上留下了痕迹。</div>
@@ -26,24 +27,24 @@ export default class extends React.Component<{ data }> {
         <div style={{ marginTop: '1rem' }}>
           你发表了
           <span className="annual-review-page2-topicCount">
-            {data.topicCount}个
+            {data.topicCount}
           </span>
-          主题帖，
+          个主题帖，
         </div>
         <div>
           进行了
           <span className="annual-review-page2-replyCount">
-            {data.replyCount}次
+            {data.replyCount}
           </span>
-          回复，
+          次回复，
         </div>
         {data.hotTopicCount !== 0 && (
           <div>
             上了
             <span className="annual-review-page2-hotTopicCount">
-              {data.hotTopicCount}次
+              {data.hotTopicCount}
             </span>
-            十大热门话题。
+            次十大热门话题。
           </div>
         )}
         {data.hotTopicCount === 0 && (
