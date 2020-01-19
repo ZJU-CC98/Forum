@@ -8,10 +8,10 @@ export default class extends React.Component<{ data }> {
     return (
       <div className="annual-review-page">
         <div>你获得了以下成就：</div>
-        <div style={{ display: "flex", justifyContent: "space-around",marginTop:"0.5rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-around",marginTop:"0.5rem" ,marginLeft: '1rem', marginRight: '1rem', flexWrap: 'wrap'}}>
           {achievements.map((item, index) => (
             <Tag
-              style={{ fontSize: "2vh", height: "3vh", lineHeight: "2.5vh" }}
+              style={{ fontSize: "2vh", height: "3vh", lineHeight: "2.5vh", marginBottom: '0.5rem' }}
               color={colors[index % 4]}
             >
               {item}
