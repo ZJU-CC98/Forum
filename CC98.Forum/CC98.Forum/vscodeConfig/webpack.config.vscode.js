@@ -42,6 +42,8 @@ module.exports = {
         css_mid_autumn_light:'./Themes/mid_autumn_light.scss',
         css_light_snow_dark:'./Themes/light_snow_dark.scss',
         css_light_snow_light:'./Themes/light_snow_light.scss',
+        css_spring_festival_dark:'./Themes/spring_festival_dark.scss',
+        css_spring_festival_light:'./Themes/spring_festival_light.scss'
     },
     
     output: {
