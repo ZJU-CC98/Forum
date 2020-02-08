@@ -140,10 +140,10 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
         this.setState({
           url: imageUrl,
           photoFrameStyle: {
-            width: '15rem',
+            width: '14.8rem',
             position: 'absolute',
             top: '-2rem',
-            left: '-1.75rem'
+            left: '-1.6rem'
           }
         })
       }
@@ -152,10 +152,10 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
         this.setState({
           url: imageUrl,
           photoFrameStyle: {
-            width: '15rem',
+            width: '14.8rem',
             position: 'absolute',
             top: '-2rem',
-            left: '-1.75rem'
+            left: '-1.6rem'
           }
         })
       }
