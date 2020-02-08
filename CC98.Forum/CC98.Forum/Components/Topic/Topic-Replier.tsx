@@ -133,8 +133,8 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         case 23: style = data.技术组.style; imageUrl = data.技术组.imageUrl; break;
         case 28: style = data.贵宾.style; imageUrl = data.贵宾.imageUrl; break;
         case 16: style = data.贵宾.style; imageUrl = data.贵宾.imageUrl; break;
-        case 84: imageUrl = data.策划部.imageUrl; break;
-        case 34: imageUrl = data.策划部.imageUrl; break;
+        case 84: style = data.策划部.style; imageUrl = data.策划部.imageUrl; break;
+        case 34: style = data.策划部.style; imageUrl = data.策划部.imageUrl; break;
         case 96: imageUrl = data.影音部.imageUrl; break;
         case 99: imageUrl = data.影音部.imageUrl; break;
         case 32: style = data.站务组.style; imageUrl = data.站务组.imageUrl; break;
@@ -160,7 +160,9 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         displayTitleId === 37 ||
         displayTitleId === 23 ||
         displayTitleId === 29 ||
-        displayTitleId === 85
+        displayTitleId === 85 ||
+        displayTitleId === 84 ||
+        displayTitleId === 34
       )
         shadow = { boxShadow: "0 0 0" };    //特殊头像框没有阴影
 
