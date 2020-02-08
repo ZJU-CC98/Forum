@@ -127,10 +127,10 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         case 82: style = data.吉祥物.style; imageUrl = data.吉祥物.imageUrl; break;
         case 18: style = data.版主.style; imageUrl = data.版主.imageUrl; break;
         case 22: style = data.版主.style; imageUrl = data.版主.imageUrl; break;
-        case 85: imageUrl = data.编辑部.imageUrl; break;
-        case 29: imageUrl = data.编辑部.imageUrl; break;
-        case 37: imageUrl = data.技术组.imageUrl; break;
-        case 23: imageUrl = data.技术组.imageUrl; break;
+        case 85: style = data.编辑部.style; imageUrl = data.编辑部.imageUrl; break;
+        case 29: style = data.编辑部.style; imageUrl = data.编辑部.imageUrl; break;
+        case 37: style = data.技术组.style; imageUrl = data.技术组.imageUrl; break;
+        case 23: style = data.技术组.style; imageUrl = data.技术组.imageUrl; break;
         case 28: style = data.贵宾.style; imageUrl = data.贵宾.imageUrl; break;
         case 16: style = data.贵宾.style; imageUrl = data.贵宾.imageUrl; break;
         case 84: imageUrl = data.策划部.imageUrl; break;
@@ -147,10 +147,22 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         default: imageUrl = data.普通.imageUrl;
       }
 
-      let shadow = {};    //头像框底部的阴影
-      if (displayTitleId === 82 || displayTitleId === 18 || displayTitleId === 22 || displayTitleId === 32 || displayTitleId === 21 ||
-      displayTitleId === 28 || displayTitleId === 16)
-        shadow = { boxShadow: "0 0 0" };    //吉祥物无阴影
+      /** 头像框阴影 */
+      let shadow = {};
+      if (
+        displayTitleId === 82 ||
+        displayTitleId === 18 ||
+        displayTitleId === 22 ||
+        displayTitleId === 32 ||
+        displayTitleId === 21 ||
+        displayTitleId === 28 ||
+        displayTitleId === 16 ||
+        displayTitleId === 37 ||
+        displayTitleId === 23 ||
+        displayTitleId === 29 ||
+        displayTitleId === 85
+      )
+        shadow = { boxShadow: "0 0 0" };    //特殊头像框没有阴影
 
       return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
         <div style={{ zIndex: 100 }}>

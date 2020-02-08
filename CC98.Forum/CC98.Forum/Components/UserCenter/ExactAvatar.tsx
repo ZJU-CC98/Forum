@@ -135,6 +135,54 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
           }
         })
       }
+      else if (this.props.userInfo.displayTitleId === 37) {
+        imageUrl = data.技术组.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
+      else if (this.props.userInfo.displayTitleId === 23) {
+        imageUrl = data.技术组.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
+      else if (this.props.userInfo.displayTitleId === 85) {
+        imageUrl = data.编辑部.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
+      else if (this.props.userInfo.displayTitleId === 29) {
+        imageUrl = data.编辑部.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
     }
   }
 

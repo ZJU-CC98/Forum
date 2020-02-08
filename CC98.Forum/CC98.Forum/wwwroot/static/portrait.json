@@ -34,24 +34,24 @@
   },
   "编辑部": {
     "style": {
-      "width": "6rem",
-      "height": "6rem",
+      "width": "7.5rem",
       "position": "absolute",
-      "left": "-3rem",
-      "top": "-3rem"
+      "left": "-3.5rem",
+      "top": "-3.5rem",
+      "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/_02编辑部.png",
+    "imageUrl": "/static/images/相框/编辑部.png",
     "portraitShadow": true
   },
   "技术组": {
     "style": {
-      "width": "6rem",
-      "height": "6rem",
+      "width": "7.5rem",
       "position": "absolute",
-      "left": "-3rem",
-      "top": "-3rem"
+      "left": "-3.5rem",
+      "top": "-3.5rem",
+      "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/_03技术组.png",
+    "imageUrl": "/static/images/相框/技术组.png",
     "portraitShadow": true
   },
   "贵宾": {
