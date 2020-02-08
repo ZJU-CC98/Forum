@@ -16,7 +16,6 @@ import {
 } from "bizcharts";
 
 export default class extends React.Component<{ data }> {
-
   getBoardUrlById(boardId) {
     return "/board/" + boardId;
   }
@@ -29,13 +28,25 @@ export default class extends React.Component<{ data }> {
     if (data.postCount06 > 0) {
       during = "深夜";
     }
-    if (data.postCount612 > data.postCount06) {
+    if (
+      data.postCount612 > data.postCount06 &&
+      data.postCount612 > data.postCount1218 &&
+      data.postCount612 > data.postCount1824
+    ) {
       during = "上午";
     }
-    if (data.postCount1218 > data.postCount612) {
+    if (
+      data.postCount1218 > data.postCount06 &&
+      data.postCount1218 > data.postCount612 &&
+      data.postCount1218 > data.postCount1824
+    ) {
       during = "下午";
     }
-    if (data.postCount1824 > data.postCount1218) {
+    if (
+      data.postCount1824 > data.postCount06 &&
+      data.postCount1824 > data.postCount1218 &&
+      data.postCount1824 > data.postCount612
+    ) {
       during = "晚上";
     }
 
@@ -53,17 +64,15 @@ export default class extends React.Component<{ data }> {
     };
     return (
       <div className="annual-review-page">
-
         {during && (
           <div style={{ marginTop: "7rem", marginBottom: "-2rem" }}>
-            你最喜欢在<span className="annual-review-page1-during">{during}</span>
+            你最喜欢在
+            <span className="annual-review-page1-during">{during}</span>
             水98。
           </div>
         )}
 
-        <div style={{ marginTop: "3rem" }}>
-          你发言的时间段统计如下：
-        </div>
+        <div style={{ marginTop: "3rem" }}>你发言的时间段统计如下：</div>
 
         <div style={{ marginTop: "1rem", marginRight: "2rem" }}>
           <Chart
