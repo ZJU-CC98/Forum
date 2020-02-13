@@ -100,24 +100,24 @@
   },
   "体育部": {
     "style": {
-      "width": "6rem",
-      "height": "6rem",
+      "width": "7.5rem",
       "position": "absolute",
-      "left": "-3rem",
-      "top": "-3rem"
+      "left": "-3.55rem",
+      "top": "-3.5rem",
+      "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/_08体育部.png",
+    "imageUrl": "/static/images/相框/体艺部.png",
     "portraitShadow": true
   },
   "办公室": {
     "style": {
-      "width": "6rem",
-      "height": "6rem",
+      "width": "7.5rem",
       "position": "absolute",
-      "left": "-3rem",
-      "top": "-3rem"
+      "left": "-3.55rem",
+      "top": "-3.5rem",
+      "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/_09办公室.png",
+    "imageUrl": "/static/images/相框/办公室.png",
     "portraitShadow": true
   },
   "认证用户": {

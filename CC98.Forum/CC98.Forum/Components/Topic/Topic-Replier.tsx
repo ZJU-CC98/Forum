@@ -90,12 +90,12 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
     }
   }
   async componentDidMount() {
-    //获取用户组
+    /** 用户组 */
     const displayTitleId = this.props.userInfo.displayTitleId;
-    //获取头像框html
-    let phototframe = await this.getPhotoFrame(displayTitleId);
+    //获取头像框JSX.Element
+    let photoframe = await this.getPhotoFrame(displayTitleId);
     this.setState({
-      photoframe: phototframe
+      photoframe: photoframe
     })
   }
 
@@ -116,11 +116,15 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         </div>
       </div>;
     }
-    else if (displayTitleId) {
-      let response = await fetch('/static/portrait.json');//获取头像框样式的配置
-      let data = await response.json();
 
-      let imageUrl; //头像框的链接
+
+    else if (displayTitleId) {
+      //获取头像框样式的配置
+      let response = await fetch('/static/portrait.json');
+      let data = await response.json();
+      /** 头像框图片链接 */
+      let imageUrl;
+      /** 头像框默认样式 */
       let style = data.普通.style;
 
       switch (displayTitleId) {
@@ -135,20 +139,21 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         case 16: style = data.贵宾.style; imageUrl = data.贵宾.imageUrl; break;
         case 84: style = data.策划部.style; imageUrl = data.策划部.imageUrl; break;
         case 34: style = data.策划部.style; imageUrl = data.策划部.imageUrl; break;
-        case 96: imageUrl = data.影音部.imageUrl; break;
-        case 99: imageUrl = data.影音部.imageUrl; break;
+        case 96: style = data.影音部.style; imageUrl = data.影音部.imageUrl; break;
+        case 99: style = data.影音部.style; imageUrl = data.影音部.imageUrl; break;
         case 32: style = data.站务组.style; imageUrl = data.站务组.imageUrl; break;
         case 21: style = data.站务组.style; imageUrl = data.站务组.imageUrl; break;
-        case 86: imageUrl = data.体育部.imageUrl; break;
-        case 35: imageUrl = data.体育部.imageUrl; break;
-        case 94: imageUrl = data.办公室.imageUrl; break;
-        case 93: imageUrl = data.办公室.imageUrl; break;
-        case 91: imageUrl = data.认证用户.imageUrl; break;
+        case 86: style = data.体育部.style; imageUrl = data.体育部.imageUrl; break;
+        case 35: style = data.体育部.style; imageUrl = data.体育部.imageUrl; break;
+        case 94: style = data.办公室.style; imageUrl = data.办公室.imageUrl; break;
+        case 93: style = data.办公室.style; imageUrl = data.办公室.imageUrl; break;
+        case 91: style = data.认证用户.style; imageUrl = data.认证用户.imageUrl; break;
         default: imageUrl = data.普通.imageUrl;
       }
 
       /** 头像框阴影 */
       let shadow = {};
+      //已有的头像框
       if (
         displayTitleId === 82 ||
         displayTitleId === 18 ||
@@ -162,34 +167,62 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         displayTitleId === 29 ||
         displayTitleId === 85 ||
         displayTitleId === 84 ||
-        displayTitleId === 34
+        displayTitleId === 34 ||
+        displayTitleId === 94 ||
+        displayTitleId === 93 ||
+        displayTitleId === 35 ||
+        displayTitleId === 86
       )
-        shadow = { boxShadow: "0 0 0" };    //特殊头像框没有阴影
+        shadow = { boxShadow: "0 0 0" };    //目前的头像框暂时没有阴影
 
-      return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
-        <div style={{ zIndex: 100 }}>
-          <a href={realUrl} style={{ display: "block", maxHeight: "5rem" }}>
-            <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow} onError={this.handleImageErrored.bind(this)}></img>
-          </a>
+      return (
+        <div
+          style={{
+            width: "100%",
+            justifyContent: "center",
+            display: "flex",
+            position: "relative"
+          }}
+        >
+          <div style={{ zIndex: 100 }}>
+            <a href={realUrl} style={{ display: "block", maxHeight: "5rem" }}>
+              <img
+                className="userPortrait"
+                src={this.props.userInfo.portraitUrl}
+                style={shadow}
+                onError={this.handleImageErrored.bind(this)}
+              />
+            </a>
+          </div>
+          <div className="photoFrame">
+            <img src={imageUrl} style={style} />
+          </div>
         </div>
-        <div className="photoFrame"><img src={imageUrl} style={style} /></div>
-      </div>
-
-    } else {
-      return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
-        <div style={{ zIndex: 100 }}>
-          <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
-            <img className="userPortrait" src={this.props.userInfo.portraitUrl} onError={this.handleImageErrored.bind(this)}></img>
-          </a>
-        </div>
-      </div>
+      )
     }
-
+    else {
+      return (
+        <div
+          style={{
+            width: "100%",
+            justifyContent: "center",
+            display: "flex",
+            position: "relative"
+          }}
+        >
+          <div style={{ zIndex: 100 }}>
+            <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
+              <img
+                className="userPortrait"
+                src={this.props.userInfo.portraitUrl} onError={this.handleImageErrored.bind(this)}
+              />
+            </a>
+          </div>
+        </div>
+      )
+    }
   }
-
-  /*
-   * 处理显示错误的头像
-   */
+  /** 处理显示错误的头像 */
   async handleImageErrored(e) {
     e.preventDefault();
     e.target.src = "/static/images/default_avatar_boy.png"//将错误的头像url替换为默认头像url

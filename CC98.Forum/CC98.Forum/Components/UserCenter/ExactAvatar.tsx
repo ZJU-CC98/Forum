@@ -207,6 +207,54 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
           }
         })
       }
+      else if (this.props.userInfo.displayTitleId === 94) {
+        imageUrl = data.办公室.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
+      else if (this.props.userInfo.displayTitleId === 93) {
+        imageUrl = data.办公室.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
+      else if (this.props.userInfo.displayTitleId === 35) {
+        imageUrl = data.体育部.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
+      else if (this.props.userInfo.displayTitleId === 86) {
+        imageUrl = data.体育部.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
     }
   }
 
