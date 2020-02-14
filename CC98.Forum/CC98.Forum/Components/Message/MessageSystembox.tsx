@@ -55,7 +55,7 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
                         </div>
                     </div>
             <div className="message-system-box-content">
-                <UbbContainer code={content} options={{ allowExternalImage: false, allowAutoPlay: false, autoDetectUrl: true, allowExternalUrl: true, allowImage: true, allowMediaContent: false, compatibility: UbbCompatiblityMode.Recommended, allowEmotion: false, allowLightbox: false }} />
+                <UbbContainer code={content} options={{ allowExternalImage: false, allowAutoPlay: false, autoDetectUrl: true, allowExternalUrl: true, allowImage: true, allowMediaContent: false, compatibility: UbbCompatiblityMode.Recommended, allowEmotion: false, allowToolbox: false }} />
                     </div>
                 </div>);
     }

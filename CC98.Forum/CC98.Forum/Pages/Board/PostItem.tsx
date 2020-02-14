@@ -234,7 +234,7 @@ const PItem: React.SFC<{ item: IPost }> = ({ item }) => (
     <div className="board-postItem-card-content">
       <UbbContainer
         code={item.content}
-        options={{ ...new UbbCodeOptions(), allowLightbox: true }}
+        options={{ ...new UbbCodeOptions(), allowToolbox: true }}
       />
     </div>
   </div>

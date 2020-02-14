@@ -20,7 +20,7 @@ export class UploadTagHandler extends Ubb.TextTagHandler {
 
         const uploadUrl = content;
         const uploadType = tagData.value(0);
-        const allowLightbox = context.options.allowLightbox;
+        const allowToolbox = context.options.allowToolbox;
         let uploadValue;
         if (tagData.parameterCount === 1) uploadValue = 0;
         if (tagData.parameterCount === 2) uploadValue = parseInt(tagData.value(1));
@@ -40,18 +40,18 @@ export class UploadTagHandler extends Ubb.TextTagHandler {
                 // HTML5 模式下，使用 figure 表示插图
                 if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
                     if (uploadValue === 1) {
-                        return <Image imageUri={uploadUrl} title={"upload图片"} isShowed={false} allowLightbox={allowLightbox} />
+                        return <Image imageUri={uploadUrl} title={"upload图片"} isShowed={false} allowToolbox={allowToolbox} />
                     } else {
                         return <figure>
-                            <Image imageUri={uploadUrl} title={"upload图片"} isShowed={true} allowLightbox={allowLightbox} />
+                            <Image imageUri={uploadUrl} title={"upload图片"} isShowed={true} allowToolbox={allowToolbox} />
                             <figcaption>{"upload图片"}</figcaption>
                         </figure>;
                     }
                 } else {
                     if (uploadValue === 1) {
-                        return <Image imageUri={uploadUrl} title={"upload图片"} isShowed={false} allowLightbox={allowLightbox} />
+                        return <Image imageUri={uploadUrl} title={"upload图片"} isShowed={false} allowToolbox={allowToolbox} />
                     } else {
-                        return <Image imageUri={uploadUrl} title={"upload图片"} isShowed={true} allowLightbox={allowLightbox} />
+                        return <Image imageUri={uploadUrl} title={"upload图片"} isShowed={true} allowToolbox={allowToolbox} />
                     }
                 }
             default:

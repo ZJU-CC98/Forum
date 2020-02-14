@@ -115,7 +115,7 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
     
     const domId = `doc-content${this.props.postId}-${this.props.floor}`;
     let ubbUrlContent = Utility.atUserUbbUrl(this.props.content);
-    const ubbMode = <UbbContainer code={ubbUrlContent} options={{ ...new UbbCodeOptions(), allowLightbox: true }} />;
+    const ubbMode = <UbbContainer code={ubbUrlContent} options={{ ...new UbbCodeOptions(), allowToolbox: true }} />;
     let mdUrlContent = Utility.atUserMdUrl(this.props.content);
     const mdMode = <div
       className="markdown-container mde-preview"
