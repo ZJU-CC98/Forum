@@ -21,24 +21,13 @@ $color-black: rgb(32, 32, 32);
 $color-url: #0b5394;
 $color-urlVisited: #741b47;
 
-//主容器的样式
-.main-container {
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  min-width: 1140px;
-  background-color: $background_color_page;
-}
-
-
 blockquote {
   color: #666;
   margin: 0;
   padding-left: 3em;
   border-left: 0.5em #eee solid;
 }
+
 
 body {
   margin: 0;
@@ -87,9 +76,20 @@ input[type='radio'] {
 //------------到此为止---------------
 
 #root {
-  font-size: 16px;
   width: 100%;
+  font-size: 16px;
   font-family: 微软雅黑;
+}
+
+.main-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $background_color_page;
+  width: 100%;
+  min-width: 1140px;
+  min-height: 100%;
 }
 
 .unSupportA {

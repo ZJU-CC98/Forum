@@ -62,7 +62,8 @@ export class Signin extends React.Component<{ history }, { signinInfo, content }
             <div id="post-topic-button" onClick={this.signin} className="button blue" style={{ marginTop: "1.25rem", width: "6rem", height: "2rem", lineHeight: "2rem", letterSpacing: "0.3125rem" }}>签到
                     </div>
           </div>
-        </div></div>;
+        </div>
+      </div>
     }
     return <div className="sign-in">
       <div className="row" style={{ width: "100%", justifyContent: "center" }}>
@@ -88,7 +89,7 @@ export class Signin extends React.Component<{ history }, { signinInfo, content }
           第 5 天及以后： 1000 到 2000 论坛财富值
         </div>
       </div>
-      {info};
+      {info}
     </div>
   }
 }

@@ -37,6 +37,7 @@ import { errorKeys } from '../Reducers/Error';
 import { connect } from 'react-redux';
 
 import AnnualReview from '../Pages/AnnualReview'
+import { Index } from '../Pages/Index/Index'
 
 // 重构
 import RBoard from '../Pages/Board/index';
@@ -78,33 +79,32 @@ class App extends React.Component<Props> {
         <Route path="/board/:id/:page?" component={RBoard} />
         <Route path="/annual-review" component={AnnualReview} />
         <Route path="/error/401" component={Status.UnauthorizedBoard} />
+        <Route path="/index" component={Index} />
 
 
         <Route component={Status.PageNotFound} />
-        
+
 
 
       </Switch>
     );
 
     return (
-      <div style={{ width: '100%' }}>
+      <>
         <ConnectedRouter history={history}>
-          <div
-          className="main-container"
-          >
+          <div className="main-container">
             <Header />
             <Route component={ErrorControl} />
             {!this.props.isError ? (
               router
             ) : (
-              <Route component={Status[this.props.errorMessage]} />
-            )}
+                <Route component={Status[this.props.errorMessage]} />
+              )}
             <Footer />
             {/* <NotificationController />*/}
           </div>
         </ConnectedRouter>
-      </div>
+      </>
     );
   }
 }
