@@ -11,7 +11,7 @@ import * as Ubb from './Core';
 export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
 
     get supportedTagNames(): string[] { return ['quote', 'quotex'] };
-    
+
     // 重写exec方法
     exec(tagSegment: Ubb.UbbTagSegment, context: Ubb.UbbCodeContext) {
 
@@ -32,6 +32,9 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
         }
 
         const isPureQuote = (segments: Ubb.UbbSegment[]): boolean => {
+            //如果没有内容，则不认为是纯引用。（用于解决[quote][quote]xxx[/quote][/quote]这类ubb报错的问题） 
+            if (!segments[0]) return false
+
             return (
                 segments[0].type === Ubb.UbbSegmentType.Tag &&
                 (segments[0] as Ubb.UbbTagSegment).subSegments[0] &&
@@ -61,26 +64,26 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
                     hasNest = true
                 }
             }
-        } while(hasNest)
+        } while (hasNest)
 
         if (queue.length > 1) {
             queue.reverse()
             // 给原本最内层的 [quote] 补上一个空行
             queue[0].subSegments.splice(1, 0, new Ubb.UbbTextSegment('\n', queue[0]))
             // 处理纯引用
-            for(let i = 1; i < queue.length; i++ ) {
-                if(isPureQuote(queue[i].subSegments)) {
+            for (let i = 1; i < queue.length; i++) {
+                if (isPureQuote(queue[i].subSegments)) {
                     let info = (queue[i].subSegments.shift() as Ubb.UbbTagSegment).clone(queue[i - 1])
                     queue[i - 1].subSegments.unshift(info)
                     queue[i - 1].subSegments.splice(1, 0, new Ubb.UbbTextSegment('\n', queue[i - 1]))
                     queue.splice(i, 1)
-                    i --
+                    i--
                 }
             }
         }
 
         const quoteItems = queue.map((segment, index) => {
-            if(index === queue.length - 1) {
+            if (index === queue.length - 1) {
                 context.data.islastQuote = true;
             } else {
                 context.data.islastQuote = false;
@@ -89,12 +92,12 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
         })
         context.data.isInQuote = false;
 
-        return <Quote quoteItems={quoteItems}/>
+        return <Quote quoteItems={quoteItems} />
     }
 
     execCore(innerContent: React.ReactNode[], tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-		const style: React.CSSProperties = {
+        const style: React.CSSProperties = {
             boxSizing: 'border-box',
             width: '100%',
             padding: '10px 0 10px 0',
@@ -103,10 +106,10 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
         }
 
         // 最后一层引用不现实下边框
-        if(context.data.islastQuote) style.borderBottom = null;
-        
-		return <div style={style}>{innerContent}</div>
-	}
+        if (context.data.islastQuote) style.borderBottom = null;
+
+        return <div style={style}>{innerContent}</div>
+    }
 }
 
 interface State {
@@ -126,8 +129,8 @@ class Quote extends React.PureComponent<Props, State> {
     }
 
     showButtonClick() {
-        this.setState({ 
-            isShowed: true 
+        this.setState({
+            isShowed: true
         })
     }
 
@@ -150,19 +153,19 @@ class Quote extends React.PureComponent<Props, State> {
         const buttonWrapperStyle: React.CSSProperties = {
             display: 'flex',
             justifyContent: 'center',
-            padding: '14px 0', 
+            padding: '14px 0',
             borderBottom: '1px solid rgb(204,204,204)',
         }
-    
+
         const showButton = <div style={buttonWrapperStyle}>
-                <button style={buttonStyle}
-                    className="hiddenImage"
-                    type="button"
-                    onClick={this.showButtonClick.bind(this)}
-                >
-                    展开剩余引用
+            <button style={buttonStyle}
+                className="hiddenImage"
+                type="button"
+                onClick={this.showButtonClick.bind(this)}
+            >
+                展开剩余引用
                 </button>
-            </div>
+        </div>
 
         const { isShowed } = this.state
         const { quoteItems } = this.props
@@ -170,8 +173,8 @@ class Quote extends React.PureComponent<Props, State> {
 
         return (
             <div style={wrapperStyle}>
-                { !isShowed && showButton}
-                { showQuotes }
+                {!isShowed && showButton}
+                {showQuotes}
             </div>
         )
     }
