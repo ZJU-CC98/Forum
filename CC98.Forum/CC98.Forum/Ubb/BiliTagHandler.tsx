@@ -12,7 +12,24 @@ export class BiliTagHandler extends Ubb.TextTagHandler {
 			return innerContent;
 		}
 
+		// 分P数，默认为1
 		const partNumber = parseInt(tagData.value('bili')) || 1;
+
+		let src = "";
+		const isPureNumber = /^\d+$/.test(innerContent);
+		const isBV = /^BV/.test(innerContent);
+		//纯数字依然解析成aid
+		if (isPureNumber) {
+			src = `https://player.bilibili.com/player.html?aid=${innerContent}&page=${partNumber}`;
+		}
+		//BV开头的字符串，解析成bvid
+		else if (isBV) {
+			src = `https://player.bilibili.com/player.html?bvid=${innerContent}&page=${partNumber}`;
+		}
+		//输入错误的字符串，不解析
+		else {
+			return innerContent;
+		}
 
 		const style: React.CSSProperties = {
 			border: 'none'
@@ -26,7 +43,7 @@ export class BiliTagHandler extends Ubb.TextTagHandler {
 		} as any;
 
 		return <div>
-			<iframe {...props} src={`https://player.bilibili.com/player.html?aid=${innerContent}&page=${partNumber}`} allowfullscreen="allowfullscreen" style={style} width="640" height="480" scrolling="no">
+			<iframe {...props} src={src} allowfullscreen="allowfullscreen" style={style} width="640" height="480" scrolling="no">
 			</iframe>
 		</div >;
 	}

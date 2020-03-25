@@ -39,6 +39,7 @@ import EmTagHandler from './EmTagHandler';
 import AcTagHandler from './AcTagHandler';
 import MahjongTagHandler from './MahjongTagHandler';
 import TbTagHandler from './TbTagHandler';
+import BiliTextHandler from './BiliTextHandler';
 import UrlTextHandler from './UrlTextHandler';
 import UrlTextHandler2 from './UrlTextHandler2';
 import NeedReplyTagHandler from './needReplyTagHandler'; 
@@ -124,8 +125,9 @@ export function createEngine(): Ubb.UbbCodeEngine {
 
 
 	// 以下是文字处理程序，注意文字的处理顺序完全取决于处理程序，请注意控制处理程序的顺序
-    engine.handlers.registerText(UrlTextHandler);
-    engine.handlers.registerText(UrlTextHandler2);
+	//engine.handlers.registerText(BiliTextHandler);
+    //engine.handlers.registerText(UrlTextHandler);
+    //engine.handlers.registerText(UrlTextHandler2);
 
 	return engine;
 }

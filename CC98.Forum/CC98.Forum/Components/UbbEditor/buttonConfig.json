@@ -98,7 +98,7 @@
         "tagDescription": "Bili",
         "title": "插入Bilibili视频",
         "type": "extend",
-        "contentValueInfo": "在此输入bilibili网站视频AV号（数字）",
+        "contentValueInfo": "在此输入AV号（纯数字）或者BV号（以BV开头的字符串）",
         "propertiesInfos": [{
             "key": "",
             "title": "在此输入要显示的分P序号（默认为1）",
