@@ -125,9 +125,9 @@ export function createEngine(): Ubb.UbbCodeEngine {
 
 
 	// 以下是文字处理程序，注意文字的处理顺序完全取决于处理程序，请注意控制处理程序的顺序
-	//engine.handlers.registerText(BiliTextHandler);
-    //engine.handlers.registerText(UrlTextHandler);
-    //engine.handlers.registerText(UrlTextHandler2);
+	engine.handlers.registerText(BiliTextHandler);
+    engine.handlers.registerText(UrlTextHandler);
+    engine.handlers.registerText(UrlTextHandler2);
 
 	return engine;
 }
