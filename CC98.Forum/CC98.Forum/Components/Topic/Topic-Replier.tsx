@@ -5,6 +5,7 @@ import * as Utility from '../../Utility';
 import * as moment from 'moment';
 interface Props {
   userInfo;
+  isAnonymous;
   topicInfo;
   traceMode;
   isHot;
@@ -107,7 +108,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
 
     const url = `/user/id/${this.props.userInfo.id}`;
     const realUrl = encodeURI(url);//头像所用的url，链接到用户中心
-    if (this.props.topicInfo.isAnonymous == true) {
+    if (this.props.isAnonymous == true) {
       return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
         <div style={{ zIndex: 100 }}>
 
@@ -230,7 +231,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
 
   render() {
     let urlHtml;
-    if (!this.props.topicInfo.isAnonymous) {
+    if (!this.props.isAnonymous) {
       const url = `/user/id/${this.props.userInfo.id}`;
       const realUrl = encodeURI(url);
       //用户头像
@@ -238,7 +239,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
     }
 
 
-    if (this.props.topicInfo.isAnonymous == true) {
+    if (this.props.isAnonymous == true) {
       urlHtml = <div style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></div>;
     }
     let topicNumber = '帖数';
@@ -247,7 +248,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
     }
 
     let userName = <div style={{ color: "#fff" }} className="userMessage-userName">{this.props.userInfo.name}</div>;
-    if (!this.props.topicInfo.isAnonymous) {
+    if (!this.props.isAnonymous) {
       const url = `/user/id/${this.props.userInfo.id}`;
       const realUrl = encodeURI(url);
       userName = <Link style={{ color: "#fff" }} className="userMessage-userName" to={realUrl}>{this.props.userInfo.name}</Link>;
@@ -266,7 +267,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
     const normalInfo = <div style={{ marginLeft: "0.625rem" }}><span>第</span><span style={{ color: "red" }}>{this.props.topicInfo.floor}</span><span>楼</span></div>;
     let btn = null;
     if (Utility.getLocalStorage("userInfo")) {
-      if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.topicInfo.isAnonymous) {
+      if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.isAnonymous) {
         const email = `/message/message?id=${this.props.userInfo.id}`;
         btn = <div className="row userMessageBtn" >
           <div style={{ marginLeft: "0.85rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button></div>
@@ -287,7 +288,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
     else if (hours > 1) lastLogOn = `${hours}小时前`;
     else lastLogOn = '1小时内';
     let userDetailMessage = null;
-    if (!this.props.topicInfo.isAnonymous) {
+    if (!this.props.isAnonymous) {
       userDetailMessage =
         <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft: "1.5rem", marginTop: "1rem" }}>
           <div className="userMessageOpt">
@@ -315,7 +316,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
     let gender = <div className="userGender">
       {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
     </div>;
-    if (this.props.topicInfo.isAnonymous == true) {
+    if (this.props.isAnonymous == true) {
       gender = null;
 
     }

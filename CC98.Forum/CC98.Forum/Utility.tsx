@@ -159,11 +159,13 @@ export async function getTopicContent(topicid: number, curPage: number) {
         const usersId = [];
         let usersInfo = [];
         if (content.length === 0) return [];
-        if (content[0].isAnonymous == false) {
-            for (let i in content) {
-                usersId[i] = content[i].userId;
+        for (let j = 0; j < topicNumberInPage; j++) {
+            if (content[j].isAnonymous == false) {
+                for (let i in content) {
+                    usersId[i] = content[i].userId;
+                }
+                usersInfo = await getUsersInfo(usersId);
             }
-            usersInfo = await getUsersInfo(usersId);
         }
         for (let i = 0; i < topicNumberInPage; i++) {
 
@@ -616,8 +618,8 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
 import { boardInfo } from './Utility/boardInfoJson'
 import { UserInfo } from './States/AppState';
 
-export function syncGetBoardNameById(boardId){
-    
+export function syncGetBoardNameById(boardId) {
+
     for (let item of boardInfo) {
         if (boardId === item.id) {
             return item.name;
@@ -1692,7 +1694,7 @@ export async function getBoards() {
         const data = await response.json();
         setLocalStorage("boardsInfo", data, 3600);
         return data
-    }else{
+    } else {
         const boards = getLocalStorage('boardsInfo');
         return boards
     }

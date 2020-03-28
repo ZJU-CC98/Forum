@@ -60,7 +60,8 @@ export class Reply extends React.Component<
     let realContents;
     if (this.props.isHot) {
       realContents = await Utility.getHotReplyContent(this.props.topicId);
-    } else if (this.props.isTrace) {
+    } 
+    else if (this.props.isTrace) {
       realContents = await Utility.getCurUserTopicContent(
         this.props.topicId,
         page,
@@ -192,6 +193,7 @@ export class Reply extends React.Component<
           <div className="reply" key={id.toString()} id={id.toString()}>
             <Replier
               key={item.postId}
+              isAnonymous={item.isAnonymous}
               topicInfo={this.props.topicInfo}
               userInfo={item.userInfo}
               traceMode={this.props.isTrace ? true : false}
@@ -241,6 +243,7 @@ export class Reply extends React.Component<
         <div className="reply" key={replyId} id={replyId}>
           <Replier
             key={item.postId}
+            isAnonymous={item.isAnonymous}
             topicInfo={this.props.topicInfo}
             userInfo={item.userInfo}
             traceMode={this.props.isTrace ? true : false}
