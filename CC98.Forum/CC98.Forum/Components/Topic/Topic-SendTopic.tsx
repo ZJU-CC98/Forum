@@ -16,6 +16,7 @@ import { RightTagHandler } from '../../Ubb/RightTagHandler';
 import IPTable from './Topic-IPData'
 import { Util } from 'bizcharts';
 var xssFilter = require('showdown-xss-filter')
+
 interface Props {
   boardInfo;
   onChange;
@@ -23,8 +24,21 @@ interface Props {
   topicInfo;
 }
 
+interface State {
+  content: string,
+  mode: number,
+  masters: string[],
+  buttonInfo,
+  buttonDisabled,
+  manageVisible,
+  mdeState,
+  commands,
+  IPData,
+  postCache: string,
+  anonymouslyPostButtonInfo,
+}
 
-export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[], buttonInfo, buttonDisabled, manageVisible, mdeState, commands, IPData, postCache: string }>{
+export class SendTopic extends React.Component<Props, State>{
   converter: Showdown.Converter;
   constructor(props) {
     super(props);
@@ -39,7 +53,18 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
       initContent = Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id);
     }
     this.converter = new Showdown.Converter({ tables: true, simplifiedAutoLink: true, extensions: [xssFilter] });
-    this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复", manageVisible: false, mdeState: initContent, commands: [], IPData: [], postCache: "" });
+    this.state = ({
+      content: initContent,
+      mode: 0, masters: [],
+      buttonDisabled: false,
+      buttonInfo: "回复",
+      manageVisible: false,
+      mdeState: initContent,
+      commands: [],
+      IPData: [],
+      postCache: "",
+      anonymouslyPostButtonInfo: "匿名回复",
+    });
   }
   // handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
   // 	console.log(mdeState);
@@ -137,10 +162,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
         this.setState({ masters: masters, content: str });
       }
     }
-
-
   }
-
   componentWillReceiveProps(newProps) {
 
     const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
@@ -173,8 +195,8 @@ ${newProps.content.content}[/quote]
   }
 
   /** 发送UBB主题 */
-  async sendUbbTopic() {
-    this.setState({ buttonDisabled: true, buttonInfo: "..." });
+  async sendUbbTopic(isAnonymous: boolean) {
+    this.setState({ buttonDisabled: true, buttonInfo: "...", anonymouslyPostButtonInfo: "..." });
     const url = `/topic/${this.props.topicInfo.id}/post`;
     let bodyInfo;
     try {
@@ -183,19 +205,19 @@ ${newProps.content.content}[/quote]
           content: this.state.content,
           contentType: 0,
           title: '',
-          parentId: this.props.content.postId
+          parentId: this.props.content.postId,
+          isAnonymous: isAnonymous,
         };
       }
       else {
-
         bodyInfo = {
           content: this.state.content,
           contentType: 0,
-          title: ''
+          title: '',
+          isAnonymous: isAnonymous,
         };
       }
       const body = JSON.stringify(bodyInfo);
-
       const token = await Utility.getToken();
       const headers = new Headers();
       headers.append('Authorization', token);
@@ -208,12 +230,17 @@ ${newProps.content.content}[/quote]
       );
       if (mes.status === 402) {
         Utility.noticeMessageShow('postNone');
-        this.setState({ buttonDisabled: false, buttonInfo: "发帖" });
+        this.setState({ buttonDisabled: false, buttonInfo: "回复", anonymouslyPostButtonInfo: "匿名回复" });
         this.cacheForPost();
       }
       else if (mes.status === 403) {
         Utility.noticeMessageShow('postFast');
-        this.setState({ buttonDisabled: false, buttonInfo: "发帖" });
+        this.setState({ buttonDisabled: false, buttonInfo: "回复", anonymouslyPostButtonInfo: "匿名回复" });
+        this.cacheForPost();
+      }
+      else if (mes.status === 400) {
+        Utility.noticeMessageShow('noEnoughMoney');
+        this.setState({ buttonDisabled: false, buttonInfo: "回复", anonymouslyPostButtonInfo: "匿名回复" });
         this.cacheForPost();
       }
       else if (mes.status === 200) {
@@ -235,13 +262,13 @@ ${newProps.content.content}[/quote]
         }
 
         Utility.removeLocalStorage("temporaryContent-" + this.props.topicInfo.id);
-        this.setState({ content: '', buttonDisabled: false, buttonInfo: "发帖" });
+        this.setState({ buttonDisabled: false, buttonInfo: "回复", anonymouslyPostButtonInfo: "匿名回复" });
         this.props.onChange();
       }
     } catch (e) {
       this.cacheForPost();
       Utility.noticeMessageShow('other');
-      this.setState({ buttonDisabled: false, buttonInfo: "请刷新" });
+      this.setState({ buttonDisabled: false, buttonInfo: "请刷新", anonymouslyPostButtonInfo: "请刷新" });
       //console.log('post error');
       //console.log(e);
     }
@@ -249,17 +276,17 @@ ${newProps.content.content}[/quote]
   }
 
   /**发送md主题 */
-  sendMdTopic = async () => {
+  sendMdTopic = async (isAnonymous: boolean) => {
+    this.setState({ buttonDisabled: true, buttonInfo: "...", anonymouslyPostButtonInfo: "..." });
+    const url = `/topic/${this.props.topicInfo.id}/post`;
     try {
-      this.setState({ buttonDisabled: true, buttonInfo: "..." });
-      const url = `/topic/${this.props.topicInfo.id}/post`;
       let c = this.state.mdeState;
-      console.log(c);
-
+      //console.log(c);
       const content = {
         content: c,
         contentType: 1,
-        title: ''
+        title: '',
+        isAnonymous: isAnonymous,
       };
       const contentJson = JSON.stringify(content);
       const token = Utility.getLocalStorage('accessToken');
@@ -275,13 +302,17 @@ ${newProps.content.content}[/quote]
       if (mes.status === 402) {
         this.cacheForPost();
         Utility.noticeMessageShow('postNone');
-        this.setState({ buttonDisabled: false, buttonInfo: "发帖" });
-
+        this.setState({ buttonDisabled: false, buttonInfo: "回复", anonymouslyPostButtonInfo: "匿名回复" });
+      }
+      else if (mes.status === 400) {
+        Utility.noticeMessageShow('noEnoughMoney');
+        this.setState({ buttonDisabled: false, buttonInfo: "回复", anonymouslyPostButtonInfo: "匿名回复" });
+        this.cacheForPost();
       }
       else if (mes.status === 403) {
         this.cacheForPost();
         Utility.noticeMessageShow('postFast');
-        this.setState({ buttonDisabled: false, buttonInfo: "发帖" });
+        this.setState({ buttonDisabled: false, buttonInfo: "回复", anonymouslyPostButtonInfo: "匿名回复" });
       }
       else if (mes.status === 200) {
         const atUsers = Utility.atHanderler(c);
@@ -303,16 +334,36 @@ ${newProps.content.content}[/quote]
         Utility.removeLocalStorage("temporaryContent");
         this.props.onChange();
 
-        this.setState({ content: '', buttonDisabled: false, buttonInfo: "发帖" });
+        this.setState({ buttonDisabled: false, buttonInfo: "回复", anonymouslyPostButtonInfo: "匿名回复" });
       }
     } catch (e) {
       this.cacheForPost();
       Utility.noticeMessageShow('other');
-      this.setState({ buttonDisabled: false, buttonInfo: "请刷新" });
+      this.setState({ buttonDisabled: false, buttonInfo: "请刷新", anonymouslyPostButtonInfo: "请刷新" });
       //console.log('post error');
       //console.log(e);
     }
   }
+  /** 实名发送UBB内容 */
+  postUbbContent = () => {
+    this.sendUbbTopic(false);
+  }
+
+  /** 匿名发送UBB内容 */
+  postAnonymousUbbContent = () => {
+    this.sendUbbTopic(true);
+  }
+
+  /** 实名发送Markdown内容 */
+  postMdContent = () => {
+    this.sendMdTopic(false);
+  }
+
+  /** 匿名发送Markdown内容 */
+  postAnonymousMdContent = () => {
+    this.sendMdTopic(true);
+  }
+
 
   showIP = async () => {
     const IPData = await Utility.findIP(this.props.topicInfo.id);
@@ -334,6 +385,7 @@ ${newProps.content.content}[/quote]
     this.setState({ mdeState: this.state.mdeState + v }, () => { this.setState({ mdeState: this.state.mdeState }) })
   }
   render() {
+    //发帖时间超过365天提示
     const s1 = new Date()
     const s2 = new Date(this.props.topicInfo.time)
     const s = s1.getTime() - s2.getTime()
@@ -343,23 +395,126 @@ ${newProps.content.content}[/quote]
       ft = <div className="row" style={{ color: 'red' }}>提示：该贴发布于{f}天前，如无必要请勿回复。</div>
     }
     let mode, editor;
+    //查询财富值余额
+    let wealth;
+    try {
+      wealth = Utility.getLocalStorage("userInfo").wealth;
+    }
+    catch (e) {
+      wealth = "查询财富值余额失败，请前往个人中心查看";
+    }
+    //版面匿名状态，包括不可匿名、强制匿名（心灵）以及可选匿名
+    //不可匿名为0，强制匿名为1，可选匿名为2
+    const anonymousState = this.props.boardInfo.anonymousState;
+    let ubbButtons;
+    let markdownButtons;
+    //不可匿名版面
+    if (anonymousState === 0) {
+      ubbButtons = (
+        <button
+          id="post-topic-button"
+          onClick={this.postUbbContent}
+          disabled={this.state.buttonDisabled}
+          className="button blue"
+          style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+          {this.state.buttonInfo}
+        </button>
+      );
+      markdownButtons = (
+        <button
+          id="post-topic-button-md"
+          onClick={this.postMdContent}
+          disabled={this.state.buttonDisabled}
+          className="button blue"
+          style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+          {this.state.buttonInfo}
+        </button>
+      )
+    } else if (anonymousState === 1) {
+      ubbButtons = (
+        <button
+          id="post-topic-button-anonymous"
+          onClick={this.postAnonymousUbbContent}
+          disabled={this.state.buttonDisabled}
+          className="button grey"
+          style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+          {this.state.anonymouslyPostButtonInfo}
+        </button>
+      );
+      markdownButtons = (
+        <button
+          id="post-topic-button-md-anonymous"
+          onClick={this.postAnonymousMdContent}
+          disabled={this.state.buttonDisabled}
+          className="button grey"
+          style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+          {this.state.anonymouslyPostButtonInfo}
+        </button>
+      );
+    } else if (anonymousState === 2) {
+      ubbButtons = (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div>
+            <button
+              id="post-topic-button"
+              onClick={this.postUbbContent}
+              disabled={this.state.buttonDisabled}
+              className="button blue"
+              style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+              {this.state.buttonInfo}
+            </button>
+            <button
+              id="post-topic-button-anonymous"
+              onClick={this.postAnonymousUbbContent}
+              disabled={this.state.buttonDisabled}
+              className="button grey"
+              style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+              {this.state.anonymouslyPostButtonInfo}
+            </button>
+          </div>
+          <p>
+            在本版面匿名回复每次需消耗2000财富值。你当前的财富值余额为：{wealth}
+          </p>
+        </div>
+      );
+      markdownButtons = (
+        <>
+          <button
+            id="post-topic-button-md"
+            onClick={this.postMdContent}
+            disabled={this.state.buttonDisabled}
+            className="button blue"
+            style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+            {this.state.buttonInfo}
+          </button>
+          <button
+            id="post-topic-button-md-anonymous"
+            onClick={this.postAnonymousMdContent}
+            disabled={this.state.buttonDisabled}
+            className="button grey"
+            style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+            {this.state.anonymouslyPostButtonInfo}
+          </button>
+        </>
+      );
+    }
+    //根据ubb或markdown模式，显示相应的编辑器和按钮
     if (this.state.mode === 0) {
       mode = '使用UBB模式编辑';
       editor =
-        <div >
+        <div>
           {ft}
-          <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }} />
+          <UbbEditor update={this.update} value={this.state.content} option={{ height: 20 }} />
           <div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
-            <button id="post-topic-button" onClick={this.sendUbbTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>{this.state.buttonInfo}
-            </button>
+            {ubbButtons}
           </div>
         </div>
     }
     else {
       mode = '使用Markdown编辑';
-      console.log("react mde")
-      console.log(this.state.mdeState)
-      editor = <div >
+      //console.log("react mde")
+      //console.log(this.state.mdeState)
+      editor = <div>
         <div>
           {ft}
           <ReactMde
@@ -378,32 +533,22 @@ ${newProps.content.content}[/quote]
               iconProvider: name => {
                 console.log(name);
                 if (name === 'heading') return <i className={`fa fa-header`} />;
-
                 return <i className={`fa fa-${name}`} />
               },
-            }}
-
-          /></div>
-
+            }} />
+        </div>
         <div className="row" style={{ justifyContent: 'center', marginTop: '5rem ' }}>
-          <button
-            id="post-topic-button"
-            onClick={this.sendMdTopic}
-            disabled={this.state.buttonDisabled}
-            className="button blue"
-            style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
-            {this.state.buttonInfo}
-          </button>
+          {markdownButtons}
         </div>
       </div>;
     }
-
+    //管理按钮
     let manageBTN = null;
     if (Utility.isMaster(this.props.boardInfo.boardMasters))
       manageBTN = <div><Button type="primary" onClick={this.showManagement}>管理</Button>
         <Button type="primary" onClick={this.showIP} style={{ marginLeft: '2rem' }}>查看IP</Button>
       </div>;
-
+    //缓存按钮
     let cachebutton = null;
     if (Utility.getLocalStorage(this.cachestr)) {
       cachebutton = (
@@ -435,22 +580,24 @@ ${newProps.content.content}[/quote]
       )
     }
 
-
-    return <div id="sendTopicInfo" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div className="row" style={{ justifyContent: 'flex-end' }}>
-
-        <div id="post-topic-changeMode" className="changeEditor" onClick={this.changeEditor.bind(this)} style={{ width: '14rem', marginBottom: "0.5rem" }}>{this.state.mode === 1 ? '切换到Ubb编辑器' : '切换到Markdown编辑器'}
-        </div></div>
-      {editor}
-      {cachebutton}
-      {manageBTN}
-      {this.state.manageVisible && <TopicManagement update={this.onChange} boardId={this.props.boardInfo.id} topicInfo={this.props.topicInfo} onCancel={this.handleCancel} visible={this.state.manageVisible} />}
-      {this.state.IPData.length !== 0 && <IPTable IPData={this.state.IPData} />}
-      <NoticeMessage text="出现了意料之外的错误，请刷新重试，可读取之前的缓存" id="other" top="26%" left="38%" />
-      <NoticeMessage text="回复失败, 10s之内仅可进行一次回帖，请耐心等待" id="postFast" top="26%" left="38%" />
-      <NoticeMessage text="回复失败, 请输入内容" id="postNone" top="26%" left="44%" />
-      <NoticeMessage text="操作成功" id="operationSuccess" top="26%" left="44%" />
-      <Prompt message={location => (this.state.content && location.pathname.indexOf(this.props.topicInfo.id)) === -1 ? "确定要离开吗？" : true} />
-    </div>;
+    return (
+      <div id="sendTopicInfo" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+        <div className="row" style={{ justifyContent: 'flex-end' }}>
+          <div id="post-topic-changeMode" className="changeEditor" onClick={this.changeEditor.bind(this)} style={{ width: '14rem', marginBottom: "0.5rem" }}>{this.state.mode === 1 ? '切换到Ubb编辑器' : '切换到Markdown编辑器'}
+          </div>
+        </div>
+        {editor}
+        {cachebutton}
+        {manageBTN}
+        {this.state.manageVisible && <TopicManagement update={this.onChange} boardId={this.props.boardInfo.id} topicInfo={this.props.topicInfo} onCancel={this.handleCancel} visible={this.state.manageVisible} />}
+        {this.state.IPData.length !== 0 && <IPTable IPData={this.state.IPData} />}
+        <NoticeMessage text="出现了意料之外的错误，请刷新重试，可读取之前的缓存" id="other" top="26%" left="38%" />
+        <NoticeMessage text="回复失败, 10s之内仅可进行一次回帖，请耐心等待" id="postFast" top="26%" left="38%" />
+        <NoticeMessage text="回复失败, 请输入内容" id="postNone" top="26%" left="44%" />
+        <NoticeMessage text="你的财富值余额不足，匿名回复每次需要2000财富值" id="noEnoughMoney" top="26%" left="38%" />
+        <NoticeMessage text="操作成功" id="operationSuccess" top="26%" left="44%" />
+        <Prompt message={location => (this.state.content && location.pathname.indexOf(this.props.topicInfo.id)) === -1 ? "确定要离开吗？" : true} />
+      </div>
+    )
   }
 }
