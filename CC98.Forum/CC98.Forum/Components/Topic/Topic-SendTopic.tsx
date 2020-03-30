@@ -415,8 +415,7 @@ ${newProps.content.content}[/quote]
           id="post-topic-button"
           onClick={this.postUbbContent}
           disabled={this.state.buttonDisabled}
-          className="button blue"
-          style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+          className="button blue">
           {this.state.buttonInfo}
         </button>
       );
@@ -425,8 +424,7 @@ ${newProps.content.content}[/quote]
           id="post-topic-button-md"
           onClick={this.postMdContent}
           disabled={this.state.buttonDisabled}
-          className="button blue"
-          style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+          className="button blue">
           {this.state.buttonInfo}
         </button>
       )
@@ -436,8 +434,7 @@ ${newProps.content.content}[/quote]
           id="post-topic-button-anonymous"
           onClick={this.postAnonymousUbbContent}
           disabled={this.state.buttonDisabled}
-          className="button grey"
-          style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+          className="button grey">
           {this.state.anonymouslyPostButtonInfo}
         </button>
       );
@@ -446,8 +443,7 @@ ${newProps.content.content}[/quote]
           id="post-topic-button-md-anonymous"
           onClick={this.postAnonymousMdContent}
           disabled={this.state.buttonDisabled}
-          className="button grey"
-          style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+          className="button grey">
           {this.state.anonymouslyPostButtonInfo}
         </button>
       );
@@ -459,16 +455,14 @@ ${newProps.content.content}[/quote]
               id="post-topic-button"
               onClick={this.postUbbContent}
               disabled={this.state.buttonDisabled}
-              className="button blue"
-              style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+              className="button blue">
               {this.state.buttonInfo}
             </button>
             <button
               id="post-topic-button-anonymous"
               onClick={this.postAnonymousUbbContent}
               disabled={this.state.buttonDisabled}
-              className="button grey"
-              style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
+              className="button grey">
               {this.state.anonymouslyPostButtonInfo}
             </button>
           </div>
@@ -478,24 +472,27 @@ ${newProps.content.content}[/quote]
         </div>
       );
       markdownButtons = (
-        <>
-          <button
-            id="post-topic-button-md"
-            onClick={this.postMdContent}
-            disabled={this.state.buttonDisabled}
-            className="button blue"
-            style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
-            {this.state.buttonInfo}
-          </button>
-          <button
-            id="post-topic-button-md-anonymous"
-            onClick={this.postAnonymousMdContent}
-            disabled={this.state.buttonDisabled}
-            className="button grey"
-            style={{ width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>
-            {this.state.anonymouslyPostButtonInfo}
-          </button>
-        </>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div>
+            <button
+              id="post-topic-button-md"
+              onClick={this.postMdContent}
+              disabled={this.state.buttonDisabled}
+              className="button blue">
+              {this.state.buttonInfo}
+            </button>
+            <button
+              id="post-topic-button-md-anonymous"
+              onClick={this.postAnonymousMdContent}
+              disabled={this.state.buttonDisabled}
+              className="button grey">
+              {this.state.anonymouslyPostButtonInfo}
+            </button>
+          </div>
+          <p>
+            在本版面匿名回复每次需消耗2000财富值。你当前的财富值余额为：{wealth}
+          </p>
+        </div>
       );
     }
     //根据ubb或markdown模式，显示相应的编辑器和按钮

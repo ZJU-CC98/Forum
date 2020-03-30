@@ -161,7 +161,7 @@ export default withRouter(class extends React.Component<withRouterProps & Props,
     let editIcon = null;
     const editUrl = `/editor/edit/${this.props.postInfo.id}`;
     if (Utility.getLocalStorage("userInfo"))
-      if (this.isAllowedtoEdit(this.props.userInfo.privilege) || this.props.userInfo.name === Utility.getLocalStorage("userInfo").name || this.props.boardInfo.id === 182) {
+      if (this.isAllowedtoEdit(this.props.userInfo.privilege) || this.props.postInfo.isMe) {
 
         editIcon = <Link to={editUrl}><div className="operation1" onClick={this.edit}>   编辑</div></Link>;
       }

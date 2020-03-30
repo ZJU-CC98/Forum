@@ -58,16 +58,18 @@ class EditForm extends RouteComponent<
     commands;
     notice;
     houseTmpVisible;
+    /** 发帖版面的匿名状态，包括不可匿名，可选匿名和强制匿名 */
+    anonymousState;
+    /** 编辑帖子是否为匿名 */
+    isAnonymous;
   },
   { mode: string; id: number }
-> {
+  > {
   converter: Showdown.Converter;
   constructor(props) {
     super(props);
     this.update = this.update.bind(this);
     this.changeEditor = this.changeEditor.bind(this);
-    this.sendMdTopic = this.sendMdTopic.bind(this);
-    this.sendUbbTopic = this.sendUbbTopic.bind(this);
     this.editUBB = this.editUBB.bind(this);
     this.changeAcademicType = this.changeAcademicType.bind(this);
     this.changeActivityType = this.changeActivityType.bind(this);
@@ -101,7 +103,9 @@ class EditForm extends RouteComponent<
       mdeState: "",
       commands: [],
       notice: true,
-      houseTmpVisible: false
+      houseTmpVisible: false,
+      anonymousState: 0,
+      isAnonymous: false,
     };
   }
 
@@ -127,13 +131,15 @@ class EditForm extends RouteComponent<
         response = await Utility.cc98Fetch(url, { headers });
         data = await response.json();
         const boardName = data.name;
+        const anonymousState = data.anonymousState;
         //获取标签
         tags = await Utility.getBoardTag(id);
         this.setState({
           boardName: boardName,
           tags: tags,
           boardId: id,
-          masters: data.boardMasters
+          masters: data.boardMasters,
+          anonymousState: anonymousState
         });
         break;
       case "edit":
@@ -187,7 +193,8 @@ class EditForm extends RouteComponent<
             tag1: tag1Name,
             tag2: tag2Name,
             mode: 0,
-            notice: topicInfo.notifyPoster
+            notice: topicInfo.notifyPoster,
+            isAnonymous: data.isAnonymous,
           });
         } else
           this.setState({
@@ -204,7 +211,8 @@ class EditForm extends RouteComponent<
             tag2: tag2Name,
             mode: 1,
             mdeState: data.content,
-            notice: topicInfo.notifyPoster
+            notice: topicInfo.notifyPoster,
+            isAnonymous: data.isAnonymous,
           });
         break;
     }
@@ -212,18 +220,23 @@ class EditForm extends RouteComponent<
   handleValueChange = value => {
     this.setState({ mdeState: value });
   };
+
   changeNormalType() {
     this.setState({ type: 0 });
   }
+
   changeAcademicType() {
     this.setState({ type: 2 });
   }
+
   changeActivityType() {
     this.setState({ type: 1 });
   }
+
   ready() {
     this.setState({ ready: true });
   }
+
   changeEditor() {
     if (!confirm("切换编辑器会丢失您之前的编辑内容，确定要切换吗？")) {
       return;
@@ -236,11 +249,16 @@ class EditForm extends RouteComponent<
       this.setState({ mode: 0 });
     }
   }
+
   update(value) {
     this.setState({ content: value });
   }
-  async sendMdTopic() {
+  /** 发送markdown主题 */
+  sendMdTopic = async (isAnonymous: boolean) => {
+    //投票帖禁止匿名
+    let _isAnonymous = isAnonymous;
     if (this.match.params.mode === "postVoteTopic") {
+      _isAnonymous = false;
       // 投票内容发布前检查合法性
       const info = Vote.isFormIllegal(this.state.voteInfo);
       if (info) {
@@ -248,9 +266,11 @@ class EditForm extends RouteComponent<
         return null;
       }
     }
+    //检查标题
     if (this.state.title == "") {
       alert("请输入标题!");
-    } else {
+    }
+    else {
       try {
         let tag1Id, tag2Id;
         let url = `/board/${this.match.params.id}/topic`;
@@ -266,7 +286,8 @@ class EditForm extends RouteComponent<
             title: this.state.title,
             tag1: tag1Id,
             type: this.state.type,
-            notifyPoster: this.state.notice
+            notifyPoster: this.state.notice,
+            isAnonymous: _isAnonymous,
           };
         } else if (tag2Id) {
           content = {
@@ -276,7 +297,8 @@ class EditForm extends RouteComponent<
             tag1: tag1Id,
             tag2: tag2Id,
             type: this.state.type,
-            notifyPoster: this.state.notice
+            notifyPoster: this.state.notice,
+            isAnonymous: _isAnonymous,
           };
         } else {
           content = {
@@ -284,7 +306,8 @@ class EditForm extends RouteComponent<
             contentType: 1,
             title: this.state.title,
             type: this.state.type,
-            notifyPoster: this.state.notice
+            notifyPoster: this.state.notice,
+            isAnonymous: _isAnonymous,
           };
         }
         if (this.match.params.mode === "postVoteTopic") {
@@ -310,6 +333,9 @@ class EditForm extends RouteComponent<
         if (mes.status === 402) {
           alert("请输入内容");
         }
+        if (mes.status === 400) {
+          alert("你的财富值余额不足，在本版面发表匿名主题需要10000财富值")
+        }
         //   testEditor.setMarkdown("");
         const topicId = await mes.text();
         //根据返回的topicid，发送@信息
@@ -330,27 +356,30 @@ class EditForm extends RouteComponent<
         Utility.removeLocalStorage("contentCache");
         this.props.history.push(`/topic/${topicId}`);
       } catch (e) {
-        //console.log("Error");
         console.log(e);
       }
     }
   }
-  async sendUbbTopic() {
+  /** 发送ubb主题 */
+  sendUbbTopic = async (isAnonymous: boolean) => {
+    //投票帖禁止匿名
+    let _isAnonymous = isAnonymous;
     if (this.match.params.mode === "postVoteTopic") {
-      // 投票内容发布前检查合法性
+      _isAnonymous = false;
+      //投票内容发布前检查合法性
       const info = Vote.isFormIllegal(this.state.voteInfo);
       if (info) {
         alert(info);
         return null;
       }
     }
+    //检查标题
     if (this.state.title == "") {
       alert("请输入标题！");
     } else {
       const url = `/board/${this.match.params.id}/topic`;
       let content;
       let tag1Id, tag2Id;
-      const type = this.state.type;
       //console.log(this.state);
       tag1Id = await Utility.getTagIdbyName(this.state.tag1);
       tag2Id = await Utility.getTagIdbyName(this.state.tag2);
@@ -361,7 +390,8 @@ class EditForm extends RouteComponent<
           title: this.state.title,
           tag1: tag1Id,
           type: this.state.type,
-          notifyPoster: this.state.notice
+          notifyPoster: this.state.notice,
+          isAnonymous: _isAnonymous,
         };
       } else if (tag2Id) {
         content = {
@@ -371,7 +401,8 @@ class EditForm extends RouteComponent<
           tag1: tag1Id,
           tag2: tag2Id,
           type: this.state.type,
-          notifyPoster: this.state.notice
+          notifyPoster: this.state.notice,
+          isAnonymous: _isAnonymous,
         };
       } else {
         content = {
@@ -379,7 +410,8 @@ class EditForm extends RouteComponent<
           contentType: 0,
           title: this.state.title,
           type: this.state.type,
-          notifyPoster: this.state.notice
+          notifyPoster: this.state.notice,
+          isAnonymous: _isAnonymous,
         };
       }
       if (this.match.params.mode === "postVoteTopic") {
@@ -427,6 +459,23 @@ class EditForm extends RouteComponent<
     }
   }
 
+  sendOnymousUbbTopic = () => {
+    this.sendUbbTopic(false);
+  }
+
+  sendAnonymousUbbTopic = () => {
+    this.sendUbbTopic(true);
+  }
+
+  sendOnymousMdTopic = () => {
+    this.sendMdTopic(false);
+  }
+
+  sendAnonymousMdTopic = () => {
+    this.sendMdTopic(true);
+  }
+
+  /** 编辑ubb帖子 */
   async editUBB() {
     const url = `/post/${this.match.params.id}`;
     let tag1Id, tag2Id, content;
@@ -479,6 +528,7 @@ class EditForm extends RouteComponent<
     const redirectUrl = `/topic/${this.state.postInfo.topicId}/${page}#${pageFloor}`;
     this.props.history.push(redirectUrl);
   }
+  /** 编辑markdown帖子 */
   async editMd() {
     const url = `/post/${this.match.params.id}`;
     let c = this.state.mdeState;
@@ -531,6 +581,7 @@ class EditForm extends RouteComponent<
     Utility.removeLocalStorage("contentCache");
     this.props.history.push(redirectUrl);
   }
+
   onTitleChange(title, tag1, tag2) {
     //console.log("handle change");
     //console.log("tag1=" + tag1);
@@ -580,7 +631,7 @@ class EditForm extends RouteComponent<
     [tr][th]序号[/th][th]信息项[/th][th]描述[/th][/tr]
     [tr][td]01[/td][td]有效日期[/td][td]${moment(
       e.validDate[0]).format("YYYY-MM-DD")
-    }-${moment(e.validDate[1]).format("YYYY-MM-DD")}[/td][/tr]
+      }-${moment(e.validDate[1]).format("YYYY-MM-DD")}[/td][/tr]
     [tr][td]02[/td][td]类型[/td][td]${e.type || ""}[/td][/tr]
     [tr][td]03[/td][td]地区[/td][td]${e.district || ""}[/td][/tr]
     [tr][td]04[/td][td]小区名称[/td][td]${e.neighborhood || ""}[/td][/tr]
@@ -616,6 +667,7 @@ class EditForm extends RouteComponent<
     const url = `/board/${this.state.boardId}`;
     let editor;
     let titleInput = null;
+    //发主题或发投票模式
     if (mode === "postTopic" || mode === "postVoteTopic") {
       titleInput = (
         <InputTitle
@@ -627,6 +679,112 @@ class EditForm extends RouteComponent<
           tag2={0}
         />
       );
+      //查询财富值余额
+      let wealth;
+      try {
+        wealth = Utility.getLocalStorage("userInfo").wealth;
+      }
+      catch (e) {
+        wealth = "查询财富值余额失败，请前往个人中心查看";
+      }
+      //根据版面匿名状态显示相应的按钮
+      let ubbButtons;
+      let mdButtons;
+      if (this.state.anonymousState === 0 || mode === "postVoteTopic") {
+        ubbButtons = (
+          <div className="row" style={{ justifyContent: "center" }}>
+            <button
+              id="post-topic-button"
+              onClick={this.sendOnymousUbbTopic}
+              className="button blue"
+            >
+              发帖
+            </button>
+          </div>
+        )
+        mdButtons = (
+          <div className="row" style={{ justifyContent: "center" }}>
+            <button
+              id="post-topic-button"
+              onClick={this.sendOnymousMdTopic}
+              className="button blue"
+            >
+              发帖
+            </button>
+          </div>
+        )
+      } else if (this.state.anonymousState === 1) {
+        ubbButtons = (
+          <div className="row" style={{ justifyContent: "center" }}>
+            <button
+              id="post-topic-button-anonymous"
+              onClick={this.sendAnonymousUbbTopic}
+              className="button grey"
+            >
+              匿名发帖
+            </button>
+          </div>
+        )
+        mdButtons = (
+          <div className="row" style={{ justifyContent: "center" }}>
+            <button
+              id="post-topic-button-anonymous"
+              onClick={this.sendAnonymousMdTopic}
+              className="button grey"
+            >
+              匿名发帖
+            </button>
+          </div>
+        )
+      } else if (this.state.anonymousState === 2) {
+        ubbButtons = (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div>
+              <button
+                id="post-topic-button"
+                onClick={this.sendOnymousUbbTopic}
+                className="button blue"
+              >
+                发帖
+              </button>
+              <button
+                id="post-topic-button-anonymous"
+                onClick={this.sendAnonymousUbbTopic}
+                className="button grey"
+              >
+                匿名发帖
+              </button>
+            </div>
+            <p>
+              在本版面匿名发主题每次需消耗10000财富值。你当前的财富值余额为：{wealth}
+            </p>
+          </div>
+        )
+        mdButtons = (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div>
+              <button
+                id="post-topic-button"
+                onClick={this.sendOnymousMdTopic}
+                className="button blue"
+              >
+                发帖
+              </button>
+              <button
+                id="post-topic-button-anonymous"
+                onClick={this.sendAnonymousMdTopic}
+                className="button grey"
+              >
+                匿名发帖
+              </button>
+            </div>
+            <p>
+              在本版面匿名发主题每次需消耗10000财富值。你当前的财富值余额为：{wealth}
+            </p>
+          </div>
+        )
+      }
+
       if (this.state.mode === 0) {
         editor = (
           <div>
@@ -646,23 +804,8 @@ class EditForm extends RouteComponent<
               value={this.state.content}
               option={{ height: 20, submit: this.sendUbbTopic.bind(this) }}
             />
-            <div className="row" style={{ justifyContent: "center" }}>
-              <div
-                id="post-topic-button"
-                onClick={this.sendUbbTopic.bind(this)}
-                className="button blue"
-                style={{
-                  marginTop: "1.25rem",
-                  marginBottom: "1.25rem",
-                  width: "4.5rem",
-                  letterSpacing: "0.3125rem",
-                  alignSelf: "center"
-                }}
-              >
-                发帖
-              </div>
-            </div>
-          </div>
+            {ubbButtons}
+          </div >
         );
       } else {
         editor = (
@@ -697,24 +840,13 @@ class EditForm extends RouteComponent<
                 }
               }}
             />
-            <div
-              id="post-topic-button"
-              onClick={this.sendMdTopic.bind(this)}
-              className="button blue"
-              style={{
-                marginTop: "1.25rem",
-                marginBottom: "1.25rem",
-                width: "4.5rem",
-                letterSpacing: "0.3125rem",
-                alignSelf: "center"
-              }}
-            >
-              发帖
-            </div>
+            {mdButtons}
           </div>
         );
       }
-    } else if (mode === "edit") {
+    }
+    //编辑模式
+    else if (mode === "edit") {
       if (this.state.mode === 0) {
         editor = (
           <div>
@@ -735,20 +867,13 @@ class EditForm extends RouteComponent<
               option={{ submit: this.editUBB.bind(this) }}
             />
             <div className="row" style={{ justifyContent: "center" }}>
-              <div
+              <button
                 id="post-topic-button"
                 onClick={this.editUBB}
                 className="button blue"
-                style={{
-                  marginTop: "1.25rem",
-                  marginBottom: "1.25rem",
-                  width: "4.5rem",
-                  letterSpacing: "0.3125rem",
-                  alignSelf: "center"
-                }}
               >
                 编辑
-              </div>
+              </button>
             </div>
           </div>
         );
@@ -789,13 +914,6 @@ class EditForm extends RouteComponent<
               id="post-topic-button"
               onClick={this.editMd.bind(this)}
               className="button blue"
-              style={{
-                marginTop: "1.25rem",
-                marginBottom: "1.25rem",
-                width: "4.5rem",
-                letterSpacing: "0.3125rem",
-                alignSelf: "center"
-              }}
             >
               编辑
             </div>
@@ -848,7 +966,7 @@ class EditForm extends RouteComponent<
       Utility.getLocalStorage("userInfo") &&
       (Utility.isMaster(this.state.masters) ||
         (Utility.getLocalStorage("userInfo").userTitleIds || []).indexOf(91) !==
-          -1)
+        -1)
     ) {
       topicType = (
         <div className="createTopicType">
@@ -955,7 +1073,7 @@ class EditForm extends RouteComponent<
 export class Category extends React.Component<
   { url: string; boardName: string; mode: string },
   { url: string; boardName: string }
-> {
+  > {
   constructor(props) {
     super(props);
     this.state = {
@@ -1044,7 +1162,7 @@ export class Tags extends React.Component<{}, {}> {
 export class InputTitle extends React.Component<
   { boardId; onChange; tags; title; tag1; tag2 },
   { title: string; tags; tag1; tag2; hasEvent: boolean }
-> {
+  > {
   constructor(props) {
     super(props);
     this.handleTagChange = this.handleTagChange.bind(this);
@@ -1119,11 +1237,11 @@ export class InputTitle extends React.Component<
     const tagBoxSub = $(".tagBoxSub");
     const tagBoxLi = tagBoxSub.find("li");
 
-    $(document).click(function() {
+    $(document).click(function () {
       tagBoxSub.css("display", "none");
     });
 
-    tagBoxSelect.click(function() {
+    tagBoxSelect.click(function () {
       //console.log("click1");
       if (tagBoxSub.css("display") === "block")
         tagBoxSub.css("display", "none");
@@ -1131,7 +1249,7 @@ export class InputTitle extends React.Component<
       return false; //阻止事件冒泡
     });
 
-    downArrow.click(function() {
+    downArrow.click(function () {
       if (tagBoxSub.css("display") === "block")
         tagBoxSub.css("display", "none");
       else tagBoxSub.css("display", "block");
@@ -1142,15 +1260,15 @@ export class InputTitle extends React.Component<
         如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
         或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
 
-    tagBoxLi.click(function() {
+    tagBoxLi.click(function () {
       tagBoxSelect.text($(this).text());
     });
 
-    tagBoxLi.mouseover(function() {
+    tagBoxLi.mouseover(function () {
       this.className = "hover";
     });
 
-    tagBoxLi.mouseout(function() {
+    tagBoxLi.mouseout(function () {
       this.className = "";
     });
 
@@ -1158,18 +1276,18 @@ export class InputTitle extends React.Component<
     const downArrow1 = $(".downArrow1");
     const tagBoxSub1 = $(".tagBoxSub1");
     const tagBoxLi1 = tagBoxSub1.find("li");
-    $(document).click(function() {
+    $(document).click(function () {
       tagBoxSub1.css("display", "none");
     });
 
-    tagBoxSelect1.click(function() {
+    tagBoxSelect1.click(function () {
       if (tagBoxSub1.css("display") === "block")
         tagBoxSub1.css("display", "none");
       else tagBoxSub1.css("display", "block");
       return false; //阻止事件冒泡
     });
 
-    downArrow1.click(function() {
+    downArrow1.click(function () {
       if (tagBoxSub1.css("display") === "block")
         tagBoxSub1.css("display", "none");
       else tagBoxSub1.css("display", "block");
@@ -1180,15 +1298,15 @@ export class InputTitle extends React.Component<
         如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
         或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
 
-    tagBoxLi1.click(function() {
+    tagBoxLi1.click(function () {
       tagBoxSelect1.text($(this).text());
     });
 
-    tagBoxLi1.mouseover(function() {
+    tagBoxLi1.mouseover(function () {
       this.className = "hover";
     });
 
-    tagBoxLi1.mouseout(function() {
+    tagBoxLi1.mouseout(function () {
       this.className = "";
     });
     let tag1 = "",
