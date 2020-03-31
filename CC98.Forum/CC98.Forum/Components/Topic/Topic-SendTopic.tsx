@@ -430,34 +430,37 @@ ${newProps.content.content}[/quote]
       )
     } else if (anonymousState === 1) {
       ubbButtons = (
-        <button
-          id="post-topic-button-anonymous"
-          onClick={this.postAnonymousUbbContent}
-          disabled={this.state.buttonDisabled}
-          className="button grey">
-          {this.state.anonymouslyPostButtonInfo}
-        </button>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <button
+            id="post-topic-button-anonymous"
+            onClick={this.postAnonymousUbbContent}
+            disabled={this.state.buttonDisabled}
+            className="button grey">
+            {this.state.anonymouslyPostButtonInfo}
+          </button>
+          <p>
+            根据设置，你在本楼的回复都是匿名，并且不花费财富值。
+          </p>
+        </div>
       );
       markdownButtons = (
-        <button
-          id="post-topic-button-md-anonymous"
-          onClick={this.postAnonymousMdContent}
-          disabled={this.state.buttonDisabled}
-          className="button grey">
-          {this.state.anonymouslyPostButtonInfo}
-        </button>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <button
+            id="post-topic-button-md-anonymous"
+            onClick={this.postAnonymousMdContent}
+            disabled={this.state.buttonDisabled}
+            className="button grey">
+            {this.state.anonymouslyPostButtonInfo}
+          </button>
+          <p>
+            根据设置，你在本楼的回复都是匿名，并且不花费财富值。
+          </p>
+        </div>
       );
     } else if (anonymousState === 2) {
-      ubbButtons = (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div>
-            <button
-              id="post-topic-button"
-              onClick={this.postUbbContent}
-              disabled={this.state.buttonDisabled}
-              className="button blue">
-              {this.state.buttonInfo}
-            </button>
+      if (this.props.topicInfo.isAnonymous && this.props.topicInfo.isMe) {
+        ubbButtons = (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button
               id="post-topic-button-anonymous"
               onClick={this.postAnonymousUbbContent}
@@ -465,22 +468,13 @@ ${newProps.content.content}[/quote]
               className="button grey">
               {this.state.anonymouslyPostButtonInfo}
             </button>
+            <p>
+              根据设置，你在本楼的回复都是匿名，并且不花费财富值。
+            </p>
           </div>
-          <p>
-            在本版面匿名回复每次需消耗2000财富值。你当前的财富值余额为：{wealth}
-          </p>
-        </div>
-      );
-      markdownButtons = (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div>
-            <button
-              id="post-topic-button-md"
-              onClick={this.postMdContent}
-              disabled={this.state.buttonDisabled}
-              className="button blue">
-              {this.state.buttonInfo}
-            </button>
+        );
+        markdownButtons = (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button
               id="post-topic-button-md-anonymous"
               onClick={this.postAnonymousMdContent}
@@ -488,12 +482,59 @@ ${newProps.content.content}[/quote]
               className="button grey">
               {this.state.anonymouslyPostButtonInfo}
             </button>
+            <p>
+              根据设置，你在本楼的回复都是匿名，并且不花费财富值。
+            </p>
           </div>
-          <p>
-            在本版面匿名回复每次需消耗2000财富值。你当前的财富值余额为：{wealth}
-          </p>
-        </div>
-      );
+        );
+      } else {
+        ubbButtons = (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div>
+              <button
+                id="post-topic-button"
+                onClick={this.postUbbContent}
+                disabled={this.state.buttonDisabled}
+                className="button blue">
+                {this.state.buttonInfo}
+              </button>
+              <button
+                id="post-topic-button-anonymous"
+                onClick={this.postAnonymousUbbContent}
+                disabled={this.state.buttonDisabled}
+                className="button grey">
+                {this.state.anonymouslyPostButtonInfo}
+              </button>
+            </div>
+            <p>
+              在本版面匿名回复每次需消耗2000财富值。你当前的财富值余额为：{wealth}
+            </p>
+          </div>
+        );
+        markdownButtons = (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div>
+              <button
+                id="post-topic-button-md"
+                onClick={this.postMdContent}
+                disabled={this.state.buttonDisabled}
+                className="button blue">
+                {this.state.buttonInfo}
+              </button>
+              <button
+                id="post-topic-button-md-anonymous"
+                onClick={this.postAnonymousMdContent}
+                disabled={this.state.buttonDisabled}
+                className="button grey">
+                {this.state.anonymouslyPostButtonInfo}
+              </button>
+            </div>
+            <p>
+              在本版面匿名回复每次需消耗2000财富值。你当前的财富值余额为：{wealth}
+            </p>
+          </div>
+        );
+      }
     }
     //根据ubb或markdown模式，显示相应的编辑器和按钮
     if (this.state.mode === 0) {
