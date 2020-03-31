@@ -445,7 +445,7 @@ export async function getAllNewTopic(from: number, router) {
                 }
             }
             //处理匿名与非匿名主题，非匿名主题用户批量获取信息
-            if (item.userId) {
+            if(!item.isAnonymous){
                 //获取所在版面名称
                 item.boardName = await getBoardName(item.boardId);
                 aTopic.push(item);
@@ -454,7 +454,7 @@ export async function getAllNewTopic(from: number, router) {
             else {
                 item.portraitUrl = '/static/images/_心灵之约.png';
                 item.userName = "匿名用户";
-                item.boardName = "心灵之约";
+                item.boardName = await getBoardName(item.boardId);
                 bTopic.push(item);
             }
         }
