@@ -802,7 +802,7 @@ class EditForm extends RouteComponent<
             <UbbEditor
               update={this.update}
               value={this.state.content}
-              option={{ height: 20, submit: this.sendUbbTopic.bind(this) }}
+              option={{ height: 20, submit: this.sendOnymousUbbTopic }}
             />
             {ubbButtons}
           </div >

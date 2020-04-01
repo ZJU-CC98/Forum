@@ -542,7 +542,7 @@ ${newProps.content.content}[/quote]
       editor =
         <div>
           {ft}
-          <UbbEditor update={this.update} value={this.state.content} option={{ height: 20 }} />
+          <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.postUbbContent }} />
           <div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
             {ubbButtons}
           </div>
