@@ -289,8 +289,7 @@ td {
   min-width: 71.25rem;
   margin-bottom: 2.5rem;
   z-index: 0;
-  filter: grayscale(1);
-  -webkit-filter: grayscale(1);
+
   a:hover {
     text-decoration: underline;
   }
@@ -717,8 +716,6 @@ td {
   background: $background_image no-repeat center;
   z-index: 2;
   background-size: 120rem, 12rem;
-  filter: grayscale(1);
-  -webkit-filter: grayscale(1);
 }
 
 .headerWithoutImage {
