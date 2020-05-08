@@ -1790,20 +1790,10 @@ export async function getMessageSystem(from: number, size: number, router) {
         return [];
     }
 
-    //把postId统计存到一个数组里，然后批量查询一下，从而得到每个楼层信息和回复者信息
-    let postsId = [];
-    for (let item of newTopic) {
-        if (item.postId) {
-            postsId.push(item.postId);
-        }
-    }
-    //console.log("获取的postsId", postsId);
-    let postsInfo = await getBasicPostsInfo(postsId);
     //补充楼层信息
     for (let i in newTopic) {
         if (newTopic[i].postId) {
-            let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
-            newTopic[i].floor = postInfo.floor;
+            newTopic[i].floor = newTopic[i].postBasicInfo.floor;
         }
         else {
             newTopic[i].floor = 0;
@@ -1843,17 +1833,12 @@ export async function getMessageResponse(from: number, size: number, router) {
         }
         let newTopic = await response.json();
         //把postId、topicId分别统计存到一个数组里，然后批量查询一下
-        let postsId = [];
         let topicsId = [];
         for (let item of newTopic) {
-            if (item.postId) {
-                postsId.push(item.postId);
-            }
             if (item.topicId) {
                 topicsId.push(item.topicId);
             }
         }
-        let postsInfo = await getBasicPostsInfo(postsId);
         let topicsInfo = await getBasicTopicsInfo(topicsId);
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
@@ -1866,10 +1851,9 @@ export async function getMessageResponse(from: number, size: number, router) {
                 }
                 //获取楼层信息和回复者信息
                 if (newTopic[i].postId) {
-                    let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
-                    newTopic[i].floor = postInfo.floor;
-                    newTopic[i].userId = postInfo.userId;
-                    newTopic[i].userName = postInfo.userName;
+                    newTopic[i].floor = newTopic[i].postBasicInfo.floor;
+                    newTopic[i].userId = newTopic[i].postBasicInfo.userId;
+                    newTopic[i].userName = newTopic[i].postBasicInfo.userName;
                 }
                 else {
                     newTopic[i].floor = 1;
@@ -1884,6 +1868,8 @@ export async function getMessageResponse(from: number, size: number, router) {
         //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
+
+
 
 //获取@我的通知
 export async function getMessageAttme(from: number, size: number, router) {
@@ -1917,17 +1903,12 @@ export async function getMessageAttme(from: number, size: number, router) {
         let newTopic = await response.json();
         //console.log("获取到的新@数据", newTopic);
         //把postId、topicId分别统计存到一个数组里，然后批量查询一下
-        let postsId = [];
         let topicsId = [];
         for (let item of newTopic) {
-            if (item.postId) {
-                postsId.push(item.postId);
-            }
             if (item.topicId) {
                 topicsId.push(item.topicId);
             }
         }
-        let postsInfo = await getBasicPostsInfo(postsId);
         let topicsInfo = await getBasicTopicsInfo(topicsId);
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
@@ -1940,10 +1921,9 @@ export async function getMessageAttme(from: number, size: number, router) {
                 }
                 //获取楼层信息和回复者信息
                 if (newTopic[i].postId) {
-                    let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
-                    newTopic[i].floor = postInfo.floor;
-                    newTopic[i].userId = postInfo.userId;
-                    newTopic[i].userName = postInfo.userName;
+                    newTopic[i].floor = newTopic[i].postBasicInfo.floor;
+                    newTopic[i].userId = newTopic[i].postBasicInfo.userId;
+                    newTopic[i].userName = newTopic[i].postBasicInfo.userName;
                 }
                 else {
                     newTopic[i].floor = 1;
@@ -1958,6 +1938,8 @@ export async function getMessageAttme(from: number, size: number, router) {
         //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
+
+
 export async function plus1(topicId, postId, reason) {
     const url = `/post/${postId}/rating`;
     const headers = await formAuthorizeHeader();
