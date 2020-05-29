@@ -351,6 +351,7 @@ ${newProps.content.content}[/quote]
 
   /** 匿名发送UBB内容 */
   postAnonymousUbbContent = () => {
+    if(!confirm('你真的要匿名吗？')) return
     this.sendUbbTopic(true);
   }
 
