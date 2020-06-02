@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
-import { AwardInfo } from './Topic-AwardInfo';
+import  AwardInfo  from './Topic-AwardInfo';
 import { connect } from 'react-redux';
 interface Props {
     postId;
@@ -75,6 +75,7 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
     generateAwardInfo(item) {
         return <AwardInfo
             postId={this.props.postId} 
+            topicId={item.id}
             portraitUrl={item.portraitUrl} 
             content={item.content} 
             reason={item.reason} 

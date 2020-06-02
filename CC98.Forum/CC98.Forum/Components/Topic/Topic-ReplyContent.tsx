@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import * as Utility from "../../Utility";
-import { AwardInfo } from "./Topic-AwardInfo";
+import  AwardInfo  from "./Topic-AwardInfo";
 import { RouteComponent } from "../RouteComponent";
 import { PostManagement } from "./Topic-PostManagement";
 import { UbbContainer } from "../UbbContainer";

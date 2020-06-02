@@ -167,6 +167,7 @@ export class Reply extends React.Component<
     let hotReply = null;
     let awards = (
       <Award
+      key={Date.now()}
         postId={item.postId}
         updateTime={Date.now()}
         awardInfo={item.awards}
