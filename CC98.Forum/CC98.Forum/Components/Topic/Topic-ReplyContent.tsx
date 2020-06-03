@@ -173,7 +173,7 @@ export class ReplyContent extends React.Component<
           }}
         >
           {this.props.topicInfo.isAnonymous &&
-            this.props.topicInfo.todayCount > 3 && (
+            this.props.topicInfo.todayCount > 3 && this.props.floor === 1 && (
               <Tag>
                 该用户今日在本版发布了{this.props.topicInfo.todayCount}个主题帖
               </Tag>
