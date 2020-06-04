@@ -15,6 +15,7 @@ interface IP {
 
 interface Props {
     IPData: Array<IP>
+    changeStatus: ()=>void
 }
 
 interface State {
@@ -24,7 +25,7 @@ export default class extends React.Component<Props, State>{
     state: State = {
         visible: true
     }
-    onClick = () => this.setState({ visible: false })
+    onClick = () => this.props.changeStatus()
     render() {
         const { IPData } = this.props
         const { visible } = this.state

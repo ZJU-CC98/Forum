@@ -436,6 +436,7 @@ ${newProps.content.content}[/quote]
     const IPData = await Utility.findIP(this.props.topicInfo.id);
     this.setState({ IPData });
   };
+  closeIP = () => this.setState({IPData: []})
   changeEditor() {
     if (this.state.mode === 0) {
       this.setState({ mode: 1 });
@@ -793,7 +794,7 @@ ${newProps.content.content}[/quote]
           />
         )}
         {this.state.IPData.length !== 0 && (
-          <IPTable IPData={this.state.IPData} />
+          <IPTable IPData={this.state.IPData} changeStatus={this.closeIP}/>
         )}
         <NoticeMessage
           text="出现了意料之外的错误，请刷新重试，可读取之前的缓存"
