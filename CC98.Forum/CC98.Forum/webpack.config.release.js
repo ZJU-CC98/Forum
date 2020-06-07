@@ -50,6 +50,7 @@ var config = {
         css_spring_festival_dark:'./Themes/spring_festival_dark.scss',
         css_spring_festival_light:'./Themes/spring_festival_light.scss',
         css_qingming:'./Themes/qingming.scss',
+        css_dragon_boat_festival:'./Themes/dragon_boat_festival.scss',
     },
     output: {
         path: path.resolve(__dirname, 'wwwroot/'),
