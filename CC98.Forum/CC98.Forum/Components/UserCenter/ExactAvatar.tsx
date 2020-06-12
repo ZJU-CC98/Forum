@@ -255,6 +255,42 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
           }
         })
       }
+      else if (this.props.userInfo.displayTitleId === 96) {
+        imageUrl = data.影音部.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
+      else if (this.props.userInfo.displayTitleId === 99) {
+        imageUrl = data.影音部.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
+      else if (this.props.userInfo.displayTitleId === 91) {
+        imageUrl = data.认证用户.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-1.75rem'
+          }
+        })
+      }
     }
   }
 

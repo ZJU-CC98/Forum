@@ -78,13 +78,13 @@
   },
   "影音部": {
     "style": {
-      "width": "6rem",
-      "height": "6rem",
+      "width": "7.5rem",
       "position": "absolute",
-      "left": "-3rem",
-      "top": "-3rem"
+      "left": "-3.55rem",
+      "top": "-3.5rem",
+      "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/_06影音部.png",
+    "imageUrl": "/static/images/相框/影音部.png",
     "portraitShadow": true
   },
   "站务组": {
@@ -122,13 +122,13 @@
   },
   "认证用户": {
     "style": {
-      "width": "6rem",
-      "height": "6rem",
+      "width": "7.5rem",
       "position": "absolute",
-      "left": "-3rem",
-      "top": "-3rem"
+      "left": "-3.5rem",
+      "top": "-3.5rem",
+      "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/_10认证用户.png",
+    "imageUrl": "/static/images/相框/认证用户.png",
     "portraitShadow": true
   }
 }

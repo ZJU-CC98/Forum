@@ -172,7 +172,10 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         displayTitleId === 94 ||
         displayTitleId === 93 ||
         displayTitleId === 35 ||
-        displayTitleId === 86
+        displayTitleId === 86 ||
+        displayTitleId === 96 ||
+        displayTitleId === 99 ||
+        displayTitleId === 91
       )
         shadow = { boxShadow: "0 0 0" };    //目前的头像框暂时没有阴影
 
