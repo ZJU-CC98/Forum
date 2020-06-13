@@ -2466,17 +2466,24 @@ export async function getTagInfo() {
     if (getLocalStorage("tagInfo")) {
         return getLocalStorage("tagInfo");
     } else {
-        const url = `/config/global/alltag`;
+        return await getNewTagInfo()
+    }
+}
+export async function getNewTagInfo() {
+    const url = `/config/global/alltag`;
         const headers = await formAuthorizeHeader();
         const response = await cc98Fetch(url, { headers });
         const data = await response.json();
         setLocalStorage("tagInfo", data);
         return data;
-    }
 }
 export async function getTagIdbyName(name) {
     const tagInfo = await getTagInfo();
     for (let item of tagInfo) {
+        if (item.name === name) return item.id;
+    }
+    const newTagInfo = await getNewTagInfo()
+    for (let item of newTagInfo) {
         if (item.name === name) return item.id;
     }
     return false;
