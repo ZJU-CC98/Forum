@@ -28,7 +28,7 @@ export default class extends React.Component {
                 <Route path="/usercenter/myfollowings/:page?" component={MyFollowings} />
                 <Route path="/usercenter/myfans/:page?" component={MyFans} />
                 <Route path="/usercenter/myposts/:page?" component={MyPostsExact} />
-                <Route path="/usercenter/myfavorites/:page?" component={MyFavoritesPosts} />
+                <Route path="/usercenter/myfavorites/order/:order/:page?" component={MyFavoritesPosts} />
                 <Route path="/usercenter/config" component={Config} />
                 <Route path="/usercenter/mycustomboards" component={MyFavoritesBoards} />
                 <Route path="/usercenter/transferwealth" component={Wealth} />

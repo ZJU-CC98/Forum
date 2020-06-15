@@ -60,7 +60,7 @@ export default class extends React.Component<props, UserCenterNavigationState> {
                 <hr />
                 <li><NavLink to="/usercenter/myposts" activeClassName="user-center-navigation-active" className="fa-pencil-square-o"><div className="center-nav-item">我的主题</div></NavLink></li>
                 <hr />
-                <li><NavLink to="/usercenter/myfavorites" activeClassName="user-center-navigation-active" className="fa-star"><div className="center-nav-item">我的收藏</div></NavLink></li>
+                <li><NavLink to="/usercenter/myfavorites/order/0" activeClassName="user-center-navigation-active" className="fa-star"><div className="center-nav-item">我的收藏</div></NavLink></li>
                 <hr />
                 <li><NavLink to="/usercenter/mycustomboards" activeClassName="user-center-navigation-active" className="fa-rss"><div className="center-nav-item">关注版面</div></NavLink></li>
                 <hr />
