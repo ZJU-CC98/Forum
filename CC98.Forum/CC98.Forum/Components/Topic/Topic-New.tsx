@@ -87,7 +87,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
             /**
             *查看新帖数目大于100条时不再继续加载
             */
-            if (this.state.from > 99) {
+            if (this.state.from > 199) {
                 $('#focus-topic-loading').addClass('displaynone');
                 $('#focus-topic-loaddone').removeClass('displaynone');
                 return;

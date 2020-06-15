@@ -385,8 +385,8 @@ export async function getAllNewTopic(from: number, router) {
          * 一次性可以获取20个主题
          */
         var size = 20;
-        if (from > 80) {
-            size = 100 - from;
+        if (from > 180) {
+            size = 200 - from;
         }
         const headers = await formAuthorizeHeader();
         /**
@@ -503,8 +503,8 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
          * 一次性可以获取20个主题
          */
         var size = 20;
-        if (from > 80) {
-            size = 100 - from;
+        if (from > 180) {
+            size = 200 - from;
         }
         const headers = await formAuthorizeHeader();
         /**
