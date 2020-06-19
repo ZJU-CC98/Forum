@@ -1,24 +1,26 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
-import * as React from 'react';;
-import { FocusTopicArea } from './FocusTopicArea';
-import * as Utility from '../../Utility';
+import * as React from "react";
+import { FocusTopicArea } from "./FocusTopicArea";
+import * as Utility from "../../Utility";
 /**
  * 表示我关注的版面的主题列表
  */
 export class FocusUserArea extends React.Component {
+  componentDidMount() {
+    //给关注版面添加选中效果
 
-    componentDidMount() {
-        //给关注版面添加选中效果
-        $('#myFocusBoard').removeClass('focus-title-hover');
-        $('#myFocusUser').addClass('focus-title-hover');
-    }
+  }
 
-    render() {
-        return <div>
-                    <FocusTopicArea id={-1} name="关注用户" />
-               </div>;
-    }
-
+  render() {
+      console.log('in user')
+    $("#myFocusBoard").removeClass("focus-title-hover");
+    $("#myFocusUser").addClass("focus-title-hover");
+    return (
+      <div>
+        <FocusTopicArea id={-1} name="关注用户" />
+      </div>
+    );
+  }
 }

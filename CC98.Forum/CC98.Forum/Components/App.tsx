@@ -1,47 +1,46 @@
-﻿import * as React from 'react';
-import { AppState } from '../States/AppState';
-import { match } from 'react-router';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
-import { history } from '../Store';
-import { Post, ShowTopic } from './Topic/Topic';
-import { BList } from './Board/Board';
-import { CurUserPost } from './Topic/Topic-Trace';
-import { BoardList } from './Board/BoardList';
-import UserCenter from './UserCenter/UserCenter';
-import { Message } from './Message/Message';
-import { AllNewTopic } from './Topic/Topic-New';
-import { Focus } from './Focus/Focus';
-import { Header } from './Header';
-import { Footer } from './Footer';
-import { MainPage } from './MainPage';
-import User from './UserCenter/User/User';
-import LogOn from './LogOn';
-import * as Status from './Status';
-import { UbbContainer } from './UbbContainer';
-import { Search } from './Search/Search';
-import { SearchBoard } from './Search/SearchBoard';
-import { Signin } from './Signin';
-import { SiteManage } from './SiteManage/Index';
-import { ShowEdit } from './Edit';
-import { MonthlyHotTopic } from './Topic/Topic-Hot-Monthly';
-import { WeeklyHotTopic } from './Topic/Topic-Hot-Weekly';
-import { HistoryHotTopic } from './Topic/Topic-Hot-History';
-import ErrorControl from './ErrorControl';
-import NotificationController from './NotificationController';
+﻿import * as React from "react";
+import { AppState } from "../States/AppState";
+import { match } from "react-router";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { ConnectedRouter } from "react-router-redux";
+import { history } from "../Store";
+import { Post, ShowTopic } from "./Topic/Topic";
+import { BList } from "./Board/Board";
+import { CurUserPost } from "./Topic/Topic-Trace";
+import { BoardList } from "./Board/BoardList";
+import UserCenter from "./UserCenter/UserCenter";
+import { Message } from "./Message/Message";
+import { AllNewTopic } from "./Topic/Topic-New";
+import Focus from "./Focus/Focus";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
+import { MainPage } from "./MainPage";
+import User from "./UserCenter/User/User";
+import LogOn from "./LogOn";
+import * as Status from "./Status";
+import { UbbContainer } from "./UbbContainer";
+import { Search } from "./Search/Search";
+import { SearchBoard } from "./Search/SearchBoard";
+import { Signin } from "./Signin";
+import { SiteManage } from "./SiteManage/Index";
+import { ShowEdit } from "./Edit";
+import { MonthlyHotTopic } from "./Topic/Topic-Hot-Monthly";
+import { WeeklyHotTopic } from "./Topic/Topic-Hot-Weekly";
+import { HistoryHotTopic } from "./Topic/Topic-Hot-History";
+import ErrorControl from "./ErrorControl";
+import NotificationController from "./NotificationController";
 
-import { Constants } from './Constant';
-import * as Utility from '../Utility';
-import { RootState } from '../Store';
-import { errorKeys } from '../Reducers/Error';
-import { connect } from 'react-redux';
+import { Constants } from "./Constant";
+import * as Utility from "../Utility";
+import { RootState } from "../Store";
+import { errorKeys } from "../Reducers/Error";
+import { connect } from "react-redux";
 
-import AnnualReview from '../Pages/AnnualReview'
-import { Index } from '../Pages/Index/Index'
+import AnnualReview from "../Pages/AnnualReview";
+import { Index } from "../Pages/Index/Index";
 
 // 重构
-import RBoard from '../Pages/Board/index';
-
+import RBoard from "../Pages/Board/index";
 
 type Props = {
   isError: boolean;
@@ -81,11 +80,7 @@ class App extends React.Component<Props> {
         <Route path="/error/401" component={Status.UnauthorizedBoard} />
         <Route path="/index" component={Index} />
 
-
         <Route component={Status.PageNotFound} />
-
-
-
       </Switch>
     );
 
@@ -98,8 +93,8 @@ class App extends React.Component<Props> {
             {!this.props.isError ? (
               router
             ) : (
-                <Route component={Status[this.props.errorMessage]} />
-              )}
+              <Route component={Status[this.props.errorMessage]} />
+            )}
             <Footer />
             {/* <NotificationController />*/}
           </div>
@@ -112,7 +107,7 @@ class App extends React.Component<Props> {
 function mapState(state: RootState) {
   return {
     isError: state.error.isError,
-    errorMessage: state.error.errorMessage
+    errorMessage: state.error.errorMessage,
   };
 }
 

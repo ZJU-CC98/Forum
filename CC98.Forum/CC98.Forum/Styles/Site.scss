@@ -2080,7 +2080,7 @@ a {
   color: #6b7178;
   flex-shrink: 0;
   margin-right: 20px;
-
+  cursor: pointer;
   &:hover {
     @extend .focus-title-hover;
   }
@@ -2112,12 +2112,6 @@ a {
     margin-right: 1rem;
     margin-top: 1rem;
     flex-shrink: 0;
-
-    &:hover {
-      background-color: $theme_color_main;
-      color: rgb(255, 255, 255);
-      cursor: pointer;
-    }
   }
 
   .focus-hover {

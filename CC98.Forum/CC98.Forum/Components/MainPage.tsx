@@ -528,6 +528,10 @@ export class MainPageCountComponent extends React.Component<{ data }, {}> {
           <div className="mainPageCountTitle">{data.todayCount || 0}</div>
         </div>
         <div className="mainPageCountRow">
+          <div className="mainPageCountTitle">今日主题数</div>
+          <div className="mainPageCountTitle">{data.todayTopicCount || 0}</div>
+        </div>
+        <div className="mainPageCountRow">
           <div className="mainPageCountTitle">论坛总主题数</div>
           <div className="mainPageCountTitle">{data.topicCount || 0}</div>
         </div>
