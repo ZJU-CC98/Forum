@@ -45,10 +45,10 @@
   },
   "技术组": {
     "style": {
-      "width": "7.5rem",
+      "width": "6.6rem",
       "position": "absolute",
-      "left": "-3.5rem",
-      "top": "-3.5rem",
+      "left": "-3.3rem",
+      "top": "-3.3rem",
       "z-index": "150"
     },
     "imageUrl": "/static/images/相框/技术组.png",
