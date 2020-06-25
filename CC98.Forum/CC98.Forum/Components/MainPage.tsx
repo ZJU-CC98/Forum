@@ -522,7 +522,7 @@ export class MainPageCountComponent extends React.Component<{ data }, {}> {
           <div className="mainPageTitleText">论坛统计</div>
         </div>
       </div>
-      <div className="mainPageCountContent" style={{ height: "10rem" }}>
+      <div className="mainPageCountContent">
         <div className="mainPageCountRow">
           <div className="mainPageCountTitle">今日帖数</div>
           <div className="mainPageCountTitle">{data.todayCount || 0}</div>
@@ -574,6 +574,7 @@ export class MainPageCountProps {
 
   //属性
   todayCount: number;
+  todayTopicCount:number;
   topicCount: number;
   postCount: number;
   onlineUserCount: number;
@@ -581,8 +582,9 @@ export class MainPageCountProps {
   lastUserName: string;
 
   //构造方法
-  constructor(todayCount, topicCount, postCount, onlineUserCount, userCount, lastUserName) {
+  constructor(todayCount,todayTopicCount, topicCount, postCount, onlineUserCount, userCount, lastUserName) {
     this.todayCount = todayCount;
+    this.todayTopicCount = todayTopicCount;
     this.topicCount = topicCount;
     this.postCount = postCount;
     this.onlineUserCount = onlineUserCount;
@@ -683,7 +685,7 @@ export class MainPage extends React.Component<{}, { data }> {
     let fullTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/board/235" });
     let partTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/board/459" });
 
-    let count: MainPageCountProps = new MainPageCountProps(data.todayCount, data.topicCount, data.postCount, data.onlineUserCount, data.userCount, data.lastUserName);
+    let count: MainPageCountProps = new MainPageCountProps(data.todayCount,data.todayTopicCount, data.topicCount, data.postCount, data.onlineUserCount, data.userCount, data.lastUserName);
 
     return <div className="mainPage">
       <DocumentTitle title={`CC98论坛`} />
