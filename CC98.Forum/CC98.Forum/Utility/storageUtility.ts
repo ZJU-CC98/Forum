@@ -82,7 +82,7 @@ export function getLocalStorage(key) {
         console.log(typeof obj)
         // 锁定用户检测退出登录
         if (key === 'userInfo') {
-            if (obj.lockState !== 0) {
+            if (obj.lockState === 1 || obj.lockState === 2) {
                 localStorage.clear()
                 window.location.href = 'https://www.cc98.org/logon'
                 return obj
