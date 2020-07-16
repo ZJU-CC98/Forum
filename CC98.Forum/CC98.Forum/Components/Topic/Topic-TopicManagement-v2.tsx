@@ -249,10 +249,10 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                 )}
             </FormItem>
             <FormItem>
-                <Select defaultValue={boards.length>0?boards[0].name:''} style={{ width: 90 }} onChange={this.handleBoardChange}>
+                <Select defaultValue={boards.length>0?boards[0].name:''} style={{ width: 120 }} onChange={this.handleBoardChange}>
                     {boardOptions}
                 </Select>
-                <Select style={{ marginLeft: "2rem", width: 90 }} onChange={this.onChildBoardChange}>
+                <Select style={{ marginLeft: "2rem", width: 120 }} onChange={this.onChildBoardChange}>
                     {childBoardOptions}
                 </Select>
 
