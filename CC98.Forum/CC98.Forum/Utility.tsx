@@ -489,7 +489,7 @@ export async function getAllNewTopic(from: number, router) {
 }
 
 /**
- * 获取关注帖子,boardId == -1为关注用户帖子, boardId === 0 为全部关注版面帖子, boardId > 0则为对应版面帖子
+ * 获取关注帖子,borderId == -2 为收藏的帖子，boardId == -1为关注用户帖子, boardId === 0 为全部关注版面帖子, boardId > 0则为对应版面帖子
  * @param curPage
  */
 export async function getFocusTopic(boardId: number, boardName: string, from: number, router) {
@@ -516,6 +516,9 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
         }
         else if (boardId === 0) {
             response = await cc98Fetch(`/me/custom-board/topic?from=${from}&size=${size}`, { headers });
+        }
+        else if (boardId === -2){
+            response = await cc98Fetch(`/topic/me/favorite?from=${from}&size=${size}&order=1`, { headers });
         }
         else {
             response = await cc98Fetch(`/board/${boardId}/topic?from=${from}&size=${size}`, { headers });

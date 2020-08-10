@@ -28,7 +28,8 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
             data: data,
             from: 0,
             loading: true,
-            buttonClassName: ''
+            buttonClassName: '',
+            stop:false
         };
         this.handleScroll = this.handleScroll.bind(this);
     }
@@ -89,9 +90,10 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
         //控制获取新帖
         if (Utility.isBottom() && this.state.loading) {
             /**
-            *查看新帖数目大于200条时不再继续加载
-            */
-            if (this.state.from > 199) {
+             * 查看新帖数目大于200条时不再继续加载
+             * 或者加载时已经加载完了
+             */
+            if (this.state.stop || this.state.from > 199) {
                 $('#focus-topic-loading').addClass('displaynone');
                 $('#focus-topic-loaddone').removeClass('displaynone');
                 return;
@@ -108,6 +110,11 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
                 */
                 this.setState({ loading: true });
                 return;
+            }
+            finally{
+                if(newData.length === 0){
+                    this.setState({stop:true});
+                }
             }
             /**
             *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
