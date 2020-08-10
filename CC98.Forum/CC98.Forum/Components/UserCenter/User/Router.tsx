@@ -80,12 +80,13 @@ class UserExact extends React.Component<Props, States> {
                 throw new Error();
             } else if (method === 'name') {
                 key = id;
+                //console.log(key);
             }
             else if (method === 'id') {
                 key = Number.parseInt(id);
             }
             myHeaders.append('Authorization', await Utility.getToken());
-            url = typeof key === 'number' ? `/user/${key}` : `/user/name/${encodeURIComponent(key)}`;
+            url = typeof key === 'number' ? `/user/${key}` : `/user/name/${key}`;
             let headers = await Utility.formAuthorizeHeader();
             let res = await Utility.cc98Fetch(url, { headers });
             let userInfo = await res.json();

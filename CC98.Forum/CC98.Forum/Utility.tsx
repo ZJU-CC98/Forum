@@ -2725,7 +2725,7 @@ export function atUserUbbUrl(content: string) {
             for (let i = 0; i < atNum; i++) {
                 //给@用户名加上效果
                 let atText = new RegExp(`@${ats[i]}[ ]`, "g");
-                content = content.replace(atText, `[url="/user/name/${ats[i]}"]@${ats[i]} [/url]`);
+                content = content.replace(atText, `[url="/user/name/${encodeURIComponent(ats[i])}"]@${ats[i]} [/url]`);
             }
             return content;
         } else {
