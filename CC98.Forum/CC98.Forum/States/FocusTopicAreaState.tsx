@@ -10,4 +10,5 @@ export class FocusTopicAreaState {
     from: number;
     loading: boolean;
     buttonClassName: string;
+    stop?:boolean;
 }

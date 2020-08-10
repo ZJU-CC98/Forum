@@ -9,14 +9,13 @@ import * as Utility from "../../Utility";
  */
 export class FocusUserArea extends React.Component {
   componentDidMount() {
-    //给关注版面添加选中效果
-
+    $("#myFocusBoard").removeClass("focus-title-hover");
+    $("#myFocusFavorite").removeClass("focus-title-hover");
+    $("#myFocusUser").addClass("focus-title-hover");
   }
 
   render() {
-      console.log('in user')
-    $("#myFocusBoard").removeClass("focus-title-hover");
-    $("#myFocusUser").addClass("focus-title-hover");
+
     return (
       <div>
         <FocusTopicArea id={-1} name="关注用户" />

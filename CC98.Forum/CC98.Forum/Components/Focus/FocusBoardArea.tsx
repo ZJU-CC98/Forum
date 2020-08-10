@@ -78,6 +78,10 @@ export class FocusBoardArea extends React.Component<{history}, FocusBoardAreaSta
             let boardId = this.id.slice(11);
             window.location.href=`/board/${boardId}`;
         });
+
+        $('#myFocusUser').removeClass('focus-title-hover');
+        $("#myFocusFavorite").removeClass("focus-title-hover");
+        $('#myFocusBoard').addClass('focus-title-hover');
     }
 
     
@@ -87,9 +91,7 @@ export class FocusBoardArea extends React.Component<{history}, FocusBoardAreaSta
     }
     
     render() {
-        console.log('in board')
-        $('#myFocusUser').removeClass('focus-title-hover');
-        $('#myFocusBoard').addClass('focus-title-hover');
+
         return <div>
                     <div className="focus-board-area">
                         <div className="focus-board" id="focusBoard_0">全部帖子</div>
