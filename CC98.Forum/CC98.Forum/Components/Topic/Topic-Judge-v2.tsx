@@ -18,11 +18,12 @@ interface Props {
 interface States{
     current;
     option;
+    loading;
 }
 export default Form.create<Props>()(class extends React.Component< Props& FormComponentProps, States>{
     constructor(props) {
         super(props);
-        this.state = { current: "0", option: "" };
+        this.state = { current: "0", option: "", loading:false };
 
     }
     handleChange = (value) => {
@@ -36,6 +37,7 @@ export default Form.create<Props>()(class extends React.Component< Props& FormCo
             if (err) {
                 return;
             }
+            this.setState({loading:true})
             value = values.reason.toString();
             console.log(value, this.state.current);
             switch (this.state.current) {
@@ -49,12 +51,13 @@ export default Form.create<Props>()(class extends React.Component< Props& FormCo
                     alert("请选择加风评还是扣风评。")
                     break;
             }
+            this.setState({loading: false})
             if (status === 'ok') {
                 this.props.update();
                 this.props.onCancel();
             } else {
                 if (status === 'already')
-                    alert("您今天已经评分过了");
+                    alert("您今天已经评分过了，或者还未到500贴~");
                 else if (status === 'not allowed')
                     alert("您还没有资格评分~");
                 else if (status === "rateself")
@@ -114,6 +117,7 @@ export default Form.create<Props>()(class extends React.Component< Props& FormCo
                 cancelText="取消"
                 onOk={this.onCreate}
                 onCancel={onCancel}
+                confirmLoading={this.state.loading}
             >
                 <Menu
                     onClick={this.handleClick}
