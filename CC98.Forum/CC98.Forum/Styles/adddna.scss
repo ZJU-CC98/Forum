@@ -685,7 +685,7 @@ td {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
+  max-height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
   justify-content: space-between;
 }
 
