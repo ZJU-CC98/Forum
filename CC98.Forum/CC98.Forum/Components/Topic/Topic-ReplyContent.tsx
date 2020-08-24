@@ -79,6 +79,7 @@ export class ReplyContent extends React.Component<
       extensions: [showdownExtension],
     });
     converter.setOption("tables", true);
+    converter.setOption("strikethrough", true)
     const html = converter.makeHtml(parseContent);
     if (document.getElementById(domId)) {
       document.getElementById(domId).innerHTML = html;
