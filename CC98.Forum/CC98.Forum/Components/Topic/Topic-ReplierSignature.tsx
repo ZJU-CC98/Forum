@@ -74,7 +74,7 @@ export default withRouter(class extends React.Component<withRouterProps & Props,
         Utility.noticeMessageShow("notLogOn");
         break;
       case 403:
-        Utility.noticeMessageShow("likeFast");
+        Utility.noticeMessageShow("tooFast");
         break;
     }
   }
