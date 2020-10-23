@@ -199,54 +199,57 @@ export async function getTopicContent(topicid: number, curPage: number) {
         //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
-export async function like(topicid, postid, router) {
+export async function like(topicid, postid, router): Promise<number> {
     try {
         const headers = await formAuthorizeHeader();
         headers.append("Content-Type", "application/json");
         const content = "1";
         const response = await cc98Fetch(`/post/${postid}/like`, { method: "PUT", headers, body: content });
-        if (response.status === 401) {
-            store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
-        }
-        if (response.status === 403) {
-            // store.dispatch(ErrorActions.throwError('OperationForbidden'));
-            return
-        }
-        if (response.status === 404) {
-            store.dispatch(ErrorActions.throwError('NotFoundTopic'));
-        }
-        if (response.status === 500) {
-            store.dispatch(ErrorActions.throwError('ServerError'));
-        }
-        const data = await response.json();
-        return data;
+        // if (response.status === 401) {
+        //     store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
+        // }
+        // if (response.status === 403) {
+        //     // store.dispatch(ErrorActions.throwError('OperationForbidden'));
+        //     return
+        // }
+        // if (response.status === 404) {
+        //     store.dispatch(ErrorActions.throwError('NotFoundTopic'));
+        // }
+        // if (response.status === 500) {
+        //     store.dispatch(ErrorActions.throwError('ServerError'));
+        // }
+        // const data = await response.json();
+        // return data;
+        //console.info("like fetch " + response.status);
+        return response.status;
 
     } catch (e) {
         //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
-export async function dislike(topicid, postid, router) {
+export async function dislike(topicid, postid, router): Promise<number> {
     try {
         const headers = await formAuthorizeHeader();
         headers.append("Content-Type", "application/json");
         const content: string = "2";
         const response = await cc98Fetch(`/post/${postid}/like`, { method: "PUT", headers, body: content });
-        if (response.status === 401) {
-            store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
-        }
+        // if (response.status === 401) {
+        //     store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
+        // }
 
-        if (response.status === 403) {
-            // store.dispatch(ErrorActions.throwError('OperationForbidden'));
-            return
-        }
-        if (response.status === 404) {
-            store.dispatch(ErrorActions.throwError('NotFoundTopic'));
-        }
-        if (response.status === 500) {
-            store.dispatch(ErrorActions.throwError('ServerError'));
-        }
-        const data = await response.json();
-        return data;
+        // if (response.status === 403) {
+        //     // store.dispatch(ErrorActions.throwError('OperationForbidden'));
+        //     return
+        // }
+        // if (response.status === 404) {
+        //     store.dispatch(ErrorActions.throwError('NotFoundTopic'));
+        // }
+        // if (response.status === 500) {
+        //     store.dispatch(ErrorActions.throwError('ServerError'));
+        // }
+        // const data = await response.json();
+        // return data;
+        return response.status;
 
     } catch (e) {
         //store.dispatch(ErrorActions.throwError('Disconnected'));
@@ -445,7 +448,7 @@ export async function getAllNewTopic(from: number, router) {
                 }
             }
             //处理匿名与非匿名主题，非匿名主题用户批量获取信息
-            if(!item.isAnonymous){
+            if (!item.isAnonymous) {
                 //获取所在版面名称
                 item.boardName = await getBoardName(item.boardId);
                 aTopic.push(item);
@@ -517,7 +520,7 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
         else if (boardId === 0) {
             response = await cc98Fetch(`/me/custom-board/topic?from=${from}&size=${size}`, { headers });
         }
-        else if (boardId === -2){
+        else if (boardId === -2) {
             response = await cc98Fetch(`/topic/me/favorite?from=${from}&size=${size}&order=1`, { headers });
         }
         else {
@@ -1960,7 +1963,7 @@ export async function plus1(topicId, postId, reason) {
             // if (await response.text() === 'you_cannot_rate')
             //     return 'not allowed';
             // else
-                return 'already';
+            return 'already';
         case 500:
             return 'server error';
     }
@@ -1982,7 +1985,7 @@ export async function minus1(topicId, postId, reason) {
             // if (await response.text() === 'you_cannot_rate')
             //     return 'not allowed';
             // else
-                return 'already';
+            return 'already';
         case 500:
             return 'server error';
     }
@@ -2474,11 +2477,11 @@ export async function getTagInfo() {
 }
 export async function getNewTagInfo() {
     const url = `/config/global/alltag`;
-        const headers = await formAuthorizeHeader();
-        const response = await cc98Fetch(url, { headers });
-        const data = await response.json();
-        setLocalStorage("tagInfo", data);
-        return data;
+    const headers = await formAuthorizeHeader();
+    const response = await cc98Fetch(url, { headers });
+    const data = await response.json();
+    setLocalStorage("tagInfo", data);
+    return data;
 }
 export async function getTagIdbyName(name) {
     const tagInfo = await getTagInfo();
