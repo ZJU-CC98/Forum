@@ -96,7 +96,7 @@ class LogOnExact extends React.Component<Props, LogOnState> {
         console.log('logging...')
         this.props.logOff();
         try {
-            let url = 'https://qsh.openid.cc98.top/connect/token';
+            let url = 'https://openid.cc98.org/connect/token';
 
             /*
             请求的正文部分，密码模式需要5个参数，其中client_id和client_secret来自申请的应用，grant_type值固定为"password"

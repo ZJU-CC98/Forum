@@ -22,7 +22,7 @@ export async function getToken() {
         return token;
     }
 
-    const url = 'https://qsh.openid.cc98.top/connect/token';
+    const url = 'https://openid.cc98.org/connect/token';
     const requestBody = {
         client_id: '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
         client_secret: '8b53f727-08e2-4509-8857-e34bf92b27f2',
