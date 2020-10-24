@@ -1,0 +1,19 @@
+{
+    "folders": [
+        {
+            "name": "CC98 Forum",
+            "path": "CC98.Forum/CC98.Forum"
+        }
+    ],
+    "settings": {
+        "prettier.enable": false,
+        "prettier.disableLanguages": [
+            "javascript",
+            "javascriptreact",
+            "typescript",
+            "typescriptreact",
+            "json",
+            "jsonc"
+        ]
+    }
+}

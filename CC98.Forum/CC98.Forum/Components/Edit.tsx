@@ -929,13 +929,13 @@ class EditForm extends RouteComponent<
                 },
               }}
             />
-            <div
+            <button
               id="post-topic-button"
               onClick={this.editMd.bind(this)}
               className="button blue"
             >
               编辑
-            </div>
+            </button>
           </div>
         );
       }
