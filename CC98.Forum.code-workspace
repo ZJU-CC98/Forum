@@ -1,8 +1,12 @@
 {
     "folders": [
         {
-            "name": "CC98 Forum",
+            "name": "CC98 Forum Source Code",
             "path": "CC98.Forum/CC98.Forum"
+        },
+        {
+            "name": "Project Root",
+            "path": "."
         }
     ],
     "settings": {
