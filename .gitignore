@@ -297,3 +297,4 @@ __pycache__/
 
 /CC98.Forum/CC98.Forum/vscodeConfig/wwwroot
 yarn.lock
+*.code-workspace
