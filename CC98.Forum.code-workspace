@@ -13,7 +13,9 @@
             "typescript",
             "typescriptreact",
             "json",
-            "jsonc"
-        ]
+            "jsonc",
+            "scss"
+        ],
+        "files.trimTrailingWhitespace": true
     }
 }

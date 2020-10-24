@@ -1945,11 +1945,11 @@ a {
     flex-direction: row;
     border-bottom: 1px dashed lightgray;
 
-    /*.message-response-box-left { 
+    /*.message-response-box-left {
             flex-basis: 100px;
             flex-shrink: 0;
 
-            .message-response-img { 
+            .message-response-img {
                 margin: 30px 20px;
                 border-radius: 50%;
                 width: 60px;
@@ -2043,7 +2043,7 @@ a {
       }
     }
 
-    /*.message-response-box-right { 
+    /*.message-response-box-right {
             flex-basis: 60px;
             line-height: 100px;
             font-size: 14px;
@@ -2379,8 +2379,8 @@ a {
 
     .focus-topic-board {
         margin: 24px 18px 0px;
-        word-break: keep-all; 
-        white-space: nowrap; 
+        word-break: keep-all;
+        white-space: nowrap;
         a {
             color: $color-thinBlack;
         }
@@ -3472,11 +3472,6 @@ variable {
   line-height: 160px;
   background: #364d79;
   overflow: hidden;
-}
-
-* {
-  margin: 0;
-  padding: 0;
 }
 
 .signature iframe {
