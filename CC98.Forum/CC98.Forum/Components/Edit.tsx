@@ -257,6 +257,13 @@ class EditForm extends RouteComponent<
   sendMdTopic = async (isAnonymous: boolean) => {
     //投票帖禁止匿名
     let _isAnonymous = isAnonymous;
+    if (
+      (this.state.tags.length === 1 && !this.state.tag1) ||
+      (this.state.tags.length === 2 && (!this.state.tag1 || !this.state.tag2))
+    ) {
+      alert("请选择标签");
+      return;
+    }
     if (this.match.params.mode === "postVoteTopic") {
       _isAnonymous = false;
       // 投票内容发布前检查合法性
@@ -366,6 +373,15 @@ class EditForm extends RouteComponent<
   sendUbbTopic = async (isAnonymous: boolean) => {
     //投票帖禁止匿名
     let _isAnonymous = isAnonymous;
+    console.log("------");
+    console.log(this.state);
+    if (
+      (this.state.tags.length === 1 && !this.state.tag1) ||
+      (this.state.tags.length === 2 && (!this.state.tag1 || !this.state.tag2))
+    ) {
+      alert("请选择标签");
+      return;
+    }
     if (this.match.params.mode === "postVoteTopic") {
       _isAnonymous = false;
       //投票内容发布前检查合法性
@@ -929,13 +945,13 @@ class EditForm extends RouteComponent<
                 },
               }}
             />
-            <div
+            <button
               id="post-topic-button"
               onClick={this.editMd.bind(this)}
               className="button blue"
             >
               编辑
-            </div>
+            </button>
           </div>
         );
       }
@@ -1368,8 +1384,8 @@ export class InputTitle extends React.Component<
       );
     let tagInfo = null;
     if (this.state.tags.length === 2) {
-      let defaultTag1 = this.state.tags[0].tags[0].name;
-      let defaultTag2 = this.state.tags[1].tags[0].name;
+      let defaultTag1 = "";
+      let defaultTag2 = "";
       if (this.state.tag1) defaultTag1 = this.state.tag1;
       if (this.state.tag2) defaultTag2 = this.state.tag2;
       tagInfo = (
@@ -1391,7 +1407,7 @@ export class InputTitle extends React.Component<
         </div>
       );
     } else if (this.state.tags.length == 1) {
-      let defaultTag1 = this.state.tags[0].tags[0].name;
+      let defaultTag1 = "";
       if (this.state.tag1) defaultTag1 = this.state.tag1;
       tagInfo = (
         <div className="row">
