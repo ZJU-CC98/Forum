@@ -199,9 +199,8 @@ ${newProps.content.content}
         if (floor > 10) {
           page = parseInt(((floor - 1) / 10).toString()) + 1;
           floor = floor % 10;
-          url = `/topic/${this.props.topicInfo.id}/${page}#${
-            floor === 0 ? 10 : floor
-          }`;
+          url = `/topic/${this.props.topicInfo.id}/${page}#${floor === 0 ? 10 : floor
+            }`;
         } else {
           url = `/topic/${this.props.topicInfo.id}#${newProps.content.floor}`;
         }

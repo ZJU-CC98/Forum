@@ -17,7 +17,7 @@ type ownProps = {
     logOn: () => void;
     logOff: () => void;
     history: History;
-    changeUserInfo: (newInfo: UserInfo ) => void;
+    changeUserInfo: (newInfo: UserInfo) => void;
 }
 
 type Props = RouteComponentProps<null> & ownProps;
@@ -95,7 +95,7 @@ class LogOnExact extends React.Component<Props, LogOnState> {
         });
         console.log('logging...')
         this.props.logOff();
-        try {            
+        try {
             let url = 'https://openid.cc98.org/connect/token';
 
             /*
@@ -142,12 +142,12 @@ class LogOnExact extends React.Component<Props, LogOnState> {
             //跳转
             setTimeout(() => {
                 if (this.props.history.length === 1) {
-                  //  this.props.history.push('/');
-                    document.location.href="/";
+                    //  this.props.history.push('/');
+                    document.location.href = "/";
                 } else {
                     const url = localStorage.getItem("logOnRedirectUrl");
-                   // this.props.history.go(-1);
-                   document.location.href=url;
+                    // this.props.history.go(-1);
+                    document.location.href = url;
                 }
             }, 100);
         } catch (e) {
@@ -178,10 +178,10 @@ class LogOnExact extends React.Component<Props, LogOnState> {
                         <img src="/static/images/login_welcome.png" />
                         <form onSubmit={this.handleLogin} autoComplete="on">
                             <div className="login-form">
-                                <p>用户名</p><input name="username" type="text" id="loginName" onChange={this.handleNameChange} value={this.state.loginName} autoComplete="username"/>
+                                <p>用户名</p><input name="username" type="text" id="loginName" onChange={this.handleNameChange} value={this.state.loginName} autoComplete="username" />
                             </div>
                             <div className="login-form">
-                                <p>密码</p><input name="password" type="password" id="loginPassword" onChange={this.handlePasswordChange} autoComplete="current-password"/>
+                                <p>密码</p><input name="password" type="password" id="loginPassword" onChange={this.handlePasswordChange} autoComplete="current-password" />
                             </div>
                             <p className="login-message" id="loginMessage">{this.state.loginMessage}</p>
                             <button type="submit" disabled={this.state.isLoging}>登录账号</button>

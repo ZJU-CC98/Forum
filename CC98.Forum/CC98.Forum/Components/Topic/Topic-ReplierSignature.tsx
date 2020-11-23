@@ -1,5 +1,6 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
+import { NoticeMessage } from "../NoticeMessage";
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
@@ -9,6 +10,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as moment from 'moment';
 import * as Popover from 'antd/es/popover';
 import * as Button from 'antd/es/button';
+import { data } from 'jquery';
 interface Props {
   postInfo;
   topicInfo;
@@ -61,64 +63,42 @@ export default withRouter(class extends React.Component<withRouterProps & Props,
   async like() {
     const idLike = `#like${this.props.postInfo.id}`;
     const idDislike = `#dislike${this.props.postInfo.id}`;
-    //取消赞
-    if (this.state.likeState === 1) {
-      await Utility.like(this.props.topicInfo.id, this.props.postInfo.id, this.context.router);
-      $(idLike).css("color", "#8dc9db");
-    }
-    //踩改赞
-    else if (this.state.likeState === 2) {
-      await Utility.dislike(this.props.topicInfo.id, this.props.postInfo.id, this.context.router);
-      await Utility.like(this.props.topicInfo.id, this.props.postInfo.id, this.context.router);
-      $(idLike).css("color", "red");
-      $(idDislike).css("color", "#8dc9db");
-    }
-    //单纯赞
-    else {
-      await Utility.like(this.props.topicInfo.id, this.props.postInfo.id, this.context.router);
-      $(idLike).css("color", "red");
-    }
-    const data = await Utility.refreshLikeState(this.props.topicInfo.id, this.props.postInfo.id);
+    const status = await Utility.like(this.props.topicInfo.id, this.props.postInfo.id, this.context.router);
 
-    this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+    switch (status) {
+      case 200:
+        const data = await Utility.refreshLikeState(this.props.topicInfo.id, this.props.postInfo.id);
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+        break;
+      case 401:
+        Utility.noticeMessageShow("notLogOn");
+        break;
+      case 403:
+        Utility.noticeMessageShow("tooFast");
+        break;
+    }
   }
 
   async dislike() {
     const idLike = `#like${this.props.postInfo.id}`;
     const idDislike = `#dislike${this.props.postInfo.id}`;
 
-    //取消踩
-    if (this.state.likeState === 2) {
-      await Utility.dislike(this.props.topicInfo.id, this.props.postInfo.id, this.context.router);
-      $(idDislike).css("color", "#8dc9db");
+    const status = await Utility.dislike(this.props.topicInfo.id, this.props.postInfo.id, this.context.router);
+
+    switch (status) {
+      case 200:
+        const data = await Utility.refreshLikeState(this.props.topicInfo.id, this.props.postInfo.id);
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+        break;
+      case 401:
+        Utility.noticeMessageShow("notLogOn");
+        break;
+      case 403:
+        Utility.noticeMessageShow("tooFast");
+        break;
     }
-    //赞改踩
-    else if (this.state.likeState === 1) {
-      await Utility.like(this.props.topicInfo.id, this.props.postInfo.id, this.context.router);
-      await Utility.dislike(this.props.topicInfo.id, this.props.postInfo.id, this.context.router);
-      $(idLike).css("color", "#8dc9db");
-      $(idDislike).css("color", "red");
-    }
-    //单纯踩
-    else {
-      await Utility.dislike(this.props.topicInfo.id, this.props.postInfo.id, this.context.router);
-      $(idDislike).css("color", "red");
-    }
-    const data = await Utility.refreshLikeState(this.props.topicInfo.id, this.props.postInfo.id);
-    this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
   }
   async componentDidMount() {
-
-    const idLike = `#like${this.props.postInfo.id}`;
-    const idDislike = `#dislike${this.props.postInfo.id}`;
-    //const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
-    if (this.state.likeState === 1) {
-      $(idLike).css("color", "red");
-    }
-    else if (this.state.likeState === 2) {
-      $(idDislike).css("color", "red");
-    }
-    const manageIcon = `icon${this.props.postInfo.id}`;
     const manageId = `#icon${this.props.postInfo.id}`;
     if (Utility.isMaster(this.props.boardInfo.boardMasters) || (this.props.boardInfo.id == 144 && this.props.postInfo.isLZ))
       $(manageId).css("display", "");
@@ -187,8 +167,8 @@ export default withRouter(class extends React.Component<withRouterProps & Props,
         <div style={{ width: "40rem", marginLeft: "1.2rem", fontSize: "0.8rem" }}>
           <span>发表于 {moment(this.props.postInfo.time).format('YYYY-MM-DD HH:mm:ss')}</span><span style={{ marginLeft: "1rem" }}>{lastUpdate}</span></div>
         <div className="row" style={{ alignItems: "center" }}>
-          <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }} onClick={this.like.bind(this)}><i title="赞" className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-          <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩" className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+          <div id={idLike} className={this.state.likeState===1?'upup red-color':'upup'} style={{ marginRight: "0.7rem" }} onClick={this.like.bind(this)}><i title="赞" className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+          <div id={idDislike} className={this.state.likeState===2?'downdown red-color':'downdown'} onClick={this.dislike.bind(this)}><i title="踩" className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
           <div id="commentlike">
             {judgeIcon}
             {window.location.pathname.indexOf('postid') === -1 ?
@@ -214,7 +194,18 @@ export default withRouter(class extends React.Component<withRouterProps & Props,
       </div>
       <div className="row" style={{ width: "100%", justifyContent: "center" }}>  {signature}
       </div>
-
+      <NoticeMessage
+        text="你的操作太快了，慢慢来。"
+        id="tooFast"
+        top="33%"
+        left="40%"
+      />
+      <NoticeMessage
+        text="未登录或者登录状态异常，请先登录。"
+        id="notLogOn"
+        top="33%"
+        left="40%"
+      />
     </div>;
   }
 }

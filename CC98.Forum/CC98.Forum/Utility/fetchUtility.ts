@@ -4,7 +4,7 @@ import {
     removeLocalStorage
 } from './storageUtility'
 
-import { 
+import {
     Constants // used in cc98Fetch
 } from '../Components/Constant';
 
@@ -35,11 +35,11 @@ export async function getToken() {
         method: "POST",
         headers,
         // body: $.param(requestBody)
-        body: Object.keys(requestBody).map(key =>`${key}=${requestBody[key]}`).join('&')
+        body: Object.keys(requestBody).map(key => `${key}=${requestBody[key]}`).join('&')
     });
     const data = await response.json();
-    
-    if(data.access_token) {
+
+    if (data.access_token) {
         token = "Bearer " + encodeURIComponent(data.access_token);
         setLocalStorage("accessToken", token, data.expires_in);
         return token;
@@ -73,7 +73,7 @@ export async function cc98Fetch(url, init?: RequestInit) {
     //     data = await response2.json();
     // }
     // const baseUrl = data.apiUrl;
-   
+
     const baseUrl = Constants.config.apiUrl;
     const fetchUrl = `${baseUrl}${url}`;
     let response: Response;
