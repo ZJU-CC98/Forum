@@ -40,7 +40,7 @@ export default class extends React.Component<Props, State> {
           onCancel={this.onClick}
           width={"50rem"}
           maskClosable={false}
-          style={{ height: "50rem", overflow: "scroll" }}
+          bodyStyle={{ maxHeight: '20rem', overflowY: 'auto' }}
         >
           {data && (
             <List

@@ -38,8 +38,8 @@ export default class extends React.Component<Props, State> {
           onOk={this.onClick}
           onCancel={this.onClick}
           width={"50rem"}
-          style={{ height: "50rem", overflow: "scroll" }}
           maskClosable={false}
+          bodyStyle={{ maxHeight: '20rem', overflowY: 'auto' }}
         >
           <Collapse defaultActiveKey={[]}>
             {IPData.map((item: IP, index) => (
