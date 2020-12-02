@@ -5,6 +5,7 @@ import { UbbContainer } from ".././UbbContainer";
 import { Constants } from "../Constant";
 import { UbbEditor } from "../UbbEditor";
 import TopicManagement from "./Topic-TopicManagement-v2";
+import ManageHistory from "./Topic-ManageHistory";
 import { NoticeMessage } from "../NoticeMessage";
 import { Prompt } from "react-router-dom";
 import Button from "antd/es/button";
@@ -39,6 +40,7 @@ interface State {
   IPData;
   postCache: string;
   anonymouslyPostButtonInfo;
+  manageHistoryVisible;
 }
 
 export class SendTopic extends React.Component<Props, State> {
@@ -48,6 +50,7 @@ export class SendTopic extends React.Component<Props, State> {
     this.sendUbbTopic = this.sendUbbTopic.bind(this);
     this.changeEditor = this.changeEditor.bind(this);
     this.showManagement = this.showManagement.bind(this);
+
     this.onChange = this.onChange.bind(this);
     this.close = this.close.bind(this);
     this.update = this.update.bind(this);
@@ -77,6 +80,7 @@ export class SendTopic extends React.Component<Props, State> {
       IPData: [],
       postCache: "",
       anonymouslyPostButtonInfo: "匿名回复",
+      manageHistoryVisible: false,
     };
   }
   // handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
@@ -102,6 +106,9 @@ export class SendTopic extends React.Component<Props, State> {
   showManagement() {
     this.setState({ manageVisible: true });
   }
+  showManageHistory = () => {
+    this.setState({ manageHistoryVisible: true });
+  };
   close() {
     const UIId = `#manage${this.props.topicInfo.id}`;
     $(UIId).css("display", "none");
@@ -199,8 +206,9 @@ ${newProps.content.content}
         if (floor > 10) {
           page = parseInt(((floor - 1) / 10).toString()) + 1;
           floor = floor % 10;
-          url = `/topic/${this.props.topicInfo.id}/${page}#${floor === 0 ? 10 : floor
-            }`;
+          url = `/topic/${this.props.topicInfo.id}/${page}#${
+            floor === 0 ? 10 : floor
+          }`;
         } else {
           url = `/topic/${this.props.topicInfo.id}#${newProps.content.floor}`;
         }
@@ -720,6 +728,13 @@ ${newProps.content.content}[/quote]
           >
             查看IP
           </Button>
+          <Button
+            type="primary"
+            onClick={this.showManageHistory}
+            style={{ marginLeft: "2rem" }}
+          >
+            管理记录
+          </Button>
         </div>
       );
     //缓存按钮
@@ -791,6 +806,13 @@ ${newProps.content.content}[/quote]
             topicInfo={this.props.topicInfo}
             onCancel={this.handleCancel}
             visible={this.state.manageVisible}
+          />
+        )}
+        {this.state.manageHistoryVisible && (
+          <ManageHistory
+            topicInfo={this.props.topicInfo}
+            onClose={() => this.setState({ manageHistoryVisible: false })}
+            visible={this.state.manageHistoryVisible}
           />
         )}
         {this.state.IPData.length !== 0 && (
