@@ -39,6 +39,7 @@ export default class extends React.Component<Props, State> {
           onOk={this.onClick}
           onCancel={this.onClick}
           width={"50rem"}
+          maskClosable={false}
           style={{ height: "50rem", overflow: "scroll" }}
         >
           {data && (

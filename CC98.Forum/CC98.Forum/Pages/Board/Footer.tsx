@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Utility from '../../Utility';
+import * as React from "react";
+import * as Utility from "../../Utility";
 import {
   Button,
   Modal,
@@ -8,16 +8,16 @@ import {
   Transfer,
   Select,
   notification,
-  Icon
-} from 'antd';
+  Icon,
+} from "antd";
 import {
   multiDelete as aDelete,
   multiLock as aLock,
-  getBoardRecords
-} from './action';
-import { Link } from 'react-router-dom';
-import { IBoard, ITopic } from '@cc98/api';
-import moment from 'moment';
+  getBoardRecords,
+} from "./action";
+import { Link } from "react-router-dom";
+import { IBoard, ITopic } from "@cc98/api";
+import moment from "moment";
 
 const Option = Select.Option;
 
@@ -41,36 +41,36 @@ export default class extends React.Component<Props, State> {
     loading: false,
     hasMore: true,
     manageVisible: false,
-    recordVisible: false
+    recordVisible: false,
   };
   showModal = async () => {
     let res = await Utility.getTpUsers(this.props.data.id, 0, 20);
     this.setState({
       visible: true,
-      tpList: res
+      tpList: res,
     });
   };
   handleOk = () => {
     this.setState({
-      manageVisible: false
+      manageVisible: false,
     });
   };
 
   handleCancel = () => {
     this.setState({
-      visible: false
+      visible: false,
     });
   };
-  cancelTp = async item => {
+  cancelTp = async (item) => {
     const response = await Utility.cancelStopBoardPost(
       item.userId,
       this.props.data.id
     );
-    if (response === 'ok') {
+    if (response === "ok") {
       let data = await Utility.getTpUsers(this.props.data.id, 0, 5);
       this.setState({ tpList: data });
     } else {
-      alert('操作失败,原因：' + response);
+      alert("操作失败,原因：" + response);
     }
   };
 
@@ -83,7 +83,7 @@ export default class extends React.Component<Props, State> {
       <>
         <div
           className="row"
-          style={{ width: '100%', justifyContent: 'flex-end' }}
+          style={{ width: "100%", justifyContent: "flex-end" }}
         >
           <Button onClick={this.openRecord}>查看版面事件</Button>
           <Button onClick={this.showModal}>小黑屋</Button>
@@ -106,38 +106,42 @@ export default class extends React.Component<Props, State> {
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
-          width={isMaster ? '60rem' : '45rem'}
+          width={isMaster ? "60rem" : "45rem"}
         >
           <List
             dataSource={this.state.tpList}
             pagination={{
-              onChange: async page => {
+              onChange: async (page) => {
                 const from = (page - 1) * 5;
                 let data = await Utility.getTpUsers(id, from, 5);
                 let res = this.state.tpList.concat(data);
                 this.setState({ tpList: res });
               },
-              pageSize: 5
+              pageSize: 5,
             }}
-            renderItem={item => (
+            renderItem={(item) => (
               <List.Item key={item.userId}>
                 <List.Item.Meta
                   title={
-                    item.userName? <a href={`https://www.cc98.org/user/${item.userId}`}>
-                      {item.userName}
-                    </a>:<div>匿名</div>
+                    item.userName ? (
+                      <a href={`https://www.cc98.org/user/${item.userId}`}>
+                        {item.userName}
+                      </a>
+                    ) : (
+                      <div>匿名</div>
+                    )
                   }
                   description={
                     <div>
                       <span>天数:{item.days}</span>
-                      <span style={{ marginLeft: '2rem', marginRight: '2rem' }}>
+                      <span style={{ marginLeft: "2rem", marginRight: "2rem" }}>
                         到期时间:
-                        {moment(item.expiredTime).format('YYYY-MM-DD HH:mm:ss')}
+                        {moment(item.expiredTime).format("YYYY-MM-DD HH:mm:ss")}
                       </span>
                       <Button
                         onClick={this.cancelTp.bind(this, item)}
                         type="primary"
-                        style={{ display: isMaster ? '' : 'none' }}
+                        style={{ display: isMaster ? "" : "none" }}
                       >
                         解除tp
                       </Button>
@@ -160,7 +164,7 @@ export default class extends React.Component<Props, State> {
           visible={this.state.recordVisible}
           onOk={() => this.setState({ recordVisible: false })}
           onCancel={() => this.setState({ recordVisible: false })}
-          width={'60rem'}
+          width={"60rem"}
         >
           <Record id={id.toString()} />
         </Modal>
@@ -189,27 +193,27 @@ class Manage extends React.Component<ChildProps, ChildState> {
     selectedKeys: [],
     lockVisible: false,
     deleteVisible: false,
-    reason: '',
-    value: 7
+    reason: "",
+    value: 7,
   };
-  handleChange = nextTargetKeys => {
+  handleChange = (nextTargetKeys) => {
     this.setState({ targetKeys: nextTargetKeys });
   };
   handleSelectChange = (sourceSelectedKeys, targetSelectedKeys) => {
     this.setState({
-      selectedKeys: [...sourceSelectedKeys, ...targetSelectedKeys]
+      selectedKeys: [...sourceSelectedKeys, ...targetSelectedKeys],
     });
   };
   handleScroll = (direction, e) => {
-    console.log('direction:', direction);
-    console.log('target:', e.target);
+    console.log("direction:", direction);
+    console.log("target:", e.target);
   };
   openNotification = () => {
     const args = {
-      message: '操作错误',
-      description: '请至少选择一个帖子',
+      message: "操作错误",
+      description: "请至少选择一个帖子",
       duration: 4.5,
-      icon: <Icon type="close-circle" style={{ color: 'red' }} />
+      icon: <Icon type="close-circle" style={{ color: "red" }} />,
     };
     notification.open(args);
   };
@@ -239,7 +243,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
     for (const item of list) {
       dList.push({
         key: item.id.toString(),
-        title: item.title
+        title: item.title,
       });
     }
     return (
@@ -249,7 +253,8 @@ class Manage extends React.Component<ChildProps, ChildState> {
           visible={visible}
           onOk={() => this.props.onClose()}
           onCancel={() => this.props.onClose()}
-          width={'50rem'}
+          maskClosable={false}
+          width={"50rem"}
           footer={[
             <Button onClick={() => this.props.onClose()}>取消</Button>,
             <Button
@@ -263,18 +268,18 @@ class Manage extends React.Component<ChildProps, ChildState> {
               onClick={() => this.setState({ deleteVisible: true })}
             >
               删除
-            </Button>
+            </Button>,
           ]}
         >
           <Transfer
             dataSource={dList}
-            titles={['Source', 'Target']}
+            titles={["Source", "Target"]}
             targetKeys={targetKeys}
             selectedKeys={selectedKeys}
             onChange={this.handleChange}
             onSelectChange={this.handleSelectChange}
-            render={item => item.title}
-            listStyle={{ width: '20rem', height: '40rem' }}
+            render={(item) => item.title}
+            listStyle={{ width: "20rem", height: "40rem" }}
           />
         </Modal>
         <Modal
@@ -287,7 +292,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <Select
             style={{ width: 120 }}
             mode="tags"
-            onSelect={v => {
+            onSelect={(v) => {
               this.setState({ reason: v.toString() });
               console.log(v);
             }}
@@ -309,7 +314,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <Select
             style={{ width: 120 }}
             mode="tags"
-            onSelect={v => this.setState({ reason: v.toString() })}
+            onSelect={(v) => this.setState({ reason: v.toString() })}
           >
             <Option value="重复发帖">重复发帖</Option>
             <Option value="管理要求">管理要求</Option>
@@ -321,7 +326,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <Select
             style={{ width: 120 }}
             defaultValue="7"
-            onSelect={v => this.setState({ value: parseInt(v.toString()) })}
+            onSelect={(v) => this.setState({ value: parseInt(v.toString()) })}
           >
             <Option value="7">7</Option>
             <Option value="30">30</Option>
@@ -345,7 +350,7 @@ class Record extends React.Component<RecordProps, RecordState> {
   state = {
     current: 1,
     data: null,
-    loading: false
+    loading: false,
   };
   async componentDidMount() {
     this.setState({ loading: true });
@@ -361,7 +366,7 @@ class Record extends React.Component<RecordProps, RecordState> {
         <List
           dataSource={data ? data.boardEvents : []}
           pagination={{
-            onChange: async page => {
+            onChange: async (page) => {
               this.setState({ loading: true });
               const from = (page - 1) * 7;
               let res = await getBoardRecords(id, from);
@@ -370,9 +375,9 @@ class Record extends React.Component<RecordProps, RecordState> {
               this.setState({ data: res, loading: false });
             },
             pageSize: 7,
-            total: data.count
+            total: data.count,
           }}
-          renderItem={item => (
+          renderItem={(item) => (
             <List.Item key={item.id}>
               <List.Item.Meta
                 title={
@@ -382,10 +387,10 @@ class Record extends React.Component<RecordProps, RecordState> {
                 }
                 description={
                   <div>
-                    <span>对象:{item.targetUserName||'匿名'}</span>
-                    <span style={{ marginLeft: '2rem', marginRight: '2rem' }}>
+                    <span>对象:{item.targetUserName || "匿名"}</span>
+                    <span style={{ marginLeft: "2rem", marginRight: "2rem" }}>
                       时间:
-                      {moment(item.time).format('YYYY-MM-DD HH:mm:ss')}
+                      {moment(item.time).format("YYYY-MM-DD HH:mm:ss")}
                     </span>
                   </div>
                 }
