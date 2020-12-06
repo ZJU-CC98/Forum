@@ -1739,7 +1739,7 @@ export async function getSearchTopic(
         } else {
           item.portraitUrl = "/static/images/_心灵之约.png";
           item.userName = "匿名用户";
-          item.boardName = "心灵之约";
+          item.boardName = await getBoardName(item.boardId);
           bTopic.push(item);
         }
       }
@@ -3151,7 +3151,7 @@ export async function getMonthlyHotTopic(type: string) {
     } else {
       item.portraitUrl = "/static/images/_心灵之约.png";
       item.userName = "匿名用户";
-      item.boardName = "心灵之约";
+      item.boardName = await getBoardName(item.boardId);
       bTopic.push(item);
     }
   }
