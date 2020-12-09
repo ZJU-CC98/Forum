@@ -673,7 +673,7 @@ input[type="radio"] {
 .reply {
   width: 100%;
   margin-top: 1rem;
-  border: $theme_color_main solid 1.5px;
+  border: $theme_color_main solid 2px;
   background-color: $background_color_textarea;
   flex-direction: row;
   display: flex;
@@ -3041,7 +3041,7 @@ a {
   flex-direction: row;
   width: 71.2rem;
   height: 6.5rem;
-  border: rgb(106, 113, 119) solid 1.5px;
+  border: rgb(106, 113, 119) solid 2px;
   font-family: 微软雅黑;
   box-sizing: border-box;
 }
@@ -3073,7 +3073,7 @@ a {
 }
 
 .topicInfo-title {
-  width: 52.3rem;
+  width: 52.2rem;
   height: 6.25rem;
   display: flex;
   background-color: $background_color_textarea;
