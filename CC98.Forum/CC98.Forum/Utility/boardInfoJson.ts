@@ -1,5 +1,5 @@
 
-export const boardInfo = [
+export const boardInfo:{id:number,name:string}[] = [
     {
         "id": 0,
         "name": "未知版面"
@@ -38,7 +38,7 @@ export const boardInfo = [
     },
     {
         "id": 749,
-        "name": "社科学术"
+        "name": "社科讨论"
     },
     {
         "id": 100,
@@ -66,7 +66,7 @@ export const boardInfo = [
     },
     {
         "id": 581,
-        "name": "研究生"
+        "name": "科研学术"
     },
     {
         "id": 16,
@@ -122,7 +122,7 @@ export const boardInfo = [
     },
     {
         "id": 80,
-        "name": "生活点滴"
+        "name": "日用交易"
     },
     {
         "id": 562,
@@ -174,7 +174,7 @@ export const boardInfo = [
     },
     {
         "id": 229,
-        "name": "美食健康"
+        "name": "美食天地"
     },
     {
         "id": 258,
@@ -330,7 +330,7 @@ export const boardInfo = [
     },
     {
         "id": 446,
-        "name": "桥牌天地"
+        "name": "桥牌协会"
     },
     {
         "id": 448,
@@ -914,7 +914,7 @@ export const boardInfo = [
     },
     {
         "id": 511,
-        "name": "丝路花雨"
+        "name": "丝路花雨（甘肃）"
     },
     {
         "id": 550,
@@ -1019,5 +1019,25 @@ export const boardInfo = [
     {
         "id": 614,
         "name": "莫失莫忘"
+    },
+    {
+        "id":764,
+        "name":"理财优惠"
+    },
+    {
+        "id":261,
+        "name":"健康贴士"
+    },
+    {
+        "id":779,
+        "name":"塞上江南（宁夏）",
+    },
+    {
+        "id":780,
+        "name":"西域之冲（青海）"
+    },
+    {
+        "id":777,
+        "name":"维权空间"
     }
 ]
