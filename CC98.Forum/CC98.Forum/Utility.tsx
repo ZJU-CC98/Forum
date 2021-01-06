@@ -1932,7 +1932,7 @@ export async function refreshUserInfo() {
 
     let userInfo = await response.json();
     store.dispatch(UserCenterActions.changeUserInfo(userInfo));
-    setLocalStorage("userInfo", userInfo, 2592000);
+    setLocalStorage("userInfo", userInfo, 300);
   }
 }
 export async function unfollowBoard(boardId) {
