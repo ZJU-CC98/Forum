@@ -62,6 +62,8 @@ class EditForm extends RouteComponent<
     anonymousState;
     /** 编辑帖子是否为匿名 */
     isAnonymous;
+    /** 用户当前财富值 */
+    wealth: number | string;
   },
   { mode: string; id: number }
 > {
@@ -106,6 +108,7 @@ class EditForm extends RouteComponent<
       houseTmpVisible: false,
       anonymousState: 0,
       isAnonymous: false,
+      wealth: "",
     };
   }
 
@@ -216,6 +219,16 @@ class EditForm extends RouteComponent<
           });
         break;
     }
+    //查询财富值余额
+    let wealth;
+    try {
+      wealth = await Utility.getUserWealth();
+    } catch (e) {
+      wealth = "查询财富值余额失败，请前往个人中心查看";
+    }
+    this.setState({
+      wealth: wealth,
+    })
   }
   handleValueChange = (value) => {
     this.setState({ mdeState: value });
@@ -701,13 +714,6 @@ class EditForm extends RouteComponent<
           tag2={0}
         />
       );
-      //查询财富值余额
-      let wealth;
-      try {
-        wealth = Utility.getLocalStorage("userInfo").wealth;
-      } catch (e) {
-        wealth = "查询财富值余额失败，请前往个人中心查看";
-      }
       //根据版面匿名状态显示相应的按钮
       let ubbButtons;
       let mdButtons;
@@ -784,7 +790,7 @@ class EditForm extends RouteComponent<
             </div>
             <p>
               在本版面匿名发主题每次需消耗10000财富值。你当前的财富值余额为：
-              {wealth}
+              {this.state.wealth}
             </p>
           </div>
         );
@@ -814,7 +820,7 @@ class EditForm extends RouteComponent<
             </div>
             <p>
               在本版面匿名发主题每次需消耗10000财富值。你当前的财富值余额为：
-              {wealth}
+              {this.state.wealth}
             </p>
           </div>
         );

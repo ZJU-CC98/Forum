@@ -41,6 +41,7 @@ interface State {
   postCache: string;
   anonymouslyPostButtonInfo;
   manageHistoryVisible;
+  wealth: number | string;
 }
 
 export class SendTopic extends React.Component<Props, State> {
@@ -81,6 +82,7 @@ export class SendTopic extends React.Component<Props, State> {
       postCache: "",
       anonymouslyPostButtonInfo: "匿名回复",
       manageHistoryVisible: false,
+      wealth: "",
     };
   }
   // handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
@@ -151,7 +153,7 @@ export class SendTopic extends React.Component<Props, State> {
     window.onbeforeunload = null;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     CustomCommand.editor = this;
     const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
       { commands: [CustomCommand] },
@@ -187,7 +189,18 @@ export class SendTopic extends React.Component<Props, State> {
         this.setState({ masters: masters, content: str });
       }
     }
+    //查询财富值余额
+    let wealth;
+    try {
+      wealth = await Utility.getUserWealth();
+    } catch (e) {
+      wealth = "查询财富值余额失败，请前往个人中心查看";
+    }
+    this.setState({
+      wealth: wealth,
+    })
   }
+
   componentWillReceiveProps(newProps) {
     const time = moment(newProps.content.replyTime).format(
       "YYYY-MM-DD HH:mm:ss"
@@ -206,9 +219,8 @@ ${newProps.content.content}
         if (floor > 10) {
           page = parseInt(((floor - 1) / 10).toString()) + 1;
           floor = floor % 10;
-          url = `/topic/${this.props.topicInfo.id}/${page}#${
-            floor === 0 ? 10 : floor
-          }`;
+          url = `/topic/${this.props.topicInfo.id}/${page}#${floor === 0 ? 10 : floor
+            }`;
         } else {
           url = `/topic/${this.props.topicInfo.id}#${newProps.content.floor}`;
         }
@@ -462,6 +474,7 @@ ${newProps.content.content}[/quote]
       this.setState({ mdeState: this.state.mdeState });
     });
   };
+
   render() {
     //发帖时间超过365天提示
     const s1 = new Date();
@@ -477,13 +490,6 @@ ${newProps.content.content}[/quote]
       );
     }
     let mode, editor;
-    //查询财富值余额
-    let wealth;
-    try {
-      wealth = Utility.getLocalStorage("userInfo").wealth;
-    } catch (e) {
-      wealth = "查询财富值余额失败，请前往个人中心查看";
-    }
     //版面匿名状态，包括不可匿名、强制匿名（心灵）以及可选匿名
     //不可匿名为0，强制匿名为1，可选匿名为2
     const anonymousState = this.props.boardInfo.anonymousState;
@@ -619,7 +625,7 @@ ${newProps.content.content}[/quote]
             </div>
             <p>
               在本版面匿名回复每次需消耗2000财富值。你当前的财富值余额为：
-              {wealth}
+              {this.state.wealth}
             </p>
           </div>
         );
@@ -651,7 +657,7 @@ ${newProps.content.content}[/quote]
             </div>
             <p>
               在本版面匿名回复每次需消耗2000财富值。你当前的财富值余额为：
-              {wealth}
+              {this.state.wealth}
             </p>
           </div>
         );

@@ -849,7 +849,7 @@ export function sortRecentMessage(recentMessage) {
         recentMessage[i].showTime = true;
       } else if (
         transerTime(recentMessage[i].time) -
-          transerTime(recentMessage[i + 1].time) <
+        transerTime(recentMessage[i + 1].time) <
         60000
       ) {
         recentMessage[i].showTime = false;
@@ -3239,4 +3239,18 @@ export async function getManageHistory(topicId, from) {
   const headers = await formAuthorizeHeader();
   const response = await cc98Fetch(url, { headers });
   return await response.json();
+}
+
+/**
+ * 返回用户当前财富值
+ */
+export async function getUserWealth() {
+  let wealth = getLocalStorage('wealth');
+  if (!wealth) {
+    await refreshUserInfo();
+    let userInfo = getLocalStorage("userInfo");
+    wealth = userInfo.wealth;
+    setLocalStorage('wealth', wealth, 300);
+  }
+  return wealth;
 }
