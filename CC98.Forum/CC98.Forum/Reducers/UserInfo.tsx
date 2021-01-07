@@ -114,7 +114,7 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
         case ActionTypes.USER_LOG_OFF:
             return { ...state, isLogOn: false };
         case ActionTypes.CHANGE_USERINFO:
-            Utility.setLocalStorage("userInfo", action.payload.newInfo, 300);
+            Utility.setLocalStorage("userInfo", action.payload.newInfo, 2592000);
             addUserInfo(action.payload.newInfo)
             return { ...state, currentUserInfo: action.payload.newInfo };
         case ActionTypes.CHANGE_VISITING_USER:
