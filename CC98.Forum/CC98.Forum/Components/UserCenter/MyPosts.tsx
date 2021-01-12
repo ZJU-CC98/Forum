@@ -1,64 +1,58 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
+// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from "react";
-import Topic from "./ExactActivitiesTopic";
-import { UserRecentTopic } from "../../States/AppState";
 import * as Utility from "../../Utility";
+import Post from "./ExactActivitiesPost";
+import { UserRecentPost } from "../../States/AppState";
 import Pager from "./Pager";
-import * as Actions from "../../Actions/UserCenter";
 import { connect } from "react-redux";
-import { RootState, RootAction } from "../../Store";
-import { Dispatch } from "redux";
-import { Button } from "antd";
 import { withRouter, match, RouteComponentProps } from "react-router-dom";
-import { getFavoritePosts } from "../../AsyncActions/UserCenter";
-import { ThunkDispatch } from "redux-thunk";
+import { getRecentPosts } from "../../AsyncActions/UserCenter";
+import * as Actions from "../../Actions/UserCenter";
+import { RootState } from "../../Store";
+import { Button } from "antd";
 
 type ownProps = {
-  currentUserFavoriteTopics: UserRecentTopic[];
+  userRecentPosts: UserRecentPost[];
   totalPage: number;
   hasTotal: boolean;
   isLoading: boolean;
-  getInfo: (
-    page: number,
-    order: number,
-    forceLoad: boolean | undefined
-  ) => void;
+  getInfo: (page: number, ishot: number) => void;
   changePage: () => void;
 };
 
 type ownMatch = {
   page: string;
-  order: string;
+  ishot: string;
 };
 
 type Props = RouteComponentProps<ownMatch> & ownProps;
 
 /**
- * 用户中心我收藏的帖子组件
+ * 用户中心我的主题组件
  */
-class Posts extends React.Component<Props> {
+class MyPosts extends React.Component<Props> {
   componentWillReceiveProps(newProps: Props) {
     if (
       this.props.match.params.page !== newProps.match.params.page ||
-      this.props.match.params.order !== newProps.match.params.order
+      this.props.match.params.ishot !== newProps.match.params.ishot
     ) {
       const curPage = parseInt(newProps.match.params.page) || 1;
-      this.props.getInfo(curPage, Number(newProps.match.params.order), true);
+      this.props.getInfo(curPage, Number(newProps.match.params.ishot));
       window.scroll(0, 0);
     }
   }
 
   componentDidMount() {
-    const curPage = 1;
-    this.props.getInfo(curPage, Number(this.props.match.params.order), true);
+    const curPage = parseInt(this.props.match.params.page) || 1;
+    this.props.getInfo(curPage, Number(this.props.match.params.ishot));
     this.props.changePage();
   }
 
-  changeOrder = (order: number) => {
-    this.props.history.push(`/usercenter/myfavorites/order/${order}/1`);
+  changeishot = (ishot: number) => {
+    this.props.history.push(`/usercenter/myposts/ishot/${ishot}/1`);
   };
 
   render() {
@@ -68,49 +62,52 @@ class Posts extends React.Component<Props> {
           <p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p>
         </div>
       );
-    } else if (this.props.currentUserFavoriteTopics.length === 0) {
+    } else if (this.props.userRecentPosts.length === 0) {
       return (
         <div className="user-posts" style={{ textAlign: "center" }}>
-          没有主题
+          没有回复
         </div>
       );
     }
     const curPage = parseInt(this.props.match.params.page) || 1;
     const totalPage = this.props.hasTotal ? this.props.totalPage : curPage + 1;
+    console.log(this.props);
     //state转换为JSX
-    let userRecentPosts = this.props.currentUserFavoriteTopics
+    let userRecentPosts = this.props.userRecentPosts
       .slice((curPage - 1) * 10, curPage * 10)
-      .map((item) => <Topic key={item.id} userRecentTopic={item} />);
+      .map((item) => <Post key={item.id} userRecentPost={item} />);
     //添加分隔线
     for (let i = 1; i < userRecentPosts.length; i += 2) {
       userRecentPosts.splice(i, 0, <hr key={i} />);
     }
-    const order = Number(this.props.match.params.order);
+    const ishot = Number(this.props.match.params.ishot);
     return (
       <div className="user-posts">
-        {order === 0 ? (
+        {ishot === 0 ? (
           <Button
             style={{ width: "8rem", marginTop: "-1rem", marginBottom: "2rem" }}
-            className="user-order-btn"
+            className="user-ishot-btn"
             type="primary"
-            onClick={() => this.changeOrder(1)}
+            onClick={() => this.changeishot(1)}
           >
-            按最后回复排序
+            显示热门回复
           </Button>
         ) : (
           <Button
             style={{ width: "8rem", marginTop: "-1rem", marginBottom: "2rem" }}
             type="primary"
-            onClick={() => this.changeOrder(0)}
+            onClick={() => this.changeishot(0)}
           >
-            按发帖时间排序
+            显示全部回复
           </Button>
         )}
         {userRecentPosts}
         <Pager
           currentPage={curPage}
           totalPage={totalPage}
-          href={`/usercenter/myfavorites/order/${order}/`}
+          href={`/usercenter/myposts/ishot/${Number(
+            this.props.match.params.ishot
+          )}/`}
           hasTotal={this.props.hasTotal}
         />
       </div>
@@ -120,22 +117,22 @@ class Posts extends React.Component<Props> {
 
 function mapState(store: RootState) {
   return {
-    currentUserFavoriteTopics: store.userInfo.currentUserFavoriteTopics,
-    totalPage: store.userInfo.totalPage.myfavoriteposts,
-    hasTotal: store.userInfo.hasTotal.myfavoriteposts,
+    userRecentPosts: store.userInfo.recentPosts,
+    totalPage: store.userInfo.totalPage.myposts,
+    hasTotal: store.userInfo.hasTotal.myposts,
     isLoading: store.userInfo.isLoading,
   };
 }
 
-function mapDispatch(dispatch: ThunkDispatch<RootState, void, RootAction>) {
+function mapDispatch(dispatch) {
   return {
-    changePage: () => {
-      dispatch(Actions.changeUserCenterPage("myfavoriteposts"));
+    getInfo: (page: number, ishot: number) => {
+      dispatch(getRecentPosts(page, ishot));
     },
-    getInfo: (page: number, order: number, forceLoad: boolean | undefined) => {
-      dispatch(getFavoritePosts(page, order, forceLoad));
+    changePage: () => {
+      dispatch(Actions.changeUserCenterPage("myposts"));
     },
   };
 }
 
-export default connect(mapState, mapDispatch)(withRouter(Posts));
+export default connect(mapState, mapDispatch)(withRouter(MyPosts));

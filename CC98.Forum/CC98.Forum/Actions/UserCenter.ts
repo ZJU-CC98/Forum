@@ -44,12 +44,27 @@ export const changeUserFavoriteBoards = createAction(ActionTypes.CHANGE_USER_FAV
     payload: { boardsInfo }
 }));
 
-export const changeUserRecentPosts = createAction(ActionTypes.CHANGE_USER_RECENT_POSTS, (posts: Appstate.UserRecentPost[]) => ({
-    type: ActionTypes.CHANGE_USER_RECENT_POSTS,
+export const changeUserRecentTopics = createAction(ActionTypes.CHANGE_USER_RECENT_TOPICS, (posts: Appstate.UserRecentTopic[]) => ({
+    type: ActionTypes.CHANGE_USER_RECENT_TOPICS,
     payload: { posts }
 }));
 
-export const changeUserFavoritePosts = createAction(ActionTypes.CHANGE_USER_FAVORITE_POSTS, (posts: Appstate.UserRecentPost[]) => ({
+interface PostsAndTotal {
+    posts: Appstate.UserRecentPost[]
+    total: number
+}
+
+export const changeUserRecentPosts = createAction(ActionTypes.CHANGE_USER_RECENT_POSTS, (postsAndTotal: PostsAndTotal) => ({
+    type: ActionTypes.CHANGE_USER_RECENT_POSTS,
+    payload:  postsAndTotal 
+}));
+
+export const changeUserHotPosts = createAction(ActionTypes.CHANGE_USER_HOT_POSTS, (postsAndTotal: PostsAndTotal) => ({
+    type: ActionTypes.CHANGE_USER_HOT_POSTS,
+    payload:  postsAndTotal 
+}));
+
+export const changeUserFavoritePosts = createAction(ActionTypes.CHANGE_USER_FAVORITE_POSTS, (posts: Appstate.UserRecentTopic[]) => ({
     type: ActionTypes.CHANGE_USER_FAVORITE_POSTS,
     payload: { posts }
 }));
@@ -64,7 +79,7 @@ export const changeUserFollowingsInfo = createAction(ActionTypes.CHANGE_USER_FOL
     payload: { followingsInfo }
 }));
 
-export const changeUserCenterPage = createAction(ActionTypes.CHNAGE_USER_CENTER_PAGE, (page: 'profile' | 'config' | 'myposts' | 'myfavoriteposts' | 'myfavoriteboards' | 'myfollowings' | 'myfans') => ({
+export const changeUserCenterPage = createAction(ActionTypes.CHNAGE_USER_CENTER_PAGE, (page: 'profile' | 'config' | 'mytopics' |'myposts' | 'myfavoriteposts' | 'myfavoriteboards' | 'myfollowings' | 'myfans') => ({
     type: ActionTypes.CHNAGE_USER_CENTER_PAGE,
     payload: { page }
 }));

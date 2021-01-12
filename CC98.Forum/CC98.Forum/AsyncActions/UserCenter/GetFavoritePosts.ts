@@ -21,7 +21,7 @@ export const getFavoritePosts: ActionCreator<ThunkAction<
 ) => {
   try {
     dispatch(Actions.userCenterLoading());
-    const recentPosts = getState().userInfo.currentUserFavoritePosts;
+    const recentPosts = getState().userInfo.currentUserFavoriteTopics;
     const hasTotal = getState().userInfo.hasTotal.myfavoriteposts;
     if (!forceLoad) {
       // 如果未请求完所有帖子并且帖子总数小于请求的页数
@@ -53,7 +53,7 @@ export const getFavoritePosts: ActionCreator<ThunkAction<
     if (res.status !== 200) {
       throw new Error(res.statusText);
     }
-    const posts: Appstate.UserRecentPost[] = await res.json();
+    const posts: Appstate.UserRecentTopic[] = await res.json();
     let i = posts.length === 11 ? 10 : posts.length;
     // 如果小于11条则总数加载完毕
     if (posts.length !== 11) {
