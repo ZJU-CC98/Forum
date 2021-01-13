@@ -97,7 +97,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
        */
       this.setState({ loading: false });
       try {
-        const debouncedFn = pDebounce(Utility.getAllNewTopic, 200);
+        const debouncedFn = pDebounce(Utility.getAllNewTopic, 1000);
         var newData = await debouncedFn(this.state.from);
       } catch (err) {
         /**
