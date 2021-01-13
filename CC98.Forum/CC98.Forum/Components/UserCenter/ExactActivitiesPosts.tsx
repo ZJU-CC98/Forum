@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from "react";
-import Post from "./ExactActivitiesPost";
+import Topic from "./ExactActivitiesTopic";
 import { UserRecentPost } from "../../States/AppState";
 import * as Utility from "../../Utility";
 import { connect } from "react-redux";
@@ -75,7 +75,7 @@ class Activities extends React.Component<Props> {
 
     //state转换为JSX
     const userRecentPosts = this.props.userRecentPosts.map((item) => (
-      <Post key={item.id} userRecentPost={item} />
+      <Topic key={item.id} userRecentTopic={item} />
     ));
     //添加分隔线
     for (let i = 1; i < userRecentPosts.length; i += 2) {

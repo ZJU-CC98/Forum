@@ -6,7 +6,6 @@ import * as ErrorActions from "./Actions/Error";
 import { TopicTitleAndContent } from "./Components/Board/Board";
 import { Constants } from "./Components/Constant";
 import { removeUserInfo as removeUserInfoInIndexDB } from "./IndexedDB/UserStorage";
-
 // lib
 
 import * as React from "react";
@@ -450,7 +449,7 @@ export async function getCurUserTopicContent(
  * 获取全站新帖
  * @param curPage
  */
-export async function getAllNewTopic(from: number, router) {
+export async function getAllNewTopic(from: number) {
   //如果未登录,直接跳转至登录页面
   if (!isLogOn()) {
     store.dispatch(ErrorActions.throwError("LogOut"));
@@ -849,7 +848,7 @@ export function sortRecentMessage(recentMessage) {
         recentMessage[i].showTime = true;
       } else if (
         transerTime(recentMessage[i].time) -
-        transerTime(recentMessage[i + 1].time) <
+          transerTime(recentMessage[i + 1].time) <
         60000
       ) {
         recentMessage[i].showTime = false;
@@ -3245,12 +3244,12 @@ export async function getManageHistory(topicId, from) {
  * 返回用户当前财富值
  */
 export async function getUserWealth() {
-  let wealth = getLocalStorage('wealth');
+  let wealth = getLocalStorage("wealth");
   if (!wealth) {
     await refreshUserInfo();
     let userInfo = getLocalStorage("userInfo");
     wealth = userInfo.wealth;
-    setLocalStorage('wealth', wealth, 300);
+    setLocalStorage("wealth", wealth, 300);
   }
   return wealth;
 }
