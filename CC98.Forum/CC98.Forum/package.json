@@ -27,6 +27,7 @@
     "moment": "2.22.2",
     "msgpack5": "4.2.0",
     "node-sass": "^5.0.0",
+    "p-debounce": "^2.1.0",
     "prop-types": "^15.6.2",
     "react": "^16.12.0",
     "react-bootstrap": "0.32.3",

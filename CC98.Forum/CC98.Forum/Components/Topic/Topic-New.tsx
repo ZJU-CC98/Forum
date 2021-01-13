@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 import DocumentTitle from "../DocumentTitle";
 import Spin from "antd/es/spin";
-const debounceAsync = require("debounce-async");
+const pDebounce = require("p-debounce");
 
 /**
  * 表示全站最新主题列表
@@ -97,7 +97,8 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
        */
       this.setState({ loading: false });
       try {
-        var newData = await Utility.getAllNewTopic(this.state.from);
+        const debouncedFn = pDebounce(Utility.getAllNewTopic, 200);
+        var newData = await debouncedFn(this.state.from);
       } catch (err) {
         /**
          *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
