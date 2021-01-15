@@ -3050,11 +3050,7 @@ declare let themeNames: string[];
  * 切换主题
  */
 export function changeTheme(theme: number) {
-  $("#mainStylesheet").remove();
-  document.getElementsByTagName("head")[0].innerHTML +=
-    '<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' +
-    themeNames[theme] +
-    '">';
+  $("#mainStylesheet").attr('href', `/static/content/${themeNames[theme]}`);
 }
 export async function queryWealth(boardId) {
   const headers = await formAuthorizeHeader();
