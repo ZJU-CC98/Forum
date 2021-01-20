@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 import DocumentTitle from "../DocumentTitle";
 import Spin from "antd/es/spin";
-import pDebounce from "p-debounce";
+//import pDebounce from "p-debounce";
 
 /**
  * 表示全站最新主题列表
@@ -97,8 +97,8 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
        */
       this.setState({ loading: false });
       try {
-        const debouncedFn = pDebounce(Utility.getAllNewTopic, 1000);
-        var newData = await debouncedFn(this.state.from);
+        const debouncedFn = Utility.pDebounce(Utility.getAllNewTopic, 1000);
+        var newData: any = await debouncedFn(this.state.from);
         //var newData = await Utility.getAllNewTopic(this.state.from);
       } catch (err) {
         /**
