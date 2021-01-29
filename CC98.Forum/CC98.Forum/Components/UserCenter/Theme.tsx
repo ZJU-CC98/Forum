@@ -53,7 +53,7 @@ class Theme extends React.Component<Props> {
           <button style={{ backgroundColor: 'rgb(3, 57, 117)' }} key={10} onClick={() => this.handleSubmit(10)} disabled={this.props.userInfo.theme === 10}>小雪（暗）</button>
           <button style={{ backgroundColor: 'rgb(122, 146, 194)' }} key={11} onClick={() => this.handleSubmit(11)} disabled={this.props.userInfo.theme === 11}>小雪（亮）</button>
           <button style={{ backgroundColor: 'rgb(205,0,0)' }} key={12} onClick={() => this.handleSubmit(12)} disabled={this.props.userInfo.theme === 12}>春节（暗）</button>
-          <button style={{ backgroundColor: 'rgb(240,40,40)' }} key={13} onClick={() => this.handleSubmit(13)} disabled={this.props.userInfo.theme === 13}>春节（亮）</button>
+          <button style={{ backgroundColor: 'rgb(214,14,36)' }} key={13} onClick={() => this.handleSubmit(13)} disabled={this.props.userInfo.theme === 13}>春节（亮）</button>
           <button style={{ backgroundColor: 'rgb(70, 141, 57)' }} key={14} onClick={() => this.handleSubmit(14)} disabled={this.props.userInfo.theme === 14}>清明</button>
         </div>
         <div className="user-theme-config">

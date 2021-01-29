@@ -167,8 +167,8 @@ export default withRouter(class extends React.Component<withRouterProps & Props,
         <div style={{ width: "40rem", marginLeft: "1.2rem", fontSize: "0.8rem" }}>
           <span>发表于 {moment(this.props.postInfo.time).format('YYYY-MM-DD HH:mm:ss')}</span><span style={{ marginLeft: "1rem" }}>{lastUpdate}</span></div>
         <div className="row" style={{ alignItems: "center" }}>
-          <div id={idLike} className={this.state.likeState===1?'upup red-color':'upup'} style={{ marginRight: "0.7rem" }} onClick={this.like.bind(this)}><i title="赞" className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-          <div id={idDislike} className={this.state.likeState===2?'downdown red-color':'downdown'} onClick={this.dislike.bind(this)}><i title="踩" className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+          <div id={idLike} className={this.state.likeState===1?'upup red-color':'upup'} style={{ marginRight: "0.7rem" }} onClick={this.like.bind(this)}><i title="赞" className={this.state.likeState===1?"fa fa-thumbs-up fa-lg":"fa fa-thumbs-o-up fa-lg"}></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+          <div id={idDislike} className={this.state.likeState===2?'downdown red-color':'downdown'} onClick={this.dislike.bind(this)}><i title="踩" className={this.state.likeState===2?"fa fa-thumbs-down fa-lg":"fa fa-thumbs-o-down fa-lg"}></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
           <div id="commentlike">
             {judgeIcon}
             {window.location.pathname.indexOf('postid') === -1 ?
