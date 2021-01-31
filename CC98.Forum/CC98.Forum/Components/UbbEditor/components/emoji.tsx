@@ -66,6 +66,22 @@ export default class Emoji extends React.Component<EmojiProps> {
 
         //基本同上
         const emoji = {
+            'CC98': new Array(12).fill(0)
+                .map((item, index) => {
+                    if (index < 9) {
+                        return `0${index+1}`;
+                    } else {
+                        return `${index+1}`;
+                    }
+                })
+                .map((item) => (
+                    item ? (<LazyImage
+                        key={`[CC98${item}]`}
+                        src={`/static/images/CC98/CC98${item}.gif`}
+                        onClick={() => { this.insertEmoji('cc98', item) }}
+                        className="ubb-emoji-CC98"
+                    ></LazyImage>) : null
+                )),
             'em': new Array(92).fill(0)
                 .map((item, index) => {
                     if (index < 10) {
@@ -103,24 +119,25 @@ export default class Emoji extends React.Component<EmojiProps> {
                     onClick={() => { this.insertEmoji('tb', item) }}
                 ></LazyImage>)),
             'ms': new Array(54).fill(0)
-                    .map((item, index) => {
-                        if (index < 9) { return `0${index + 1}`; }
-                        else { return `${index + 1}`; }
-                    })
-                    .map((item) => <LazyImage
-                        key={`ms${item}`}
-                        src={`/static/images/ms/ms${item}.png`}
-                        onClick={() => this.insertEmoji('ms', item)}
-                        className="ubb-emoji-ms"
-                    />)
+                .map((item, index) => {
+                    if (index < 9) { return `0${index + 1}`; }
+                    else { return `${index + 1}`; }
+                })
+                .map((item) => <LazyImage
+                    key={`ms${item}`}
+                    src={`/static/images/ms/ms${item}.png`}
+                    onClick={() => this.insertEmoji('ms', item)}
+                    className="ubb-emoji-ms"
+                />)
         };
 
         //表情栏上的info
         const info = {
+            'CC98': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="http://www.cc98.org">CC98论坛</a> 提供</p>,
             'ac': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="http://www.acfun.cn">AcFun弹幕视频网</a> 提供</p>,
             'mj': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//bbs.saraba1st.com/2b/forum.php">stage1st论坛</a> 提供</p>,
             'tb': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//tieba.baidu.com ">百度贴吧</a> 提供</p>,
-            'ms': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="http://majsoul.union-game.com">雀魂Majsoul</a> 提供</p>,
+            'ms': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="https://www.maj-soul.com/">雀魂Majsoul</a> 提供</p>,
             'em': null
         };
 
@@ -129,37 +146,42 @@ export default class Emoji extends React.Component<EmojiProps> {
         return (
             <div
                 className="ubb-emoji"
-                style={emojiIsShown ? { height: `${this.props.height || 18}rem`, borderWidth: '1px'} : { height: '0rem'}}
+                style={emojiIsShown ? { height: `${this.props.height || 18}rem`, borderWidth: '1px' } : { height: '0rem' }}
                 onClick={e => e.stopPropagation()}
             >
                 <div className="ubb-emoji-buttons">
-                    <button 
-                        type="button" 
-                        className={emojiType === 'ac' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                    <button
+                        type="button"
+                        className={emojiType === 'CC98' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'}
+                        onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('CC98'); }}
+                    >CC98</button>
+                    <button
+                        type="button"
+                        className={emojiType === 'ac' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'}
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('ac'); }}
                     >AC娘</button>
-                    <button 
-                        type="button" 
-                        className={emojiType === 'mj' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                    <button
+                        type="button"
+                        className={emojiType === 'mj' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'}
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('mj'); }}
                     >麻将脸</button>
-                    <button 
-                        type="button" 
-                        className={emojiType === 'tb' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                    <button
+                        type="button"
+                        className={emojiType === 'tb' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'}
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('tb'); }}
                     >贴吧</button>
-                    <button 
-                        type="button" 
-                        className={emojiType === 'ms' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                    <button
+                        type="button"
+                        className={emojiType === 'ms' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'}
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('ms'); }}
                     >雀魂</button>
-                    <button 
-                        type="button" 
-                        className={emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                    <button
+                        type="button"
+                        className={emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'}
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('em'); }}
                     >经典</button>
                 </div>
-                <div className={`ubb-emoji-content ubb-emoji-content-${emojiType}`} style={{ height: `${this.props.height || 16}rem`}} >
+                <div className={`ubb-emoji-content ubb-emoji-content-${emojiType}`} style={{ height: `${this.props.height || 16}rem` }} >
                     {info[emojiType]}
                     {emoji[emojiType]}
                 </div>

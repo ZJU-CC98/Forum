@@ -44,6 +44,7 @@ import UrlTextHandler from './UrlTextHandler';
 import UrlTextHandler2 from './UrlTextHandler2';
 import NeedReplyTagHandler from './needReplyTagHandler'; 
 import Ms from './MsTagHandler';
+import CC98 from './CC98TagHandler';
 
 /**
  * 创建一个解析签名档用的engine
@@ -120,6 +121,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(AcTagHandler);
 	engine.handlers.register(MahjongTagHandler);
 	engine.handlers.register(Ms);
+	engine.handlers.register(CC98);
 	engine.handlers.register(TbTagHandler);
 	engine.handlers.register(NeedReplyTagHandler);
 

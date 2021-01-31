@@ -22,6 +22,7 @@ interface State {
     selectionEnd: number
     extendTagName: string
     message: string
+    
     emojiType: ConfigType.emojiType
     isPreviewing: boolean
     shouldCompassImage: boolean
@@ -64,7 +65,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
         // 首次点击表情按钮
         if(extendTagName === 'emoji' && this.state.emojiType === 'hide') {
             this.setState({
-                emojiType: 'ac'
+                emojiType: 'CC98'
             })
         }
         // 点击相同按钮时隐藏
