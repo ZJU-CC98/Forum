@@ -69,9 +69,9 @@ export default class Emoji extends React.Component<EmojiProps> {
             'CC98': new Array(12).fill(0)
                 .map((item, index) => {
                     if (index < 9) {
-                        return `0${index+1}`;
+                        return `0${index + 1}`;
                     } else {
-                        return `${index+1}`;
+                        return `${index + 1}`;
                     }
                 })
                 .map((item) => (
@@ -133,7 +133,7 @@ export default class Emoji extends React.Component<EmojiProps> {
 
         //表情栏上的info
         const info = {
-            'CC98': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="http://www.cc98.org">CC98论坛</a> 提供</p>,
+            'CC98': null,
             'ac': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="http://www.acfun.cn">AcFun弹幕视频网</a> 提供</p>,
             'mj': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//bbs.saraba1st.com/2b/forum.php">stage1st论坛</a> 提供</p>,
             'tb': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//tieba.baidu.com ">百度贴吧</a> 提供</p>,
