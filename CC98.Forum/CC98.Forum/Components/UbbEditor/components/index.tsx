@@ -10,6 +10,9 @@ import { Message } from './message'
 import Emoji from './emoji'
 import { UbbContainer } from '../../UbbContainer'
 
+// storage for default emoji
+import { setLocalStorage, getLocalStorage } from '../../../Utility'
+
 interface Props {
     value: string
     update: (value: string) => void
@@ -22,7 +25,7 @@ interface State {
     selectionEnd: number
     extendTagName: string
     message: string
-    
+
     emojiType: ConfigType.emojiType
     isPreviewing: boolean
     shouldCompassImage: boolean
@@ -31,7 +34,7 @@ interface State {
 export class UbbEditor extends React.PureComponent<Props, State> {
     constructor(props) {
         super(props)
-        this.state = { 
+        this.state = {
             value: '',
             selectionStart: 0,
             selectionEnd: 0,
@@ -63,17 +66,21 @@ export class UbbEditor extends React.PureComponent<Props, State> {
 
     private changeExtend(extendTagName: string) {
         // 首次点击表情按钮
-        if(extendTagName === 'emoji' && this.state.emojiType === 'hide') {
+        if (extendTagName === 'emoji' && this.state.emojiType === 'hide') {
+            let defaultEmojiType: ConfigType.emojiType = 'CC98';
+            if (getLocalStorage('defaultEmojiType')) {
+                defaultEmojiType = getLocalStorage('defaultEmojiType')
+            };
             this.setState({
-                emojiType: 'CC98'
+                emojiType: defaultEmojiType,
             })
         }
         // 点击相同按钮时隐藏
         this.setState((prevState: State) => extendTagName === prevState.extendTagName ? {
             extendTagName: ''
         } : {
-            extendTagName
-        })
+                extendTagName
+            })
     }
 
     private changeValue(ubbSegment: ConfigType.IUbbSegment): void {
@@ -96,7 +103,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
     private async handleUpload(filelist: FileList, shouldCompassImage?: boolean) {
         let files = Array.from(filelist)
         try {
-            if(this.state.extendTagName !== 'img' && 
+            if (this.state.extendTagName !== 'img' &&
                 files.some(item => (
                     item.type.indexOf('image') === -1) &&   // 不是图片文件
                     item.size > 10485760                    // 并且大小超过限制
@@ -110,7 +117,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                 tagName: utility.getTagName(files[index]),
                 content: item
             }))
-        } catch(e) {
+        } catch (e) {
             this.message(e.message)
         }
     }
@@ -119,6 +126,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
         this.setState({
             emojiType: em
         })
+        setLocalStorage('defaultEmojiType', em)
     }
 
     private changeShouldCompassImage(shouldCompassImage: boolean) {
@@ -155,7 +163,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
     }
 
     componentWillReceiveProps(newProps: Props) {
-        if(this.state.value !== newProps.value) this.setState({
+        if (this.state.value !== newProps.value) this.setState({
             value: newProps.value,
             selectionStart: newProps.value.length,
             selectionEnd: newProps.value.length,
@@ -165,9 +173,9 @@ export class UbbEditor extends React.PureComponent<Props, State> {
     render() {
         return (
             <div className="ubb-editor" style={{ height: `${this.props.option.height || 20}rem` }} >
-                <Buttons 
-                    changeValue={this.changeValue} 
-                    changeExtendName={this.changeExtend} 
+                <Buttons
+                    changeValue={this.changeValue}
+                    changeExtendName={this.changeExtend}
                     undo={this.customTextArea && this.customTextArea.undo}
                     redo={this.customTextArea && this.customTextArea.redo}
                     triggerIsPreviewing={this.triggerIsPreviewing}
@@ -181,42 +189,42 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                     shouldCompassImage={this.state.shouldCompassImage}
                     changeShouldCompassImage={this.changeShouldCompassImage}
                 />
-                {this.state.isPreviewing ? <div className="ubb-preview"><UbbContainer code={this.state.value} /></div> : <CustomTextArea 
+                {this.state.isPreviewing ? <div className="ubb-preview"><UbbContainer code={this.state.value} /></div> : <CustomTextArea
                     value={this.state.value}
                     onChange={this.onChange}
-                    ref={it => this.customTextArea = it} 
+                    ref={it => this.customTextArea = it}
                     onBlur={e => {
                         const { selectionStart, selectionEnd } = e.target
                         this.setState({ selectionStart, selectionEnd })
                     }}
                     onDrop={e => {
                         let files = e.dataTransfer.files
-                        if(files) this.handleUpload(files)
+                        if (files) this.handleUpload(files)
                     }}
                     onPaste={e => {
-                        if(!e.clipboardData || !e.clipboardData.items) return;
+                        if (!e.clipboardData || !e.clipboardData.items) return;
                         const kinds = Array.from(e.clipboardData.items).map(item => item.kind)
                         const files = e.clipboardData.files;
-                        if(kinds.some(kind => kind === 'file')) {
+                        if (kinds.some(kind => kind === 'file')) {
                             e.preventDefault()
                             this.customTextArea.blur()
                             this.handleUpload(files, this.state.shouldCompassImage)
                         }
                     }}
                     onKeyDown={e => {
-                        if(e.ctrlKey && e.key === 'Enter' && this.props.option && this.props.option.submit) {
+                        if (e.ctrlKey && e.key === 'Enter' && this.props.option && this.props.option.submit) {
                             this.props.option.submit()
                         }
                     }}
                 />}
-                <Message 
-                    message={this.state.message} 
+                <Message
+                    message={this.state.message}
                 />
-                <input 
-                    style={{ display: 'none' }} 
-                    type="file" 
-                    id="ubbFileUpload" 
-                    multiple 
+                <input
+                    style={{ display: 'none' }}
+                    type="file"
+                    id="ubbFileUpload"
+                    multiple
                     onChange={async e => {
                         const input = e.target
                         let filelist = e.target.files
@@ -224,9 +232,9 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                         input.value = ''
                     }}
                 />
-                <Emoji 
+                <Emoji
                     changeValue={this.changeValue}
-                    emojiType={this.state.emojiType} 
+                    emojiType={this.state.emojiType}
                     changeEmojiType={this.changeEmojiType}
                     emojiIsShown={this.state.extendTagName === 'emoji'}
                     height={this.props.option && this.props.option.height && this.props.option.height - 2}
