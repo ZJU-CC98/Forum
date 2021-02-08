@@ -126,7 +126,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
         this.setState({
             emojiType: em
         })
-        setLocalStorage('defaultEmojiType', em)
+        setLocalStorage('defaultEmojiType', em, 2592000)
     }
 
     private changeShouldCompassImage(shouldCompassImage: boolean) {
