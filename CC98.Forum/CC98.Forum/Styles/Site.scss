@@ -4179,8 +4179,15 @@ ol {
   width: 48vh;
   height: 76.8vh;
   font-size: 2.5vh;
-  background-image: url("/static/images/annual-review/bg.jpg");
   background-size: contain;
+}
+
+.annual-review-page-bg-cat {
+  background-image: url("/static/images/annual-review/bg-cat.jpg");
+}
+
+.annual-review-page-bg-rabbit {
+  background-image: url("/static/images/annual-review/bg-rabbit.jpg");
 }
 
 .annual-review-page1-days {

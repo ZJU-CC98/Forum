@@ -4,7 +4,7 @@ export default class extends React.Component<{ data }> {
   render() {
     const { data } = this.props;
     return (
-      <div className="annual-review-page">
+      <div className="annual-review-page annual-review-page-bg-rabbit">
         <div style={{ marginTop: "1rem" }}>
           你送出了
           <span className="annual-review-page2-topicCount">

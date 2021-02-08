@@ -5,14 +5,14 @@ export default class extends React.Component<{ data }> {
     const { data } = this.props
     if (!data.mostReplyTopicCount && !data.mostViewTopicCount) {
       return (
-        <div className="annual-review-page">
+        <div className="annual-review-page annual-review-page-bg-cat">
           在过去的一年里，你还没有发过主题帖...
         </div>
       );
     }
-    return <div className="annual-review-page">
+    return <div className="annual-review-page annual-review-page-bg-cat">
       <div>在你一年发表的主题帖中，</div>
-      {data.mostReplyTopicCount && (
+      {data.mostReplyTopicCount !== 0 && (
         <>
           <div>
             收到最多回复的一次，
@@ -28,7 +28,7 @@ export default class extends React.Component<{ data }> {
       )}
 
       {
-        data.mostViewTopicCount && (
+        data.mostViewTopicCount !== 0 && (
           <>
             <div>
               点击量最多的一次，
@@ -48,17 +48,17 @@ export default class extends React.Component<{ data }> {
         data.mostReceiveLikePostCount !== 0 && (
           <div style={{ marginTop: '2rem' }}>
             你收获他人点赞最多的一个发言，
-        </div>
+          </div>
         )}
       {
         data.mostReceiveLikePostCount !== 0 && (
           <div>
             共收到了
-          <span className="annual-review-page2-hotTopicCount">
+            <span className="annual-review-page2-hotTopicCount">
               {data.mostReceiveLikePostCount}
             </span>
             个赞。
-        </div>
+          </div>
         )}
     </div>
   }

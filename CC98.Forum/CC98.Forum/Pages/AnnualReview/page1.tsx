@@ -5,17 +5,17 @@ export default class extends React.Component<{ data }> {
     const { data } = this.props;
 
     return (
-      <div className="annual-review-page">
-        <div style={{ fontWeight: "bolder", marginTop: '3rem' }}>
+      <div className="annual-review-page annual-review-page-bg-cat" style={{ lineHeight: 1.25 }}>
+        <div style={{ fontWeight: "bolder", marginTop: '2rem' }}>
           亲爱的CC98用户 {data.userInfo.name}：
         </div>
         <img
-          style={{ borderRadius: "50%", marginTop: "1rem" }}
-          width={document.body.clientHeight * 0.1}
+          style={{ borderRadius: "50%", marginTop: '0.5rem' }}
+          width='60px'
           src={`${data.userInfo.portraitUrl}`}
         ></img>
         <div>
-          在过去的2019年里，你有
+          在过去的2020年里，你有
           <span className="annual-review-page2-topicCount">
             {data.postDay}
           </span>
