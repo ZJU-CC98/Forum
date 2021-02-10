@@ -5,7 +5,7 @@ export default class extends React.Component<{ data }> {
     const { data } = this.props;
 
     return (
-      <div className="annual-review-page annual-review-page-bg-cat" style={{ lineHeight: 1.25 }}>
+      <div className="annual-review-2020-page annual-review-2020-page-bg-cat" style={{ lineHeight: 1.25 }}>
         <div style={{ fontWeight: "bolder", marginTop: '2rem' }}>
           亲爱的CC98用户 {data.userInfo.name}：
         </div>

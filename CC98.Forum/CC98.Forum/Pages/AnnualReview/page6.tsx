@@ -6,7 +6,7 @@ export default class extends React.Component<{ data }> {
     const achievements = data.achievement.split("|");
     const colors = ["magenta", "volcano", "gold", "lime"];
     return (
-      <div className="annual-review-page annual-review-page-bg-rabbit">
+      <div className="annual-review-2020-page annual-review-2020-page-bg-rabbit">
         <div>你获得了以下成就：</div>
         <div style={{ display: "flex", justifyContent: "space-around",marginTop:"0.5rem" ,marginLeft: '1rem', marginRight: '1rem', flexWrap: 'wrap'}}>
           {achievements.map((item, index) => (

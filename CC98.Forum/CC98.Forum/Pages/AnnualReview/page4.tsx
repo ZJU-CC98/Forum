@@ -57,7 +57,7 @@ export default class extends React.Component<{ data }> {
     }
    
     return (
-      <div className="annual-review-page annual-review-page-bg-rabbit">
+      <div className="annual-review-2020-page annual-review-2020-page-bg-rabbit">
         {boards}
         {data.latestPostTime && (
           <div style={{ marginTop: '1rem' }}>
