@@ -44,10 +44,17 @@ export default class extends React.Component<Props, State> {
     recordVisible: false,
   };
   showModal = async () => {
-    let res = await Utility.getTpUsers(this.props.data.id, 0, 20);
+    let res = await Utility.getTpUsers(this.props.data.id, 0, 6);
+    let hasMore = true;
+    if (res.length < 21) {
+      hasMore = false;
+    } else {
+      res.pop();
+    }
     this.setState({
       visible: true,
       tpList: res,
+      hasMore,
     });
   };
   handleOk = () => {
@@ -113,11 +120,15 @@ export default class extends React.Component<Props, State> {
             pagination={{
               onChange: async (page) => {
                 const from = (page - 1) * 5;
-                let data = await Utility.getTpUsers(id, from, 5);
-                let res = this.state.tpList.concat(data);
-                this.setState({ tpList: res });
+                let data = await Utility.getTpUsers(id, from, 6);
+                if (data.length > 0) {
+                  this.state.tpList.pop();
+                  let res = this.state.tpList.concat(data);
+                  this.setState({ tpList: res });
+                }
               },
               pageSize: 5,
+              simple: true,
             }}
             renderItem={(item) => (
               <List.Item key={item.userId}>
