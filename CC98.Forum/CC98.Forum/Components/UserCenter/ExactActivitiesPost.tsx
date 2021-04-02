@@ -26,9 +26,7 @@ export default class extends React.Component<UserCenterExactActivitiesPostProps>
         <div className="user-post-content">
           <p>
             <Link
-              to={`/topic/${this.props.userRecentPost.topicId}/${
-                Math.floor(this.props.userRecentPost.floor / 10) + 1
-              }`}
+              to={`/topic/${this.props.userRecentPost.topicId}/${Math.floor((this.props.userRecentPost.floor - 1) / 10) + 1}#${this.props.userRecentPost.floor % 10}`}
             >
               {this.props.userRecentPost.content}
             </Link>
