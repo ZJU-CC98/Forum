@@ -44,7 +44,7 @@ export default Form.create<Props>()(
         current: "1",
         option: "",
         childBoard: "似水流年",
-        childBoards: [{ name: "似水流年", id: 758 }],
+        childBoards: [{ name: "似水流年", id: 758 }, { name: "心灵之约", id: 182 }, { name: "论坛指南", id: 184 }],
         background: "#fff",
         checkedList: [],
         indeterminate: true,
@@ -267,6 +267,8 @@ export default Form.create<Props>()(
 
     render() {
       let boards = this.state.boardsData;
+      let childBoards = this.state.childBoards;
+      console.log(childBoards);
       const boardOptions = boards.map((board) => (
         <Option key={board.id}>{board.name}</Option>
       ));
@@ -324,8 +326,10 @@ export default Form.create<Props>()(
               {boardOptions}
             </Select>
             <Select
+              defaultValue={childBoards.length > 0 ? childBoards[0].name : ""}
               style={{ marginLeft: "2rem", width: 120 }}
               onChange={this.onChildBoardChange}
+              key={childBoards.length > 0 ? childBoards[0].name : ""}
             >
               {childBoardOptions}
             </Select>
