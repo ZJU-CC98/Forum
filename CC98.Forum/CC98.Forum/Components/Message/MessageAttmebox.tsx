@@ -35,10 +35,10 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
                 userName = `[color=gray]${this.props.userName}[/color]`;
             }
             if (this.props.boardId) {
-                title = `[url=/topic/${this.props.topicId}/${pageNum}][color=#0b5394]${this.props.topicTitle}[/color][/url]`;
+                title = `[url=/topic/${this.props.topicId}/${pageNum}][color=#0b5394]${this.props.topicTitle.replace('\n',"")}[/color][/url]`;
             }
             else {
-                title = `[color=#0b5394]${this.props.topicTitle}[/color]`;
+                title = `[color=#0b5394]${this.props.topicTitle.replace('\n',"")}[/color]`;
             }
             content = ` ${userName} [color=gray]在《${title}》中@了你。[/color]`;
         }
