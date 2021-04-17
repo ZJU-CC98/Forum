@@ -29,8 +29,7 @@ export default class extends React.Component<props, UserCenterNavigationState> {
 
     if (window.pageYOffset < 234) {
       this.setState((prevState) => ({
-        buttonClassName:
-          prevState.buttonClassName === "" ? "" : "btn-disappare",
+        buttonClassName: prevState.buttonClassName === "" ? "" : "btn-disappare",
       }));
     }
   }
@@ -52,22 +51,13 @@ export default class extends React.Component<props, UserCenterNavigationState> {
       <div className="user-center-navigation" id="userCenterNavigation">
         <ul>
           <li>
-            <NavLink
-              to="/usercenter"
-              exact
-              activeClassName="user-center-navigation-active"
-              className="fa-home"
-            >
+            <NavLink to="/usercenter" exact activeClassName="user-center-navigation-active" className="fa-home">
               <div className="center-nav-item">个人主页</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink
-              to="/usercenter/config"
-              activeClassName="user-center-navigation-active"
-              className="fa-cog"
-            >
+            <NavLink to="/usercenter/config" activeClassName="user-center-navigation-active" className="fa-cog">
               <div className="center-nav-item">修改资料</div>
             </NavLink>
           </li>
@@ -83,51 +73,31 @@ export default class extends React.Component<props, UserCenterNavigationState> {
           </li>
           <hr />
           <li>
-            <NavLink
-              to="/usercenter/myposts/ishot/0"
-              activeClassName="user-center-navigation-active"
-              className="fa-mail-reply"
-            >
+            <NavLink to="/usercenter/myposts" activeClassName="user-center-navigation-active" className="fa-mail-reply">
               <div className="center-nav-item">我的回复</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink
-              to="/usercenter/myfavorites/order/0"
-              activeClassName="user-center-navigation-active"
-              className="fa-star"
-            >
+            <NavLink to="/usercenter/myfavorites" activeClassName="user-center-navigation-active" className="fa-star">
               <div className="center-nav-item">我的收藏</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink
-              to="/usercenter/mycustomboards"
-              activeClassName="user-center-navigation-active"
-              className="fa-rss"
-            >
+            <NavLink to="/usercenter/mycustomboards" activeClassName="user-center-navigation-active" className="fa-rss">
               <div className="center-nav-item">关注版面</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink
-              to="/usercenter/myfollowings"
-              activeClassName="user-center-navigation-active"
-              className="fa-heart"
-            >
+            <NavLink to="/usercenter/myfollowings" activeClassName="user-center-navigation-active" className="fa-heart">
               <div className="center-nav-item">关注用户</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink
-              to="/usercenter/myfans"
-              activeClassName="user-center-navigation-active"
-              className="fa-users"
-            >
+            <NavLink to="/usercenter/myfans" activeClassName="user-center-navigation-active" className="fa-users">
               <div className="center-nav-item">我的粉丝</div>
             </NavLink>
           </li>
@@ -143,21 +113,12 @@ export default class extends React.Component<props, UserCenterNavigationState> {
           </li>
           <hr />
           <li>
-            <NavLink
-              to="/usercenter/theme"
-              activeClassName="user-center-navigation-active"
-              className="fa-magic"
-            >
+            <NavLink to="/usercenter/theme" activeClassName="user-center-navigation-active" className="fa-magic">
               <div className="center-nav-item">切换皮肤</div>
             </NavLink>
           </li>
         </ul>
-        <button
-          type="button"
-          id="scrollToTop"
-          className={this.state.buttonClassName}
-          onClick={this.scrollToTop}
-        >
+        <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>
           回到顶部
         </button>
       </div>

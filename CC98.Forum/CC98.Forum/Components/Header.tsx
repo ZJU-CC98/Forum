@@ -2,17 +2,16 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
-import * as React from 'react';
-import * as Utility from '../Utility';
-import { AppState, UserInfo } from '../States/AppState';
-import * as $ from 'jquery';
-import { connect } from 'react-redux';
-import { Actions, RootState } from '../Store';
-import { Link, withRouter, Route } from 'react-router-dom';
-import { refreshCurrentUserInfo } from '../AsyncActions/UserCenter';
-import { refreshCurrentMessageCount } from '../AsyncActions/Message';
-import { MessageInfo } from '../Reducers/Message';
-import { notification } from 'antd';
+import * as React from "react";
+import * as Utility from "../Utility";
+import { AppState, UserInfo } from "../States/AppState";
+import * as $ from "jquery";
+import { connect } from "react-redux";
+import { Actions, RootState } from "../Store";
+import { Link, withRouter, Route } from "react-router-dom";
+import { refreshCurrentUserInfo } from "../AsyncActions/UserCenter";
+import { refreshCurrentMessageCount } from "../AsyncActions/Message";
+import { MessageInfo } from "../Reducers/Message";
 
 type props = {
   isLogOn: boolean;
@@ -33,7 +32,7 @@ class DropDownConnect extends React.Component<props, state> {
   constructor(props) {
     super(props);
     this.state = {
-      hoverElement: null
+      hoverElement: null,
     };
   }
 
@@ -41,8 +40,8 @@ class DropDownConnect extends React.Component<props, state> {
     /**
      * 同步不同窗口的登陆信息
      */
-    window.addEventListener('storage', e => {
-      if (e.key === 'userInfo') {
+    window.addEventListener("storage", (e) => {
+      if (e.key === "userInfo") {
         if (e.oldValue === e.newValue) return;
         if (e.newValue) {
           //如果用户在其他页面重新登陆
@@ -59,22 +58,19 @@ class DropDownConnect extends React.Component<props, state> {
     }
 
     //每天刷新一次用户信息
-    if (
-      Utility.isLogOn() &&
-      !Utility.getLocalStorage('shouldNotRefreshUserInfo')
-    ) {
+    if (Utility.isLogOn() && !Utility.getLocalStorage("shouldNotRefreshUserInfo")) {
       this.props.refreshUserInfo();
-      Utility.setLocalStorage('shouldNotRefreshUserInfo', true, 86400);
+      Utility.setLocalStorage("shouldNotRefreshUserInfo", true, 86400);
     }
   }
 
   logOff() {
-    this.handleMouseEvent('mouseout', 'userName');
-    Utility.removeLocalStorage('accessToken');
-    Utility.removeLocalStorage('refresh_token');
-    Utility.removeLocalStorage('userInfo');
-    Utility.removeLocalStorage('usePWA');
-    Utility.removeStorage('all');
+    this.handleMouseEvent("mouseout", "userName");
+    Utility.removeLocalStorage("accessToken");
+    Utility.removeLocalStorage("refresh_token");
+    Utility.removeLocalStorage("userInfo");
+    Utility.removeLocalStorage("usePWA");
+    Utility.removeStorage("all");
 
     Utility.changeTheme(0);
     this.props.logOff(); //更新redux中的状态
@@ -82,15 +78,15 @@ class DropDownConnect extends React.Component<props, state> {
 
   handleMouseEvent(type, className) {
     switch (type) {
-      case 'mouseover': {
+      case "mouseover": {
         this.setState({
-          hoverElement: className
+          hoverElement: className,
         });
         break;
       }
-      case 'mouseout': {
+      case "mouseout": {
         this.setState({
-          hoverElement: null
+          hoverElement: null,
         });
         break;
       }
@@ -106,33 +102,33 @@ class DropDownConnect extends React.Component<props, state> {
         this.props.messageCount.systemCount;
 
       const style = {
-        display: 'block',
-        transitionDuration: '.2s',
-        height: '0px'
+        display: "block",
+        transitionDuration: ".2s",
+        height: "0px",
       };
       //全站管理选项
       let admin =
-        this.props.userInfo.privilege === '管理员' ? (
-          <Link to="/sitemanage" style={{ color: '#fff' }}>
+        this.props.userInfo.privilege === "管理员" ? (
+          <Link to="/sitemanage" style={{ color: "#fff" }}>
             <li>全站管理</li>
           </Link>
         ) : null;
       //用户中心下拉列表
-      let userCenterClassName = 'topBarUserCenter';
-      if (location.pathname === '/') {
-        userCenterClassName = 'topBarUserCenter-mainPage';
+      let userCenterClassName = "topBarUserCenter";
+      if (location.pathname === "/") {
+        userCenterClassName = "topBarUserCenter-mainPage";
       }
       //消息中心下拉列表
-      let MessageClassName = 'topBarMessageDetails';
-      if (location.pathname === '/') {
-        MessageClassName = 'topBarMessageDetails-mainPage';
+      let MessageClassName = "topBarMessageDetails";
+      if (location.pathname === "/") {
+        MessageClassName = "topBarMessageDetails-mainPage";
       }
 
       //获取签到状态
-      let signinInfo = '签到';
-      let userInfo = Utility.getLocalStorage('userInfo');
+      let signinInfo = "签到";
+      let userInfo = Utility.getLocalStorage("userInfo");
       if (userInfo && Utility.getLocalStorage(`signin_${userInfo.id}`)) {
-        signinInfo = '已签到';
+        signinInfo = "已签到";
       }
       return (
         <div className="topBarRight">
@@ -140,16 +136,16 @@ class DropDownConnect extends React.Component<props, state> {
             <div
               className="topBarMessage"
               id="userMessage"
-              onMouseOut={e => {
-                this.handleMouseEvent(e.type, 'message');
+              onMouseOut={(e) => {
+                this.handleMouseEvent(e.type, "message");
               }}
-              onMouseOver={e => {
-                this.handleMouseEvent(e.type, 'message');
+              onMouseOver={(e) => {
+                this.handleMouseEvent(e.type, "message");
               }}
             >
               <Link to="/message/response" className="messageTopBar">
                 <div className="topBarBell">
-                  {' '}
+                  {" "}
                   <i className="fa fa-bell-o" />
                 </div>
                 {totalCount ? (
@@ -161,22 +157,22 @@ class DropDownConnect extends React.Component<props, state> {
             </div>
             <div
               className="topBarUserImg"
-              onMouseOut={e => {
-                this.handleMouseEvent(e.type, 'userName');
+              onMouseOut={(e) => {
+                this.handleMouseEvent(e.type, "userName");
               }}
-              onMouseOver={e => {
-                this.handleMouseEvent(e.type, 'userName');
+              onMouseOver={(e) => {
+                this.handleMouseEvent(e.type, "userName");
               }}
             >
               <img src={this.props.userInfo.portraitUrl} />
             </div>
             <div
               className="topBarUserName"
-              onMouseOut={e => {
-                this.handleMouseEvent(e.type, 'userName');
+              onMouseOut={(e) => {
+                this.handleMouseEvent(e.type, "userName");
               }}
-              onMouseOver={e => {
-                this.handleMouseEvent(e.type, 'userName');
+              onMouseOver={(e) => {
+                this.handleMouseEvent(e.type, "userName");
               }}
             >
               {this.props.userInfo.name}
@@ -184,21 +180,21 @@ class DropDownConnect extends React.Component<props, state> {
           </div>
           <div
             className={userCenterClassName}
-            onMouseOut={e => {
-              this.handleMouseEvent(e.type, 'userName');
+            onMouseOut={(e) => {
+              this.handleMouseEvent(e.type, "userName");
             }}
-            onMouseOver={e => {
-              this.handleMouseEvent(e.type, 'userName');
+            onMouseOver={(e) => {
+              this.handleMouseEvent(e.type, "userName");
             }}
             style={{
               ...style,
-              overflow: 'hidden',
-              height: this.state.hoverElement === 'userName' ? '8rem' : '0'
+              overflow: "hidden",
+              height: this.state.hoverElement === "userName" ? "8rem" : "0",
             }}
           >
-            <ul style={{ display: 'inherit' }}>
+            <ul style={{ display: "inherit" }}>
               <Link to="/usercenter">
-                {' '}
+                {" "}
                 <li>个人中心</li>
               </Link>
               {admin}
@@ -210,26 +206,24 @@ class DropDownConnect extends React.Component<props, state> {
           </div>
           <div
             className={MessageClassName}
-            onMouseOut={e => {
-              this.handleMouseEvent(e.type, 'message');
+            onMouseOut={(e) => {
+              this.handleMouseEvent(e.type, "message");
             }}
-            onMouseOver={e => {
-              this.handleMouseEvent(e.type, 'message');
+            onMouseOver={(e) => {
+              this.handleMouseEvent(e.type, "message");
             }}
             style={{
               ...style,
-              overflow: 'hidden',
-              height: this.state.hoverElement === 'message' ? '8rem' : '0'
+              overflow: "hidden",
+              height: this.state.hoverElement === "message" ? "8rem" : "0",
             }}
           >
-            <ul style={{ display: 'inherit' }}>
+            <ul style={{ display: "inherit" }}>
               <Link to="/message/response">
                 <li>
                   回复我的
                   {this.props.messageCount.replyCount ? (
-                    <div className="message-counterLi">
-                      {this.props.messageCount.replyCount}
-                    </div>
+                    <div className="message-counterLi">{this.props.messageCount.replyCount}</div>
                   ) : null}
                 </li>
               </Link>
@@ -237,9 +231,7 @@ class DropDownConnect extends React.Component<props, state> {
                 <li>
                   @ 我的
                   {this.props.messageCount.atCount ? (
-                    <div className="message-counterLi">
-                      {this.props.messageCount.atCount}
-                    </div>
+                    <div className="message-counterLi">{this.props.messageCount.atCount}</div>
                   ) : null}
                 </li>
               </Link>
@@ -247,9 +239,7 @@ class DropDownConnect extends React.Component<props, state> {
                 <li>
                   系统通知
                   {this.props.messageCount.systemCount ? (
-                    <div className="message-counterLi">
-                      {this.props.messageCount.systemCount}
-                    </div>
+                    <div className="message-counterLi">{this.props.messageCount.systemCount}</div>
                   ) : null}
                 </li>
               </Link>
@@ -257,9 +247,7 @@ class DropDownConnect extends React.Component<props, state> {
                 <li>
                   我的私信
                   {this.props.messageCount.messageCount ? (
-                    <div className="message-counterLi">
-                      {this.props.messageCount.messageCount}
-                    </div>
+                    <div className="message-counterLi">{this.props.messageCount.messageCount}</div>
                   ) : null}
                 </li>
               </Link>
@@ -271,10 +259,10 @@ class DropDownConnect extends React.Component<props, state> {
       return (
         <div className="topBarUserInfo">
           <div className="topBarText">
-            {' '}
+            {" "}
             <Link
               onClick={() => {
-                localStorage.setItem('logOnRedirectUrl', window.location.href);
+                localStorage.setItem("logOnRedirectUrl", window.location.href);
               }}
               to="/logOn"
             >
@@ -295,7 +283,7 @@ function mapState(state: RootState) {
   return {
     userInfo: state.userInfo.currentUserInfo,
     isLogOn: state.userInfo.isLogOn,
-    messageCount: state.message
+    messageCount: state.message,
   };
 }
 
@@ -314,14 +302,11 @@ function mapDispatch(dispatch) {
     },
     refreshCurrentMessageCount: () => {
       dispatch(refreshCurrentMessageCount());
-    }
+    },
   };
 }
 
-let DropDown = connect(
-  mapState,
-  mapDispatch
-)(DropDownConnect);
+let DropDown = connect(mapState, mapDispatch)(DropDownConnect);
 
 //到此结束
 
@@ -329,27 +314,25 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
   //搜索框组件
 
   async componentDidMount() {
-    const searchBoxSelect = $('.searchBoxSelect');
-    const downArrow = $('.caret-down');
-    const searchBoxSub = $('.searchBoxSub');
-    const searchIco = $('.searchIco');
-    const searchBoxLi = searchBoxSub.find('li');
+    const searchBoxSelect = $(".searchBoxSelect");
+    const downArrow = $(".caret-down");
+    const searchBoxSub = $(".searchBoxSub");
+    const searchIco = $(".searchIco");
+    const searchBoxLi = searchBoxSub.find("li");
 
-    $(document).click(function() {
-      searchBoxSub.css('display', 'none');
+    $(document).click(function () {
+      searchBoxSub.css("display", "none");
     });
 
-    searchBoxSelect.click(function() {
-      if (searchBoxSub.css('display') === 'block')
-        searchBoxSub.css('display', 'none');
-      else searchBoxSub.css('display', 'block');
+    searchBoxSelect.click(function () {
+      if (searchBoxSub.css("display") === "block") searchBoxSub.css("display", "none");
+      else searchBoxSub.css("display", "block");
       return false; //阻止事件冒泡
     });
 
-    downArrow.click(function() {
-      if (searchBoxSub.css('display') === 'block')
-        searchBoxSub.css('display', 'none');
-      else searchBoxSub.css('display', 'block');
+    downArrow.click(function () {
+      if (searchBoxSub.css("display") === "block") searchBoxSub.css("display", "none");
+      else searchBoxSub.css("display", "block");
       return false; //阻止事件冒泡
     });
 
@@ -357,36 +340,30 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
         如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
         或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
 
-    searchBoxLi.click(function() {
+    searchBoxLi.click(function () {
       searchBoxSelect.text($(this).text());
     });
 
-    searchBoxLi.mouseover(function() {
-      this.className = 'hover';
+    searchBoxLi.mouseover(function () {
+      this.className = "hover";
     });
 
-    searchBoxLi.mouseout(function() {
-      this.className = '';
+    searchBoxLi.mouseout(function () {
+      this.className = "";
     });
 
     //获取搜索关键词
     let self = this;
     searchIco.click(async () => {
-    
-      let val: any = $('#searchText').val();
-      if (val && val != '') {
-        if (
-          searchBoxSelect.text() === '主题' ||
-          searchBoxSelect.text() === '全站'
-        ) {
+      let val: any = $("#searchText").val();
+      if (val && val != "") {
+        if (searchBoxSelect.text() === "主题" || searchBoxSelect.text() === "全站") {
           // notification.warning({
           //   message: '非常抱歉',
           //   description: '搜索功能优化中，暂不可用。'
           // });
-          this.props.history.push(
-            `/search?boardId=0&keyword=${encodeURI(encodeURI(val))}`
-          );
-        } else if (searchBoxSelect.text() === '版内') {
+          this.props.history.push(`/search?boardId=0&keyword=${encodeURI(encodeURI(val))}`);
+        } else if (searchBoxSelect.text() === "版内") {
           // notification.warning({
           //   message: '非常抱歉',
           //   description: '搜索功能优化中，暂不可用。'
@@ -397,37 +374,33 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
           let url3 = location.href.match(/\/search\?boardId=(\d+)&/);
           let boardId = 0;
           if (url1) {
-            console.log('版内1');
+            console.log("版内1");
             let topicId = url1[1];
             let response = await Utility.getTopicInfo(topicId);
             boardId = response.boardId;
           } else if (url2) {
-            console.log('版内2');
+            console.log("版内2");
             boardId = parseInt(url2[1]);
           } else if (url3) {
             boardId = parseInt(url3[1]);
             console.log(url3);
             console.log(url3[1]);
-            console.log('目前是在版内啊');
+            console.log("目前是在版内啊");
           }
-          this.props.history.push(
-            `/search?boardId=${boardId}&keyword=${encodeURI(encodeURI(val))}`
-          );
-        } else if (searchBoxSelect.text() === '用户') {
+          this.props.history.push(`/search?boardId=${boardId}&keyword=${encodeURI(encodeURI(val))}`);
+        } else if (searchBoxSelect.text() === "用户") {
           let data = await Utility.getUserInfoByName(val);
           if (data) {
             this.props.history.push(`/user/id/${data.id}`);
           } else {
-            this.props.history.push('/search');
+            this.props.history.push("/search");
           }
-        } else if (searchBoxSelect.text() === '版面') {
+        } else if (searchBoxSelect.text() === "版面") {
           // notification.warning({
           //   message: '非常抱歉',
           //   description: '搜索功能优化中，暂不可用。'
           // });
-          this.props.history.push(
-            `/searchBoard?keyword=${encodeURI(encodeURI(val))}`
-          ); 
+          this.props.history.push(`/searchBoard?keyword=${encodeURI(encodeURI(val))}`);
         }
       }
     });
@@ -438,10 +411,10 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
     var evt = e || window.event;
     var code = evt.which || evt.keyCode || evt.charCode; //提高浏览器兼容性
     if (code === 13) {
-      $('.searchIco').click();
-    } else if (evt.key === 'Enter') {
+      $(".searchIco").click();
+    } else if (evt.key === "Enter") {
       //提高浏览器兼容性
-      $('.searchIco').click();
+      $(".searchIco").click();
     }
   }
 
@@ -469,12 +442,7 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
             <div className="caret-down">
               <i className="fa fa-caret-down" />
             </div>
-            <input
-              id="searchText"
-              type="text"
-              placeholder="请输入搜索内容"
-              onKeyPress={this.keypress_submit}
-            />
+            <input id="searchText" type="text" placeholder="请输入搜索内容" onKeyPress={this.keypress_submit} />
             <div className="searchIco">
               <i className="fa fa-search" />
             </div>
@@ -483,7 +451,7 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
             <li>主题</li>
             <li>用户</li>
             <li>版面</li>
-            <li style={{ display: 'none' }} />
+            <li style={{ display: "none" }} />
           </ul>
         </div>
       );
@@ -495,12 +463,7 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
             <div className="caret-down">
               <i className="fa fa-caret-down" />
             </div>
-            <input
-              id="searchText"
-              type="text"
-              placeholder="请输入搜索内容"
-              onKeyPress={this.keypress_submit}
-            />
+            <input id="searchText" type="text" placeholder="请输入搜索内容" onKeyPress={this.keypress_submit} />
             <div className="searchIco">
               <i className="fa fa-search" />
             </div>
@@ -522,7 +485,7 @@ export const Search = withRouter(SearchBeforeConnent);
 export class Header extends React.Component<{}, AppState> {
   render() {
     let pathname = location.pathname;
-    if (pathname === '/') {
+    if (pathname === "/") {
       return (
         <div className="header">
           {/*<Redirect />*/}
@@ -531,9 +494,9 @@ export class Header extends React.Component<{}, AppState> {
               <div
                 className="row"
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center'
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
                 }}
               >
                 <div className="topBarLogo">
@@ -570,9 +533,9 @@ export class Header extends React.Component<{}, AppState> {
               <div
                 className="row"
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center'
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
                 }}
               >
                 <div className="topBarLogo">
