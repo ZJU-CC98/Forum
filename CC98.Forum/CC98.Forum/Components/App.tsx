@@ -56,11 +56,7 @@ class App extends React.Component<Props> {
         <Route exact path="/topic/hot-weekly" component={WeeklyHotTopic} />
         <Route exact path="/topic/hot-history" component={HistoryHotTopic} />
         <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />
-        <Route
-          exact
-          path="/topic/:topicId/postid/:postId/:page?"
-          component={CurUserPost}
-        />
+        <Route exact path="/topic/:topicId/postid/:postId/:page?" component={CurUserPost} />
         <Route path="/list/:boardId/:type?/:page?" component={BList} />
         <Route exact path="/boardlist" component={BoardList} />
         <Route path="/usercenter" component={UserCenter} />
@@ -90,11 +86,7 @@ class App extends React.Component<Props> {
           <div className="main-container">
             <Header />
             <Route component={ErrorControl} />
-            {!this.props.isError ? (
-              router
-            ) : (
-              <Route component={Status[this.props.errorMessage]} />
-            )}
+            {!this.props.isError ? router : <Route component={Status[this.props.errorMessage]} />}
             <Footer />
             {/* <NotificationController />*/}
           </div>

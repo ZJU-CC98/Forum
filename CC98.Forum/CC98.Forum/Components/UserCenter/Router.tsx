@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from "react";
-import { Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import Exact from "./Exact";
 import MyFollowings from "./MyFollowings";
@@ -24,25 +24,23 @@ export default class extends React.Component {
     return (
       <div className="user-center-router">
         <Route exact path="/usercenter/" component={Exact} />
-        <Route
-          path="/usercenter/myfollowings/:page?"
-          component={MyFollowings}
-        />
+        <Route path="/usercenter/myfollowings/:page?" component={MyFollowings} />
         <Route path="/usercenter/myfans/:page?" component={MyFans} />
         <Route path="/usercenter/mytopics/:page?" component={MyTopics} />
-        <Route
-          path="/usercenter/myposts/ishot/:ishot/:page?"
-          component={MyPosts}
-        />
-        <Route
-          path="/usercenter/myfavorites/order/:order/:page?"
-          component={MyFavoritesPosts}
-        />
+        <Switch>
+          <Route path="/usercenter/myposts/ishot/:ishot/:page?" component={MyPosts} />
+          <Route path="/usercenter/myposts">
+            <Redirect to="/usercenter/myposts/ishot/0" />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route path="/usercenter/myfavorites/order/:order/:page?" exact component={MyFavoritesPosts} />
+          <Route path="/usercenter/myfavorites">
+            <Redirect to="/usercenter/myfavorites/order/0" />
+          </Route>
+        </Switch>
         <Route path="/usercenter/config" component={Config} />
-        <Route
-          path="/usercenter/mycustomboards"
-          component={MyFavoritesBoards}
-        />
+        <Route path="/usercenter/mycustomboards" component={MyFavoritesBoards} />
         <Route path="/usercenter/transferwealth" component={Wealth} />
         <Route path="/usercenter/theme" component={Theme} />
       </div>

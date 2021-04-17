@@ -3,7 +3,6 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from "react";
-import * as Utility from "../../Utility";
 import Post from "./ExactActivitiesPost";
 import { UserRecentPost } from "../../States/AppState";
 import Pager from "./Pager";
@@ -71,7 +70,6 @@ class MyPosts extends React.Component<Props> {
     }
     const curPage = parseInt(this.props.match.params.page) || 1;
     const totalPage = this.props.hasTotal ? this.props.totalPage : curPage + 1;
-    console.log(this.props);
     //state转换为JSX
     let userRecentPosts = this.props.userRecentPosts
       .slice((curPage - 1) * 10, curPage * 10)
@@ -105,9 +103,7 @@ class MyPosts extends React.Component<Props> {
         <Pager
           currentPage={curPage}
           totalPage={totalPage}
-          href={`/usercenter/myposts/ishot/${Number(
-            this.props.match.params.ishot
-          )}/`}
+          href={`/usercenter/myposts/ishot/${Number(this.props.match.params.ishot)}/`}
           hasTotal={this.props.hasTotal}
         />
       </div>
