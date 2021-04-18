@@ -175,6 +175,7 @@ class Posts extends React.Component<Props> {
               totalPage={totalPage}
               href={`/usercenter/myfavorites/order/${order}/`}
               hasTotal={this.props.hasTotal}
+              keyword={this.keyword}
             />
           </>
         )}
