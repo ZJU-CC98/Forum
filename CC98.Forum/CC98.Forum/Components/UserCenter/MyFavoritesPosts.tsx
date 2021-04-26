@@ -33,8 +33,8 @@ type ownMatch = {
 };
 
 enum PostOrder {
-  LastReply = 0, // 最后回复时间
-  PostTime = 1, // 发帖时间
+  PostTime = 0, // 发帖时间
+  LastReply = 1, // 最后回复时间
   FavorTime = 2, // 收藏时间
 }
 
@@ -147,8 +147,8 @@ class Posts extends React.Component<Props> {
               this.changeOrderAndKeyword(value);
             }}
           >
-            <Option value={PostOrder.LastReply}>按最后回复排序</Option>
             <Option value={PostOrder.PostTime}>按发帖时间排序</Option>
+            <Option value={PostOrder.LastReply}>按最后回复排序</Option>
             <Option value={PostOrder.FavorTime}>按收藏顺序排序</Option>
           </Select>
           <Search
