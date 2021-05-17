@@ -74,19 +74,19 @@ export class Signin extends React.Component<{ history }, { signinInfo, content }
       </div>
       <div className="column" style={{ marginLeft: "2rem" }}>
         <div className="row">
-          第 1 天： 600 到 1200 论坛财富值
+          第 1 天： 1200 到 2400 论坛财富值
         </div>
         <div className="row">
-          第 2 天： 700 到 1400 论坛财富值
+          第 2 天： 1400 到 2800 论坛财富值
         </div>
         <div className="row">
-          第 3 天： 800 到 1600 论坛财富值
+          第 3 天： 1600 到 3200 论坛财富值
         </div>
         <div className="row">
-          第 4 天： 900 到 1800 论坛财富值
+          第 4 天： 1800 到 3600 论坛财富值
         </div>
         <div className="row">
-          第 5 天及以后： 1000 到 2000 论坛财富值
+          第 5 天及以后： 2000 到 4000 论坛财富值
         </div>
       </div>
       {info}
