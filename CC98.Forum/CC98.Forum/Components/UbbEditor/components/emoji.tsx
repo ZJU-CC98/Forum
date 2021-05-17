@@ -66,7 +66,7 @@ export default class Emoji extends React.Component<EmojiProps> {
 
         //基本同上
         const emoji = {
-            'CC98': new Array(12).fill(0)
+            'CC98': new Array(14).fill(0)
                 .map((item, index) => {
                     if (index < 9) {
                         return `0${index + 1}`;
