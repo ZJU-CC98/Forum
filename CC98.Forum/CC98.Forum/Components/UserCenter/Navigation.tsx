@@ -51,14 +51,16 @@ export default class extends React.Component<props, UserCenterNavigationState> {
       <div className="user-center-navigation" id="userCenterNavigation">
         <ul>
           <li>
-            <NavLink to="/usercenter" exact activeClassName="user-center-navigation-active" className="fa-home">
+            <NavLink to="/usercenter" exact activeClassName="user-center-navigation-active" >
+              <div className="fa-home fa-fw"/>
               <div className="center-nav-item">个人主页</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink to="/usercenter/config" activeClassName="user-center-navigation-active" className="fa-cog">
-              <div className="center-nav-item">修改资料</div>
+            <NavLink to="/usercenter/config" activeClassName="user-center-navigation-active" >
+                <div className="fa-cog fa-fw"/>
+                <div className="center-nav-item">修改资料</div>
             </NavLink>
           </li>
           <hr />
@@ -66,38 +68,44 @@ export default class extends React.Component<props, UserCenterNavigationState> {
             <NavLink
               to="/usercenter/mytopics"
               activeClassName="user-center-navigation-active"
-              className="fa-pencil-square-o"
+              
             >
+              <div className="fa-pencil-square-o fa-fw" />
               <div className="center-nav-item">我的主题</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink to="/usercenter/myposts" activeClassName="user-center-navigation-active" className="fa-mail-reply">
+            <NavLink to="/usercenter/myposts" activeClassName="user-center-navigation-active">
+              <span  className="fa-mail-reply fa-fw" />
               <div className="center-nav-item">我的回复</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink to="/usercenter/myfavorites" activeClassName="user-center-navigation-active" className="fa-star">
+            <NavLink to="/usercenter/myfavorites" activeClassName="user-center-navigation-active" >
+              <div className="fa-star fa-fw"/>
               <div className="center-nav-item">我的收藏</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink to="/usercenter/mycustomboards" activeClassName="user-center-navigation-active" className="fa-rss">
+            <NavLink to="/usercenter/mycustomboards" activeClassName="user-center-navigation-active" >
+              <span className="fa-rss fa-fw"/>
               <div className="center-nav-item">关注版面</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink to="/usercenter/myfollowings" activeClassName="user-center-navigation-active" className="fa-heart">
+            <NavLink to="/usercenter/myfollowings" activeClassName="user-center-navigation-active" >
+              <div className="fa-heart fa-fw" />
               <div className="center-nav-item">关注用户</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink to="/usercenter/myfans" activeClassName="user-center-navigation-active" className="fa-users">
+            <NavLink to="/usercenter/myfans" activeClassName="user-center-navigation-active">
+              <div  className="fa-users fa-fw" />
               <div className="center-nav-item">我的粉丝</div>
             </NavLink>
           </li>
@@ -106,15 +114,16 @@ export default class extends React.Component<props, UserCenterNavigationState> {
             <NavLink
               to="/usercenter/transferwealth"
               activeClassName="user-center-navigation-active"
-              className="fa-credit-card"
             >
+              <div className="fa-credit-card fa-fw" />
               <div className="center-nav-item">转账系统</div>
             </NavLink>
           </li>
           <hr />
           <li>
-            <NavLink to="/usercenter/theme" activeClassName="user-center-navigation-active" className="fa-magic">
-              <div className="center-nav-item">切换皮肤</div>
+            <NavLink to="/usercenter/theme" activeClassName="user-center-navigation-active" >
+              <div className="fa-magic fa-fw" />
+              <div className="center-nav-item ">切换皮肤</div>
             </NavLink>
           </li>
         </ul>
