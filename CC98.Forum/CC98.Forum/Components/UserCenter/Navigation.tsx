@@ -77,7 +77,7 @@ export default class extends React.Component<props, UserCenterNavigationState> {
           <hr />
           <li>
             <NavLink to="/usercenter/myposts" activeClassName="user-center-navigation-active">
-              <span  className="fa-mail-reply fa-fw" />
+              <div  className="fa-mail-reply fa-fw" />
               <div className="center-nav-item">我的回复</div>
             </NavLink>
           </li>
@@ -91,7 +91,7 @@ export default class extends React.Component<props, UserCenterNavigationState> {
           <hr />
           <li>
             <NavLink to="/usercenter/mycustomboards" activeClassName="user-center-navigation-active" >
-              <span className="fa-rss fa-fw"/>
+              <div className="fa-rss fa-fw"/>
               <div className="center-nav-item">关注版面</div>
             </NavLink>
           </li>
