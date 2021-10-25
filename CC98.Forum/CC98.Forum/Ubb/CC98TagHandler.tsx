@@ -19,7 +19,10 @@ export default class CC98TagHandler extends Ubb.RecursiveTagHandler {
         const reg = /CC98/gi;
         const tagName = tagData.tagName;
         const id = tagName.replace(reg, "");
-        const url = `/static/images/CC98/CC98${id}.gif`;
+        let url = `/static/images/CC98/CC98${id}.gif`;
+        if (Number(id) > 14 && Number(id) < 31) {
+	        url = `/static/images/CC98/CC98${id}.png`;
+        }
 
         return context.options.allowEmotion ? <div style={{ display: "inline" }}><img src={url} alt="" />{innerContent}</div> : <div style={{ display: "inline" }}>{innerContent}</div>;
     }
