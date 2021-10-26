@@ -171,7 +171,7 @@ export default Form.create<Props>()(
               </span>
             </Item>
           </Menu>
-          <Tag color="blue">500贴以上的用户可以进行评分（每日一次）</Tag>
+          <Tag color="blue">500贴以上的用户可以进行评分（每日一次），超过7天的发言内容无法评分。</Tag>
           {rcForm}
         </Modal>
       );

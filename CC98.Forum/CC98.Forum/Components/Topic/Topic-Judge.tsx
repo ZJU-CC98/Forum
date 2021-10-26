@@ -236,7 +236,7 @@ export class Judge extends React.Component<Props, { reason; tips; UI }> {
         <div className="judgeUI column">
           <div className="row judgeName">评分</div>
           <div className="row" style={{ fontSize: "0.75rem", color: "#fff" }}>
-            500贴以上的用户可以进行评分（每日一次）
+                500贴以上的用户可以进行评分（每日一次），超过7天的发言内容无法评分。
           </div>
           <div
             className="row judgeOptions"
