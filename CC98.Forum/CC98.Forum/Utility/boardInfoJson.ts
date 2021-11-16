@@ -41,7 +41,7 @@ export const boardInfo: { id: number; name: string; }[] = [
   },
   {
     "id": 749,
-    "name": "社科讨论"
+    "name": "社科杂谈"
   },
   {
     "id": 100,
@@ -57,7 +57,7 @@ export const boardInfo: { id: number; name: string; }[] = [
   },
   {
     "id": 357,
-    "name": "时事新闻"
+    "name": "时政讨论"
   },
   {
     "id": 459,
