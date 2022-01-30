@@ -15,7 +15,7 @@ export default class extends React.Component<{ data }> {
           src={`${data.userInfo.portraitUrl}`}
         ></img>
         <div>
-          在过去的2020年里，你有
+          在过去的2021年里，你有
           <span className="annual-review-page2-topicCount">
             {data.postDay}
           </span>

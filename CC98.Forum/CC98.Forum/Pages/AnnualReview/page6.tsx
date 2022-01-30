@@ -22,7 +22,7 @@ export default class extends React.Component<{ data }> {
         <div>CC98论坛祝你：</div>
         <div><span className="annual-review-page6-congratulation">身体健康</span></div>
         <div><span className="annual-review-page6-congratulation">学习生活顺利</span></div>
-        <div><span className="annual-review-page6-congratulation">幸福2021</span></div>
+        <div><span className="annual-review-page6-congratulation">幸福2022</span></div>
       </div>
     );
   }

@@ -72,7 +72,7 @@ class App extends React.Component<Props> {
         <Route path="/editor/:mode/:id?" component={ShowEdit} />
 
         <Route path="/board/:id/:page?" component={RBoard} />
-        <Route path="/annual-review-2020" component={AnnualReview} />
+        <Route path="/annual-review-2021" component={AnnualReview} />
         <Route path="/error/401" component={Status.UnauthorizedBoard} />
         <Route path="/index" component={Index} />
 
