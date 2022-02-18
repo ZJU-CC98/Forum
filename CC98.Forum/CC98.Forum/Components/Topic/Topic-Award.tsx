@@ -86,10 +86,11 @@ export class Award extends React.Component<Props, { info, shortInfo, count, show
             $(awardInfoJQID).css("display", "none");
         }
         const btn = <button style={{ border: "#eaeaea solid thin", cursor:"pointer" }} onClick={this.state.showAll ? this.hideAll : this.showAll}>{this.state.showAll ? '收起' : '显示全部'}</button>;
-        const popularity_count = <div className="good tagSize">
+        const popularity_result = <div className="good tagSize">
             <div>风评总数：{this.state.popularity_count}</div>
             <div style={{ marginLeft: "3rem" }}>风评值：{this.state.popularity_sum}</div>
         </div>;
+        const show_popularity_result = this.state.count ? (this.state.count > 10 ? this.state.showAll : true) : false;
         return <div className="column awardInfo" id={awardInfoID} >
             <div className="row" style={{ width: "25rem", fontSize: "0.8rem", marginBottom:"0.2rem" }}>
                 <div style={{ marginLeft:"3.1rem" }}>用户</div>
@@ -97,7 +98,7 @@ export class Award extends React.Component<Props, { info, shortInfo, count, show
                 <div style={{ marginLeft: "8.9rem" }}>理由</div>
             </div>
             {this.state.count > 10 ? (this.state.showAll ? this.state.info : this.state.shortInfo) : this.state.info}
-            {this.state.showAll ? popularity_count : null}
+            {show_popularity_result ? popularity_result : null}
             {this.state.count > 10 ? btn : null}
         </div>;
     }
