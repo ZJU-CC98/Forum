@@ -1,11 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
+	<PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <TypeScriptTarget>ESNext</TypeScriptTarget>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <TypeScriptTarget>ESNext</TypeScriptTarget>
+	</PropertyGroup>
+
+	<PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <AssemblyName>CC98.Forum</AssemblyName>
 		<TypeScriptCompileBlocked>True</TypeScriptCompileBlocked>
 		<TypeScriptEnabled>False</TypeScriptEnabled>
+		<TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
   </PropertyGroup>
 
   <ItemGroup>
@@ -208,7 +217,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="node &quot;$(ProjectDir)node_modules\webpack\bin\webpack.js&quot; --config &quot;$(ProjectDir)webpack.config.$(ConfigurationName).js&quot;" />
+    <Exec Command="SET NODE_OPTIONS=--openssl-legacy-provider&#xD;&#xA;node &quot;$(ProjectDir)node_modules\webpack\bin\webpack.js&quot; --config &quot;$(ProjectDir)webpack.config.$(ConfigurationName).js&quot;" />
   </Target>
 
   <ProjectExtensions><VisualStudio><UserProperties package_1json__JSONSchema="http://json.schemastore.org/project-1.0.0-beta3" /></VisualStudio></ProjectExtensions>
