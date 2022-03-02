@@ -47,7 +47,7 @@
     "showdown-xss-filter": "^0.2.0",
     "spectrum-colorpicker": "^1.8.0",
     "ssri": "^6.0.1",
-    "tslib": "^1.9.3",
+    "tslib": "^1.14.1",
     "url-join": "4.0.0",
     "url-parse": "^1.4.3",
     "whatwg-fetch": "2.0.4",

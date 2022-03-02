@@ -20,7 +20,12 @@ export default class CC98TagHandler extends Ubb.RecursiveTagHandler {
         const tagName = tagData.tagName;
         const id = tagName.replace(reg, "");
         let url = `/static/images/CC98/CC98${id}.gif`;
+        //CC9815 - CC9830 为PNG格式
         if (Number(id) > 14 && Number(id) < 31) {
+	        url = `/static/images/CC98/CC98${id}.png`;
+        }
+        //CC9836 - CC9837 为PNG格式
+        if (Number(id) > 35) {
 	        url = `/static/images/CC98/CC98${id}.png`;
         }
 

@@ -29,10 +29,15 @@ export default class Emoji extends React.Component<EmojiProps> {
         })
     }
 
-    private getCC98EmojiSource(id: string): string{
-	    let url = `/static/images/CC98/CC98${id}.gif`;
+    private getCC98EmojiSource(id: string): string {
+        let url = `/static/images/CC98/CC98${id}.gif`;
+        //CC9815 - CC9830 为PNG格式
         if (Number(id) > 14 && Number(id) < 31) {
-	        url = `/static/images/CC98/CC98${id}.png`;
+            url = `/static/images/CC98/CC98${id}.png`;
+        }
+        //CC9836 - CC9837 为PNG格式
+        if (Number(id) > 35) {
+            url = `/static/images/CC98/CC98${id}.png`;
         }
         return url;
     }
@@ -74,13 +79,13 @@ export default class Emoji extends React.Component<EmojiProps> {
 
         //基本同上
         const emoji = {
-            'CC98': new Array(35).fill(0)
+            'CC98': new Array(37).fill(0)
                 .map((item, index) => {
                     if (index < 9) {
                         return `0${index + 1}`;
                     } else {
-	                    return `${index + 1}`;
-                    } 
+                        return `${index + 1}`;
+                    }
                 })
                 .map((item) => (
                     item ? (<LazyImage
