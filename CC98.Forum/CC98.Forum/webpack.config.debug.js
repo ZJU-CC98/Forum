@@ -45,8 +45,9 @@ var config = {
         css_light_snow_light:'./Themes/light_snow_light.scss',
         css_spring_festival_dark:'./Themes/spring_festival_dark.scss',
         css_spring_festival_light:'./Themes/spring_festival_light.scss',
-        css_qingming:'./Themes/qingming.scss',
+        css_zhongchun:'./Themes/zhongchun.scss',
         css_dragon_boat_festival:'./Themes/dragon_boat_festival.scss',
+        css_qingming:'./Themes/qingming.scss',
     },
     output: {
         path: path.resolve(__dirname, 'wwwroot/'),
