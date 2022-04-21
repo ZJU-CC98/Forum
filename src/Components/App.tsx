@@ -22,7 +22,7 @@ import { UbbContainer } from "./UbbContainer";
 import { Search } from "./Search/Search";
 import { SearchBoard } from "./Search/SearchBoard";
 import { Signin } from "./Signin";
-import { SiteManage } from "./SiteManage/Index";
+import { SiteManage } from "./SiteManage";
 import { ShowEdit } from "./Edit";
 import { MonthlyHotTopic } from "./Topic/Topic-Hot-Monthly";
 import { WeeklyHotTopic } from "./Topic/Topic-Hot-Weekly";
@@ -37,10 +37,10 @@ import { errorKeys } from "../Reducers/Error";
 import { connect } from "react-redux";
 
 import AnnualReview from "../Pages/AnnualReview";
-import { Index } from "../Pages/Index/Index";
+import { Index } from "../Pages/Index";
 
 // 重构
-import RBoard from "../Pages/Board/index";
+import RBoard from "../Pages/Board";
 
 type Props = {
   isError: boolean;

@@ -9,9 +9,15 @@ CC98 Durian开发组
 
 ```
 git clone https://github.com/ZJU-CC98/Forum.git
-cd Forum/CC98.Forum/CC98.Forum
+cd Forum
 yarn install
 yarn run dev
+```
+
+## How To Build
+
+```shell
+yarn run build:release
 ```
 
 ## File Intro

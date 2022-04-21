@@ -6,11 +6,11 @@ import { CC98SignalR } from '../SignalR';
 import { MessageInfo } from '../Reducers/Message';
 import { refreshCurrentMessageCount } from '../AsyncActions/Message';
 import { changeMessageCount } from '../Actions/Message';
-import { BlinkTitle } from '../Utility/blinkTItle';
+import { BlinkTitle } from '../Utility/blinkTitle';
 import { history } from '../Store';
 
 type props = {
-    isLogOn: boolean, 
+    isLogOn: boolean,
     messageCount: MessageInfo,
     refreshCurrentMessageCount: () => void,
     changeMessageCount: (data: MessageInfo) => void
@@ -47,7 +47,7 @@ class NotificationController extends React.PureComponent<props> {
                     CC98SignalR.connection.off('NotifyMessageReceive');
                     CC98SignalR.connection.off('NotifyNotificationReceive');
                     CC98SignalR.stop();
-                } 
+                }
             } else if(e.key === 'messageCount') { // 同步不同窗口的未读信息
                 if(e.oldValue === e.newValue) return;
                 if(e.newValue){
@@ -76,7 +76,7 @@ class NotificationController extends React.PureComponent<props> {
         // 刷新未读数量
         this.props.refreshCurrentMessageCount();
         // 浏览器通知
-        // @ts-ignore for Notification.permission 
+        // @ts-ignore for Notification.permission
         if(Notification && Notification.permission === 'granted') {
             new Notification('您有一条新的消息', {
                 icon: '/static/98icon.ico',

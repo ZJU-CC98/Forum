@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 import * as Utility from "../../Utility";
 import * as $ from "jquery";
-import { UbbContainer } from ".././UbbContainer";
+import { UbbContainer } from "../UbbContainer";
 import { Constants } from "../Constant";
 import { UbbEditor } from "../UbbEditor";
 import TopicManagement from "./Topic-TopicManagement-v2";
@@ -15,7 +15,7 @@ import ReactMde, {
   ReactMdeCommands,
 } from "@cc98/hell-react-mde";
 import * as Showdown from "showdown";
-import CustomCommand from "./topic-react-mde/imageUploaderCommand";
+import CustomCommand from "./topic-react-mde/ImageUploaderCommand";
 import { RightTagHandler } from "../../Ubb/RightTagHandler";
 import IPTable from "./Topic-IPData";
 import { Util } from "bizcharts";
