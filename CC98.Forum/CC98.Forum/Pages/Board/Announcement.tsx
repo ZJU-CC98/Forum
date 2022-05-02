@@ -199,7 +199,7 @@ export default class extends React.Component<Props, State> {
           />
           <UbbContainer
             code={content}
-            options={{ ...new UbbCodeOptions(), allowToolbox: true }}
+            options={{ ...new UbbCodeOptions(), allowToolbox: false }}
           />
         </Modal>
         <Collapse
@@ -216,7 +216,7 @@ export default class extends React.Component<Props, State> {
             {data.bigPaper && <> <Divider />
               <UbbContainer
                 code={data.bigPaper}
-                options={{ ...new UbbCodeOptions(), allowToolbox: true }}
+                options={{ ...new UbbCodeOptions(), allowToolbox: false }}
               /></>}
           </Panel>
         </Collapse>

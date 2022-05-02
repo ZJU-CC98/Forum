@@ -152,6 +152,8 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean,
             onMouseLeave={() => this.toggleToolbox(false)}
             onMouseEnter={() => this.toggleToolbox(true)}
           >
+            {/*一个不显示的div，用于点击收起所有图片*/}
+            <div className="visibleImage" onClick={this.toggleIsShowed}></div>
             {toolbox}
             <LazyLoad {...props} >
               <img

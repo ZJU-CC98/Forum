@@ -185,6 +185,12 @@
   cursor: pointer;
 }
 
+//
+.visibleImage{
+  width:0;
+  height:0;
+}
+
 //ubb点击下载文件按钮
 .download-file {
   display: block;

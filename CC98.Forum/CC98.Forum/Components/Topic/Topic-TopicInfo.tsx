@@ -10,22 +10,42 @@ interface Props {
     tag2;
     isFav;
 }
-export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFollow }>{
+export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFollow, showImageState: boolean }>{
     constructor(props) {
         super(props);
         this.follow = this.follow.bind(this);
         this.unFollow = this.unFollow.bind(this);
-        this.state = { tag1Name: "", tag2Name: "", isFollow: this.props.isFav }
+        this.state = { tag1Name: "", tag2Name: "", isFollow: this.props.isFav, showImageState: true }
     }
-    showAllImg() {
+
+    toggleImageState = () => {
+        this.setState(prevState => ({
+            showImageState: !prevState.showImageState
+        }));
+    }
+
+    showAllImg = () => {
         let btns = document.getElementsByClassName("hiddenImage");
         for (let btnId in btns) {
             if (btns.hasOwnProperty(btnId)) {
-                let btn:any = btns[btnId];
+                let btn: any = btns[btnId];
                 btn.click();
             }
         }
+        this.toggleImageState();
     }
+    
+    hideAllImg = () => {
+        let btns = document.getElementsByClassName("visibleImage");
+        for (let btnId in btns) {
+            if (btns.hasOwnProperty(btnId)) {
+                let btn: any = btns[btnId];
+                btn.click();
+            }
+        }
+        this.toggleImageState();
+    }
+
     async follow() {
         await Utility.setFavoriteTopic(this.props.topicInfo.id);
         this.setState({ isFollow: true });
@@ -50,7 +70,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         if (newProps.tag2)
             t2 = await Utility.getTagNamebyId(newProps.tag2);
         this.setState({ tag1Name: t1, tag2Name: t2 });
-}
+    }
     onError(e) {
         e.preventDefault();
         e.target.src = `/static/images/_CC98协会.png`;
@@ -67,6 +87,22 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         if (this.props.tag1 || this.props.tag2) {
             tags = <div id="tags"><div className="tagProp tagSize">标签： {this.state.tag1Name} {this.state.tag2Name}</div><div className="tagProp"></div></div>;
         }
+        // 显示/收起所有图片按钮
+        let toggleImageStateButton = this.state.showImageState ?
+            <div
+                className="followTopic"
+                style={{ width: "6rem" }}
+                onClick={this.hideAllImg}>
+                收起所有图片
+            </div>
+            :
+            <div
+                className="followTopic"
+                style={{ width: "6rem" }}
+                onClick={this.showAllImg}>
+                显示所有图片
+            </div>
+
         return <div className="topicInfo-info">
             <div className="topicInfo-title">
                 <div className="column" id="topicTitleProp" >
@@ -82,14 +118,25 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
                         <div className="followTopic" onClick={this.state.isFollow ? this.unFollow : this.follow}>
                             {this.state.isFollow ? "已收藏" : "收藏"}
                         </div>
-                        <div className="followTopic" style={{width:"6rem"}} onClick={this.showAllImg}>
-                           显示所有图片
-                        </div>
+                        {this.state.showImageState ?
+                            <div
+                                className="followTopic"
+                                style={{ width: "6rem" }}
+                                onClick={this.hideAllImg}>
+                                收起所有图片
+                            </div>
+                            :
+                            <div
+                                className="followTopic"
+                                style={{ width: "6rem" }}
+                                onClick={this.showAllImg}>
+                                显示所有图片
+                            </div>}
                     </div>
                 </div>
 
                 <div className="topicInfo-boardMessage">
-                    <Link to={boardUrl}><div style={{color:"#6b7178"}}>{this.props.boardInfo.name}</div></Link>
+                    <Link to={boardUrl}><div style={{ color: "#6b7178" }}>{this.props.boardInfo.name}</div></Link>
                     <div style={{ marginTop: "0.5rem", fontSize: "0.75rem" }}>{this.props.boardInfo.todayCount} / {this.props.boardInfo.topicCount}</div>
                 </div>
 
