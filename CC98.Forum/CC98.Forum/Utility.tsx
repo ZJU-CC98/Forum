@@ -848,7 +848,7 @@ export function sortRecentMessage(recentMessage) {
         recentMessage[i].showTime = true;
       } else if (
         transerTime(recentMessage[i].time) -
-          transerTime(recentMessage[i + 1].time) <
+        transerTime(recentMessage[i + 1].time) <
         60000
       ) {
         recentMessage[i].showTime = false;
@@ -2671,7 +2671,7 @@ export async function getNewTagInfo() {
   const headers = await formAuthorizeHeader();
   const response = await cc98Fetch(url, { headers });
   const data = await response.json();
-  setLocalStorage("tagInfo", data);
+  setLocalStorage("tagInfo", data, 3600);
   return data;
 }
 export async function getTagIdbyName(name) {
