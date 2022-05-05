@@ -7,7 +7,7 @@
       "top": "-3.2rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/守护天使.png",
+    "imageUrl": "/images/相框/守护天使.png",
     "portraitShadow": false
   },
   "普通": {
@@ -18,7 +18,7 @@
       "left": "-3rem",
       "top": "-3rem"
     },
-    "imageUrl": "/static/images/相框/_00普通.png",
+    "imageUrl": "/images/相框/_00普通.png",
     "portraitShadow": true
   },
   "版主": {
@@ -29,7 +29,7 @@
       "top": "-3.5rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/版主.png",
+    "imageUrl": "/images/相框/版主.png",
     "portraitShadow": false
   },
   "编辑部": {
@@ -40,7 +40,7 @@
       "top": "-3.5rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/编辑部.png",
+    "imageUrl": "/images/相框/编辑部.png",
     "portraitShadow": true
   },
   "技术组": {
@@ -51,7 +51,7 @@
       "top": "-3.3rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/技术组.png",
+    "imageUrl": "/images/相框/技术组.png",
     "portraitShadow": true
   },
   "贵宾": {
@@ -62,7 +62,7 @@
       "top": "-3.5rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/贵宾.png",
+    "imageUrl": "/images/相框/贵宾.png",
     "portraitShadow": false
   },
   "策划部": {
@@ -73,7 +73,7 @@
       "top": "-3.5rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/策划部.png",
+    "imageUrl": "/images/相框/策划部.png",
     "portraitShadow": true
   },
   "影音部": {
@@ -84,7 +84,7 @@
       "top": "-3.5rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/影音部.png",
+    "imageUrl": "/images/相框/影音部.png",
     "portraitShadow": true
   },
   "站务组": {
@@ -95,7 +95,7 @@
       "top": "-3.9rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/站务组.png",
+    "imageUrl": "/images/相框/站务组.png",
     "portraitShadow": false
   },
   "体育部": {
@@ -106,7 +106,7 @@
       "top": "-3.5rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/体艺部.png",
+    "imageUrl": "/images/相框/体艺部.png",
     "portraitShadow": true
   },
   "办公室": {
@@ -117,7 +117,7 @@
       "top": "-3.5rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/办公室.png",
+    "imageUrl": "/images/相框/办公室.png",
     "portraitShadow": true
   },
   "认证用户": {
@@ -128,7 +128,7 @@
       "top": "-3.5rem",
       "z-index": "150"
     },
-    "imageUrl": "/static/images/相框/认证用户.png",
+    "imageUrl": "/images/相框/认证用户.png",
     "portraitShadow": true
   }
 }

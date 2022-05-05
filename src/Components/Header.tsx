@@ -501,7 +501,7 @@ export class Header extends React.Component<{}, AppState> {
               >
                 <div className="topBarLogo">
                   <Link to="/">
-                    <img src="/static/images/98LOGO.ico" />
+                    <img src="/images/98LOGO.ico" />
                   </Link>
                 </div>
                 <div className="topBarCC98">
@@ -540,7 +540,7 @@ export class Header extends React.Component<{}, AppState> {
               >
                 <div className="topBarLogo">
                   <Link to="/">
-                    <img src="/static/images/98LOGO.ico" />
+                    <img src="/images/98LOGO.ico" />
                   </Link>
                 </div>
                 <div className="topBarCC98">
@@ -635,7 +635,7 @@ class Redirect extends React.Component<{}, { isShowed: boolean }> {
           <div className="pwa-redirect-container">
             <img
               className="pwa-redirect-image"
-              src="/static/images/login.png"
+              src="/images/login.png"
             />
             <div className="pwa-redirect-text-container">
               <div className="pwa-redirect-text">检测到您正使用移动端访问</div>

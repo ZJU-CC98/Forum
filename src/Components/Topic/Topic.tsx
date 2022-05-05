@@ -82,7 +82,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
                     let quoteFloor = this.state.quote.floor % 10;
                     if(!page)page=1;
                     url = `/topic/${topicInfo.id}/${page}#${quoteFloor}`;
-               
+
                     this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } }, this.props.history.push(url));
 
                 }
@@ -90,7 +90,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
             }
         }
         else {
-       
+
             page = newPage;
             if(!page)page=1;
             let url = `/topic/${topicInfo.id}/${page}#${floor}`;
@@ -100,7 +100,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         //回复成功提示
         Utility.noticeMessageShow('replyMessage');
         //const isFav = await Utility.getFavState(this.match.params.topicid);
-        //this.setState({ topicInfo: topicInfo, quote: { userName: "", content: "", replyTime: "", floor: "" },isFav:isFav}); 
+        //this.setState({ topicInfo: topicInfo, quote: { userName: "", content: "", replyTime: "", floor: "" },isFav:isFav});
     }
     async componentWillReceiveProps(newProps) {
         //page 是否变了
@@ -152,7 +152,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
     getTotalPage(count) {
         return Utility.getTotalPageof10(count);
     }
-    handleQuoteContextChange = (context) => { 
+    handleQuoteContextChange = (context) => {
         console.log("传进topic.tsx")
         console.log(context);
         this.setState({ quote: context });
@@ -217,9 +217,9 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
             ;
         return topicHtml;
         /*  if (this.state.shouldRender) {
-          
+
           } else {
-              return <img src="/static/images/waiting.gif"/>;
+              return <img src="/images/waiting.gif"/>;
           }*/
 
 

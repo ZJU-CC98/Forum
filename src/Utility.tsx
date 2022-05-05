@@ -96,7 +96,7 @@ export async function getTopic(topicid: number) {
       topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id };
     } else {
       const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
-      let purl = "/static/images/心灵头像.gif";
+      let purl = "/images/心灵头像.gif";
       const userMesJson = {
         name: anonymousUserName,
         portraitUrl: purl,
@@ -126,7 +126,7 @@ export function getThisUserInfo(userId, usersInfo) {
   let indexData = {
     id: userId,
     name: "ID不存在",
-    portraitUrl: "/static/images/default_avatar_boy.png",
+    portraitUrl: "/images/default_avatar_boy.png",
     birthday: "1993-03-25T00:00:00",
     fanCount: 0,
     followCount: 0,
@@ -146,7 +146,7 @@ export function getThisUserInfobyName(userName, usersName) {
   let indexData = {
     id: null,
     name: "ID不存在",
-    portraitUrl: "/static/images/default_avatar_boy.png",
+    portraitUrl: "/images/default_avatar_boy.png",
     birthday: "1993-03-25T00:00:00",
     fanCount: 0,
     followCount: 0,
@@ -190,7 +190,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
           postId: content[i].id,
         };
       } else if (content[i].isAnonymous && !content[i].isDeleted) {
-        let purl = "/static/images/心灵头像.gif";
+        let purl = "/images/心灵头像.gif";
         const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 
         const userMesJson = {
@@ -211,7 +211,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
       } else {
         const userMesJson = {
           name: "98Deleter",
-          portraitUrl: "/static/images/deleter2.png",
+          portraitUrl: "/images/deleter2.png",
           id: null,
           privilege: "匿名用户",
           popularity: 0,
@@ -340,7 +340,7 @@ export async function getHotReplyContent(topicid: number) {
           postId: content[i].id,
         };
       } else {
-        let purl = "/static/images/心灵头像.gif";
+        let purl = "/images/心灵头像.gif";
         const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
         let anonymousLastReplierName = null;
         if (content[i].lastUpdateAuthor)
@@ -422,7 +422,7 @@ export async function getCurUserTopicContent(
           postId: content[i].id,
         };
       } else {
-        let purl = "/static/images/_心灵之约.png";
+        let purl = "/images/_心灵之约.png";
         const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
         const userMesJson = {
           name: anonymousUserName,
@@ -526,7 +526,7 @@ export async function getAllNewTopic(from: number) {
         aTopic.push(item);
         aTopicId.push(item.userId);
       } else {
-        item.portraitUrl = "/static/images/_心灵之约.png";
+        item.portraitUrl = "/images/_心灵之约.png";
         item.userName = "匿名用户";
         item.boardName = await getBoardName(item.boardId);
         bTopic.push(item);
@@ -664,7 +664,7 @@ export async function getFocusTopic(
         aTopic.push(item);
         aTopicId.push(item.userId);
       } else {
-        item.portraitUrl = "/static/images/_心灵之约.png";
+        item.portraitUrl = "/images/_心灵之约.png";
         item.userName = "匿名用户";
         item.boardName = await getBoardName(item.boardId);
         bTopic.push(item);
@@ -1297,7 +1297,7 @@ export async function getTraceTopics(topicId, postId, page) {
     );
     const data = await response.json();
     if (data[0] && data[0].isAnonymous) {
-      let purl = "/static/images/心灵头像.gif";
+      let purl = "/images/心灵头像.gif";
       for (let i in data) {
         const anonymousUserName = `匿名${data[i].userName.toUpperCase()}`;
         const userMesJson = {
@@ -1335,7 +1335,7 @@ export async function getAnonymousTraceTopics(topicId, postId, page) {
       { headers }
     );
     const data = await response.json();
-    let purl = "/static/images/心灵头像.gif";
+    let purl = "/images/心灵头像.gif";
     const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
     const userMesJson = {
       name: anonymousUserName,
@@ -1736,7 +1736,7 @@ export async function getSearchTopic(
           aTopic.push(item);
           aTopicId.push(item.userId);
         } else {
-          item.portraitUrl = "/static/images/_心灵之约.png";
+          item.portraitUrl = "/images/_心灵之约.png";
           item.userName = "匿名用户";
           item.boardName = await getBoardName(item.boardId);
           bTopic.push(item);
@@ -1888,7 +1888,7 @@ export async function getBoards() {
 export async function getBoardId(boardName: string) {
   let boardInfo =
     getStorage("boardInfo") ||
-    (await fetch("/static/boardinfo.json").then((res) => res.json()));
+    (await fetch("/boardinfo.json").then((res) => res.json()));
   setStorage("boardInfo", boardInfo);
   let boardResult = [];
   //看是否包含
@@ -3050,7 +3050,7 @@ declare let themeNames: string[];
  * 切换主题
  */
 export function changeTheme(theme: number) {
-  $("#mainStylesheet").attr('href', `/static/content/${themeNames[theme]}`);
+  $("#mainStylesheet").attr('href', `/content/${themeNames[theme]}`);
 }
 export async function queryWealth(boardId) {
   const headers = await formAuthorizeHeader();
@@ -3144,7 +3144,7 @@ export async function getMonthlyHotTopic(type: string) {
       aTopic.push(item);
       aTopicId.push(item.userId);
     } else {
-      item.portraitUrl = "/static/images/_心灵之约.png";
+      item.portraitUrl = "/images/_心灵之约.png";
       item.userName = "匿名用户";
       item.boardName = await getBoardName(item.boardId);
       bTopic.push(item);

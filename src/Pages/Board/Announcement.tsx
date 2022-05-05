@@ -38,7 +38,7 @@ export default class extends React.Component<Props, State> {
   };
   onError(e) {
     e.preventDefault();
-    e.target.src = `/static/images/_CC98.png`;
+    e.target.src = `/images/_CC98.png`;
   }
   generateMasters(item) {
     const name = item.toString();
@@ -68,7 +68,7 @@ export default class extends React.Component<Props, State> {
   render() {
     const { data, isFirstPage } = this.props;
     const { isFollow, loading, editVisible, content } = this.state;
-    const url = `/static/images/_${data.name}.png`;
+    const url = `/images/_${data.name}.png`;
     const isMaster = Utility.isMaster(data.boardMasters);
     const shortHand = (
       <div className="row" style={{ height: '4rem' }}>

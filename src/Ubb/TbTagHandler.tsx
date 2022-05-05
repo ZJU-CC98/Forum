@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
@@ -18,7 +18,7 @@ export default class TbTagHandler extends Ubb.RecursiveTagHandler {
 
         const tagName = tagData.tagName;
         const emoticonId = tagName.match(/\d{2}/).toString();
-        const url = `/static/images/tb/tb${emoticonId}.png`;
+        const url = `/images/tb/tb${emoticonId}.png`;
 
         return <div style={{ display: "inline" }}>
             <img src={url} alt="" />{innerContent}

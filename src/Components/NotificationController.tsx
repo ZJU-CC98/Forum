@@ -79,7 +79,7 @@ class NotificationController extends React.PureComponent<props> {
         // @ts-ignore for Notification.permission
         if(Notification && Notification.permission === 'granted') {
             new Notification('您有一条新的消息', {
-                icon: '/static/98icon.ico',
+                icon: '/98icon.ico',
                 onClick: () => {
                     window.focus();
                     history.push('/message/response');

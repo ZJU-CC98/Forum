@@ -19,7 +19,7 @@ export default class AcTagHandler extends Ubb.RecursiveTagHandler {
         const reg = /ms/gi;
         const tagName = tagData.tagName;
         const id = tagName.replace(reg, "");
-        const url = `/static/images/ms/ms${id}.png`;
+        const url = `/images/ms/ms${id}.png`;
 
         return context.options.allowEmotion ? <div style={{ display: "inline" }}><img src={url} alt="" />{innerContent}</div> : <div style={{ display: "inline" }}>{innerContent}</div>;
     }

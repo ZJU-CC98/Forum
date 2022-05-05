@@ -53,7 +53,7 @@ module.exports = {
         path: path.resolve(__dirname, 'public/'),
         // should use absolute path
         publicPath: '/',
-        filename: 'static/scripts/[name].js'
+        filename: 'scripts/[name].js'
     },
 
     devtool: 'source-map',
@@ -73,18 +73,18 @@ module.exports = {
 
 
         new CopyWebpackPlugin([
-            // copy static/config file
-            { from: 'public', to: 'static' },
+            // copy config file
+            { from: 'public', to: '.' },
 
-            { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
-            { from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
-            { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
-            { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' },
-            { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' },
-            { from: 'node_modules/hls.js/dist/hls.min.js', to: 'static/content/hls.min.js'},
+            { from: 'node_modules/jquery/dist', to: 'scripts/lib/jquery/' },
+            { from: 'node_modules/font-awesome', to: 'content/font-awesome/' },
+            { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'scripts/lib/spectrum/spectrum.js' },
+            { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'content/DPlayer.min.css' },
+            { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'content/APlayer.min.css' },
+            { from: 'node_modules/hls.js/dist/hls.min.js', to: 'content/hls.min.js'},
         ]),
 
-        new ExtractTextPlugin('static/content/[name].css'),
+        new ExtractTextPlugin('content/[name].css'),
 
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 

@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
@@ -173,9 +173,9 @@ class LogOnExact extends React.Component<Props, LogOnState> {
             <div className="login">
                 <DocumentTitle title="登录 - CC98论坛" />
                 <div>
-                    <img src="/static/images/login.png" />
+                    <img src="/images/login.png" />
                     <div>
-                        <img src="/static/images/login_welcome.png" />
+                        <img src="/images/login_welcome.png" />
                         <form onSubmit={this.handleLogin} autoComplete="on">
                             <div className="login-form">
                                 <p>用户名</p><input name="username" type="text" id="loginName" onChange={this.handleNameChange} value={this.state.loginName} autoComplete="username" />

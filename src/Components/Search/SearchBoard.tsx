@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
@@ -41,7 +41,7 @@ export class SearchBoard extends React.Component<{}, {data}> {
             }
         }
     }
-    
+
     async componentDidMount() {
         this.getData();
     }
@@ -54,7 +54,7 @@ export class SearchBoard extends React.Component<{}, {data}> {
         $('#noResultBoard').removeClass('displaynone');
     }
 
-   
+
     render() {
         return (<div className="focus-root">
             <DocumentTitle title={`搜索结果 - CC98论坛`} />
@@ -65,7 +65,7 @@ export class SearchBoard extends React.Component<{}, {data}> {
                         </div>
             </div>
             <div id="noResultBoard" className="noResult displaynone">
-                <img src="/static/images/searchNone.png" className="noResultPic"></img>
+                <img src="/images/searchNone.png" className="noResultPic"></img>
                 <div className="noResultText">-----------------------抱歉呢前辈，没有找到你想要的版面哦~----------------------</div>
             </div>
                 </div>);

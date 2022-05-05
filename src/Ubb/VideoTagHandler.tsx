@@ -15,7 +15,7 @@ export class VideoTagHandler extends Ubb.TextTagHandler {
         //不允许显示媒体内容
         if (context.options.allowMediaContent === false) {
             return innerContent;
-        } 
+        }
 
         return <VideoComponent src={innerContent} />;
 	}
@@ -61,7 +61,7 @@ class VideoComponent extends React.Component<IProps, IState> {
                 this.initPlayer('hls')
             } catch(e) {
                 const script = document.createElement('script')
-                script.src = '/static/content/hls.min.js'
+                script.src = '/content/hls.min.js'
                 document.getElementsByTagName('head')[0].appendChild(script)
                 script.onload = () => {
                     this.initPlayer('hls')
@@ -110,7 +110,7 @@ class VideoComponent extends React.Component<IProps, IState> {
         this.dp.destroy();
         this.div.innerHTML = '';
     }
-    
+
     render() {
         //重置继承自article的whiteSpace
         return <div style={{ display: 'flex' }}><div className="dplayer" style={{ whiteSpace: 'normal', height: this.state.height }} ref={it => this.div = it}></div></div>;

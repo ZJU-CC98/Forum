@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
@@ -47,7 +47,7 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
   }
 
   async getPortraitPhotoURL() {
-    let res = await fetch('/static/portrait.json');
+    let res = await fetch('/portrait.json');
     let data = await res.json()
     let title = this.state.displayTitles.filter(item => this.props.userInfo.displayTitleId === item.id)[0]
     if (title) {

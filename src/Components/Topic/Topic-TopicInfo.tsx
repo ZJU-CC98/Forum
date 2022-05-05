@@ -53,14 +53,14 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
 }
     onError(e) {
         e.preventDefault();
-        e.target.src = `/static/images/_CC98协会.png`;
+        e.target.src = `/images/_CC98协会.png`;
     }
     render() {
         const title = this.props.topicInfo.title || '';
         /* 过长字符串截断，65 是纯中文情况下的经验值 */
         const overflowLen = 65;
 
-        const url = `/static/images/_${this.props.boardInfo.name}.png`;
+        const url = `/images/_${this.props.boardInfo.name}.png`;
         const boardUrl = `/board/${this.props.boardInfo.id}`;
         let tags = null;
 

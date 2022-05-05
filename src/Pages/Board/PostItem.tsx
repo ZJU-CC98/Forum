@@ -72,7 +72,7 @@ const Item: React.SFC<Props> = ({ data, order }) => {
       break;
     default:
   }
-  const iconSrc = `/static/images/icon/${icon}.png`;
+  const iconSrc = `/images/icon/${icon}.png`;
 
   let bodyClass = '';
   // 决定奇偶斑马纹

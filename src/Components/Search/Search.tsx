@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
@@ -203,7 +203,7 @@ export class Search extends React.Component<{}, SearchState> {
     scrollToTop() {
         $('body,html').animate({ scrollTop: 0 }, 500);
     }
-    
+
     render() {
         return (<div className="focus-root">
                     <DocumentTitle title={`搜索结果 - CC98论坛`} />
@@ -220,7 +220,7 @@ export class Search extends React.Component<{}, SearchState> {
                                     <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
                             </div>
                             <div id="noResult" className="noResult displaynone">
-                                <img src="/static/images/searchNone.png" className="noResultPic"></img>
+                                <img src="/images/searchNone.png" className="noResultPic"></img>
                                 <div className="noResultText">-----------------------抱歉呢前辈，没有找到你想要的帖子哦~----------------------</div>
                             </div>
                             <div id="showError" className="resultErr displaynone">查询出错了，请刷新重试</div>

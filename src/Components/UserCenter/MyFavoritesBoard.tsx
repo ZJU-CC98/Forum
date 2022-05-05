@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
@@ -90,7 +90,7 @@ export default class extends React.Component<UserCenterMyFavoritesBoardProps, Us
     render() {
         return (
             <div className='user-center-myfavorite-board'>
-                <Link to={`/board/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name}><img src={`/static/images/_${this.props.UserFavoritesBoard.name}.png`} /></Link>
+                <Link to={`/board/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name}><img src={`/images/_${this.props.UserFavoritesBoard.name}.png`} /></Link>
                 <div className='user-center-myfavorite-board-info'>
                     <Link to={`/board/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name}><h2>{this.props.UserFavoritesBoard.name}</h2></Link>
                     <p>版主：{this.props.UserFavoritesBoard.boardMasters.join(' ')} 今日主题 {this.props.UserFavoritesBoard.todayCount} / 总主题 {this.props.UserFavoritesBoard.topicCount}</p>

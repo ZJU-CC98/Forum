@@ -58,7 +58,7 @@ var config = {
     output: {
         path: path.resolve(__dirname, 'dist/'),
         publicPath: '/',
-        filename: 'static/scripts/[name]-[chunkhash:8].js'
+        filename: 'scripts/[name]-[chunkhash:8].js'
     },
     devtool: 'source-map',
     externals: {
@@ -67,7 +67,7 @@ var config = {
     plugins: [
         new HTMLWebpackPlugin({
             template: 'src/Template.ejs',
-            filename: 'static/index.html',
+            filename: 'index.html',
             minify: {
                 collapseWhitespace: true
             },
@@ -75,18 +75,18 @@ var config = {
         }),
         new CleanWebpackPlugin('dist'),
         new CopyWebpackPlugin([
-            { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
-            { from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
-            { from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
-            { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
-            { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' },
-            { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' },
-            { from: 'node_modules/hls.js/dist/hls.min.js', to: 'static/content/hls.min.js' },
+            { from: 'node_modules/jquery/dist', to: 'scripts/lib/jquery/' },
+            { from: 'node_modules/moment', to: 'scripts/lib/moment/' },
+            { from: 'node_modules/font-awesome', to: 'content/font-awesome/' },
+            { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'scripts/lib/spectrum/spectrum.js' },
+            { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'content/DPlayer.min.css' },
+            { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'content/APlayer.min.css' },
+            { from: 'node_modules/hls.js/dist/hls.min.js', to: 'content/hls.min.js' },
         ]),
         new CopyWebpackPlugin([
-            { from: 'public', to: 'static' },
+            { from: 'public', to: '.' },
         ]),
-        new ExtractTextPlugin('static/content/[name]-[chunkhash:8].css'),
+        new ExtractTextPlugin('content/[name]-[chunkhash:8].css'),
         new WebpackChunkHash({ algorithm: 'md5' }),
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ],

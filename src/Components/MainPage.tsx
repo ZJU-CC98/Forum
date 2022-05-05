@@ -769,7 +769,7 @@ export class QRCode extends React.Component<{}, {}> {
           </div>
         </div>
         <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-          <img style={{ width: "100%" }} src="/static/images/QRCode.png"></img>
+          <img style={{ width: "100%" }} src="/images/QRCode.png"></img>
         </div>
         <div className="mainPageTitle2">
           <div className="mainPageTitleRow">
@@ -778,7 +778,7 @@ export class QRCode extends React.Component<{}, {}> {
           </div>
         </div>
         <div style={{ marginTop: "1rem" }}>
-          <img style={{ width: "100%" }} src="/static/images/taoshu.jpg"></img>
+          <img style={{ width: "100%" }} src="/images/taoshu.jpg"></img>
         </div>
       </div>
     );

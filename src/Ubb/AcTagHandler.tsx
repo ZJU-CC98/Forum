@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
@@ -19,7 +19,7 @@ export default class AcTagHandler extends Ubb.RecursiveTagHandler {
         const reg = /ac/gi;
         const tagName = tagData.tagName;
         const acId = tagName.replace(reg, "");
-        const url = `/static/images/ac/${acId}.png`;
+        const url = `/images/ac/${acId}.png`;
 
         return context.options.allowEmotion ? <div style={{ display: "inline" }}><img src={url} alt="" />{innerContent}</div> : <div style={{ display: "inline" }}>{innerContent}</div>;
     }

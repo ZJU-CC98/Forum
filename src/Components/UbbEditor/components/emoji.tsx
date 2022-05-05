@@ -30,14 +30,14 @@ export default class Emoji extends React.Component<EmojiProps> {
     }
 
     private getCC98EmojiSource(id: string): string {
-        let url = `/static/images/CC98/CC98${id}.gif`;
+        let url = `/images/CC98/CC98${id}.gif`;
         //CC9815 - CC9830 为PNG格式
         if (Number(id) > 14 && Number(id) < 31) {
-            url = `/static/images/CC98/CC98${id}.png`;
+            url = `/images/CC98/CC98${id}.png`;
         }
         //CC9836 - CC9837 为PNG格式
         if (Number(id) > 35) {
-            url = `/static/images/CC98/CC98${id}.png`;
+            url = `/images/CC98/CC98${id}.png`;
         }
         return url;
     }
@@ -49,13 +49,13 @@ export default class Emoji extends React.Component<EmojiProps> {
             //动物系列只用16个，o(1)......
             animal: ['001', '002', '003', '004', '005', '006', '007', '008', '009', '010', '011', '012', '013', '014', '015', '016'].map((item) => (<LazyImage
                 key={`[a:${item}]`}
-                src={`/static/images/mahjong/animal2017/${item}.png`}
+                src={`/images/mahjong/animal2017/${item}.png`}
                 onClick={() => { this.insertEmoji('a:', item) }}
             ></LazyImage>)),
             //卡通系列10个，同样o(1)......
             carton: ['003.png', '018.gif', '019.png', '046.png', '049.gif', '059.png', '096.gif', '134.png', '189.png', '217.png'].map((item) => (<LazyImage
                 key={`[c:${item.slice(0, 3)}]`}
-                src={`/static/images/mahjong/carton2017/${item}`}
+                src={`/images/mahjong/carton2017/${item}`}
                 onClick={() => { this.insertEmoji('c:', item.slice(0, 3)) }}
             ></LazyImage>)),
             //其他表情三位数，从1算起，index+1
@@ -72,7 +72,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                 else { return `${item}.png`; }
             }).map((item) => (<LazyImage
                 key={`[f:${item.slice(0, 3)}]`}
-                src={`/static/images/mahjong/face2017/${item}`}
+                src={`/images/mahjong/face2017/${item}`}
                 onClick={() => { this.insertEmoji('f:', item.slice(0, 3)) }}
             ></LazyImage>))
         };
@@ -106,7 +106,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                 .map((item) => (
                     item ? (<LazyImage
                         key={`[em${item}]`}
-                        src={`/static/images/em/em${item}.gif`}
+                        src={`/images/em/em${item}.gif`}
                         onClick={() => { this.insertEmoji('em', item) }}
                     ></LazyImage>) : null
                 )),
@@ -118,7 +118,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                     else { return `${index + 1907}`; }
                 }).map((item) => (<LazyImage
                     key={`[ac${item}]`}
-                    src={`/static/images/ac/${item}.png`}
+                    src={`/images/ac/${item}.png`}
                     onClick={() => { this.insertEmoji('ac', item) }}
                 ></LazyImage>)),
             'mj': [...mohjong.animal, ...mohjong.carton, ...mohjong.face],
@@ -128,7 +128,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                     else { return `${index + 1}`; }
                 }).map((item) => (<LazyImage
                     key={`[tb${item}]`}
-                    src={`/static/images/tb/tb${item}.png`}
+                    src={`/images/tb/tb${item}.png`}
                     onClick={() => { this.insertEmoji('tb', item) }}
                 ></LazyImage>)),
             'ms': new Array(54).fill(0)
@@ -138,7 +138,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                 })
                 .map((item) => <LazyImage
                     key={`ms${item}`}
-                    src={`/static/images/ms/ms${item}.png`}
+                    src={`/images/ms/ms${item}.png`}
                     onClick={() => this.insertEmoji('ms', item)}
                     className="ubb-emoji-ms"
                 />)

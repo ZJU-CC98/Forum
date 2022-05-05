@@ -142,7 +142,7 @@ export default Form.create<Props>()(
             <Item key="1">
               <img
                 style={{ width: "2rem" }}
-                src="/static/images/j-plus1.png"
+                src="/images/j-plus1.png"
               ></img>
               <span
                 style={{
@@ -158,7 +158,7 @@ export default Form.create<Props>()(
             <Item key="2">
               <img
                 style={{ width: "2rem" }}
-                src="/static/images/j-minus1.png"
+                src="/images/j-minus1.png"
               ></img>
               <span
                 style={{

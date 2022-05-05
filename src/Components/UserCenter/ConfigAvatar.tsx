@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
@@ -14,7 +14,7 @@ interface Props {
 	 * 更新store中的信息
 	 */
 	refreshUserInfo: ()=>void;
-	/** 
+	/**
 	 * store中的用户信息
 	 */
 	userInfo: UserInfo;
@@ -395,7 +395,7 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 				if (res.status === 200 && data.length !== 0) {
 					//根据返回的图片地址修改个人信息
 					this.changeAvatar(data[0]);
-				}				
+				}
 			}catch(e){
 				this.setState({
 					info: '修改失败',
@@ -493,13 +493,13 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 					<div style={{ width: '100%', height: `${this.state.divheight}px`, transitionDuration: '.5s' }}></div>
 					<div style={this.state.choosingDefault ? { display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center', flexWrap: 'wrap' } : { display: 'none' }}>
 						{[
-							'default_avatar_boy.png', 
-							'default_avatar_girl.png', 
-							'default_avatar_boy2.jpg', 
+							'default_avatar_boy.png',
+							'default_avatar_girl.png',
+							'default_avatar_boy2.jpg',
 							'default_avatar_girl2.jpg',
 							'default_avatar_boy3.jpg',
 							'default_avatar_girl3.jpg'
-						].map(item => <img key={item} style={{ margin: '3rem 5rem', cursor: 'pointer', height: '10rem', width: '10rem' }} onClick={this.setDefaultAvatar} src={`//www.cc98.org/static/images/${item}`} />)}
+						].map(item => <img key={item} style={{ margin: '3rem 5rem', cursor: 'pointer', height: '10rem', width: '10rem' }} onClick={this.setDefaultAvatar} src={`//www.cc98.org/images/${item}`} />)}
 					</div>
 				</div>
 			</div>

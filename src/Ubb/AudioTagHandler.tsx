@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
@@ -57,7 +57,7 @@ class AudioComponent extends React.Component<IProps> {
           url: encodeURI(this.props.src),
           title: this.props.title ? this.props.title : encodeURI(this.props.src),
           author: '',
-          pic: '/static/images/audio_cover.png'
+          pic: '/images/audio_cover.png'
         }
       });
       //去掉文件名后面的横杠

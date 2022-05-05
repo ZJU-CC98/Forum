@@ -359,7 +359,7 @@ export class ListHead extends RouteComponent<
   }
   onError(e) {
     e.preventDefault();
-    e.target.src = `/static/images/_CC98.png`;
+    e.target.src = `/images/_CC98.png`;
   }
 
   changeBigPaper = async () => {
@@ -391,7 +391,7 @@ export class ListHead extends RouteComponent<
   render() {
     const boardUrl = `/board/${this.props.boardId}`;
     const id = `boardImg_${this.props.boardId}`;
-    const url = `/static/images/_${this.props.boardInfo.name}.png`;
+    const url = `/images/_${this.props.boardInfo.name}.png`;
     const isMaster = Utility.isMaster(this.props.boardInfo.boardMasters);
     let boardNameDiv = (
       <div className="row" style={{ width: "100%" }}>

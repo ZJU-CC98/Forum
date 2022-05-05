@@ -121,7 +121,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
 
     else if (displayTitleId) {
       //获取头像框样式的配置
-      let response = await fetch('/static/portrait.json');
+      let response = await fetch('/portrait.json');
       let data = await response.json();
       /** 头像框图片链接 */
       let imageUrl;
@@ -229,7 +229,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
   /** 处理显示错误的头像 */
   async handleImageErrored(e) {
     e.preventDefault();
-    e.target.src = "/static/images/default_avatar_boy.png"//将错误的头像url替换为默认头像url
+    e.target.src = "/images/default_avatar_boy.png"//将错误的头像url替换为默认头像url
   }
 
   render() {

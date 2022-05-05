@@ -5,12 +5,12 @@
   <meta charset="utf-8" />
   <meta name="renderer" content="webkit" />
   <title>CC98论坛</title>
-  <link type="image/x-icon" rel="icon" href="/static/98icon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" />
-  <link type="text/css" rel="stylesheet" href="/static/content/font-awesome/css/font-awesome.min.css" />
-  <link type="text/css" rel="stylesheet" href="/static/content/DPlayer.min.css" />
-  <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
-  <link type="text/css" rel="stylesheet" href="/static/content/DPlayer.min.css" />
-  <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
+  <link type="image/x-icon" rel="icon" href="/98icon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" />
+  <link type="text/css" rel="stylesheet" href="/content/font-awesome/css/font-awesome.min.css" />
+  <link type="text/css" rel="stylesheet" href="/content/DPlayer.min.css" />
+  <link type="text/css" rel="stylesheet" href="/content/APlayer.min.css" />
+  <link type="text/css" rel="stylesheet" href="/content/DPlayer.min.css" />
+  <link type="text/css" rel="stylesheet" href="/content/APlayer.min.css" />
 
   <script>
     window.onerror = function (a, b, c) {
@@ -52,11 +52,11 @@
         if (!isLogOn) throw new Error('用户未登录');
         var theme = JSON.parse(localStorage.getItem('userInfo').slice(4)).theme;
         if (!theme) throw new Error('用户未选择主题');
-        document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' +
+        document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/content/' +
           themeNames[theme] + '">');
       })();
     } catch (e) {
-      document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[0] +
+      document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/content/' + themeNames[0] +
         '">')
     }
   </script>
@@ -64,9 +64,9 @@
 
 <body style="display:flex;justify-content:center;">
   <div id="root"></div>
-  <script type="text/javascript" src="/static/scripts/lib/jquery/jquery.min.js"></script>
-  <script type="text/javascript" src="/static/scripts/lib/moment/moment.js"></script>
-  <script type="text/javascript" src="/static/scripts/lib/spectrum/spectrum.js"></script>
+  <script type="text/javascript" src="/scripts/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/scripts/lib/moment/moment.js"></script>
+  <script type="text/javascript" src="/scripts/lib/spectrum/spectrum.js"></script>
   <script type="text/javascript">
     //兼容性检查
     if (!('flex' in document.documentElement.style)) {
@@ -77,7 +77,7 @@
       <% for (var jsFile in htmlWebpackPlugin.files.js) { %>
       <% if (htmlWebpackPlugin.files.js[jsFile].indexOf('css') === -1) { %>
       document.write(
-        "<script type='text/javascript' src='/static/scripts/<%= htmlWebpackPlugin.files.js[jsFile].split('/').pop() %>'><" +
+        "<script type='text/javascript' src='/scripts/<%= htmlWebpackPlugin.files.js[jsFile].split('/').pop() %>'><" +
         "/script>");
       <% } %>
       <% } %>

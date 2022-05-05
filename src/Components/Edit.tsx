@@ -1399,14 +1399,14 @@ export class InputTitle extends React.Component<
           <div className="row">
             <div className="tagBoxSelect">{defaultTag1}</div>
             <div className="downArrow">
-              <img src="/static/images/downArrow.png" width="12" height="12" />
+              <img src="/images/downArrow.png" width="12" height="12" />
             </div>
             {drop1}
           </div>
           <div className="row">
             <div className="tagBoxSelect1">{defaultTag2}</div>
             <div className="downArrow1">
-              <img src="/static/images/downArrow.png" width="12" height="12" />
+              <img src="/images/downArrow.png" width="12" height="12" />
             </div>
             {drop2}
           </div>
@@ -1419,7 +1419,7 @@ export class InputTitle extends React.Component<
         <div className="row">
           <div className="tagBoxSelect">{defaultTag1}</div>
           <div className="downArrow">
-            <img src="/static/images/downArrow.png" width="12" height="12" />
+            <img src="/images/downArrow.png" width="12" height="12" />
           </div>
           {drop1}
         </div>

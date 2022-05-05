@@ -60,7 +60,7 @@ export class Reply extends React.Component<
     let realContents;
     if (this.props.isHot) {
       realContents = await Utility.getHotReplyContent(this.props.topicId);
-    } 
+    }
     else if (this.props.isTrace) {
       realContents = await Utility.getCurUserTopicContent(
         this.props.topicId,
@@ -281,7 +281,7 @@ export class Reply extends React.Component<
             />
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-     
+
             <FloorSize isHot={this.props.isHot} floor={item.floor} />
             {item.isLZ && <FloorSize isHot={false} floor={-1} />}
           </div>
@@ -364,7 +364,7 @@ export class FloorSize extends React.Component<{
         <div style={{ backgroundColor: "#FF4040" }} className="reply-floor">
           <img
             style={{ width: "20px", height: "30px" }}
-            src="/static/images/hot.png"
+            src="/images/hot.png"
           />
         </div>
       );
