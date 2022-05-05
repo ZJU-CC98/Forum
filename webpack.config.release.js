@@ -56,7 +56,7 @@ var config = {
         css_qingming:'./src/Themes/qingming.scss',
     },
     output: {
-        path: path.resolve(__dirname, 'wwwroot/'),
+        path: path.resolve(__dirname, 'dist/'),
         publicPath: '/',
         filename: 'static/scripts/[name]-[chunkhash:8].js'
     },
@@ -73,12 +73,7 @@ var config = {
             },
             inject: false
         }),
-        // clean wwwroot
-        new CleanWebpackPlugin([
-            'wwwroot/static/scripts',
-            'wwwroot/static/content',
-            'wwwroot/static/index.html'
-        ]),
+        new CleanWebpackPlugin('dist'),
         new CopyWebpackPlugin([
             { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
             { from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
@@ -87,6 +82,9 @@ var config = {
             { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' },
             { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' },
             { from: 'node_modules/hls.js/dist/hls.min.js', to: 'static/content/hls.min.js' },
+        ]),
+        new CopyWebpackPlugin([
+            { from: 'public', to: 'static' },
         ]),
         new ExtractTextPlugin('static/content/[name]-[chunkhash:8].css'),
         new WebpackChunkHash({ algorithm: 'md5' }),

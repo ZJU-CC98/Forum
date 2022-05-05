@@ -22,7 +22,7 @@ yarn run build:release
 
 ## File Intro
 
-### ./wwwroot
+### ./public
 * /static  网站静态文件
   * /content  css文件
   * /images  网站的表情包，头图等图片文件 

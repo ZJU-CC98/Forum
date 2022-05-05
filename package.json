@@ -3,9 +3,8 @@
   "name": "cc98-forum",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --progress --hot --inline --config vscodeConfig/webpack.config.vscode.js",
-    "bundle-analyze": "webpack --config vscodeConfig/webpack.config.bundle.js",
-    "build:debug": "webpack --config webpack.config.debug.js",
+    "dev": "webpack-dev-server --progress --hot --inline --config webpack/webpack.config.vscode.js",
+    "bundle-analyze": "webpack --config webpack/webpack.config.bundle.js",
     "build:release": "webpack --config webpack.config.release.js"
   },
   "dependencies": {
