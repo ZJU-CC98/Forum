@@ -281,12 +281,11 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
     let lastLogOn;
     const curTime = new Date().getTime();
     const lastTime = new Date(this.props.userInfo.lastLogOnTime).getTime();
+    const months = parseInt((Math.abs(lastTime - curTime) / 1000 / 60 / 60 / 24 / 30).toString());
     const days = parseInt((Math.abs(lastTime - curTime) / 1000 / 60 / 60 / 24).toString());
     const hours = parseInt((Math.abs(lastTime - curTime) / 1000 / 60 / 60).toString());
     let fanCount = this.state.fanCount;
-    if (days > 365) lastLogOn = '一年前';
-    else if (days > 30) lastLogOn = '一月前';
-    else if (days > 7) lastLogOn = '一周前';
+    if (months > 1) lastLogOn = `${months}个月前`;
     else if (days > 1) lastLogOn = `${days}天前`;
     else if (hours > 1) lastLogOn = `${hours}小时前`;
     else lastLogOn = '1小时内';
