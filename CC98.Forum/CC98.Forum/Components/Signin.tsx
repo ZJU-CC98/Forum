@@ -39,7 +39,7 @@ export class Signin extends React.Component<{ history }, { signinInfo; content }
   render() {
     let info;
     // 是否开启双倍签到
-    const bonusRate = 1;
+    const bonusRate = 2;
     if (this.state.signinInfo.hasSignedInToday) {
       //设定已签到状态和有效期
       let userInfo = Utility.getLocalStorage("userInfo");
