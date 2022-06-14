@@ -33,8 +33,8 @@ export class Reply extends React.Component<
     pmVisible;
     item;
     judgeVisible;
-  }
-> {
+  }>
+{
   constructor(props, content) {
     super(props, content);
     this.update = this.update.bind(this);
