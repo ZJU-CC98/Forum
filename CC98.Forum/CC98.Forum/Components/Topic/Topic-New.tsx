@@ -35,6 +35,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
       buttonClassName: "",
     };
     this.handleScroll = this.handleScroll.bind(this);
+    this.handleFetchNewTopics = this.handleFetchNewTopics.bind(this);
   }
 
   /**
@@ -49,15 +50,22 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
       this.setState({ data: data, from: data.length });
     }
 
-    //滚动条监听
+    //获取新帖触发事件监听
+    document.addEventListener("wheel", this.handleFetchNewTopics, { passive: true });
+    document.addEventListener("touchmove", this.handleFetchNewTopics, { passive: true });
+    document.addEventListener("scroll", this.handleFetchNewTopics, { passive: true });
+    //滚动条事件监听
     document.addEventListener("scroll", this.handleScroll);
   }
 
   /**
-   * 移除DOM时，为滚动条移除监听事件
+   * 移除DOM时，为滚动条和获取新帖移除相关监听事件
    */
   async componentWillUnmount() {
     document.removeEventListener("scroll", this.handleScroll);
+    document.removeEventListener("scroll", this.handleFetchNewTopics);
+    document.removeEventListener("touchmove", this.handleFetchNewTopics);
+    document.removeEventListener("wheel", this.handleFetchNewTopics);
   }
   //回到顶部
   scrollToTop() {
@@ -81,6 +89,12 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
           prevState.buttonClassName === "" ? "" : "btn-disappare",
       }));
     }
+  }
+
+  /**
+   * 获取新帖子的函数
+   */
+  async handleFetchNewTopics() {
     //控制获取新帖
     console.log("new topic, loading=" + this.state.isLoadable);
     if (Utility.isBottom() && this.state.isLoadable) {
