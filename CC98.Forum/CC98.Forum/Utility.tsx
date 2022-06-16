@@ -791,6 +791,7 @@ export async function getRecentContact(from: number, size: number, router) {
     return recentContact;
   } catch (e) {
     //store.dispatch(ErrorActions.throwError(('Disconnected')));
+    return null;
   }
 }
 
