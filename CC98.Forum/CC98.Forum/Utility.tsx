@@ -1433,9 +1433,9 @@ export function getWindowHeight() {
 
 export function isBottom() {
   /*
-   *预留100px给“正在加载”的提示标志
+   * 预留300px给“正在加载”的提示标志
    */
-  if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
+  if (window.innerHeight + window.pageYOffset + 300 >= document.body.offsetHeight) {
     return true;
   } else {
     return false;
