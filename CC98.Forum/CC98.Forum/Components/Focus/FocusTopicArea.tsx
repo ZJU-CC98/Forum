@@ -27,7 +27,7 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
         this.state = {
             data: data,
             from: 0,
-            loading: true,
+            isLoadable: true,
             buttonClassName: '',
             stop:false
         };
@@ -88,7 +88,7 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
             );
         }
         //控制获取新帖
-        if (Utility.isBottom() && this.state.loading) {
+        if (Utility.isBottom() && this.state.isLoadable) {
             /**
              * 查看新帖数目大于200条时不再继续加载
              * 或者加载时已经加载完了
@@ -99,16 +99,16 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
                 return;
             }
             /**
-            *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+            *发出第一条fetch请求前将this.state.isLoadable设置为false，防止后面重复发送fetch请求
             */
-            this.setState({ loading: false });
+            this.setState({ isLoadable: false });
             try {
                 var newData = await Utility.getFocusTopic(this.props.id, this.props.name, this.state.from, this.context.router);
             } catch (err) {
                 /**
-                *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+                *如果出错，直接结束这次请求，同时将this.state.isLoadable设置为true，后续才可以再次发送fetch请求
                 */
-                this.setState({ loading: true });
+                this.setState({ isLoadable: true });
                 return;
             }
             finally{
@@ -117,7 +117,7 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
                 }
             }
             /**
-            *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
+            *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.isLoadable设置为true，后续才可以再次发送fetch请求
             */
             //拼接时防止出现重复帖子
             if (newData && newData.length > 0) {
@@ -128,10 +128,10 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
                     }
                 }
                 data = data.slice(0, i).concat(newData);
-                this.setState({ data: data, from: data.length, loading: true });
+                this.setState({ data: data, from: data.length, isLoadable: true });
                 Utility.setStorage(`focusBoard_${this.props.id}`, data);
             }
-            this.setState({ loading: true });
+            this.setState({ isLoadable: true });
             return;
         }
     }

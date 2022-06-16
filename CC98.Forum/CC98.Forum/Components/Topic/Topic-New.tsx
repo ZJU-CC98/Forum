@@ -31,7 +31,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
     this.state = {
       data: data,
       from: 0,
-      loading: true,
+      isLoadable: true,
       buttonClassName: "",
     };
     this.handleScroll = this.handleScroll.bind(this);
@@ -82,8 +82,8 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
       }));
     }
     //控制获取新帖
-    console.log("new topic, loading=" + this.state.loading);
-    if (Utility.isBottom() && this.state.loading) {
+    console.log("new topic, loading=" + this.state.isLoadable);
+    if (Utility.isBottom() && this.state.isLoadable) {
       /**
        *查看新帖数目大于100条时不再继续加载
        */
@@ -93,22 +93,22 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
         return;
       }
       /**
-       *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+       *发出第一条fetch请求前将this.state.isLoadable设置为false，防止后面重复发送fetch请求
        */
-      this.setState({ loading: false });
+      this.setState({ isLoadable: false });
       try {
         const debouncedFn = Utility.pDebounce(Utility.getAllNewTopic, 1000);
         var newData: any = await debouncedFn(this.state.from);
         //var newData = await Utility.getAllNewTopic(this.state.from);
       } catch (err) {
         /**
-         *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+         *如果出错，直接结束这次请求，同时将this.state.isLoadable设置为true，后续才可以再次发送fetch请求
          */
-        this.setState({ loading: true });
+        this.setState({ isLoadable: true });
         return;
       }
       /**
-       *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
+       *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.isLoadable设置为true，后续才可以再次发送fetch请求
        */
       //拼接时防止出现重复帖子
       if (newData && newData.length > 0) {
@@ -119,10 +119,10 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
           }
         }
         data = data.slice(0, i).concat(newData);
-        this.setState({ data: data, from: data.length, loading: true });
+        this.setState({ data: data, from: data.length, isLoadable: true });
         Utility.setStorage(`AllNewTopic`, data);
       } else {
-        this.setState({ loading: true });
+        this.setState({ isLoadable: true });
         return;
       }
     }
