@@ -827,7 +827,7 @@ export class MainPage extends React.Component<{}, { data }> {
       //若获取了正常的首页数据（十大不为空），则缓存60s，这样可以避免用户短时间内频繁访问首页产生大量请求
       if (hotTopicData && hotTopicData.length) {
         Utility.setLocalStorage("mainPageData", data, 60);
-        Utility.setLocalStorage("mainPageHotTopic", data);
+        Utility.setLocalStorage("mainPageHotTopic", hotTopicData);
       }
       return data;
     } else {
