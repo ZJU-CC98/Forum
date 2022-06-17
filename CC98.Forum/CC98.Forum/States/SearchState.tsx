@@ -9,6 +9,6 @@ export class SearchState {
     words: string[];
     data: FocusTopic[];
     from: number;
-    loading: boolean;
+    isLoadable: boolean;
     buttonClassName: string;
 }

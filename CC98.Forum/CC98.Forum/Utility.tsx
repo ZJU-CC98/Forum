@@ -791,6 +791,8 @@ export async function getRecentContact(from: number, size: number, router) {
     return recentContact;
   } catch (e) {
     //store.dispatch(ErrorActions.throwError(('Disconnected')));
+    // 出错后返回空数组，防止缓存存储和提取时对格式解析错误
+    return [];
   }
 }
 
@@ -1433,9 +1435,9 @@ export function getWindowHeight() {
 
 export function isBottom() {
   /*
-   *预留100px给“正在加载”的提示标志
+   * 预留300px给“正在加载”的提示标志
    */
-  if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
+  if (window.innerHeight + window.pageYOffset + 300 >= document.body.offsetHeight) {
     return true;
   } else {
     return false;

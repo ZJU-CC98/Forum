@@ -27,7 +27,7 @@ export class Search extends React.Component<{}, SearchState> {
             words: [],
             data: [],
             from: 0,
-            loading: true,
+            isLoadable: true,
             buttonClassName: ''
         }
         this.getMore = this.getMore.bind(this);
@@ -39,33 +39,33 @@ export class Search extends React.Component<{}, SearchState> {
         //搜索结果为0
         if (!newTopic || newTopic.length === 0) {
             this.showNoResult();
-            this.setState({ loading: false });
+            this.setState({ isLoadable: false });
         }
         else if (newTopic == -1) {
             if (from === 0) {
                 this.showError();
-                this.setState({ loading: false });
+                this.setState({ isLoadable: false });
             }
             else {
-                this.setState({ loading: true });
+                this.setState({ isLoadable: true });
                 $('#focus-topic-getMore').css('display', 'flex');
                 $('#focus-topic-loading').addClass('displaynone');
                 return;
             }
         }
         else {
-            //搜索结果小于20条，无法再获取新的了,添加新数据，this.state.loading设置为false，后续不可以再次发送fetch请求
+            //搜索结果小于20条，无法再获取新的了,添加新数据，this.state.isLoadable设置为false，后续不可以再次发送fetch请求
             if (newTopic.length < 20) {
                 $('#focus-topic-getMore').css('display', 'none');
                 $('#focus-topic-loading').addClass('displaynone');
                 $('#focus-topic-loaddone').removeClass('displaynone');
                 let data = this.state.data.concat(newTopic);
-                this.setState({ boardName: searchInfo.boardName, data: data, from: data.length, loading: false });
+                this.setState({ boardName: searchInfo.boardName, data: data, from: data.length, isLoadable: false });
             }
-            //搜索结果多于20条，还可以通过滚动条继续获取,this.state.loading设置为true，后续可以再次发送fetch请求
+            //搜索结果多于20条，还可以通过滚动条继续获取,this.state.isLoadable设置为true，后续可以再次发送fetch请求
             else {
                 let data = this.state.data.concat(newTopic);
-                this.setState({ boardName: searchInfo.boardName, data: data, from: data.length, loading: true });
+                this.setState({ boardName: searchInfo.boardName, data: data, from: data.length, isLoadable: true });
                 $('#focus-topic-getMore').css('display', 'flex');
                 $('#focus-topic-loading').addClass('displaynone');
             }
@@ -77,31 +77,31 @@ export class Search extends React.Component<{}, SearchState> {
         //搜索结果为0
         if (!newTopic || newTopic.length === 0) {
             this.showNoResult();
-            this.setState({ loading: false });
+            this.setState({ isLoadable: false });
         }
         else if (newTopic == -1) {
             if (from === 0) {
                 this.showError();
-                this.setState({ loading: false });
+                this.setState({ isLoadable: false });
             }
             else {
-                this.setState({ loading: true });
+                this.setState({ isLoadable: true });
                 $('#focus-topic-getMore').css('display', 'flex');
                 $('#focus-topic-loading').addClass('displaynone');
                 return;
             }
         }
         else {
-            //搜索结果小于20条，无法再获取新的了,添加新数据，this.state.loading设置为false，后续不可以再次发送fetch请求
+            //搜索结果小于20条，无法再获取新的了,添加新数据，this.state.isLoadable设置为false，后续不可以再次发送fetch请求
             if (newTopic.length < 20) {
                 $('#focus-topic-getMore').css('display', 'none');
                 $('#focus-topic-loading').addClass('displaynone');
                 $('#focus-topic-loaddone').removeClass('displaynone');
-                this.setState({ boardName: searchInfo.boardName, data: newTopic, from: newTopic.length, loading: false });
+                this.setState({ boardName: searchInfo.boardName, data: newTopic, from: newTopic.length, isLoadable: false });
             }
-            //搜索结果多于20条，还可以通过滚动条继续获取,this.state.loading设置为true，后续可以再次发送fetch请求
+            //搜索结果多于20条，还可以通过滚动条继续获取,this.state.isLoadable设置为true，后续可以再次发送fetch请求
             else {
-                this.setState({ boardName: searchInfo.boardName, data: newTopic, from: newTopic.length, loading: true });
+                this.setState({ boardName: searchInfo.boardName, data: newTopic, from: newTopic.length, isLoadable: true });
                 $('#focus-topic-getMore').css('display', 'flex');
                 $('#focus-topic-loading').addClass('displaynone');
             }
@@ -116,7 +116,7 @@ export class Search extends React.Component<{}, SearchState> {
             //没有搜索条件
             console.log("没有搜索关键词？")
             this.showNoResult();
-            this.setState({ loading: false });
+            this.setState({ isLoadable: false });
         }
         else {
             searchInfo.boardId = parseInt(keyword[1]);
@@ -153,13 +153,13 @@ export class Search extends React.Component<{}, SearchState> {
     }
 
     async getMore() {
-        if (this.state.loading) {
+        if (this.state.isLoadable) {
             /**
-            *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+            *发出第一条fetch请求前将this.state.isLoadable设置为false，防止后面重复发送fetch请求
             */
             $('#focus-topic-getMore').css('display','none');
             $('#focus-topic-loading').removeClass('displaynone');
-            this.setState({ loading: false });
+            this.setState({ isLoadable: false });
             let searchInfo = Utility.getStorage("searchInfo");
             this.getData(searchInfo, this.state.from);
         }
