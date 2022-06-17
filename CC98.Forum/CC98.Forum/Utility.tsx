@@ -791,7 +791,8 @@ export async function getRecentContact(from: number, size: number, router) {
     return recentContact;
   } catch (e) {
     //store.dispatch(ErrorActions.throwError(('Disconnected')));
-    return null;
+    // 出错后返回空数组，防止缓存存储和提取时对格式解析错误
+    return [];
   }
 }
 
