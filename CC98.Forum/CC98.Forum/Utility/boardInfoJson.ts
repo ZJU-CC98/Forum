@@ -141,7 +141,7 @@ export const boardInfo: { id: number; name: string; }[] = [
   },
   {
     "id": 764,
-    "name": "理财优惠"
+    "name": "每日优惠"
   },
   {
     "id": 114,

@@ -752,7 +752,7 @@ export class MainPageCountProps {
 /**
  * 小程序二维码
  */
-export class QRCode extends React.Component<{}, {}> {
+export class QRCode extends React.Component<{ title: string, src: string }, {}> {
   render() {
     return (
       <div
@@ -765,20 +765,11 @@ export class QRCode extends React.Component<{}, {}> {
         <div className="mainPageTitle2">
           <div className="mainPageTitleRow">
             <i className="fa fa-volume-up"></i>
-            <div className="mainPageTitleText">CC98小程序</div>
+            <div className="mainPageTitleText">{this.props.title}</div>
           </div>
         </div>
         <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-          <img style={{ width: "100%" }} src="/static/images/QRCode.png"></img>
-        </div>
-        <div className="mainPageTitle2">
-          <div className="mainPageTitleRow">
-            <i className="fa fa-volume-up"></i>
-            <div className="mainPageTitleText">98淘书小程序</div>
-          </div>
-        </div>
-        <div style={{ marginTop: "1rem" }}>
-          <img style={{ width: "100%" }} src="/static/images/taoshu.jpg"></img>
+          <img style={{ width: "100%" }} src={this.props.src}></img>
         </div>
       </div>
     );
@@ -858,7 +849,7 @@ export class MainPage extends React.Component<{}, { data }> {
     );
     let fleaMarket: MainPageTopicMoreProps[] = new Array(
       { name: "数码", url: "/board/562" },
-      { name: "生活", url: "/board/80" },
+      { name: "日用", url: "/board/80" },
       { name: "服饰", url: "/board/563" }
     );
     let fullTimeJob: MainPageTopicMoreProps[] = new Array({
@@ -899,7 +890,7 @@ export class MainPage extends React.Component<{}, { data }> {
           <div className="row" style={{ justifyContent: "space-between" }}>
             <MainPageTopicComponent
               data={data.academics}
-              name="学术信息"
+              name="学术通知"
               fetchUrl="/topic/academics"
               style="black"
               mores={[]}
@@ -947,10 +938,12 @@ export class MainPage extends React.Component<{}, { data }> {
         </div>
         <div className="rightPart">
           <RecommendedFunctionComponent data={data.recommendationFunction} />
-          <SchoolNewsComponent data={data.schoolNews} />
+          {/*<SchoolNewsComponent data={data.schoolNews} />*/}
           <AdsComponent />
           <MainPageCountComponent data={count} />
-          <QRCode />
+          <QRCode title="CC98小程序" src="/static/images/xiaochengxu.png" />
+          <QRCode title="98淘书小程序" src="/static/images/taoshu.jpg" />
+          <QRCode title="CC98公众号" src="/static/images/gongzhonghao.jpg" />
         </div>
       </div>
     );

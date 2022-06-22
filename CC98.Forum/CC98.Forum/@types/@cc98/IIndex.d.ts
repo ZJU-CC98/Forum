@@ -13,7 +13,7 @@ declare module '@cc98/api' {
         schoolNews: IMainpageEditableContent[],
         /** 校园活动 */
         schoolEvent: IMainpageAutoContent[],
-        /** 学术信息 */
+        /** 学术通知 */
         academics: IMainpageAutoContent[],
         /** 学习园地 */
         study: IMainpageAutoContent[],

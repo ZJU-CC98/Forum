@@ -989,11 +989,11 @@ class EditForm extends RouteComponent<
         <input
           type="radio"
           name="type"
-          value="学术信息"
+          value="学术通知"
           onClick={this.changeAcademicType}
           checked={this.state.type === 2 ? true : false}
         />{" "}
-        学术信息
+        学术通知
         <div style={{ color: "rgb(255,0,0)" }}>
           （活动帖和学术帖请选择正确的发帖类型)
         </div>
@@ -1007,7 +1007,7 @@ class EditForm extends RouteComponent<
       Utility.getLocalStorage("userInfo") &&
       (Utility.isMaster(this.state.masters) ||
         (Utility.getLocalStorage("userInfo").userTitleIds || []).indexOf(91) !==
-          -1)
+        -1)
     ) {
       topicType = (
         <div className="createTopicType">
@@ -1023,11 +1023,11 @@ class EditForm extends RouteComponent<
           <input
             type="radio"
             name="type"
-            value="学术信息"
+            value="学术通知"
             onClick={this.changeAcademicType}
             checked={this.state.type === 2 ? true : false}
           />{" "}
-          学术信息
+          学术通知
           <input
             type="radio"
             name="type"
@@ -1563,67 +1563,67 @@ class TmpForm extends React.Component<any, any> {
           </Form.Item>
           <Form.Item label="地区">
             {getFieldDecorator("district", {
-              // rules: [{ required: true, message: "请输入地区!" }]
+              rules: [{ required: true, message: "请输入地区!" }]
             })(
               <Input placeholder="例如：紫金港 / 玉泉 / 文一西路xx路交叉口处 / 上海的xx路附近" />
             )}
           </Form.Item>
           <Form.Item label="小区名称">
             {getFieldDecorator("neighborhood", {
-              //  rules: [{ required: true, message: "请输入小区名称!" }]
+              rules: [{ required: true, message: "请输入小区名称!" }]
             })(<Input placeholder="例如：港湾家园" />)}
           </Form.Item>
           <Form.Item label="详细地址">
             {getFieldDecorator("address", {
-              //   rules: [{ required: true, message: "请输入详细地址!" }]
+              rules: [{ required: true, message: "请输入详细地址!" }]
             })(<Input placeholder="例如：余杭塘路866号港湾家园X幢X单元X号" />)}
           </Form.Item>
           <Form.Item label="联系方式">
             {getFieldDecorator("contact", {
-              //  rules: [{ required: true, message: "请输入联系方式!" }]
+              rules: [{ required: true, message: "请输入联系方式!" }]
             })(
               <Input placeholder="例如：张房东 电话18888888888 / 李女士 微信1234abc" />
             )}
           </Form.Item>
           <Form.Item label="价格">
             {getFieldDecorator("price", {
-              //   rules: [{ required: true, message: "请输入价格!" }]
+              rules: [{ required: true, message: "请输入价格!" }]
             })(<Input placeholder="例如：2000元/月" />)}
           </Form.Item>
           <Form.Item label="租期">
             {getFieldDecorator("rentDays", {
-              //  rules: [{ required: true, message: "请输入租期!" }]
+              rules: [{ required: true, message: "请输入租期!" }]
             })(<Input placeholder="例如：6个月起租" />)}
           </Form.Item>
           <Form.Item label="房户类型">
             {getFieldDecorator("houseType", {
-              //  rules: [{ required: true, message: "请输入房户类型!" }]
+              rules: [{ required: true, message: "请输入房户类型!" }]
             })(
               <Input placeholder="例如：4室0厅1阳1卫1厨（指包括要出租的房间数量，加上公用的区域，私用的不算入）" />
             )}
           </Form.Item>
           <Form.Item label="出租类型">
             {getFieldDecorator("rentType", {
-              // rules: [{ required: true, message: "请输入出租类型!" }]
+              rules: [{ required: true, message: "请输入出租类型!" }]
             })(
               <Input placeholder="（指本次出租的房间）例如： 单间（独卫带阳台）/ 单间（独卫）/  单间 " />
             )}
           </Form.Item>
           <Form.Item label="出租面积">
             {getFieldDecorator("area", {
-              //    rules: [{ required: true, message: "请输入出租面积!" }]
+              rules: [{ required: true, message: "请输入出租面积!" }]
             })(<Input placeholder="（指本次出租的房间）例如：20平米" />)}
           </Form.Item>
           <Form.Item label="可租期限">
             {getFieldDecorator("range", {
-              //   rules: [{ required: true, message: "请输入可租期限!" }]
+              rules: [{ required: true, message: "请输入可租期限!" }]
             })(
               <Input placeholder="例如：到2017年11月7日 / 长期 （指合约可以签到什么时候）" />
             )}
           </Form.Item>
           <Form.Item label="付款方式">
             {getFieldDecorator("paymentType", {
-              //    rules: [{ required: true, message: "请输入付款方式!" }]
+              rules: [{ required: true, message: "请输入付款方式!" }]
             })(<Input placeholder=" 例如：押1付1  /  押1付2" />)}
           </Form.Item>
           <Form.Item label="是否为隔间">
