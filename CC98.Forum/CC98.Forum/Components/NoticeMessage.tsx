@@ -10,6 +10,6 @@ import * as React from 'react';
  */
 export class NoticeMessage extends React.PureComponent<{ text: string; id: string; top: string; left: string }> {
     render() {
-        return <div className="noticeSuccess displaynone" id={this.props.id} style={{ position: 'fixed', top: this.props.top, left: this.props.left }}>{this.props.text}</div>;
+        return <div className="noticeSuccess displaynone" id={this.props.id} style={{ position: 'fixed', top: this.props.top, left: this.props.left, whiteSpace: 'pre-wrap', textAlign: "start" }}>{this.props.text}</div>;
     }
 }

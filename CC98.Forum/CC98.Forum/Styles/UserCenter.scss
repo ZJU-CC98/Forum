@@ -9,17 +9,24 @@
 }
 
 @keyframes fadeOut {
-  from {
+  0% {
     opacity: 0.5;
+    visibility: visible;
   }
 
-  to {
+  80% {
+    opacity: 0.5;
+    visibility: visible;
+  }
+
+  100% {
+    visibility: hidden;
     opacity: 0;
-    display: none;
   }
 }
 
 .user-center {
+
   button,
   ul,
   li {
@@ -144,6 +151,7 @@
     }
 
     .user-center-navigation-active {
+
       &,
       * {
         color: red;
@@ -221,7 +229,7 @@
         padding: 0 2rem;
         width: 18.75rem;
 
-        & > * {
+        &>* {
           margin-bottom: 1rem;
         }
 
@@ -232,7 +240,7 @@
           align-items: center;
           width: 100%;
 
-          & > p {
+          &>p {
             flex-grow: 1;
             white-space: pre;
           }
@@ -312,7 +320,7 @@
           max-width: 36.25rem;
           overflow-x: hidden;
 
-          & > p {
+          &>p {
             width: 100%;
             margin-bottom: 1rem;
           }
@@ -330,7 +338,7 @@
       .user-activities {
         width: 100%;
 
-        & > p {
+        &>p {
           font-size: 1.125rem;
           margin-bottom: 2rem;
         }
@@ -605,24 +613,24 @@
         opacity: 0.7;
       }
 
-      & > img {
+      &>img {
         width: 160px;
         height: 160px;
         border-radius: 80px;
       }
 
-      & > div {
+      &>div {
         display: flex;
         flex-direction: column;
 
-        & > button {
+        &>button {
           width: 100px;
           height: 30px;
           margin-left: 30px;
           margin-bottom: 20px;
         }
 
-        & > div {
+        &>div {
           display: flex;
           align-items: center;
 
@@ -705,7 +713,7 @@
       flex-direction: column;
       flex-wrap: wrap;
 
-      & > div {
+      &>div {
         margin-bottom: 2rem;
       }
 
@@ -764,7 +772,7 @@
         display: flex;
         align-items: center;
 
-        & > p {
+        &>p {
           align-self: flex-start;
         }
 
@@ -828,7 +836,7 @@
     }
 
     .user-manage {
-      & > div {
+      &>div {
         margin-bottom: 2rem;
       }
 
@@ -847,7 +855,7 @@
       .user-manager {
         display: flex;
 
-        & > * {
+        &>* {
           margin-right: 1rem;
         }
 
@@ -895,6 +903,7 @@
     }
 
     .user-center-transfer-wealth {
+
       h2,
       p {
         margin: 0;
@@ -944,7 +953,7 @@
     height: 7rem;
   }
 
-  & > a {
+  &>a {
     background-color: $theme_color_main;
     width: 7rem;
     height: 7rem;

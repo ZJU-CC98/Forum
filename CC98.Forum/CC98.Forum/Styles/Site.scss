@@ -122,7 +122,7 @@ input[type="radio"] {
 .noticeSuccess {
   font-size: 1rem;
   padding: 0 1rem;
-  height: 2rem;
+  min-height: 2rem;
   line-height: 2rem;
   text-align: center;
   background-color: darkgrey;
@@ -132,7 +132,7 @@ input[type="radio"] {
 
 .noticeSuccess.noticeDisplaynone {
   animation-name: fadeOut;
-  animation-duration: 1s;
+  animation-duration: 5s;
   animation-fill-mode: forwards;
 }
 

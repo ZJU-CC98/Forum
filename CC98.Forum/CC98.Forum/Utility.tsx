@@ -3044,7 +3044,7 @@ export function noticeMessageShow(id: string) {
   $(`#${id}`).removeClass("noticeDisplaynone");
   setTimeout(function () {
     $(`#${id}`).addClass("noticeDisplaynone");
-  }, 1500);
+  }, 1);
 }
 
 declare let themeNames: string[];
