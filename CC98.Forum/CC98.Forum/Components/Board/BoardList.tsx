@@ -4,6 +4,7 @@ import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { Link } from 'react-router-dom';
 import DocumentTitle from '../DocumentTitle';
+
 /**
  *根版面（区）的状态
  *需要版面名称，id，主管，以及子版面
@@ -60,12 +61,30 @@ export class BoardList extends React.Component<{}, { data: RootBoardState[] }> {
     return data;
   }
 
+  /**
+   * 生成boardInfoJson的方法 
+   * 由于历史原因，每次版面调整后前端需要更新boardInfoJson.ts和boardinfo.json文件
+   */
+  async createBoardInfoJson() {
+    let data = await this.getData();
+    let boardInfo = [];
+    for (let qu of data) {
+      for (let board of qu.boards) {
+        let a = { "id": board.id, "name": board.name }
+        boardInfo.push(a)
+      }
+    }
+    console.log(boardInfo)
+  }
+
   async componentDidMount() {
     let x = await this.getData();
     this.setState({
       data: x,
     })
+    //this.createBoardInfoJson();
   }
+
   scroll(id) {
     document.getElementById(id).scrollIntoView();
   }
