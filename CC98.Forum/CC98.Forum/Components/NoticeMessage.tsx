@@ -13,3 +13,9 @@ export class NoticeMessage extends React.PureComponent<{ text: string; id: strin
         return <div className="noticeSuccess displaynone" id={this.props.id} style={{ position: 'fixed', top: this.props.top, left: this.props.left, whiteSpace: 'pre-wrap', textAlign: "start" }}>{this.props.text}</div>;
     }
 }
+
+export class SendTopicNoticeMessage extends React.PureComponent<{ text: string; id: string }> {
+    render() {
+        return <div className="send-topic-notice-success displaynone" id={this.props.id}>{"操作失败。" + this.props.text}</div>;
+    }
+}

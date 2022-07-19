@@ -6,7 +6,7 @@ import { Constants } from "../Constant";
 import { UbbEditor } from "../UbbEditor";
 import TopicManagement from "./Topic-TopicManagement-v2";
 import ManageHistory from "./Topic-ManageHistory";
-import { NoticeMessage } from "../NoticeMessage";
+import { NoticeMessage, SendTopicNoticeMessage } from "../NoticeMessage";
 import { Prompt } from "react-router-dom";
 import Button from "antd/es/button";
 import * as moment from "moment";
@@ -43,6 +43,66 @@ interface State {
 	manageHistoryVisible;
 	wealth: number | string;
 }
+
+interface ErrorMessage {
+	/**错误代码 */
+	statusCode: number;
+	/**错误说明文本 */
+	errorMessageText: string;
+	/**错误说明描述 */
+	errorMessageDescription: string;
+}
+
+/**
+ * POST失败返回的错误说明集合
+ */
+const errorMessageSet: ErrorMessage[] = [
+	{
+		statusCode: 400,
+		errorMessageText: "wealth_not_enough_for_anonymous_post",
+		errorMessageDescription: "你在当前可选匿名版面进行匿名回复所需的财富值不足。"
+	},
+	{
+		statusCode: 402,
+		errorMessageText: "content_is_empty",
+		errorMessageDescription: "你的回复内容为空。"
+	},
+	{
+		statusCode: 403,
+		errorMessageText: "cannot_post_in_this_board",
+		errorMessageDescription: "你已被当前版面TP，或根据当前版面的特殊规定你无法回帖。"
+	},
+	{
+		statusCode: 403,
+		errorMessageText: "cannot_post_anonymous",
+		errorMessageDescription: "你的某个匿名主题或者回复已被TP，在其到期或被解除TP前，你无法在全站发布任何匿名帖子。"
+	},
+	{
+		statusCode: 403,
+		errorMessageText: "topic_is_locked",
+		errorMessageDescription: "当前主题已被锁定。"
+	},
+	{
+		statusCode: 403,
+		errorMessageText: "board_is_locked",
+		errorMessageDescription: "当前版面已被锁定。"
+	},
+	{
+		statusCode: 403,
+		errorMessageText: "user_state_is_abnormal",
+		errorMessageDescription: "你已被全站TP，或你的账号已被锁定。"
+	},
+	{
+		statusCode: 403,
+		errorMessageText: "cannot_entry_board",
+		errorMessageDescription: "你不能进入当前版面。"
+	},
+	{
+		statusCode: 403,
+		errorMessageText: "last_post_in_10_seconds",
+		errorMessageDescription: "你在10秒内只能发言一次。"
+	},
+]
 
 export class SendTopic extends React.Component<Props, State> {
 	converter: Showdown.Converter;
@@ -115,13 +175,25 @@ export class SendTopic extends React.Component<Props, State> {
 		const UIId = `#manage${this.props.topicInfo.id}`;
 		$(UIId).css("display", "none");
 	}
-	/** 存取缓存使用的字符串 */
+	/** 存取缓存使用的Key值字符串 */
 	cachestr = `post-cache-${this.props.topicInfo.id}`;
+
 	/** 为发帖失败准备的缓存 */
-	cacheForPost() {
-		Utility.setLocalStorage(this.cachestr, this.state.content);
+	cacheForPost(type: "ubb" | "markdown") {
+		/**缓存的内容 */
+		let content
+		if (type === "ubb") {
+			content = this.state.content
+		}
+		else if (type = "markdown") {
+			content = this.state.mdeState
+		}
+		Utility.setLocalStorage(this.cachestr, content);
+		this.setState({
+			postCache: content
+		});
 	}
-	/** 获取缓存 */
+	/** 获取缓存并更新state */
 	getCache = () => {
 		this.setState({
 			postCache: Utility.getLocalStorage(this.cachestr),
@@ -134,6 +206,15 @@ export class SendTopic extends React.Component<Props, State> {
 			postCache: "",
 		});
 	};
+
+	/**生成一条错误提示 */
+	generateErrorNoticeMessage = (errorMessage: ErrorMessage) => {
+		return <SendTopicNoticeMessage
+			text={errorMessage.errorMessageDescription}
+			id={errorMessage.errorMessageText}
+		/>
+	}
+
 	componentWillUnmount() {
 		if (this.state.content) {
 			Utility.setLocalStorage(
@@ -199,6 +280,8 @@ export class SendTopic extends React.Component<Props, State> {
 		this.setState({
 			wealth: wealth,
 		})
+
+		this.getCache()
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -270,31 +353,32 @@ ${newProps.content.content}[/quote]
 				headers,
 				body,
 			});
-			if (mes.status === 402) {
-				Utility.noticeMessageShow("postNone");
+			//处理post失败的情况
+			if (mes.status === 400 || mes.status === 402 || mes.status === 403) {
+				/**post失败返回的错误说明 */
+				let errorMessageText = await mes.text();
+				/**所有错误说明文本的集合 */
+				const errorMessageTextSet: string[] = [];
+				for (let errorMessage of errorMessageSet) {
+					errorMessageTextSet.push(errorMessage.errorMessageText)
+				}
+				//console.log(errorMessageTextSet)
+				if (errorMessageTextSet.indexOf(errorMessageText) === -1) {
+					errorMessageText = "unknown_error"
+				}
+				//console.log(errorMessageText);
+
+				Utility.noticeMessageShow(errorMessageText);
+				//改变发帖按钮状态为不可点击
 				this.setState({
 					buttonDisabled: false,
 					buttonInfo: "回复",
 					anonymouslyPostButtonInfo: "匿名回复",
 				});
-				this.cacheForPost();
-			} else if (mes.status === 403) {
-				Utility.noticeMessageShow("postFast");
-				this.setState({
-					buttonDisabled: false,
-					buttonInfo: "回复",
-					anonymouslyPostButtonInfo: "匿名回复",
-				});
-				this.cacheForPost();
-			} else if (mes.status === 400) {
-				Utility.noticeMessageShow("noEnoughMoney");
-				this.setState({
-					buttonDisabled: false,
-					buttonInfo: "回复",
-					anonymouslyPostButtonInfo: "匿名回复",
-				});
-				this.cacheForPost();
-			} else if (mes.status === 200) {
+				this.cacheForPost("ubb");
+			}
+			//post成功
+			else if (mes.status === 200) {
 				const atUsers = Utility.atHanderler(this.state.content);
 				//如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
 				if (atUsers) {
@@ -322,16 +406,24 @@ ${newProps.content.content}[/quote]
 				});
 				this.props.onChange();
 			}
+			//status既不是400/402/403，也不是200（存在这种情况吗……）
+			else {
+				this.cacheForPost("ubb");
+				Utility.noticeMessageShow("other");
+				this.setState({
+					buttonDisabled: false,
+					buttonInfo: "请刷新",
+					anonymouslyPostButtonInfo: "请刷新",
+				});
+			}
 		} catch (e) {
-			this.cacheForPost();
+			this.cacheForPost("ubb");
 			Utility.noticeMessageShow("other");
 			this.setState({
 				buttonDisabled: false,
 				buttonInfo: "请刷新",
 				anonymouslyPostButtonInfo: "请刷新",
 			});
-			//console.log('post error');
-			//console.log(e);
 		}
 	}
 
@@ -362,31 +454,32 @@ ${newProps.content.content}[/quote]
 				headers: myHeaders,
 				body: contentJson,
 			});
-			if (mes.status === 402) {
-				this.cacheForPost();
-				Utility.noticeMessageShow("postNone");
+			//处理post失败的情况
+			if (mes.status === 400 || mes.status === 402 || mes.status === 403) {
+				/**post失败返回的错误说明 */
+				let errorMessageText = await mes.text();
+				/**所有错误说明文本的集合 */
+				const errorMessageTextSet: string[] = [];
+				for (let errorMessage of errorMessageSet) {
+					errorMessageTextSet.push(errorMessage.errorMessageText)
+				}
+				//console.log(errorMessageTextSet)
+				if (errorMessageTextSet.indexOf(errorMessageText) === -1) {
+					errorMessageText = "unknown_error"
+				}
+				//console.log(errorMessageText);
+
+				Utility.noticeMessageShow(errorMessageText);
+				//改变发帖按钮状态为不可点击
 				this.setState({
 					buttonDisabled: false,
 					buttonInfo: "回复",
 					anonymouslyPostButtonInfo: "匿名回复",
 				});
-			} else if (mes.status === 400) {
-				Utility.noticeMessageShow("noEnoughMoney");
-				this.setState({
-					buttonDisabled: false,
-					buttonInfo: "回复",
-					anonymouslyPostButtonInfo: "匿名回复",
-				});
-				this.cacheForPost();
-			} else if (mes.status === 403) {
-				this.cacheForPost();
-				Utility.noticeMessageShow("postFast");
-				this.setState({
-					buttonDisabled: false,
-					buttonInfo: "回复",
-					anonymouslyPostButtonInfo: "匿名回复",
-				});
-			} else if (mes.status === 200) {
+				this.cacheForPost("markdown");
+			}
+			//post成功
+			else if (mes.status === 200) {
 				const atUsers = Utility.atHanderler(c);
 				//如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
 				if (atUsers) {
@@ -412,18 +505,27 @@ ${newProps.content.content}[/quote]
 					anonymouslyPostButtonInfo: "匿名回复",
 				});
 			}
+			//status既不是400/402/403，也不是200（存在这种情况吗……）
+			else {
+				this.cacheForPost("markdown");
+				Utility.noticeMessageShow("other");
+				this.setState({
+					buttonDisabled: false,
+					buttonInfo: "请刷新",
+					anonymouslyPostButtonInfo: "请刷新",
+				});
+			}
 		} catch (e) {
-			this.cacheForPost();
+			this.cacheForPost("markdown");
 			Utility.noticeMessageShow("other");
 			this.setState({
 				buttonDisabled: false,
 				buttonInfo: "请刷新",
 				anonymouslyPostButtonInfo: "请刷新",
 			});
-			//console.log('post error');
-			//console.log(e);
 		}
 	};
+
 	/** 实名发送UBB内容 */
 	postUbbContent = () => {
 		this.sendUbbTopic(false);
@@ -747,30 +849,34 @@ ${newProps.content.content}[/quote]
 					<div style={{ display: "flex", justifyContent: "space-between" }}>
 						<button
 							id="post-topic-cache-button"
-							onClick={this.getCache}
+							onClick={this.cleancache}
+							className="button blue"
+							style={{
+								width: "100%",
+								height: "2rem",
+								lineHeight: "0.8rem",
+								marginBottom: "1rem",
+								fontSize: "1rem"
+							}}
+						>
+							下面文本框中的内容为前一次回帖失败时的缓存，你可以复制到相应的UBB/Markdown编辑器中重新编辑。点击这个按钮将清除缓存。
+						</button>
+						{/** 
+						<button
+							id="post-topic-cache-button-clean"
+							onClick={this.cleancache}
 							className="button blue"
 							style={{
 								width: "12rem",
 								height: "2rem",
 								lineHeight: "0.8rem",
 								marginBottom: "1rem",
+								fontSize: "1rem"
 							}}
 						>
-							获取本帖缓存的内容
+							清空本帖缓存的内容
 						</button>
-						<button
-							id="post-topic-cache-button-clean"
-							onClick={this.cleancache}
-							className="button blue"
-							style={{
-								width: "4rem",
-								height: "2rem",
-								lineHeight: "0.8rem",
-								marginBottom: "1rem",
-							}}
-						>
-							清空
-						</button>
+						*/}
 					</div>
 					<input
 						id="cache-text"
@@ -795,7 +901,7 @@ ${newProps.content.content}[/quote]
 						onClick={this.changeEditor.bind(this)}
 						style={{ width: "14rem", marginBottom: "0.5rem" }}
 					>
-						{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
+						{this.state.mode === 1 ? "切换到UBB编辑器" : "切换到Markdown编辑器"}
 					</div>
 				</div>
 				{editor}
@@ -822,36 +928,18 @@ ${newProps.content.content}[/quote]
 				{this.state.IPData.length !== 0 && (
 					<IPTable IPData={this.state.IPData} changeStatus={this.closeIP} />
 				)}
-				<NoticeMessage
-					text="出现了意料之外的错误，请刷新重试，可读取之前的缓存"
-					id="other"
-					top="26%"
-					left="38%"
+
+				{/**错误提示 */}
+				{errorMessageSet.map(this.generateErrorNoticeMessage)}
+				<SendTopicNoticeMessage
+					text="other"
+					id="出现了意料之外的错误，请稍后重试。如果依然出现该问题，请联系管理员。"
 				/>
-				<NoticeMessage
-					text={`您当前无法回复，可能的原因有：\n1.10s内只允许发言一次；\n2.受到当前版面或者全站的禁言处罚；\n3.当前主题帖或者当前版面已被锁定；\n4.当前版面的其他特殊规定（具体内容见版规）。\n5.当前版面匿名回复需要消耗2000财富值，你没有足够的财富值。`}
-					id="postFast"
-					top="26%"
-					left="38%"
+				<SendTopicNoticeMessage
+					text="unknown_error"
+					id="原因未知，请刷新重试。如果依然出现该问题，请联系管理员。"
 				/>
-				<NoticeMessage
-					text="回复失败, 请输入内容"
-					id="postNone"
-					top="26%"
-					left="44%"
-				/>
-				<NoticeMessage
-					text={`您当前无法回复，可能的原因有：\n1.10s内只允许发言一次；\n2.受到当前版面或者全站的禁言处罚；\n3.当前主题帖或者当前版面已被锁定；\n4.当前版面的其他特殊规定（具体内容见版规）。\n5.当前版面匿名回复需要消耗2000财富值，你没有足够的财富值。`}
-					id="noEnoughMoney"
-					top="26%"
-					left="38%"
-				/>
-				<NoticeMessage
-					text="操作成功"
-					id="operationSuccess"
-					top="26%"
-					left="44%"
-				/>
+
 				<Prompt
 					message={(location) =>
 						(this.state.content &&
