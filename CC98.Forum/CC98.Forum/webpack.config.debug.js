@@ -32,22 +32,42 @@ var config = {
     },
     entry: {
         main: './Main.tsx',
+        //冬季
         css_blue: './Themes/wuteng_blue.scss',
+        //春季（浅）
         css_green: './Themes/forgive_green.scss',
+        //春季（深）
         css_more_green: './Themes/deep_dark_green.scss',
+        //夏季
         css_summer: './Themes/summer.scss',
-        css_autumn_dark: './Themes/autumn_dark.scss',
-        css_autumn_light: './Themes/autumn_light.scss',
+        //秋季（橙）
+        css_autumn_orange: './Themes/autumn_orange.scss',
+        //秋季（红）
+        css_autumn_red: './Themes/autumn_red.scss',
+        //双十一
         css_singleday: './Themes/singleday_pink.scss',
-        css_mid_autumn_dark:'./Themes/mid_autumn_dark.scss',
-        css_mid_autumn_light:'./Themes/mid_autumn_light.scss',
-        css_light_snow_dark:'./Themes/light_snow_dark.scss',
-        css_light_snow_light:'./Themes/light_snow_light.scss',
-        css_spring_festival_dark:'./Themes/spring_festival_dark.scss',
-        css_spring_festival_light:'./Themes/spring_festival_light.scss',
-        css_zhongchun:'./Themes/zhongchun.scss',
-        css_dragon_boat_festival:'./Themes/dragon_boat_festival.scss',
-        css_qingming:'./Themes/qingming.scss',
+        //中秋（暗）
+        css_mid_autumn_dark: './Themes/mid_autumn_dark.scss',
+        //中秋（亮）
+        css_mid_autumn_light: './Themes/mid_autumn_light.scss',
+        //小雪（暗）
+        css_light_snow_dark: './Themes/light_snow_dark.scss',
+        //小雪（亮）
+        css_light_snow_light: './Themes/light_snow_light.scss',
+        //春节（暗）
+        css_spring_festival_dark: './Themes/spring_festival_dark.scss',
+        //春节（亮）
+        css_spring_festival_light: './Themes/spring_festival_light.scss',
+        //仲春
+        css_zhongchun: './Themes/zhongchun.scss',
+        //端午
+        css_dragon_boat_festival: './Themes/dragon_boat_festival.scss',
+        //清明
+        css_qingming: './Themes/qingming.scss',
+        //不会起名字的秋（暗）
+        css_autumn_2022_dark:'./Themes/autumn_2022_dark.scss',
+        //不会起名字的秋（亮）
+        css_autumn_2022_light:'./Themes/autumn_2022_light.scss',
     },
     output: {
         path: path.resolve(__dirname, 'wwwroot/'),
