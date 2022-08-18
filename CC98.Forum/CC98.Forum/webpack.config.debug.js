@@ -64,9 +64,9 @@ var config = {
         css_dragon_boat_festival: './Themes/dragon_boat_festival.scss',
         //清明
         css_qingming: './Themes/qingming.scss',
-        //不会起名字的秋（暗）
+        //秋色之空（暗）
         css_autumn_2022_dark:'./Themes/autumn_2022_dark.scss',
-        //不会起名字的秋（亮）
+        //秋色之空（亮）
         css_autumn_2022_light:'./Themes/autumn_2022_light.scss',
     },
     output: {

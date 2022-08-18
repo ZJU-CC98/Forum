@@ -5,7 +5,7 @@ import { UserInfo } from '../../States/AppState';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 
-const themeList = ['系统默认', '冬季', '春季（浅）', '春季（深）', '夏季', '秋季（橙）', '秋季（红）', '双十一', '中秋（暗）', '中秋（亮）', '小雪（暗）', '小雪（亮）', '春节（暗）', '春节（亮）', '仲春', '端午', '清明','不会起名字的秋（暗）','不会起名字的秋（亮）'];
+const themeList = ['系统默认', '冬季', '春季（浅）', '春季（深）', '夏季', '秋季（橙）', '秋季（红）', '双十一', '中秋（暗）', '中秋（亮）', '小雪（暗）', '小雪（亮）', '春节（暗）', '春节（亮）', '仲春', '端午', '清明','秋色之空（暗）','秋色之空（亮）'];
 
 interface Props {
   userInfo: UserInfo;
@@ -59,8 +59,8 @@ class Theme extends React.Component<Props> {
         <div className="user-theme-config">
           <button style={{ backgroundColor: 'rgb(53, 120, 188)' }} key={15} onClick={() => this.handleSubmit(15)} disabled={this.props.userInfo.theme === 15}>端午</button>
           <button style={{ backgroundColor: 'rgb(106, 132, 113)' }} key={16} onClick={() => this.handleSubmit(16)} disabled={this.props.userInfo.theme === 16}>清明</button>
-          <button style={{ backgroundColor: 'rgb(183, 115, 65)' }} key={16} onClick={() => this.handleSubmit(17)} disabled={this.props.userInfo.theme === 17}>不会起名字的秋（暗）</button>
-          <button style={{ backgroundColor: 'rgb(235, 142, 85)' }} key={16} onClick={() => this.handleSubmit(18)} disabled={this.props.userInfo.theme === 18}>不会起名字的秋（亮）</button>
+          <button style={{ backgroundColor: 'rgb(183, 115, 65)' }} key={16} onClick={() => this.handleSubmit(17)} disabled={this.props.userInfo.theme === 17}>秋色之空（暗）</button>
+          <button style={{ backgroundColor: 'rgb(235, 142, 85)' }} key={16} onClick={() => this.handleSubmit(18)} disabled={this.props.userInfo.theme === 18}>秋色之空（亮）</button>
         </div>
       </div>
     );
