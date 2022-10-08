@@ -41,12 +41,12 @@ async function initialize() {
     document.getElementById("root")
   );
 
-  // 添加水印
-  initWatermark();
-
   if (process.env.NODE_ENV === "development") {
     const { whyDidYouUpdate } = require("why-did-you-update");
     //	whyDidYouUpdate(React);
+  } else {
+    // 添加水印
+    initWatermark();
   }
 }
 
