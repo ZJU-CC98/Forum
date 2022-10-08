@@ -6,7 +6,7 @@ import { CC98SignalR } from '../SignalR';
 import { MessageInfo } from '../Reducers/Message';
 import { refreshCurrentMessageCount } from '../AsyncActions/Message';
 import { changeMessageCount } from '../Actions/Message';
-import { BlinkTitle } from '../Utility/blinkTItle';
+import { BlinkTitle } from '../Utility/blinkTitle';
 import { history } from '../Store';
 
 type props = {

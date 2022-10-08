@@ -20,7 +20,7 @@ import ReactMde, {
   ReactMdeCommands,
 } from "@cc98/hell-react-mde";
 import * as Showdown from "showdown";
-import CustomCommand from "./react-mde/imageUploaderCommand";
+import CustomCommand from "./react-mde/ImageUploaderCommand";
 import {
   Button,
   Modal,
