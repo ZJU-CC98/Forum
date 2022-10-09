@@ -45,7 +45,7 @@
     "save": "^2.3.3",
     "showdown": "^1.9.0",
     "showdown-xss-filter": "^0.2.0",
-    "spatial-watermark": "github:ZJU-CC98/CC98.SpatialWatermark#a625fe72b676f7175ddf967fbc9886013640032f",
+    "spatial-watermark": "https://github.com/ZJU-CC98/CC98.SpatialWatermark.git#a625fe72b676f7175ddf967fbc9886013640032f",
     "spectrum-colorpicker": "^1.8.0",
     "ssri": "^6.0.1",
     "url-join": "4.0.0",
