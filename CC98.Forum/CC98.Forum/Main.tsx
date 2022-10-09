@@ -43,6 +43,10 @@ async function initialize() {
   if (process.env.NODE_ENV === "development") {
     const { whyDidYouUpdate } = require("why-did-you-update");
     //	whyDidYouUpdate(React);
+  } else {
+    import("spatial-watermark").then(({ initWatermark }) => {
+      initWatermark();
+    });
   }
 }
 
