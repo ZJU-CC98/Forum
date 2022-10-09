@@ -288,13 +288,15 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-/CC98.Forum/CC98.Forum/wwwroot/static/scripts
-/CC98.Forum/CC98.Forum/wwwroot/static/content
-/CC98.Forum/CC98.Forum/wwwroot/static/index.html
-/CC98.Forum/CC98.Forum/.vscode/
-/CC98.Forum/CC98.Forum/webpack.config.release.js.map
-/CC98.Forum/CC98.Forum/webpack.config.debug.js.map
+/CC98.Forum/wwwroot/static/scripts
+/CC98.Forum/wwwroot/static/content
+/CC98.Forum/wwwroot/static/index.html
+/CC98.Forum/.vscode/
+/CC98.Forum/webpack.config.release.js.map
+/CC98.Forum/webpack.config.debug.js.map
 .vscode/*
 
-/CC98.Forum/CC98.Forum/vscodeConfig/wwwroot
+/CC98.Forum/vscodeConfig/wwwroot
 yarn.lock
+package-lock.json
+.npmrc
