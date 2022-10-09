@@ -7,7 +7,6 @@ import store from "./Store";
 import { Provider } from "react-redux";
 import "whatwg-fetch";
 import "blueimp-canvas-to-blob";
-import { initWatermark } from "spatial-watermark";
 
 import { Constants } from "./Components/Constant";
 import App from "./Components/App";
@@ -44,9 +43,6 @@ async function initialize() {
   if (process.env.NODE_ENV === "development") {
     const { whyDidYouUpdate } = require("why-did-you-update");
     //	whyDidYouUpdate(React);
-  } else {
-    // 添加水印
-    initWatermark();
   }
 }
 

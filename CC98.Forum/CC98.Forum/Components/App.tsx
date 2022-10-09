@@ -48,6 +48,12 @@ type Props = {
 };
 
 class App extends React.Component<Props> {
+  componentDidMount(): void {
+    // 非开发环境添加水印
+    if (process.env.NODE_ENV !== "development") {
+      import("spatial-watermark").then(({ initWatermark }) => initWatermark({ opacity: 0.5 }));
+    }
+  }
   render() {
     let router = (
       <Switch>
