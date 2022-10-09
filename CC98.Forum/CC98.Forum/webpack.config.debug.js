@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var Webpack = require("webpack");
+var webpack = require("webpack");
 var path = require("path");
 var HTMLWebpackPlugin = require("html-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");

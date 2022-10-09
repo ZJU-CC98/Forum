@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 
-var Webpack = require("webpack");
+var webpack = require("webpack");
 var path = require("path");
 var HTMLWebpackPlugin = require("html-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -109,7 +109,7 @@ var config = {
         ]),
         new ExtractTextPlugin('static/content/[name]-[chunkhash:8].css'),
         new WebpackChunkHash({ algorithm: 'md5' }),
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ],
     optimization: {
         minimizer: [
