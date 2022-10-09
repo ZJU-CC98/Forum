@@ -149,7 +149,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                 if (recentContact[i].id == this.props.data.id) {
                     oldData = recentContact[i].message;
                     //新旧私信信息拼接一下
-                    if(oldData != []) {
+                    if(oldData.length > 0) {
                         for (var j = 0; j < data.length; j++) {
                             if (data[j].id == oldData[0].id) {
                                 data = data.slice(0, j).concat(oldData);

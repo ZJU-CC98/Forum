@@ -842,7 +842,7 @@ export async function getRecentMessage(
  * @param recentMessage
  */
 export function sortRecentMessage(recentMessage) {
-  if (recentMessage == [] || !recentMessage) {
+  if (recentMessage.length === 0 || !recentMessage) {
     return recentMessage;
   } else {
     for (let i = 0; i < recentMessage.length; i++) {

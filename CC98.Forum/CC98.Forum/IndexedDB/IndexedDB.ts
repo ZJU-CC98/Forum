@@ -29,7 +29,7 @@ export namespace IndexedDB {
             }
         }
         if(db) return ;
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             req.onsuccess = e => {
                 // 取得IDBDatabase对象
                 db = req.result;

@@ -26,7 +26,7 @@ export default class ErrorBoundary extends React.PureComponent<props, state> {
 
   handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
-    location.reload(true);
+    location.reload();
   }
 
   render(){

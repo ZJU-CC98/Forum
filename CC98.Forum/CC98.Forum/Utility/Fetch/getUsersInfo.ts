@@ -41,7 +41,7 @@ export async function getUsersInfo(keys: (number | string)[]): Promise<UserInfo[
         }
 
         // 批量查询未命中的项
-        let querys = infos.filter(item => (typeof item === 'number' || typeof item === 'string'));
+        let querys = infos.filter(item => (typeof item === 'number' || typeof item === 'string')) as number[] | string[];
         let queryInfo: UserInfo[] = [];
         if(querys.length !== 0){
             const url = keys.some(key => typeof key === 'number') ? `/user?id=${querys.join('&id=')}` : `/user/name?name=${querys.map(encodeURIComponent).join('&name=')}`;

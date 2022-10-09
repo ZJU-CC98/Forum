@@ -7,7 +7,7 @@ var HTMLWebpackPlugin = require("html-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var CleanWebpackPlugin = require("clean-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+var TerserPlugin = require("terser-webpack-plugin");
 var WebpackChunkHash = require("webpack-chunk-hash");
 var config = {
     // webpack 4 only
@@ -16,7 +16,7 @@ var config = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'awesome-typescript-loader'
+                use: 'ts-loader'
             },
             {
                 test: /\.scss$/,
@@ -113,8 +113,8 @@ var config = {
     ],
     optimization: {
         minimizer: [
-            new UglifyJsPlugin({
-                uglifyOptions: {
+            new TerserPlugin({
+                terserOptions: {
                     compress: {
                         pure_funcs: ['console.log']
                     },
