@@ -6,7 +6,7 @@
     "dev": "webpack-dev-server --progress --hot --inline --config vscodeConfig/webpack.config.vscode.js",
     "bundle-analyze": "webpack --config vscodeConfig/webpack.config.bundle.js",
     "build:debug": "webpack --config webpack.config.debug.js",
-    "build:release": "webpack --config webpack.config.release.js"
+    "build:release": "set NODE_OPTIONS=\"--openssl-legacy-provider\" && webpack --config webpack.config.release.js"
   },
   "dependencies": {
     "@aspnet/signalr": "^1.0.3",
