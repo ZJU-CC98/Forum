@@ -75,7 +75,7 @@ var config = {
         css_autumn_2022_light:'./Themes/autumn_2022_light.scss',
     },
     output: {
-        path: path.resolve(__dirname, 'wwwroot/'),
+        path: path.resolve(__dirname, 'dist/'),
         publicPath: '/',
         filename: 'static/scripts/[name]-[chunkhash:8].js'
     },
@@ -92,11 +92,11 @@ var config = {
             },
             inject: false
         }),
-        // clean wwwroot
+        // clean dist
         new CleanWebpackPlugin([
-            'wwwroot/static/scripts',
-            'wwwroot/static/content',
-            'wwwroot/static/index.html'
+            'dist/static/scripts',
+            'dist/static/content',
+            'dist/static/index.html'
         ]),
         new CopyWebpackPlugin([
             { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },

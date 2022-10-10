@@ -70,7 +70,7 @@ module.exports = {
     },
 
     output: {
-        path: path.resolve(__dirname, 'wwwroot/'),
+        path: path.resolve(__dirname, 'dist/'),
         // should use absolute path
         publicPath: '/',
         filename: 'static/scripts/[name].js'
@@ -94,7 +94,7 @@ module.exports = {
 
         new CopyWebpackPlugin([
             // copy static/config file
-            { from: 'wwwroot/static', to: 'static' },
+            { from: 'dist/static', to: 'static' },
 
             { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
             { from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
@@ -113,7 +113,7 @@ module.exports = {
     // webpack-dev-server config
     // "--hot" and "--inline" should be passed in package.json to enable HMR
     devServer: {
-        // contentBase: path.resolve(__dirname, "wwwroot"),
+        // contentBase: path.resolve(__dirname, "dist"),
         historyApiFallback: true,
         port: 8083,
         host: '0.0.0.0',

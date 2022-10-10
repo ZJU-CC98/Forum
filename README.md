@@ -28,8 +28,9 @@ npm run dev
 
 ## File Intro
 
-### ./wwwroot
+### ./dist
 
+- web.config IIS 配置文件
 - /static 网站静态文件
   - /content css 文件
   - /images 网站的表情包，头图等图片文件
