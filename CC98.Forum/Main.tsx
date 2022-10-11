@@ -7,6 +7,7 @@ import store from "./Store";
 import { Provider } from "react-redux";
 import "whatwg-fetch";
 import "blueimp-canvas-to-blob";
+import { initWatermark } from "spatial-watermark";
 
 import { Constants } from "./Components/Constant";
 import App from "./Components/App";
@@ -44,9 +45,7 @@ async function initialize() {
     const { whyDidYouUpdate } = require("why-did-you-update");
     //	whyDidYouUpdate(React);
   } else {
-    import("spatial-watermark").then(({ initWatermark }) => {
-      initWatermark();
-    });
+    initWatermark();
   }
 }
 

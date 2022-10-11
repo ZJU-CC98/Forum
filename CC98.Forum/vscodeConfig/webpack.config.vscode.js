@@ -10,6 +10,12 @@ module.exports = {
     module: {
         rules: [
             {
+                // deprecated in webpack 5:
+                // https://webpack.js.org/blog/2020-10-10-webpack-5-release/#deprecated-loaders
+                test: /spatial\-watermark/,
+                use: 'null-loader',
+            },
+            {
                 test: /\.tsx?$/,
                 use: 'ts-loader'
             },
