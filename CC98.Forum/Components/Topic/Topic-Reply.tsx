@@ -33,8 +33,8 @@ export class Reply extends React.Component<
     pmVisible;
     item;
     judgeVisible;
-  }>
-{
+  }
+> {
   constructor(props, content) {
     super(props, content);
     this.update = this.update.bind(this);
@@ -48,7 +48,7 @@ export class Reply extends React.Component<
       d_wealth: 0,
       pmVisible: false,
       item: {},
-      judgeVisible: false
+      judgeVisible: false,
     };
   }
 
@@ -60,8 +60,7 @@ export class Reply extends React.Component<
     let realContents;
     if (this.props.isHot) {
       realContents = await Utility.getHotReplyContent(this.props.topicId);
-    } 
-    else if (this.props.isTrace) {
+    } else if (this.props.isTrace) {
       realContents = await Utility.getCurUserTopicContent(
         this.props.topicId,
         page,
@@ -73,7 +72,7 @@ export class Reply extends React.Component<
     let data = {
       rewardMaxValue: 0,
       rewardTotalValue: 0,
-      boardName: this.props.boardInfo.name
+      boardName: this.props.boardInfo.name,
     };
     if (Utility.isMaster(this.props.boardInfo.boardMasters))
       data = await Utility.queryWealth(this.props.boardInfo.id);
@@ -81,7 +80,7 @@ export class Reply extends React.Component<
       m_wealth: data.rewardMaxValue,
       d_wealth: data.rewardTotalValue,
       boardName: data.boardName,
-      contents: realContents
+      contents: realContents,
     });
   }
   async componentDidMount() {
@@ -104,7 +103,7 @@ export class Reply extends React.Component<
     let data = {
       rewardMaxValue: 20000,
       rewardTotalValue: 0,
-      boardName: this.props.boardInfo.name
+      boardName: this.props.boardInfo.name,
     };
     if (Utility.isMaster(this.props.boardInfo.boardMasters))
       data = await Utility.queryWealth(this.props.boardInfo.id);
@@ -114,7 +113,7 @@ export class Reply extends React.Component<
       boardName: data.boardName,
       inWaiting: false,
       contents: realContents,
-      masters: masters
+      masters: masters,
     });
   }
   async componentWillReceiveProps(newProps) {
@@ -156,18 +155,19 @@ export class Reply extends React.Component<
     this.setState({ judgeVisible: false });
   };
 
-  private generateContents(item) {
+  private generateContents(item, index: number) {
     const id = item.floor % 10;
+    let replyId = id.toString();
     let likeInfo = {
       likeCount: item.likeCount,
       dislikeCount: item.dislikeCount,
-      likeState: item.likeState
+      likeState: item.likeState,
     };
     //判断加不加热评
     let hotReply = null;
     let awards = (
       <Award
-      key={Date.now()}
+        key={Date.now()}
         postId={item.postId}
         updateTime={Date.now()}
         awardInfo={item.awards}
@@ -189,9 +189,10 @@ export class Reply extends React.Component<
       );
       return (
         <div
+          key={replyId}
           style={{ display: "flex", flexDirection: "column", width: "100%" }}
         >
-          <div className="reply" key={id.toString()} id={id.toString()}>
+          <div className="reply" id={id.toString()}>
             <Replier
               key={item.postId}
               isAnonymous={item.isAnonymous}
@@ -205,7 +206,7 @@ export class Reply extends React.Component<
               style={{
                 justifyContent: "space-between",
                 width: "55.5rem",
-                position: "relative"
+                position: "relative",
               }}
             >
               <ReplyContent
@@ -231,12 +232,10 @@ export class Reply extends React.Component<
             </div>
             <FloorSize isHot={this.props.isHot} floor={item.floor} />
           </div>
-
           {hotReply}
         </div>
       );
     } else {
-      let replyId = id.toString();
       if (this.props.isHot) {
         replyId = `hot_${id}`;
       }
@@ -255,7 +254,7 @@ export class Reply extends React.Component<
             style={{
               justifyContent: "space-between",
               width: "55.5rem",
-              position: "relative"
+              position: "relative",
             }}
           >
             <ReplyContent
@@ -281,7 +280,6 @@ export class Reply extends React.Component<
             />
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-     
             <FloorSize isHot={this.props.isHot} floor={item.floor} />
             {item.isLZ && <FloorSize isHot={false} floor={-1} />}
           </div>
@@ -322,17 +320,19 @@ export class Reply extends React.Component<
       return (
         <div className="center" style={{ width: "71rem", marginRight: "1px" }}>
           {this.state.contents.map(this.generateContents.bind(this))}
-          {this.state.pmVisible&&<PostManagement
-            m_wealth={this.state.m_wealth}
-            d_wealth={this.state.d_wealth}
-            boardName={this.state.boardName}
-            update={this.update}
-            privilege={privilege}
-            boardId={this.props.boardInfo.id}
-            item={this.state.item}
-            visible={this.state.pmVisible}
-            onCancel={this.handleCancel}
-          />}
+          {this.state.pmVisible && (
+            <PostManagement
+              m_wealth={this.state.m_wealth}
+              d_wealth={this.state.d_wealth}
+              boardName={this.state.boardName}
+              update={this.update}
+              privilege={privilege}
+              boardId={this.props.boardInfo.id}
+              item={this.state.item}
+              visible={this.state.pmVisible}
+              onCancel={this.handleCancel}
+            />
+          )}
           <Judge
             item={this.state.item}
             update={this.update}

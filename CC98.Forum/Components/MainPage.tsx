@@ -68,6 +68,7 @@ export class RecommendedReadingComponent extends React.Component<
       : "recommendedReadingButton";
     return (
       <div
+        key={index}
         className={className}
         onMouseEnter={() => {
           this.handleMouseEnter(index);
@@ -145,12 +146,12 @@ export class HotTopicComponent extends React.Component<
   { data },
   { mainPageTopicState: HotTopicState[] }
 > {
-  convertMainPageTopic(item: HotTopicState) {
+  convertMainPageTopic(item: HotTopicState, index: number) {
     if (!item.id) return <div>{item.title}</div>;
     const boardUrl = `/board/${item.boardId}`;
     const topicUrl = `/topic/${item.id}/1`;
     return (
-      <div className="mainPageListRow">
+      <div key={item.id} className="mainPageListRow">
         <div className="mainPageListBoardName">
           {" "}
           <a href={boardUrl} target="_blank">
@@ -257,10 +258,10 @@ export class MainPageTopicComponent extends React.Component<
   },
   {}
 > {
-  convertMainPageTopic(item: MainPageTopicState) {
+  convertMainPageTopic(item: MainPageTopicState, index: number) {
     const topicUrl = `/topic/${item.id}/1`;
     return (
-      <div className="mainPageListRow">
+      <div key={item.id} className="mainPageListRow">
         <div className="mainPageListTitle">
           <a href={topicUrl} target="_blank">
             {item.title}
@@ -271,9 +272,9 @@ export class MainPageTopicComponent extends React.Component<
   }
 
   render() {
-    let moresHTML = this.props.mores.map((item) => {
+    let moresHTML = this.props.mores.map((item, index) => {
       return (
-        <div className="mainPageTitleText">
+        <div key={index} className="mainPageTitleText">
           <a href={item.url} target="_blank">
             {item.name}
           </a>
@@ -447,9 +448,9 @@ export class RecommendedFunctionComponent extends React.Component<
   { data },
   {}
 > {
-  convertRecommendedFunction(item: MainPageColumn) {
+  convertRecommendedFunction(item: MainPageColumn, index: number) {
     return (
-      <div className="recommendedFunctionRow">
+      <div key={index} className="recommendedFunctionRow">
         <div className="recommendedFunctionImage">
           <img src={item.imageUrl}></img>
         </div>
@@ -752,7 +753,10 @@ export class MainPageCountProps {
 /**
  * 小程序二维码
  */
-export class QRCode extends React.Component<{ title: string, src: string }, {}> {
+export class QRCode extends React.Component<
+  { title: string; src: string },
+  {}
+> {
   render() {
     return (
       <div

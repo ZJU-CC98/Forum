@@ -161,7 +161,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
           <Category />
           <div className="focus-topic-area">
             <div className="focus-topic-topicArea">
-              {this.state.data.map(coverFocusPost)}
+              {this.state.data.map(convertFocusPost)}
             </div>
             <div className="focus-topic-loading" id="focus-topic-loading">
               <Spin size="large" />
@@ -190,9 +190,10 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
 /**
  * 单个主题数据转换成单个主题组件
  */
-function coverFocusPost(item: FocusTopic) {
+function convertFocusPost(item: FocusTopic, index: number) {
   return (
     <FocusTopicSingle
+      key={item.id}
       title={item.title}
       hitCount={item.hitCount}
       id={item.id}
