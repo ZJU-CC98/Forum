@@ -79,7 +79,7 @@ var config = {
         publicPath: '/',
         filename: 'static/scripts/[name]-[chunkhash:8].js'
     },
-    devtool: 'source-map',
+    devtool: false,
     externals: {
         'jquery': '$',
     },
