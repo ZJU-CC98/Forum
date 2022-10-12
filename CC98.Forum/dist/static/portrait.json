@@ -5,7 +5,7 @@
       "position": "absolute",
       "left": "-3.33rem",
       "top": "-3.2rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/守护天使.png",
     "portraitShadow": false
@@ -27,7 +27,7 @@
       "position": "absolute",
       "left": "-3.5rem",
       "top": "-3.5rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/版主.png",
     "portraitShadow": false
@@ -38,7 +38,7 @@
       "position": "absolute",
       "left": "-3.5rem",
       "top": "-3.5rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/编辑部.png",
     "portraitShadow": true
@@ -49,7 +49,7 @@
       "position": "absolute",
       "left": "-3.3rem",
       "top": "-3.3rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/技术组.png",
     "portraitShadow": true
@@ -60,7 +60,7 @@
       "position": "absolute",
       "left": "-3.55rem",
       "top": "-3.5rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/贵宾.png",
     "portraitShadow": false
@@ -71,7 +71,7 @@
       "position": "absolute",
       "left": "-3.55rem",
       "top": "-3.5rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/策划部.png",
     "portraitShadow": true
@@ -82,7 +82,7 @@
       "position": "absolute",
       "left": "-3.55rem",
       "top": "-3.5rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/影音部.png",
     "portraitShadow": true
@@ -93,7 +93,7 @@
       "position": "absolute",
       "left": "-4.2rem",
       "top": "-3.9rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/站务组.png",
     "portraitShadow": false
@@ -104,7 +104,7 @@
       "position": "absolute",
       "left": "-3.55rem",
       "top": "-3.5rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/体艺部.png",
     "portraitShadow": true
@@ -115,7 +115,7 @@
       "position": "absolute",
       "left": "-3.55rem",
       "top": "-3.5rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/办公室.png",
     "portraitShadow": true
@@ -126,7 +126,7 @@
       "position": "absolute",
       "left": "-3.5rem",
       "top": "-3.5rem",
-      "z-index": "150"
+      "zIndex": "150"
     },
     "imageUrl": "/static/images/相框/认证用户.png",
     "portraitShadow": true
