@@ -850,7 +850,7 @@ export function sortRecentMessage(recentMessage) {
         recentMessage[i].showTime = true;
       } else if (
         transerTime(recentMessage[i].time) -
-        transerTime(recentMessage[i + 1].time) <
+          transerTime(recentMessage[i + 1].time) <
         60000
       ) {
         recentMessage[i].showTime = false;
@@ -1437,7 +1437,10 @@ export function isBottom() {
   /*
    * 预留300px给“正在加载”的提示标志
    */
-  if (window.innerHeight + window.pageYOffset + 300 >= document.body.offsetHeight) {
+  if (
+    window.innerHeight + window.pageYOffset + 300 >=
+    document.documentElement.scrollHeight
+  ) {
     return true;
   } else {
     return false;
@@ -3042,7 +3045,7 @@ export async function readAll() {
 export function noticeMessageShow(id: string) {
   $(`#${id}`).removeClass("displaynone");
   $(`#${id}`).removeClass("noticeDisplaynone");
-  setTimeout(function () {
+  setTimeout(function() {
     $(`#${id}`).addClass("noticeDisplaynone");
   }, 1);
 }
@@ -3052,7 +3055,7 @@ declare let themeNames: string[];
  * 切换主题
  */
 export function changeTheme(theme: number) {
-  $("#mainStylesheet").attr('href', `/static/content/${themeNames[theme]}`);
+  $("#mainStylesheet").attr("href", `/static/content/${themeNames[theme]}`);
 }
 export async function queryWealth(boardId) {
   const headers = await formAuthorizeHeader();
@@ -3261,7 +3264,7 @@ export const pDebounce = (fn, wait, options: any = {}) => {
   let timer;
   let resolveList = [];
 
-  return function (...arguments_) {
+  return function(...arguments_) {
     return new Promise((resolve) => {
       const runImmediately = options.leading && !timer;
 
