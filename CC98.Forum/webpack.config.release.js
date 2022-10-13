@@ -1,15 +1,15 @@
 "use strict";
 exports.__esModule = true;
 
-var webpack = require("webpack");
-var path = require("path");
-var HTMLWebpackPlugin = require("html-webpack-plugin");
-var CopyWebpackPlugin = require("copy-webpack-plugin");
-var CleanWebpackPlugin = require("clean-webpack-plugin");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var TerserPlugin = require("terser-webpack-plugin");
-var WebpackChunkHash = require("webpack-chunk-hash");
-var config = {
+const webpack = require("webpack");
+const path = require("path");
+const HTMLWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const WebpackChunkHash = require("webpack-chunk-hash");
+const config = {
   // webpack 4 only
   mode: "production",
   module: {
@@ -92,6 +92,7 @@ var config = {
       filename: "static/index.html",
       minify: {
         collapseWhitespace: true,
+        minifyJS: true,
       },
       inject: false,
     }),
