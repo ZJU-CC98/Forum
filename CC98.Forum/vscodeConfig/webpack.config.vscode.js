@@ -124,6 +124,10 @@ module.exports = {
         from: "node_modules/hls.js/dist/hls.min.js",
         to: "static/content/hls.min.js",
       },
+      {
+        from: "reset.html",
+        to: "static/reset.html",
+      },
     ]),
 
     new ExtractTextPlugin("static/content/[name].css"),

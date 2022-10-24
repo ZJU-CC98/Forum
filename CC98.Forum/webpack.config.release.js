@@ -101,6 +101,7 @@ const config = {
       "dist/static/scripts",
       "dist/static/content",
       "dist/static/index.html",
+      "dist/static/reset.html",
     ]),
     new CopyWebpackPlugin([
       { from: "node_modules/jquery/dist", to: "static/scripts/lib/jquery/" },
@@ -129,6 +130,10 @@ const config = {
       {
         from: "node_modules/hls.js/dist/hls.min.js",
         to: "static/content/hls.min.js",
+      },
+      {
+        from: "reset.html",
+        to: "static/reset.html",
       },
     ]),
     new ExtractTextPlugin("static/content/[name]-[chunkhash:8].css"),
