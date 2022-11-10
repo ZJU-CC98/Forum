@@ -36,36 +36,18 @@
       href="/static/content/APlayer.min.css"
     />
     <script type="text/javascript">
+
+      function executeJSWithFetch(parent, htmlString) {
+
+      }
+
       // 注册报错信息
-      window.onerror = (event, source, lineno, colno) => {
+      window.onerror = async (event, source, line, col) => {
         if (source.indexOf("vendors") !== -1) {
           const root = document.getElementById("root");
-          root.innerHTML = [
-            `<h1>啊呀，出错了</h1>`,
-            `<p>前辈可以先试试强制刷新，快捷键是：<b>Ctrl</b> + <b>Shift</b> + <b>R</b> 或者 <b>Ctrl</b> + <b>F5</b></p>`,
-            `<p>如果强制刷新后仍然看到这个页面，前辈可以尝试访问<a href="/reset">这里</a>重置CC98的缓存</p>`,
-            `<p>或者根据自己的浏览器手动清除一下缓存~</p>`,
-            `<p>如果上述方法都没能解决前辈的问题的话，请毫不犹豫联系 <a href="mailto:contact@cc98.org?subject=${encodeURIComponent(
-              "CC98网页端访问报错"
-            )}&body=${encodeURIComponent(
-              [
-                "CC98客服您好：\n",
-                "我的 CC98 用户名是：\n",
-                "我使用的操作系统是（Windows / MacOS / Linux / iOS / Android / 其它请注明）：\n",
-                "我使用的浏览器是（Google Chrome / Microsoft Edge / Mozilla Firefox / Safari / 其它请注明）：\n",
-                "我的网络环境是（内网 / RVPN / WebVPN）：\n",
-                "我在访问 CC98 网页端时遇到了这个错误，截图如下：\n\n\n",
-                "我已经尝试了页面上给出的所有解决方案，都未能解决这个问题，请问下一步我该如何操作？\n",
-                "祝好！\n\n",
-              ].join("\n")
-            )}">contact@cc98.org</a>，并且记得带上出问题的截图和一些简单的说明哦~</p>`,
-            `<hr />`,
-            `<h2>出现了一个未被捕获的错误</h2>`,
-            `错误：${event}<br />`,
-            `行数：${lineno}<br />`,
-            `列数：${colno}<br />`,
-            `来源：${source}<br />`,
-          ].join("\n");
+          const errorContent = await fetch(`/static/error.html`);
+          const errorText = await errorContent.text();
+          root.appendChild(ele);
         }
       };
     </script>

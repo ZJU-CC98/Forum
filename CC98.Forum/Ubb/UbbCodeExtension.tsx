@@ -42,9 +42,11 @@ import TbTagHandler from './TbTagHandler';
 import BiliTextHandler from './BiliTextHandler';
 import UrlTextHandler from './UrlTextHandler';
 import UrlTextHandler2 from './UrlTextHandler2';
-import NeedReplyTagHandler from './needReplyTagHandler'; 
+import NeedReplyTagHandler from './NeedReplyTagHandler'; 
 import Ms from './MsTagHandler';
 import CC98 from './CC98TagHandler';
+import { PosterOnlyTagHanlder } from './PosterOnlyTagHandler';
+import { AllowViewerTagHanlder } from './AllowViewerTagHanlder';
 
 /**
  * 创建一个解析签名档用的engine
@@ -116,14 +118,18 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(NoUbbTagHandler);
 	engine.handlers.register(BiliTagHandler);
 
-	// 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
+	engine.handlers.register(NeedReplyTagHandler);
+	engine.handlers.register(PosterOnlyTagHanlder);
+	engine.handlers.register(AllowViewerTagHanlder);
+
+	// 以下是未命名标签处理程序(单个标签处理程序能处理多个标签名)，注意未命名标签处理程序的命中和注册顺序有关
 	engine.handlers.register(EmTagHandler);
 	engine.handlers.register(AcTagHandler);
 	engine.handlers.register(MahjongTagHandler);
 	engine.handlers.register(Ms);
 	engine.handlers.register(CC98);
 	engine.handlers.register(TbTagHandler);
-	engine.handlers.register(NeedReplyTagHandler);
+
 
 
 	// 以下是文字处理程序，注意文字的处理顺序完全取决于处理程序，请注意控制处理程序的顺序
