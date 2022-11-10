@@ -1,136 +1,118 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="renderer" content="webkit" />
-    <title>CC98论坛</title>
-    <link
-      type="image/x-icon"
-      rel="icon"
-      href="/static/98icon.ico"
-      sizes="16x16 32x32 48x48 64x64 128x128 256x256"
-    />
-    <link
-      type="text/css"
-      rel="stylesheet"
-      href="/static/content/font-awesome/css/font-awesome.min.css"
-    />
-    <link
-      type="text/css"
-      rel="stylesheet"
-      href="/static/content/DPlayer.min.css"
-    />
-    <link
-      type="text/css"
-      rel="stylesheet"
-      href="/static/content/APlayer.min.css"
-    />
-    <link
-      type="text/css"
-      rel="stylesheet"
-      href="/static/content/DPlayer.min.css"
-    />
-    <link
-      type="text/css"
-      rel="stylesheet"
-      href="/static/content/APlayer.min.css"
-    />
-    <script type="text/javascript">
 
-      function executeJSWithFetch(parent, htmlString) {
+<head>
+  <meta charset="utf-8" />
+  <meta name="renderer" content="webkit" />
+  <title>CC98论坛</title>
+  <link type="image/x-icon" rel="icon" href="/static/98icon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" />
+  <link type="text/css" rel="stylesheet" href="/static/content/font-awesome/css/font-awesome.min.css" />
+  <link type="text/css" rel="stylesheet" href="/static/content/DPlayer.min.css" />
+  <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
+  <link type="text/css" rel="stylesheet" href="/static/content/DPlayer.min.css" />
+  <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
+  <script type="text/javascript">
+    // 注册报错信息
+    window.onerror = async (event, source, line, col) => {
+      if (source.indexOf("vendors") !== -1) {
+        window.errorInfo = {
+          event,
+          source,
+          line,
+          col,
+        };
+        // 获取模板内容
+        /** @type {HTMLTemplateElement} */
+        const errorTemplate = document.getElementById("error-template");
+        // 插入模板内容
+        /** @type {HTMLDivElement} */
+        const root = document.getElementById("root");
+        root.replaceWith(errorTemplate.content.cloneNode(true));
+      }
+    };
+  </script>
+  <script type="text/javascript">
+    // 控制用户缓存
+    // 需要清理缓存时更新 version
+    var version = "3.2.4";
+    if (localStorage.getItem("version") !== version) {
+      localStorage.clear();
+      localStorage.setItem("version", version);
+    }
+  </script>
+  <% const themeNames = ["default_theme_placeholder"]; %>
+  <% htmlWebpackPlugin.files.css.forEach((cssFile) => themeNames.push(cssFile.split("/").pop())); %>
+  <% themeNames[0] = themeNames[18]; %>
+  <script type="text/javascript">
+    // 动态载入样式
+    const themeNames = <%= JSON.stringify(themeNames) %>;
+    try {
+      const refreshTokenExpirationTime = localStorage.getItem(
+        "refresh_token_expirationTime"
+      );
+      const isLogOn =
+        refreshTokenExpirationTime &&
+        parseInt(refreshTokenExpirationTime, 10) * 1000 > Date.now();
+      if (!isLogOn) {
+        throw new Error("用户未登录");
+      }
+      const userSelectedThemeIndex = JSON.parse(
+        localStorage.getItem("userInfo").slice(4)
+      ).theme;
+      if (!userSelectedThemeIndex) {
+        throw new Error("用户未选择主题");
+      }
+      document.head.insertAdjacentHTML(
+        "beforeend",
+        `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeNames[userSelectedThemeIndex]}">`
+      );
+    } catch (e) {
+      document.head.insertAdjacentHTML(
+        "beforeend",
+        `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeNames[0]}">`
+      );
+    }
+  </script>
+</head>
 
-      }
+<body style="display:flex;justify-content:center;">
+  <% const fs = require("fs"); %>
+  <!-- 错误处理模板 -->
+  <template id="error-template">
+    <%= fs.readFileSync("./error.html").toString() %>
+  </template>
+  <!-- 不支持的浏览器模板 -->
+  <template id="unsupported-template">
+    <%= fs.readFileSync("./unsupported.html").toString() %>
+  </template>
+  <div id="root"></div>
+  <script type="text/javascript" src="/static/scripts/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/scripts/lib/moment/moment.js"></script>
+  <script type="text/javascript" src="/static/scripts/lib/spectrum/spectrum.js"></script>
+  <% const jsFileNames = []; %>
+  <% htmlWebpackPlugin.files.js.forEach((jsFileName) => jsFileName.indexOf("css") === -1 && jsFileNames.push(jsFileName.split("/").pop())); %>
+  <script type="text/javascript">
+    // 兼容性检查
+    if (!("flex" in document.documentElement.style)) {
+      // 获取模板内容
+      /** @type {HTMLTemplateElement} */
+      const unsupportedTemplate = document.getElementById("unsupported-template");
+      // 插入模板内容
+      /** @type {HTMLDivElement} */
+      const root = document.getElementById("root");
+      root.replaceWith(unsupportedTemplate.content.cloneNode(true));
+    }
+    // 运行主脚本
+    else {
+      const jsFileNames = <%= JSON.stringify(jsFileNames) %>;
+      jsFileNames.forEach((jsFileName) => {
+        const scriptElement = document.createElement("script");
+        scriptElement.type = "text/javascript";
+        scriptElement.src = `/static/scripts/${jsFileName}`;
+        document.body.appendChild(scriptElement);
+      });
+    }
+  </script>
+</body>
 
-      // 注册报错信息
-      window.onerror = async (event, source, line, col) => {
-        if (source.indexOf("vendors") !== -1) {
-          const root = document.getElementById("root");
-          const errorContent = await fetch(`/static/error.html`);
-          const errorText = await errorContent.text();
-          root.appendChild(ele);
-        }
-      };
-    </script>
-    <script type="text/javascript">
-      // 控制用户缓存
-      // 需要清理缓存时更新 version
-      var version = "3.2.4";
-      if (localStorage.getItem("version") !== version) {
-        localStorage.clear();
-        localStorage.setItem("version", version);
-      }
-    </script>
-    <% const themeNames = ["default_theme_placeholder"];
-    htmlWebpackPlugin.files.css.forEach((cssFile) =>
-    themeNames.push(cssFile.split("/").pop())); themeNames[0] = themeNames[18];
-    %>
-    <script type="text/javascript">
-      // 动态载入样式
-      const themeNames = <%= JSON.stringify(themeNames) %>;
-      try {
-        const refreshTokenExpirationTime = localStorage.getItem(
-          "refresh_token_expirationTime"
-        );
-        const isLogOn =
-          refreshTokenExpirationTime &&
-          parseInt(refreshTokenExpirationTime, 10) * 1000 > Date.now();
-        if (!isLogOn) {
-          throw new Error("用户未登录");
-        }
-        const userSelectedThemeIndex = JSON.parse(
-          localStorage.getItem("userInfo").slice(4)
-        ).theme;
-        if (!userSelectedThemeIndex) {
-          throw new Error("用户未选择主题");
-        }
-        document.head.insertAdjacentHTML(
-          "beforeend",
-          `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeNames[userSelectedThemeIndex]}">`
-        );
-      } catch (e) {
-        document.head.insertAdjacentHTML(
-          "beforeend",
-          `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeNames[0]}">`
-        );
-      }
-    </script>
-  </head>
-  <body style="display:flex;justify-content:center;">
-    <div id="root"></div>
-    <script
-      type="text/javascript"
-      src="/static/scripts/lib/jquery/jquery.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/static/scripts/lib/moment/moment.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/static/scripts/lib/spectrum/spectrum.js"
-    ></script>
-    <% const fs = require("fs"); const unsupportedHTMLString =
-    fs.readFileSync("./Unsupported.html").toString(); const jsFileNames = [];
-    htmlWebpackPlugin.files.js.forEach((jsFileName) => jsFileName.indexOf("css")
-    === -1 && jsFileNames.push(jsFileName.split("/").pop())); %>
-    <script type="text/javascript">
-      // 兼容性检查
-      if (!("flex" in document.documentElement.style)) {
-        document.body.insertAdjacentHTML(
-          "beforeend",
-          <%= JSON.stringify(unsupportedHTMLString) %>
-        );
-      }
-      // 运行主脚本
-      else {
-        const jsFileNames = <%= JSON.stringify(jsFileNames) %>;
-        jsFileNames.forEach((jsFileName) => {
-          const scriptElement = document.createElement("script");
-          scriptElement.type = "text/javascript";
-          scriptElement.src = `/static/scripts/${jsFileName}`;
-          document.body.appendChild(scriptElement);
-        });
-      }
-    </script>
-  </body>
 </html>
