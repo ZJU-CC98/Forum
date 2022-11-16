@@ -1,83 +1,88 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CC98 论坛 - 清空缓存</title>
     <link rel="stylesheet" href="/static/scripts/lib/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/scripts/lib/bootstrap-icons/font/bootstrap-icons.css" />
+  </head>
+  <body>
+    <div class="container mt-3">
+      <h2 class="lead text-center">清空论坛缓存数据</h2>
+      <hr />
 
-		<div class="row justify-content-center">
-			<div class="col-12 col-sm-9 col-md-6">
-				<div class="card">
-					<div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-9 col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <p>如果你遇到无法访问论坛页面、无法登录、浏览内容时持续报错等问题，可以在这个页面清空论坛缓存数据，这可能有助于解决一些问题。</p>
+              <p>注意：清空缓存数据之后，你将需要重新使用用户名密码登录 CC98 论坛。</p>
+              <p>如果你确定要执行这个操作，请单击下面的<q>执行清空缓存操作</q>按钮。</p>
 
-						<p>如果你遇到无法访问论坛页面、无法登录、浏览内容时持续报错等问题，可以在这个页面清空论坛缓存数据，这可能有助于解决一些问题。</p>
-						<p>注意：清空缓存数据之后，你将需要重新使用用户名密码登录 CC98 论坛。</p>
-						<p>如果你确定要执行这个操作，请单击下面的<q>执行清空缓存操作</q>按钮。</p>
+              <hr />
 
-						<hr />
+              <div class="text-center">
+                <button type="button" class="btn btn-primary" onclick="doClear();">执行清空缓存操作</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-						<div class="text-center">
-							<button type="button" class="btn btn-primary" onclick="doClear();">执行清空缓存操作</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div id="confirm-modal" class="modal fade" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">数据缓存清空确认</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>为了防止你误操作清空缓存数据，我们需要你再次确认本操作。</p>
+            <p>如果你已经仔细阅读了页面上的说明并确定要执行清空操作，请单击<q>确认清空缓存</q>按钮。否则，请关闭对话框，或单击对话框外的任意空白区域。</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="doClear();">确认清空缓存</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-
-	</div>
-
-	<div id="confirm-modal" class="modal fade" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">数据缓存清空确认</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<p>为了防止你误操作清空缓存数据，我们需要你再次确认本操作。</p>
-					<p>如果你已经仔细阅读了页面上的说明并确定要执行清空操作，请单击<q>确认清空缓存</q>按钮。否则，请关闭对话框，或单击对话框外的任意空白区域。</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" onclick="doClear();">确认清空缓存</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
-
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div id="finished-modal" class="modal fade" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">缓存清空完成</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<p>论坛的缓存数据已经全部清空。你将在稍后自动跳转到 CC98 论坛首页。</p>
-					<p>如果你的浏览器没有自动跳转，请单击下面的按钮进行手动跳转。</p>
-					<hr />
-					<div class="text-center">
-						<a href="/" class="btn btn-primary">跳转到 CC98 论坛首页</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div id="finished-modal" class="modal fade" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">缓存清空完成</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>论坛的缓存数据已经全部清空。你将在稍后自动跳转到 CC98 论坛首页。</p>
+            <p>如果你的浏览器没有自动跳转，请单击下面的按钮进行手动跳转。</p>
+            <hr />
+            <div class="text-center">
+              <a href="/" class="btn btn-primary">跳转到 CC98 论坛首页</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script type="text/javascript" src="/static/scripts/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+      var confirmDialog = new bootstrap.Modal("#confirm-modal");
+      var finishedDialog = new bootstrap.Modal("#finished-modal");
 
-		function doClear() {
+      function doClear() {
+        confirmDialog.hide();
+        window.localStorage.clear();
+        finishedDialog.show();
 
-			confirmDialog.hide();
-			window.localStorage.clear();
-			finishedDialog.show();
-
-			setTimeout(function () {
-				location.href = "/";
-			}, 3000);
-		}
-
-	</script>
-
-</body>
+        setTimeout(function() {
+          location.href = "/";
+        }, 3000);
+      }
+    </script>
+  </body>
 </html>
