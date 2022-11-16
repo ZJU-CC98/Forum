@@ -90,17 +90,13 @@ var config = {
       inject: false,
     }),
     // clean dist
-    new CleanWebpackPlugin([
-      "dist/static/scripts",
-      "dist/static/content",
-      "dist/static/index.html",
-      "dist/static/reset.html",
-    ]),
+    new CleanWebpackPlugin(["dist/static/scripts", "dist/static/content", "dist/static/index.html", "dist/static/reset.html"]),
     new CopyWebpackPlugin([
       { from: "node_modules/jquery/dist", to: "static/scripts/lib/jquery/" },
       { from: "node_modules/moment", to: "static/scripts/lib/moment/" },
       { from: "node_modules/bootstrap/dist", to: "static/scripts/lib/bootstrap/" },
       { from: "node_modules/bootstrap-icons", to: "static/scripts/lib/bootstrap-icons/" },
+      { from: "node_modules/frowser/build", to: "static/scripts/lib/frowser/" },
       { from: "node_modules/font-awesome", to: "static/content/font-awesome/" },
       {
         from: "node_modules/spectrum-colorpicker/spectrum.js",

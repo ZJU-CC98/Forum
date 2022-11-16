@@ -73,6 +73,7 @@
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^1.0.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "frowser": "^0.2.0",
     "html-webpack-plugin": "^4.5.2",
     "null-loader": "^4.0.1",
     "sass-loader": "^10.0.0",
