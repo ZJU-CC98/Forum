@@ -76,14 +76,13 @@
 </head>
 
 <body style="display:flex;justify-content:center;">
-  <% const fs = require("fs"); %>
   <!-- 错误处理模板 -->
   <template id="error-template">
-    <%= fs.readFileSync("./error.html").toString() %>
+    <%= errorTemplate %>
   </template>
   <!-- 不支持的浏览器模板 -->
   <template id="unsupported-template">
-    <%= fs.readFileSync("./unsupported.html").toString() %>
+    <%= unsupportedTemplate %>
   </template>
   <div id="root"></div>
   <script type="text/javascript" src="/static/scripts/lib/jquery/jquery.min.js"></script>
