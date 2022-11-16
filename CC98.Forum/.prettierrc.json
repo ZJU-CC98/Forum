@@ -1,0 +1,17 @@
+{
+  "overrides": [
+    {
+      "files": "./**/*.html",
+      "options": {
+        "printWidth": 200
+      }
+    },
+    {
+      "files": ["./**/*.js"],
+      "options": {
+        "trailingComma": "es5",
+        "printWidth": 140
+      }
+    }
+  ]
+}
