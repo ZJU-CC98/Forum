@@ -5,24 +5,21 @@
 />
 
 <div class="container mt-3">
-  <h2 class="lead text-center text-danger">哎呀，出错了</h2>
+  <h2 class="text-center text-danger">哎呀，出错了</h2>
+  <p class="text-center text-danger">网站运行时发生了意外错误，网页内容无法正常显示。</p>
   <hr />
-
-  <p>网站运行时发生了意外错误，网页内容无法正常显示。</p>
   <p>
-    这样的错误可能是服务器故障导致的，也可能是因为网站在前辈的电脑中缓存的代码或者数据发生了意外。
-  </p>
-  <p>建议前辈按照下面的步骤依次尝试，看看能否解决问题：</p>
+    这样的错误可能是服务器故障导致的，也可能是因为网站在前辈的电脑中缓存的代码或者数据发生了意外。为了解决问题，前辈可以依次尝试使用下面的办法：</p>
   <hr />
   <p>首先，请尝试<strong>强制刷新网页</strong>，具体的方法是：</p>
   <ul>
     <li>
-      在 Windows 或者 Linux 电脑上，同时按下 <kbd>Ctrl+Shift+R</kbd> 或者
-      <kbd>Ctrl+F5</kbd> 快捷键；
+      在 Windows 或者 Linux 电脑上，同时按下 <kbd>Ctrl + Shift + R</kbd> 或者
+      <kbd>Ctrl + F5</kbd> 快捷键；
     </li>
     <li>
-      在 MacOS 电脑上，同时按下 <kbd>Command+Shift+R</kbd> 或者
-      <kbd>Ctrl+F5</kbd> 快捷键；
+      在 MacOS 电脑上，同时按下 <kbd>Command + Shift + R</kbd> 或者
+      <kbd>Command + F5</kbd> 快捷键；
     </li>
   </ul>
 
@@ -34,16 +31,15 @@
 
   <hr />
   <p>
-    如果这两个办法都不能解决问题，请前辈
-    <a href="mailto:contact@cc98.org">向 CC98 客服发送邮件</a
-    >，或者用其它方式和管理员取得联系，并通过截图和文字说明详细描述遇到的具体状况。
+    如果这两个办法都不能解决问题，请前辈单击下面的按钮向 CC98 技术团队发送邮件，或者用其它方式和管理员取得联系，并通过截图和文字说明详细描述遇到的具体状况。
   </p>
+  <div><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#send-mail-dialog">向技术团队发送邮件</button></div>
 
   <div class="accordion">
     <div class="accordion-item">
       <h2 class="accordion-header" id="error-detail-header">
         <button
-          class="accordion-button"
+          class="accordion-button collapsed"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#error-detail-panel"
@@ -55,29 +51,108 @@
       </h2>
       <div
         id="error-detail-panel"
-        class="accordion-collapse collapse show"
+        class="accordion-collapse collapse"
         aria-labelledby="error-detail-header"
         data-bs-parent="#error-detail-header"
       >
         <div class="accordion-body">
           <div class="alert alert-info">
-            这里列出的是网站运行的代码遇到的错误详情，你可以将这些信息提供给管理团队，以便于技术人员找到并修复错误。
+            这里列出的是网站运行的代码遇到的错误详情，你可以将这些它们提供给技术团队，以便于修复错误。如果你是有一定经验的开发人员，也可以尝试通过这些信息找到错误原因并解决问题。
           </div>
           <dl>
             <dt>错误消息</dt>
-            <dd id="error-text"></dd>
+            <dd><code id="error-text"></code></dd>
             <dt>错误来源</dt>
-            <dd id="source-text"></dd>
-            <dt>行号</dt>
-            <dd id="line-text"></dd>
-            <dt>列号</dt>
-            <dd id="col-text"></dd>
+            <dd><code id="source-text"></code></dd>
           </dl>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<form action="#" onsubmit="return onFormSubmit(event);">
+  <div id="send-mail-dialog" class="modal modal-lg fade" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">向 CC98 技术支持团队发送邮件</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="alert alert-info">为了增加沟通效率，我们已经为你设计了一份错误信息汇总模板。请前辈先填写下面的表格，随后单击<q>生成邮件并发送</q>按钮将它发送出去。</div>
+
+          <div class="mb-3">
+            <label for="os-input">你使用的电脑的操作系统</label>
+            <input id="os-input" type="text" class="form-control" list="os-data-list" required="required" placeholder="选择下拉项或者输入自定义内容" />
+          </div>
+    
+          <div class="mb-3">
+            <label for="browser-input">你访问 CC98 使用的浏览器</label>
+            <input id="browser-input" type="text" class="form-control" list="browser-data-list" required="required" placeholder="选择下拉项或者输入自定义内容" />
+          </div>
+
+          <div class="mb-3">
+            <label for="network-input">你访问 CC98 使用的网络环境</label>
+            <input id="network-input" type="text" class="form-control" list="network-data-list" required="required" placeholder="选择下拉项或者输入自定义内容" />
+          </div>
+
+          <div class="mb-3">
+            <label for="user-name-input">你的 CC98 用户名</label>
+            <input id="user-name-input" type="text" class="form-control" list="network-data-list" required="required" placeholder="" />
+            <div class="form-text">如果你是匿名访问或者根本无法登录，请填写<q>未登录</q>。</div>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="step-input">错误发生过程</label>
+            <textarea id="step-input" rows="5" class="form-control" required="required" placeholder="请在这里详细描述错误产生前你在网站中进行了哪些操作。"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="remark-input">备注</label>
+            <textarea id="remark-input" rows="3" class="form-control" placeholder="你可以在这里面补充其它你认为需要说明的情况。"></textarea>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">生成邮件并发送</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+
+<datalist id="os-data-list">
+  <option value="Windows"></option>
+  <option value="Mac OS"></option>
+  <option value="Linux"></option>
+  <option value="iOS"></option>
+  <option value="Android"></option>
+</datalist>
+</datalist>
+
+
+<datalist id="browser-data-list">
+  <option value="Google Chrome"></option>
+  <option value="Microsoft Edge"></option>
+  <option value="Mozilla FireFox"></option>
+  <option value="Safari"></option>
+</datalist>
+
+
+<datalist id="network-data-list">
+  <option value="校园有线网络"></option>
+  <option value="校园无线网络"></option>
+  <option value="RVPN"></option>
+  <option value="WebVPN"></option>
+</datalist>
+
 
 <script
   type="text/javascript"
@@ -93,11 +168,47 @@
     document.title = "CC98 论坛 - 错误";
 
     document.querySelector("#error-text").innerText = errorInfo.event;
-    document.querySelector("#source-text").innerText = errorInfo.source;
-    document.querySelector("#line-text").innerText = errorInfo.line;
-    document.querySelector("#col-text").innerText = errorInfo.col;
+    document.querySelector("#source-text").innerText = `${errorInfo.source} (${errorInfo.line}, ${errorInfo.col})`;
 
     delete errorInfo;
+  }
+
+  function onFormSubmit(e) {
+
+    // 停止默认提交操作
+    e.preventDefault();
+
+    // 快捷方法
+    function getValue(selector) {
+      return document.querySelector(selector).value;
+    }
+
+    const emailTitle = 'CC98 网页发生错误';
+
+    const emailBody = [
+    `CC98客服您好：`,
+    ``,
+    `我的 CC98 用户名是：${getValue('#user-name-input')}`,
+    `我使用的操作系统是:${getValue('#os-input')}`,
+    `我使用的浏览器是：${getValue('#browser-input')}`,
+    `我的网络环境是：${getValue('#network-input')}`,
+    ``,
+    `我发生错误前进行了如下操作：`,
+    `${getValue('#step-input')}`,
+    ``,
+    `其它需要说明的信息：`
+    `${getValue('#remark-input')}`,
+    ``,
+    `我在访问 CC98 网页端时遇到了这个错误，截图如下：`,
+    ``,
+    `我已经尝试了页面上给出的所有解决方案，都未能解决这个问题，请问下一步我该如何操作？`,
+    "祝好！",
+    ];
+
+    const link = `mailto:contact@cc98.org?subject=${encodeURIComponent(emailTitle)}&body=${encodeURIComponent(emailBody.join('\n'))}`;
+    window.location.href = link;
+
+    return false;
   }
 
   init();
