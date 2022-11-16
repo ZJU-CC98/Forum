@@ -106,6 +106,8 @@ const config = {
     new CopyWebpackPlugin([
       { from: "node_modules/jquery/dist", to: "static/scripts/lib/jquery/" },
       { from: "node_modules/moment", to: "static/scripts/lib/moment/" },
+      { from: "node_modules/bootstrap/dist", to: "static/scripts/lib/bootstrap/" },
+      { from: "node_modules/bootstrap-icons", to: "static/scripts/lib/bootstrap-icons/" },
       { from: "node_modules/font-awesome", to: "static/content/font-awesome/" },
       {
         from: "node_modules/spectrum-colorpicker/spectrum.js",
