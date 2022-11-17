@@ -3,7 +3,7 @@ const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-
+const fs = require("fs");
 module.exports = {
   mode: "development",
 
@@ -92,6 +92,10 @@ module.exports = {
       // place index.html at '/'
       filename: "index.html",
       inject: false,
+      templateParameters: {
+        errorTemplate: fs.readFileSync("error.html").toString(),
+        unsupportedTemplate: fs.readFileSync("unsupported.html").toString(),
+      },
     }),
 
     new CopyWebpackPlugin([
