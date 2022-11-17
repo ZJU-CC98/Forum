@@ -41,19 +41,18 @@ export default abstract class MessageBarTagHandlerBase extends Ubb.RecursiveTagH
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
         if (!this.messageSettings) {
-            throw new Error(`没有为标签 ${this.supportedTagNames} 配置必要的消息信息。`);
+            throw new Error(`没有为标签 ${tagData.tagName} 配置必要的消息信息。`);
         }
 
-        // 默认使用第一种消息样式。
-        let messageIndex = 0;
+        let messageIndex = parseInt(tagData.mainValue);
 
-        try {
-            messageIndex = parseInt(tagData.mainValue);
-        } catch (e) {
+        // 解析失败则使用默认样式
+        if (isNaN(messageIndex)) {
+            messageIndex = 0;
         }
-
-        if (messageIndex >=  this.messageSettings.length) {
-            throw new Error(`标签 ${this.supportedTagNames} 配置的消息参数 ${messageIndex} 无效，该标签最多支持 ${this.messageSettings.length} 种消息模式。`);
+      
+        if (messageIndex >=  this.messageSettings.length || messageIndex < 0) {
+            throw new Error(`标签 ${tagData.tagName} 配置的消息参数 ${messageIndex} 无效，该标签最多支持 ${this.messageSettings.length} 种消息模式。`);
         }
 
         // 实际使用的消息样式
