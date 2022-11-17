@@ -1,12 +1,13 @@
 "use strict";
 exports.__esModule = true;
-var webpack = require("webpack");
-var path = require("path");
-var HTMLWebpackPlugin = require("html-webpack-plugin");
-var CopyWebpackPlugin = require("copy-webpack-plugin");
-var CleanWebpackPlugin = require("clean-webpack-plugin");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var config = {
+const webpack = require("webpack");
+const path = require("path");
+const HTMLWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const fs = require("fs");
+const config = {
   // webpack 4 only
   mode: "development",
   module: {
@@ -88,6 +89,10 @@ var config = {
       template: "Template.ejs",
       filename: "static/index.html",
       inject: false,
+      templateParameters: {
+        errorTemplate: fs.readFileSync("error.html").toString(),
+        unsupportedTemplate: fs.readFileSync("unsupported.html").toString(),
+      },
     }),
     // clean dist
     new CleanWebpackPlugin(["dist/static/scripts", "dist/static/content", "dist/static/index.html", "dist/static/reset.html"]),

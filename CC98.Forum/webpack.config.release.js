@@ -9,7 +9,13 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const WebpackChunkHash = require("webpack-chunk-hash");
-const config = {
+const fs = require("fs/promises");
+const { minify } = require("html-minifier-terser");
+const minifyOptions = {
+  collapseWhitespace: true,
+  minifyJS: true,
+};
+const config = (async () => ({
   // webpack 4 only
   mode: "production",
   module: {
@@ -90,11 +96,12 @@ const config = {
     new HTMLWebpackPlugin({
       template: "Template.ejs",
       filename: "static/index.html",
-      minify: {
-        collapseWhitespace: true,
-        minifyJS: true,
-      },
+      minify: minifyOptions,
       inject: false,
+      templateParameters: {
+        errorTemplate: await minify((await fs.readFile("error.html")).toString(), minifyOptions),
+        unsupportedTemplate: await minify((await fs.readFile("unsupported.html")).toString(), minifyOptions),
+      },
     }),
     // clean dist
     new CleanWebpackPlugin(["dist/static/scripts", "dist/static/content", "dist/static/index.html", "dist/static/reset.html"]),
@@ -159,5 +166,5 @@ const config = {
       },
     },
   },
-};
+}))();
 exports["default"] = config;

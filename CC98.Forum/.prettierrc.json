@@ -3,14 +3,20 @@
     {
       "files": "./**/*.html",
       "options": {
-        "printWidth": 200
+        "printWidth": 80
+      }
+    },
+    {
+      "files": "./**/*.ejs",
+      "options": {
+        "printWidth": 500
       }
     },
     {
       "files": ["./**/*.js"],
       "options": {
         "trailingComma": "es5",
-        "printWidth": 140
+        "printWidth": 160
       }
     }
   ]

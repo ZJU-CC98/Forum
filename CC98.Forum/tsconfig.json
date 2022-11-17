@@ -1,19 +1,15 @@
 {
-	"compilerOptions": {
-		"module": "esnext",
-		"moduleResolution": "node",
-		"noImplicitAny": false,
-		"noEmitOnError": true,
-		"removeComments": false,
-		"sourceMap": false,
-		"target": "es5",
-		"jsx": "react",
-		"lib": [
-			"dom",
-			"es5",
-			"es6"
-		],
-		"allowSyntheticDefaultImports": true,
-		"importHelpers": true
-	}
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": false,
+    "target": "es5",
+    "jsx": "react",
+    "lib": ["dom", "es5", "es6"],
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true
+  }
 }
