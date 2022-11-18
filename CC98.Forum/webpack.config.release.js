@@ -9,7 +9,13 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const WebpackChunkHash = require("webpack-chunk-hash");
-const config = {
+const fs = require("fs/promises");
+const { minify } = require("html-minifier-terser");
+const minifyOptions = {
+  collapseWhitespace: true,
+  minifyJS: true,
+};
+const config = (async () => ({
   // webpack 4 only
   mode: "production",
   module: {
@@ -90,21 +96,21 @@ const config = {
     new HTMLWebpackPlugin({
       template: "Template.ejs",
       filename: "static/index.html",
-      minify: {
-        collapseWhitespace: true,
-        minifyJS: true,
-      },
+      minify: minifyOptions,
       inject: false,
+      templateParameters: {
+        errorTemplate: await minify((await fs.readFile("error.html")).toString(), minifyOptions),
+        unsupportedTemplate: await minify((await fs.readFile("unsupported.html")).toString(), minifyOptions),
+      },
     }),
     // clean dist
-    new CleanWebpackPlugin([
-      "dist/static/scripts",
-      "dist/static/content",
-      "dist/static/index.html",
-    ]),
+    new CleanWebpackPlugin(["dist/static/scripts", "dist/static/content", "dist/static/index.html", "dist/static/reset.html"]),
     new CopyWebpackPlugin([
       { from: "node_modules/jquery/dist", to: "static/scripts/lib/jquery/" },
       { from: "node_modules/moment", to: "static/scripts/lib/moment/" },
+      { from: "node_modules/bootstrap/dist", to: "static/scripts/lib/bootstrap/" },
+      { from: "node_modules/bootstrap-icons", to: "static/scripts/lib/bootstrap-icons/" },
+      { from: "node_modules/frowser/build", to: "static/scripts/lib/frowser/" },
       { from: "node_modules/font-awesome", to: "static/content/font-awesome/" },
       {
         from: "node_modules/spectrum-colorpicker/spectrum.js",
@@ -129,6 +135,10 @@ const config = {
       {
         from: "node_modules/hls.js/dist/hls.min.js",
         to: "static/content/hls.min.js",
+      },
+      {
+        from: "reset.html",
+        to: "static/reset.html",
       },
     ]),
     new ExtractTextPlugin("static/content/[name]-[chunkhash:8].css"),
@@ -156,5 +166,5 @@ const config = {
       },
     },
   },
-};
+}))();
 exports["default"] = config;

@@ -3,7 +3,7 @@ const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-
+const fs = require("fs");
 module.exports = {
   mode: "development",
 
@@ -92,6 +92,10 @@ module.exports = {
       // place index.html at '/'
       filename: "index.html",
       inject: false,
+      templateParameters: {
+        errorTemplate: fs.readFileSync("error.html").toString(),
+        unsupportedTemplate: fs.readFileSync("unsupported.html").toString(),
+      },
     }),
 
     new CopyWebpackPlugin([
@@ -99,6 +103,9 @@ module.exports = {
       { from: "dist/static", to: "static" },
 
       { from: "node_modules/jquery/dist", to: "static/scripts/lib/jquery/" },
+      { from: "node_modules/bootstrap/dist", to: "static/scripts/lib/bootstrap/" },
+      { from: "node_modules/bootstrap-icons", to: "static/scripts/lib/bootstrap-icons/" },
+      { from: "node_modules/frowser/build", to: "static/scripts/lib/frowser/" },
       { from: "node_modules/font-awesome", to: "static/content/font-awesome/" },
       {
         from: "node_modules/spectrum-colorpicker/spectrum.js",
@@ -123,6 +130,10 @@ module.exports = {
       {
         from: "node_modules/hls.js/dist/hls.min.js",
         to: "static/content/hls.min.js",
+      },
+      {
+        from: "reset.html",
+        to: "static/reset.html",
       },
     ]),
 
