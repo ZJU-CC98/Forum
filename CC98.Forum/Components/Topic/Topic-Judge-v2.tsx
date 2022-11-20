@@ -9,19 +9,19 @@ import { FormComponentProps } from "antd/es/form";
 const FormItem = Form.Item;
 const Option = Select.Option;
 const Item = Menu.Item;
-interface Props {
+interface FormProps extends FormComponentProps<any> {
   visible;
   onCancel;
   item;
   update;
 }
-interface States {
+interface FormStates {
   current;
   option;
   loading;
 }
-export default Form.create<Props>()(
-  class extends React.Component<Props & FormComponentProps, States> {
+export default Form.create<FormProps>()(
+  class extends React.Component<FormProps, FormStates> {
     constructor(props) {
       super(props);
       this.state = { current: "0", option: "", loading: false };
@@ -171,7 +171,9 @@ export default Form.create<Props>()(
               </span>
             </Item>
           </Menu>
-          <Tag color="blue">500贴以上的用户可以进行评分（每日一次），超过7天的发言内容无法评分。</Tag>
+          <Tag color="blue">
+            500贴以上的用户可以进行评分（每日一次），超过7天的发言内容无法评分。
+          </Tag>
           {rcForm}
         </Modal>
       );

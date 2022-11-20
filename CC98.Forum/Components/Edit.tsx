@@ -6,7 +6,7 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  withRouter,
+  withRouter
 } from "react-router-dom";
 import { match } from "react-router";
 import { RouteComponent } from "./RouteComponent";
@@ -17,7 +17,7 @@ import * as ErrorActions from "../Actions/Error";
 import { Vote, props as VoteProps } from "./EditVoteIput";
 import ReactMde, {
   ReactMdeTypes,
-  ReactMdeCommands,
+  ReactMdeCommands
 } from "@cc98/hell-react-mde";
 import * as Showdown from "showdown";
 import CustomCommand from "./react-mde/ImageUploaderCommand";
@@ -29,7 +29,7 @@ import {
   TimePicker,
   Select,
   Input,
-  Radio,
+  Radio
 } from "antd";
 import * as moment from "moment";
 const { MonthPicker, RangePicker } = DatePicker;
@@ -79,7 +79,7 @@ class EditForm extends RouteComponent<
     this.onVoteInfoChange = this.onVoteInfoChange.bind(this);
     this.converter = new Showdown.Converter({
       tables: true,
-      simplifiedAutoLink: true,
+      simplifiedAutoLink: true
     });
     this.state = {
       masters: [],
@@ -100,7 +100,7 @@ class EditForm extends RouteComponent<
         voteItems: ["", ""],
         expiredDays: 0,
         maxVoteCount: 0,
-        needVote: false,
+        needVote: false
       },
       mdeState: "",
       commands: [],
@@ -108,7 +108,7 @@ class EditForm extends RouteComponent<
       houseTmpVisible: false,
       anonymousState: 0,
       isAnonymous: false,
-      wealth: "",
+      wealth: ""
     };
   }
 
@@ -121,7 +121,7 @@ class EditForm extends RouteComponent<
     let url, response, data, tags;
     CustomCommand.editor = this;
     const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
-      { commands: [CustomCommand] },
+      { commands: [CustomCommand] }
     ];
     const defaultCommands = ReactMdeCommands.getDefaultCommands();
     const myCommands = defaultCommands.concat(getCommands());
@@ -142,7 +142,7 @@ class EditForm extends RouteComponent<
           tags: tags,
           boardId: id,
           masters: data.boardMasters,
-          anonymousState: anonymousState,
+          anonymousState: anonymousState
         });
         break;
       case "edit":
@@ -197,7 +197,7 @@ class EditForm extends RouteComponent<
             tag2: tag2Name,
             mode: 0,
             notice: topicInfo.notifyPoster,
-            isAnonymous: data.isAnonymous,
+            isAnonymous: data.isAnonymous
           });
         } else
           this.setState({
@@ -215,7 +215,7 @@ class EditForm extends RouteComponent<
             mode: 1,
             mdeState: data.content,
             notice: topicInfo.notifyPoster,
-            isAnonymous: data.isAnonymous,
+            isAnonymous: data.isAnonymous
           });
         break;
     }
@@ -227,10 +227,10 @@ class EditForm extends RouteComponent<
       wealth = "查询财富值余额失败，请前往个人中心查看";
     }
     this.setState({
-      wealth: wealth,
-    })
+      wealth: wealth
+    });
   }
-  handleValueChange = (value) => {
+  handleValueChange = value => {
     this.setState({ mdeState: value });
   };
 
@@ -306,7 +306,7 @@ class EditForm extends RouteComponent<
             tag1: tag1Id,
             type: this.state.type,
             notifyPoster: this.state.notice,
-            isAnonymous: _isAnonymous,
+            isAnonymous: _isAnonymous
           };
         } else if (tag2Id) {
           content = {
@@ -317,7 +317,7 @@ class EditForm extends RouteComponent<
             tag2: tag2Id,
             type: this.state.type,
             notifyPoster: this.state.notice,
-            isAnonymous: _isAnonymous,
+            isAnonymous: _isAnonymous
           };
         } else {
           content = {
@@ -326,7 +326,7 @@ class EditForm extends RouteComponent<
             title: this.state.title,
             type: this.state.type,
             notifyPoster: this.state.notice,
-            isAnonymous: _isAnonymous,
+            isAnonymous: _isAnonymous
           };
         }
         if (this.match.params.mode === "postVoteTopic") {
@@ -334,7 +334,7 @@ class EditForm extends RouteComponent<
           content = {
             ...content,
             isVote: true,
-            voteInfo: this.state.voteInfo,
+            voteInfo: this.state.voteInfo
           };
         }
         let contentJson = JSON.stringify(content);
@@ -347,7 +347,7 @@ class EditForm extends RouteComponent<
 
           headers: myHeaders,
 
-          body: contentJson,
+          body: contentJson
         });
         if (mes.status === 402) {
           alert("请输入内容");
@@ -372,7 +372,7 @@ class EditForm extends RouteComponent<
           let response2 = await Utility.cc98Fetch(url2, {
             method: "POST",
             headers: myHeaders2,
-            body: atUsersJSON,
+            body: atUsersJSON
           });
         }
         Utility.removeLocalStorage("contentCache");
@@ -422,7 +422,7 @@ class EditForm extends RouteComponent<
           tag1: tag1Id,
           type: this.state.type,
           notifyPoster: this.state.notice,
-          isAnonymous: _isAnonymous,
+          isAnonymous: _isAnonymous
         };
       } else if (tag2Id) {
         content = {
@@ -433,7 +433,7 @@ class EditForm extends RouteComponent<
           tag2: tag2Id,
           type: this.state.type,
           notifyPoster: this.state.notice,
-          isAnonymous: _isAnonymous,
+          isAnonymous: _isAnonymous
         };
       } else {
         content = {
@@ -442,7 +442,7 @@ class EditForm extends RouteComponent<
           title: this.state.title,
           type: this.state.type,
           notifyPoster: this.state.notice,
-          isAnonymous: _isAnonymous,
+          isAnonymous: _isAnonymous
         };
       }
       if (this.match.params.mode === "postVoteTopic") {
@@ -450,7 +450,7 @@ class EditForm extends RouteComponent<
         content = {
           ...content,
           isVote: true,
-          voteInfo: this.state.voteInfo,
+          voteInfo: this.state.voteInfo
         };
       }
       const contentJson = JSON.stringify(content);
@@ -461,7 +461,7 @@ class EditForm extends RouteComponent<
       let response = await Utility.cc98Fetch(url, {
         method: "POST",
         headers: myHeaders,
-        body: contentJson,
+        body: contentJson
       });
       //发帖成功，api返回topicid
       const topicId = await response.text();
@@ -485,7 +485,7 @@ class EditForm extends RouteComponent<
           let response2 = await Utility.cc98Fetch(url2, {
             method: "POST",
             headers: myHeaders2,
-            body: atUsersJSON,
+            body: atUsersJSON
           });
         }
         Utility.removeLocalStorage("contentCache");
@@ -524,7 +524,7 @@ class EditForm extends RouteComponent<
         title: this.state.title,
         tag1: tag1Id,
         type: this.state.type,
-        notifyPoster: this.state.notice,
+        notifyPoster: this.state.notice
       };
     } else if (tag2Id) {
       content = {
@@ -534,7 +534,7 @@ class EditForm extends RouteComponent<
         tag1: tag1Id,
         tag2: tag2Id,
         type: this.state.type,
-        notifyPoster: this.state.notice,
+        notifyPoster: this.state.notice
       };
     } else {
       content = {
@@ -542,7 +542,7 @@ class EditForm extends RouteComponent<
         contentType: 0,
         title: this.state.title,
         type: this.state.type,
-        notifyPoster: this.state.notice,
+        notifyPoster: this.state.notice
       };
     }
 
@@ -553,7 +553,7 @@ class EditForm extends RouteComponent<
     const response = await Utility.cc98Fetch(url, {
       method: "PUT",
       headers,
-      body,
+      body
     });
     const floor = this.state.postInfo.floor;
     const pageFloor = floor % 10 === 0 ? 10 : floor % 10;
@@ -578,7 +578,7 @@ class EditForm extends RouteComponent<
         title: this.state.title,
         tag1: tag1Id,
         type: this.state.type,
-        notifyPoster: this.state.notice,
+        notifyPoster: this.state.notice
       };
     } else if (tag2Id) {
       content = {
@@ -588,7 +588,7 @@ class EditForm extends RouteComponent<
         tag1: tag1Id,
         tag2: tag2Id,
         type: this.state.type,
-        notifyPoster: this.state.notice,
+        notifyPoster: this.state.notice
       };
     } else {
       content = {
@@ -596,7 +596,7 @@ class EditForm extends RouteComponent<
         contentType: 1,
         title: this.state.title,
         type: this.state.type,
-        notifyPoster: this.state.notice,
+        notifyPoster: this.state.notice
       };
     }
     const body = JSON.stringify(content);
@@ -606,7 +606,7 @@ class EditForm extends RouteComponent<
     const response = await Utility.cc98Fetch(url, {
       method: "PUT",
       headers,
-      body,
+      body
     });
     const floor = this.state.postInfo.floor;
     const pageFloor = floor % 10 === 0 ? 10 : floor % 10;
@@ -629,7 +629,7 @@ class EditForm extends RouteComponent<
   onVoteInfoChange(voteInfo: VoteProps["voteInfo"]) {
     this.setState({ voteInfo });
   }
-  setValue = (v) => {
+  setValue = v => {
     this.setState({ mdeState: this.state.mdeState + v }, () => {
       this.setState({ mdeState: this.state.mdeState });
     });
@@ -639,25 +639,25 @@ class EditForm extends RouteComponent<
   };
   showModal = () => {
     this.setState({
-      houseTmpVisible: true,
+      houseTmpVisible: true
     });
   };
 
-  handleOk = (e) => {
+  handleOk = e => {
     console.log(e);
     this.setState({
-      houseTmpVisible: false,
+      houseTmpVisible: false
     });
   };
 
-  handleCancel = (e) => {
+  handleCancel = e => {
     console.log(e);
     this.setState({
-      houseTmpVisible: false,
+      houseTmpVisible: false
     });
   };
 
-  handleTmpForm = (e) => {
+  handleTmpForm = e => {
     console.log("====");
     console.log(e);
     console.log(e.validDate[0]);
@@ -691,7 +691,7 @@ class EditForm extends RouteComponent<
     [/table]`;
     this.setState({
       content: content + "\n\n" + this.state.content,
-      houseTmpVisible: false,
+      houseTmpVisible: false
     });
   };
 
@@ -769,7 +769,7 @@ class EditForm extends RouteComponent<
             style={{
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
+              alignItems: "center"
             }}
           >
             <div>
@@ -799,7 +799,7 @@ class EditForm extends RouteComponent<
             style={{
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
+              alignItems: "center"
             }}
           >
             <div>
@@ -865,20 +865,20 @@ class EditForm extends RouteComponent<
             <ReactMde
               value={this.state.mdeState}
               onChange={this.handleValueChange}
-              generateMarkdownPreview={(markdown) =>
+              generateMarkdownPreview={markdown =>
                 Promise.resolve(this.converter.makeHtml(markdown))
               }
               commands={this.state.commands}
               minEditorHeight={330}
               maxEditorHeight={500}
               buttonContentOptions={{
-                iconProvider: (name) => {
+                iconProvider: name => {
                   console.log(name);
                   if (name === "heading")
                     return <i className={`fa fa-header`} />;
 
                   return <i className={`fa fa-${name}`} />;
-                },
+                }
               }}
             />
             {mdButtons}
@@ -935,20 +935,20 @@ class EditForm extends RouteComponent<
             <ReactMde
               value={this.state.mdeState}
               onChange={this.handleValueChange}
-              generateMarkdownPreview={(markdown) =>
+              generateMarkdownPreview={markdown =>
                 Promise.resolve(this.converter.makeHtml(markdown))
               }
               commands={this.state.commands}
               minEditorHeight={330}
               maxEditorHeight={500}
               buttonContentOptions={{
-                iconProvider: (name) => {
+                iconProvider: name => {
                   console.log(name);
                   if (name === "heading")
                     return <i className={`fa fa-header`} />;
 
                   return <i className={`fa fa-${name}`} />;
-                },
+                }
               }}
             />
             <button
@@ -1007,7 +1007,7 @@ class EditForm extends RouteComponent<
       Utility.getLocalStorage("userInfo") &&
       (Utility.isMaster(this.state.masters) ||
         (Utility.getLocalStorage("userInfo").userTitleIds || []).indexOf(91) !==
-        -1)
+          -1)
     ) {
       topicType = (
         <div className="createTopicType">
@@ -1079,11 +1079,13 @@ class EditForm extends RouteComponent<
               住房信息模板
             </Button>
             <span style={{ color: "red", marginLeft: "10px" }}>
-              (出租、合租、转租、出售等已有房源必填)
+              (出租、合租、转租、出售等已有房源必填)z
             </span>
           </div>
 
           <Tmp
+            // TODO: remove ts-ignore
+            // @ts-ignore
             visible={this.state.houseTmpVisible}
             submit={this.handleTmpForm}
           />
@@ -1121,14 +1123,14 @@ export class Category extends React.Component<
     super(props);
     this.state = {
       url: "",
-      boardName: "",
+      boardName: ""
     };
   }
   //在子组件中，this.props的值不会自动更新，每当父组件的传值发生变化时，需要在子组件的的componentWillReceiveProps中去手动更新
   componentWillReceiveProps(nextProps) {
     this.setState({
       url: nextProps.url,
-      boardName: nextProps.boardName,
+      boardName: nextProps.boardName
     });
   }
   render() {
@@ -1144,7 +1146,7 @@ export class Category extends React.Component<
           justifyContent: "flex-start",
           color: "grey",
           fontSize: "0.75rem",
-          marginBottom: "1rem",
+          marginBottom: "1rem"
         }}
       >
         <Link
@@ -1159,7 +1161,7 @@ export class Category extends React.Component<
             color: "grey",
             fontSize: "1rem",
             marginLeft: "0.5rem",
-            marginRight: "0.5rem",
+            marginRight: "0.5rem"
           }}
           to={this.state.url}
         >
@@ -1171,7 +1173,7 @@ export class Category extends React.Component<
             color: "grey",
             fontSize: "1rem",
             marginLeft: "0.5rem",
-            marginRight: "0.5rem",
+            marginRight: "0.5rem"
           }}
         >
           {categoryText}
@@ -1216,7 +1218,7 @@ export class InputTitle extends React.Component<
       tags: this.props.tags,
       tag1: "",
       tag2: "",
-      hasEvent: false,
+      hasEvent: false
     };
   }
 
@@ -1273,18 +1275,18 @@ export class InputTitle extends React.Component<
     } else {
       //获取到则标记已绑定过事件
       this.setState({
-        hasEvent: true,
+        hasEvent: true
       });
     }
     const downArrow = $(".downArrow");
     const tagBoxSub = $(".tagBoxSub");
     const tagBoxLi = tagBoxSub.find("li");
 
-    $(document).click(function () {
+    $(document).click(function() {
       tagBoxSub.css("display", "none");
     });
 
-    tagBoxSelect.click(function () {
+    tagBoxSelect.click(function() {
       //console.log("click1");
       if (tagBoxSub.css("display") === "block")
         tagBoxSub.css("display", "none");
@@ -1292,7 +1294,7 @@ export class InputTitle extends React.Component<
       return false; //阻止事件冒泡
     });
 
-    downArrow.click(function () {
+    downArrow.click(function() {
       if (tagBoxSub.css("display") === "block")
         tagBoxSub.css("display", "none");
       else tagBoxSub.css("display", "block");
@@ -1303,15 +1305,15 @@ export class InputTitle extends React.Component<
         如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
         或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
 
-    tagBoxLi.click(function () {
+    tagBoxLi.click(function() {
       tagBoxSelect.text($(this).text());
     });
 
-    tagBoxLi.mouseover(function () {
+    tagBoxLi.mouseover(function() {
       this.className = "hover";
     });
 
-    tagBoxLi.mouseout(function () {
+    tagBoxLi.mouseout(function() {
       this.className = "";
     });
 
@@ -1319,18 +1321,18 @@ export class InputTitle extends React.Component<
     const downArrow1 = $(".downArrow1");
     const tagBoxSub1 = $(".tagBoxSub1");
     const tagBoxLi1 = tagBoxSub1.find("li");
-    $(document).click(function () {
+    $(document).click(function() {
       tagBoxSub1.css("display", "none");
     });
 
-    tagBoxSelect1.click(function () {
+    tagBoxSelect1.click(function() {
       if (tagBoxSub1.css("display") === "block")
         tagBoxSub1.css("display", "none");
       else tagBoxSub1.css("display", "block");
       return false; //阻止事件冒泡
     });
 
-    downArrow1.click(function () {
+    downArrow1.click(function() {
       if (tagBoxSub1.css("display") === "block")
         tagBoxSub1.css("display", "none");
       else tagBoxSub1.css("display", "block");
@@ -1341,15 +1343,15 @@ export class InputTitle extends React.Component<
         如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
         或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
 
-    tagBoxLi1.click(function () {
+    tagBoxLi1.click(function() {
       tagBoxSelect1.text($(this).text());
     });
 
-    tagBoxLi1.mouseover(function () {
+    tagBoxLi1.mouseover(function() {
       this.className = "hover";
     });
 
-    tagBoxLi1.mouseout(function () {
+    tagBoxLi1.mouseout(function() {
       this.className = "";
     });
     let tag1 = "",
@@ -1365,7 +1367,7 @@ export class InputTitle extends React.Component<
         title: this.props.title,
         tags: this.props.tags,
         tag1: tag1,
-        tag2: tag2,
+        tag2: tag2
       });
     else this.setState({ tags: this.props.tags, tag1: tag1, tag2: tag2 });
   };
@@ -1472,24 +1474,24 @@ class TmpForm extends React.Component<any, any> {
     waterElecRadio: "",
     elecValue: "",
     waterElecValue: "",
-    visible: this.props.visible,
+    visible: this.props.visible
   };
   componentWillReceiveProps(newProps) {
     //  if(newProps.visible !== this.props.visible){
     this.setState({ visible: newProps.visible });
     //}
   }
-  onWaterElecChange = (e) => {
+  onWaterElecChange = e => {
     this.setState({
-      waterElecRadio: e.target.value,
+      waterElecRadio: e.target.value
     });
   };
-  onElecChange = (e) => {
+  onElecChange = e => {
     this.setState({
-      elecRadio: e.target.value,
+      elecRadio: e.target.value
     });
   };
-  onHandleSubmit = (e) => {
+  onHandleSubmit = e => {
     e.preventDefault();
     const ref: any = this.refs.tmpForm;
     this.props.form.validateFields((err, values) => {
@@ -1512,18 +1514,16 @@ class TmpForm extends React.Component<any, any> {
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 },
+        sm: { span: 8 }
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 },
-      },
+        sm: { span: 16 }
+      }
     };
 
     const rangeConfig = {
-      rules: [
-        { type: "array", required: true, message: "Please select time!" },
-      ],
+      rules: [{ type: "array", required: true, message: "Please select time!" }]
     };
     return (
       <Modal
@@ -1550,7 +1550,7 @@ class TmpForm extends React.Component<any, any> {
           </Form.Item>
           <Form.Item label="类型" hasFeedback>
             {getFieldDecorator("type", {
-              rules: [{ required: true, message: "请选择类型!" }],
+              rules: [{ required: true, message: "请选择类型!" }]
             })(
               <Select placeholder="请选择类型">
                 <Option value="整租">整租</Option>
@@ -1628,7 +1628,7 @@ class TmpForm extends React.Component<any, any> {
           </Form.Item>
           <Form.Item label="是否为隔间">
             {getFieldDecorator("isSingleRoom", {
-              rules: [{ required: true, message: "请输入是否为隔间!" }],
+              rules: [{ required: true, message: "请输入是否为隔间!" }]
             })(
               <Radio.Group>
                 <Radio value="是">是</Radio>
@@ -1638,7 +1638,7 @@ class TmpForm extends React.Component<any, any> {
           </Form.Item>
           <Form.Item label="独立电表">
             {getFieldDecorator("isElectricIsolated", {
-              rules: [{ required: true, message: "请输入电表方式!" }],
+              rules: [{ required: true, message: "请输入电表方式!" }]
             })(
               <Radio.Group onChange={this.onElecChange}>
                 <Radio value="是">是</Radio>
@@ -1648,7 +1648,7 @@ class TmpForm extends React.Component<any, any> {
                   其他
                   {this.state.elecRadio === "其他" ? (
                     <Input
-                      onChange={(e) =>
+                      onChange={e =>
                         this.setState({ elecValue: e.target.value })
                       }
                       style={{ width: 100, marginLeft: 10 }}
@@ -1661,7 +1661,7 @@ class TmpForm extends React.Component<any, any> {
 
           <Form.Item label="水电缴费">
             {getFieldDecorator("waterElecValue", {
-              rules: [{ required: true, message: "请输入水电缴费!" }],
+              rules: [{ required: true, message: "请输入水电缴费!" }]
             })(
               <Radio.Group onChange={this.onWaterElecChange}>
                 <Radio value="每月一付">每月一付</Radio>
@@ -1671,7 +1671,7 @@ class TmpForm extends React.Component<any, any> {
                   其他
                   {this.state.elecRadio === "其他" ? (
                     <Input
-                      onChange={(e) =>
+                      onChange={e =>
                         this.setState({ waterElecValue: e.target.value })
                       }
                       style={{ width: 100, marginLeft: 10 }}
@@ -1704,7 +1704,7 @@ class TmpForm extends React.Component<any, any> {
 
           <Form.Item label="其他描述">
             {getFieldDecorator("otherDescriptions", {
-              rules: [{ required: false }],
+              rules: [{ required: false }]
             })(
               <TextArea
                 rows={4}
@@ -1714,7 +1714,7 @@ class TmpForm extends React.Component<any, any> {
           </Form.Item>
           <Form.Item label="其他要求">
             {getFieldDecorator("otherDemands", {
-              rules: [{ required: false }],
+              rules: [{ required: false }]
             })(
               <TextArea
                 rows={4}

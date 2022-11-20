@@ -15,7 +15,7 @@ import {
   NotFoundTopic,
   UnauthorizedTopic,
   UnauthorizedBoard,
-  ServerError,
+  ServerError
 } from "../Status";
 import { AdsComponent } from "../MainPage";
 import { isLogOn } from "../../Utility";
@@ -68,7 +68,7 @@ export class BList extends RouteComponent<
       tpList: [],
       loading: false,
       hasMore: true,
-      isMaster: false,
+      isMaster: false
     };
   }
   componentDidMount() {
@@ -80,20 +80,20 @@ export class BList extends RouteComponent<
     let res = await Utility.getTpUsers(this.match.params.boardId, 0, 5);
     this.setState({
       visible: true,
-      tpList: res,
+      tpList: res
     });
   };
-  handleOk = (e) => {
+  handleOk = e => {
     console.log(e);
     this.setState({
-      visible: false,
+      visible: false
     });
   };
 
-  handleCancel = (e) => {
+  handleCancel = e => {
     console.log(e);
     this.setState({
-      visible: false,
+      visible: false
     });
   };
   async componentWillReceiveProps(newProps) {
@@ -108,10 +108,10 @@ export class BList extends RouteComponent<
     this.setState({
       boardInfo: boardInfo,
       boardId: this.match.params.boardId,
-      fetchState: boardInfo,
+      fetchState: boardInfo
     });
   }
-  cancelTp = async (item) => {
+  cancelTp = async item => {
     const response = await Utility.cancelStopBoardPost(
       item.userId,
       this.match.params.boardId
@@ -205,7 +205,7 @@ export class BList extends RouteComponent<
           <List
             dataSource={this.state.tpList}
             pagination={{
-              onChange: async (page) => {
+              onChange: async page => {
                 const from = (page - 1) * 5;
                 let data = await Utility.getTpUsers(
                   this.match.params.boardId,
@@ -215,9 +215,15 @@ export class BList extends RouteComponent<
                 let res = this.state.tpList.concat(data);
                 this.setState({ tpList: res });
               },
-              pageSize: 5,
+              pageSize: 5
             }}
-            renderItem={(item) => (
+            renderItem={(item: {
+              userId: string;
+              userName: string;
+              days: string;
+              expiredTime: string;
+              operatorUserName: string;
+            }) => (
               <List.Item key={item.userId}>
                 <List.Item.Meta
                   title={
@@ -273,7 +279,7 @@ export class Category extends React.Component<{ boardId; boardInfo }, {}> {
           justifyContent: "flex-start",
           color: "grey",
           fontSize: "0.75rem",
-          marginBottom: "1rem",
+          marginBottom: "1rem"
         }}
       >
         <Link
@@ -288,7 +294,7 @@ export class Category extends React.Component<{ boardId; boardInfo }, {}> {
             color: "grey",
             fontSize: "1rem",
             marginRight: "0.5rem",
-            marginLeft: "0.5rem",
+            marginLeft: "0.5rem"
           }}
           to="/boardlist"
         >
@@ -323,7 +329,7 @@ export class ListHead extends RouteComponent<
       isExtend: false,
       isEditing: false,
       curDesc: props.boardInfo.bigPaper,
-      info: "",
+      info: ""
     };
     const initFollow = Utility.isFollowThisBoard(this.props.boardId);
     this.follow = this.follow.bind(this);
@@ -355,7 +361,7 @@ export class ListHead extends RouteComponent<
   }
   componentWillReceiveProps(newProps) {
     this.setState({
-      isFollow: Utility.isFollowThisBoard(newProps.boardInfo.isFollow),
+      isFollow: Utility.isFollowThisBoard(newProps.boardInfo.isFollow)
     });
   }
   onError(e) {
@@ -373,18 +379,18 @@ export class ListHead extends RouteComponent<
       let res = await Utility.cc98Fetch(url, {
         method: "PUT",
         headers,
-        body: JSON.stringify({ content: this.state.curDesc }),
+        body: JSON.stringify({ content: this.state.curDesc })
       });
       if (res.status === 200) {
         this.setState({
-          info: "修改成功",
+          info: "修改成功"
         });
       } else {
         throw new Error();
       }
     } catch (e) {
       this.setState({
-        info: `修改失败 ${e.message}`,
+        info: `修改失败 ${e.message}`
       });
     }
   };
@@ -415,7 +421,7 @@ export class ListHead extends RouteComponent<
             width: "100%",
             overflow: "hidden",
             maxHeight: "6rem",
-            transition: "max-height 1s",
+            transition: "max-height 1s"
           }}
         >
           <Link to={boardUrl}>
@@ -460,7 +466,7 @@ export class ListHead extends RouteComponent<
                   float: "right",
                   backgroundColor: "#fff",
                   cursor: "pointer",
-                  border: "none",
+                  border: "none"
                 }}
                 type="button"
                 onClick={() => this.setState({ isExtend: true })}
@@ -486,7 +492,7 @@ export class ListHead extends RouteComponent<
                 style={{
                   display: "flex",
                   marginTop: ".5rem",
-                  fontSize: "0.75rem",
+                  fontSize: "0.75rem"
                 }}
               >
                 版主：
@@ -505,7 +511,7 @@ export class ListHead extends RouteComponent<
           width: "100%",
           overflow: "hidden",
           maxHeight: "50rem",
-          transition: "max-height 1.5s",
+          transition: "max-height 1.5s"
         }}
       >
         <div className="boardMessage">
@@ -553,7 +559,7 @@ export class ListHead extends RouteComponent<
               float: "right",
               backgroundColor: "#fff",
               cursor: "pointer",
-              border: "none",
+              border: "none"
             }}
             type="button"
             onClick={() => this.setState({ isExtend: false })}
@@ -585,7 +591,7 @@ export class ListHead extends RouteComponent<
             <div>
               <textarea
                 style={{ width: "50rem", height: "15rem", resize: "none" }}
-                onChange={(e) => this.setState({ curDesc: e.target.value })}
+                onChange={e => this.setState({ curDesc: e.target.value })}
               >
                 {this.state.curDesc}
               </textarea>
@@ -654,7 +660,7 @@ export class ListTagAndPager extends React.Component<
             marginLeft: "0.3125rem",
             marginRight: "0.3125rem",
             borderTop: "dashed #EAEAEA thin",
-            marginBottom: "0.5rem",
+            marginBottom: "0.5rem"
           }}
         >
           <div
@@ -684,7 +690,7 @@ export class ListTagAndPager extends React.Component<
             marginLeft: "0.3125rem",
             marginRight: "0.3125rem",
             borderTop: "dashed #EAEAEA thin",
-            marginBottom: "0.5rem",
+            marginBottom: "0.5rem"
           }}
         >
           <div
@@ -712,7 +718,7 @@ export class ListTagAndPager extends React.Component<
           marginTop: "0.9375rem",
           marginBottom: "1rem",
           justifyContent: "space-between",
-          alignItems: "flex-end",
+          alignItems: "flex-end"
         }}
       >
         <div>
@@ -822,7 +828,7 @@ export class ListButtonAndAds extends React.Component<{ boardInfo; adsUrl }> {
           height: "6.25rem",
           alignItems: "flex-end",
           justifyContent: "space-between",
-          marginTop: "1rem",
+          marginTop: "1rem"
         }}
       >
         {sendInfo}
@@ -885,7 +891,7 @@ export class ListContent extends RouteComponent<
       totalPage: 0,
       boardInfo: { masters: [], topicCount: 1 },
       fetchState: "ok",
-      tags: [],
+      tags: []
     };
   }
   async componentDidMount() {
@@ -904,7 +910,7 @@ export class ListContent extends RouteComponent<
       totalPage: totalPage,
       boardInfo: boardInfo,
       fetchState: data,
-      tags: tags,
+      tags: tags
     });
   }
   private convertTopicToElement(item) {
@@ -1220,7 +1226,7 @@ export class ListTagContent extends RouteComponent<
       boardInfo: { masters: [], topicCount: 1 },
       fetchState: "ok",
       tags: [],
-      layer: 1,
+      layer: 1
     };
   }
   async componentDidMount() {
@@ -1243,7 +1249,7 @@ export class ListTagContent extends RouteComponent<
       boardInfo: boardInfo,
       fetchState: data,
       tags: tags,
-      layer: layer,
+      layer: layer
     });
   }
   private convertTopicToElement(item) {
@@ -1278,7 +1284,7 @@ export class ListTagContent extends RouteComponent<
       boardInfo: boardInfo,
       fetchState: data,
       tags: tags,
-      layer: layer,
+      layer: layer
     });
   }
 
@@ -1357,7 +1363,7 @@ export class ListTagsContent extends RouteComponent<
       totalPage: 0,
       boardInfo: { masters: [], topicCount: 1 },
       fetchState: "ok",
-      tags: [],
+      tags: []
     };
   }
   async componentDidMount() {
@@ -1378,7 +1384,7 @@ export class ListTagsContent extends RouteComponent<
       totalPage: totalPage,
       boardInfo: boardInfo,
       fetchState: data,
-      tags: tags,
+      tags: tags
     });
   }
   private convertTopicToElement(item) {
@@ -1411,7 +1417,7 @@ export class ListTagsContent extends RouteComponent<
       totalPage: totalPage,
       boardInfo: boardInfo,
       fetchState: data,
-      tags: tags,
+      tags: tags
     });
   }
 
@@ -1497,7 +1503,7 @@ export class BoardRecord extends RouteComponent<
       totalPage: 1,
       curPage: 1,
       tags: null,
-      data: [],
+      data: []
     };
   }
 
@@ -1517,7 +1523,7 @@ export class BoardRecord extends RouteComponent<
       totalPage,
       curPage: curPage,
       tags: tags,
-      data: items,
+      data: items
     });
   }
 
@@ -1534,7 +1540,7 @@ export class BoardRecord extends RouteComponent<
       totalPage,
       curPage: curPage,
       tags: tags,
-      data: items,
+      data: items
     });
   }
 
@@ -1577,7 +1583,7 @@ export class BoardRecord extends RouteComponent<
                 style={{
                   alignItems: "center",
                   width: "5rem",
-                  textAlign: "center",
+                  textAlign: "center"
                 }}
               >
                 <span>对象</span>
@@ -1587,7 +1593,7 @@ export class BoardRecord extends RouteComponent<
                 style={{
                   alignItems: "center",
                   width: "46rem",
-                  textAlign: "center",
+                  textAlign: "center"
                 }}
               >
                 <span>内容</span>
@@ -1597,7 +1603,7 @@ export class BoardRecord extends RouteComponent<
                 style={{
                   alignItems: "center",
                   width: "6rem",
-                  textAlign: "center",
+                  textAlign: "center"
                 }}
               >
                 <span>时间</span>
@@ -1607,7 +1613,7 @@ export class BoardRecord extends RouteComponent<
                 style={{
                   alignItems: "center",
                   width: "11rem",
-                  textAlign: "center",
+                  textAlign: "center"
                 }}
               >
                 <span>操作人</span>
@@ -1644,7 +1650,7 @@ export class ListBestContent extends RouteComponent<
     this.setState({
       items: data.boardtopics,
       totalPage: totalPage,
-      tags: tags,
+      tags: tags
     });
   }
   private convertTopicToElement(item: TopicTitleAndContentState) {
@@ -1668,7 +1674,7 @@ export class ListBestContent extends RouteComponent<
     const totalPage = data.totalPage;
     this.setState({
       items: data.boardtopics,
-      totalPage: totalPage,
+      totalPage: totalPage
     });
   }
   render() {
@@ -1754,7 +1760,7 @@ export class ListSaveContent extends RouteComponent<
     this.setState({
       items: data.boardtopics,
       totalPage: totalPage,
-      tags: tags,
+      tags: tags
     });
   }
   private convertTopicToElement(item: TopicTitleAndContentState) {
@@ -1892,7 +1898,7 @@ export class TopicTitleAndContent extends React.Component<
 
     let newState = {
       tag1: tag1 ? tag1 : "",
-      tag2: tag2 ? tag2 : "",
+      tag2: tag2 ? tag2 : ""
     };
 
     this.setState(newState);
@@ -1936,7 +1942,7 @@ export class TopicTitleAndContent extends React.Component<
           <div
             style={{
               width: "1rem",
-              justifyContent: "flex-start",
+              justifyContent: "flex-start"
             }}
           >
             <i
@@ -1952,7 +1958,7 @@ export class TopicTitleAndContent extends React.Component<
           <div
             style={{
               width: "1rem",
-              justifyContent: "flex-start",
+              justifyContent: "flex-start"
             }}
           >
             <i
@@ -1968,7 +1974,7 @@ export class TopicTitleAndContent extends React.Component<
           <div
             style={{
               width: "1rem",
-              justifyContent: "flex-start",
+              justifyContent: "flex-start"
             }}
           >
             <i
@@ -1985,7 +1991,7 @@ export class TopicTitleAndContent extends React.Component<
           <div
             style={{
               width: "1rem",
-              justifyContent: "flex-start",
+              justifyContent: "flex-start"
             }}
           >
             <i style={{ color: "#B0B0B0" }} className="fa fa-lock fa-lg"></i>
@@ -2008,7 +2014,7 @@ export class TopicTitleAndContent extends React.Component<
           <div
             style={{
               width: "1rem",
-              justifyContent: "flex-start",
+              justifyContent: "flex-start"
             }}
           >
             <i style={{ color: "#FF1493" }} className="fa fa-star fa-lg"></i>
@@ -2022,7 +2028,7 @@ export class TopicTitleAndContent extends React.Component<
           <div
             style={{
               width: "1rem",
-              justifyContent: "flex-start",
+              justifyContent: "flex-start"
             }}
           >
             <i
@@ -2036,7 +2042,7 @@ export class TopicTitleAndContent extends React.Component<
           <div
             style={{
               width: "1rem",
-              justifyContent: "flex-start",
+              justifyContent: "flex-start"
             }}
           >
             <i
@@ -2069,7 +2075,7 @@ export class TopicTitleAndContent extends React.Component<
             className="opTitleCheckbox"
             style={{
               alignContent: "center",
-              display: "none",
+              display: "none"
             }}
           >
             <input id={tid} className="opTitleCheckboxValue" type="checkbox" />
@@ -2100,7 +2106,7 @@ export class TopicTitleAndContent extends React.Component<
                       marginLeft: "1rem",
                       color: c,
                       fontWeight: b,
-                      fontStyle: i,
+                      fontStyle: i
                     }}
                   >
                     <span className="listTitleTag" style={{}}>
@@ -2114,7 +2120,7 @@ export class TopicTitleAndContent extends React.Component<
                     display: "flex",
                     fontSize: "0.75rem",
                     marginLeft: "1rem",
-                    width: "auto",
+                    width: "auto"
                   }}
                 >
                   {this.state.pager.map(this.generateListPager.bind(this))}
@@ -2128,7 +2134,7 @@ export class TopicTitleAndContent extends React.Component<
                   alignItems: "flex-end",
                   justifyContent: "space-between",
                   fontSize: "0.75rem",
-                  marginBottom: "-4px",
+                  marginBottom: "-4px"
                 }}
               >
                 <div style={{ width: "7.5rem", textAlign: "left" }}>

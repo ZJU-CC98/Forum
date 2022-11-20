@@ -8,12 +8,12 @@ import {
   Transfer,
   Select,
   notification,
-  Icon,
+  Icon
 } from "antd";
 import {
   multiDelete as aDelete,
   multiLock as aLock,
-  getBoardRecords,
+  getBoardRecords
 } from "./action";
 import { Link } from "react-router-dom";
 import { IBoard, ITopic } from "@cc98/api";
@@ -41,7 +41,7 @@ export default class extends React.Component<Props, State> {
     loading: false,
     hasMore: true,
     manageVisible: false,
-    recordVisible: false,
+    recordVisible: false
   };
   showModal = async () => {
     let res = await Utility.getTpUsers(this.props.data.id, 0, 6);
@@ -54,21 +54,21 @@ export default class extends React.Component<Props, State> {
     this.setState({
       visible: true,
       tpList: res,
-      hasMore,
+      hasMore
     });
   };
   handleOk = () => {
     this.setState({
-      manageVisible: false,
+      manageVisible: false
     });
   };
 
   handleCancel = () => {
     this.setState({
-      visible: false,
+      visible: false
     });
   };
-  cancelTp = async (item) => {
+  cancelTp = async item => {
     const response = await Utility.cancelStopBoardPost(
       item.userId,
       this.props.data.id
@@ -118,7 +118,7 @@ export default class extends React.Component<Props, State> {
           <List
             dataSource={this.state.tpList}
             pagination={{
-              onChange: async (page) => {
+              onChange: async page => {
                 const from = (page - 1) * 5;
                 let data = await Utility.getTpUsers(id, from, 6);
                 if (data.length > 0) {
@@ -128,9 +128,9 @@ export default class extends React.Component<Props, State> {
                 }
               },
               pageSize: 5,
-              simple: true,
+              simple: true
             }}
-            renderItem={(item) => (
+            renderItem={item => (
               <List.Item key={item.userId}>
                 <List.Item.Meta
                   title={
@@ -205,14 +205,14 @@ class Manage extends React.Component<ChildProps, ChildState> {
     lockVisible: false,
     deleteVisible: false,
     reason: "",
-    value: 7,
+    value: 7
   };
-  handleChange = (nextTargetKeys) => {
+  handleChange = nextTargetKeys => {
     this.setState({ targetKeys: nextTargetKeys });
   };
   handleSelectChange = (sourceSelectedKeys, targetSelectedKeys) => {
     this.setState({
-      selectedKeys: [...sourceSelectedKeys, ...targetSelectedKeys],
+      selectedKeys: [...sourceSelectedKeys, ...targetSelectedKeys]
     });
   };
   handleScroll = (direction, e) => {
@@ -224,7 +224,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
       message: "操作错误",
       description: "请至少选择一个帖子",
       duration: 4.5,
-      icon: <Icon type="close-circle" style={{ color: "red" }} />,
+      icon: <Icon type="close-circle" style={{ color: "red" }} />
     };
     notification.open(args);
   };
@@ -254,7 +254,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
     for (const item of list) {
       dList.push({
         key: item.id.toString(),
-        title: item.title,
+        title: item.title
       });
     }
     return (
@@ -279,7 +279,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
               onClick={() => this.setState({ deleteVisible: true })}
             >
               删除
-            </Button>,
+            </Button>
           ]}
         >
           <Transfer
@@ -289,7 +289,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
             selectedKeys={selectedKeys}
             onChange={this.handleChange}
             onSelectChange={this.handleSelectChange}
-            render={(item) => item.title}
+            render={item => item.title}
             listStyle={{ width: "20rem", height: "40rem" }}
           />
         </Modal>
@@ -303,7 +303,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <Select
             style={{ width: 120 }}
             mode="tags"
-            onSelect={(v) => {
+            onSelect={v => {
               this.setState({ reason: v.toString() });
               console.log(v);
             }}
@@ -325,7 +325,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <Select
             style={{ width: 120 }}
             mode="tags"
-            onSelect={(v) => this.setState({ reason: v.toString() })}
+            onSelect={v => this.setState({ reason: v.toString() })}
           >
             <Option value="重复发帖">重复发帖</Option>
             <Option value="管理要求">管理要求</Option>
@@ -337,7 +337,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
           <Select
             style={{ width: 120 }}
             defaultValue="7"
-            onSelect={(v) => this.setState({ value: parseInt(v.toString()) })}
+            onSelect={v => this.setState({ value: parseInt(v.toString()) })}
           >
             <Option value="7">7</Option>
             <Option value="30">30</Option>
@@ -361,7 +361,7 @@ class Record extends React.Component<RecordProps, RecordState> {
   state = {
     current: 1,
     data: null,
-    loading: false,
+    loading: false
   };
   async componentDidMount() {
     this.setState({ loading: true });
@@ -377,7 +377,7 @@ class Record extends React.Component<RecordProps, RecordState> {
         <List
           dataSource={data ? data.boardEvents : []}
           pagination={{
-            onChange: async (page) => {
+            onChange: async page => {
               this.setState({ loading: true });
               const from = (page - 1) * 7;
               let res = await getBoardRecords(id, from);
@@ -386,9 +386,17 @@ class Record extends React.Component<RecordProps, RecordState> {
               this.setState({ data: res, loading: false });
             },
             pageSize: 7,
-            total: data.count,
+            total: data.count
           }}
-          renderItem={(item) => (
+          // TODO: item type
+          renderItem={(item: {
+            id: string;
+            topicId: string;
+            content: string;
+            targetUserName: string;
+            time: string;
+            operatorUserName: string;
+          }) => (
             <List.Item key={item.id}>
               <List.Item.Meta
                 title={

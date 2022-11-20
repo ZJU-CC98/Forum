@@ -40,7 +40,7 @@ export default class extends React.Component<Props, State> {
           onCancel={this.onClick}
           width={"50rem"}
           maskClosable={false}
-          bodyStyle={{ maxHeight: '20rem', overflowY: 'auto' }}
+          bodyStyle={{ maxHeight: "20rem", overflowY: "auto" }}
         >
           {data && (
             <List
@@ -55,7 +55,15 @@ export default class extends React.Component<Props, State> {
                 pageSize: 7,
                 total: data.count,
               }}
-              renderItem={(item) => (
+              // TODO: item type
+              renderItem={(item: {
+                id: string;
+                content: string;
+                targetUserName: string;
+                time: string;
+                operatorUserName: string;
+                ip: string;
+              }) => (
                 <List.Item key={item.id}>
                   <List.Item.Meta
                     title={item.content}
