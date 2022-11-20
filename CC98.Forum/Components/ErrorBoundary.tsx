@@ -25,7 +25,7 @@ export class ErrorEmitter extends React.PureComponent {
     throw new Error("Test Error");
   }
   render() {
-    return <React.Fragment></React.Fragment>;
+    return null;
   }
 }
 
@@ -66,14 +66,6 @@ export default class ErrorBoundary extends React.PureComponent<
   }
 
   render() {
-    if (this.state.error) {
-      return (
-        <React.Fragment>
-          <div></div>
-        </React.Fragment>
-      );
-    } else {
-      return this.props.children;
-    }
+    return !this.state.error && this.props.children;
   }
 }
