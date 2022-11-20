@@ -74,7 +74,9 @@
       >
         <div class="accordion-body">
           <div class="alert alert-info">
-            这里列出的是网站运行的代码遇到的错误详情，如果有需要，前辈可以将这里的内容提供给 CC98 技术团队，以便于他们更好地分析错误。如果前辈是有一定经验的开发人员，也可以尝试通过这些信息找到错误原因并解决问题。
+            这里列出的是网站运行的代码遇到的错误详情，如果有需要，前辈可以将这里的内容提供给
+            CC98
+            技术团队，以便于他们更好地分析错误。如果前辈是有一定经验的开发人员，也可以尝试通过这些信息找到错误原因并解决问题。
           </div>
           <dl>
             <dt>错误消息</dt>
@@ -108,7 +110,9 @@
         <div class="modal-body">
           <div class="alert alert-info">
             为了增加沟通效率，我们提供了一份错误信息的汇总模板。请前辈完善下面的表格，并随后单击<q>生成邮件并发送</q>按钮。前辈填写的内容以及这次错误和详细信息将会一并发送至
-            <a class="alert-link" href="mailto:contact@cc98.org">contact@cc98.org</a>。
+            <a class="alert-link" href="mailto:contact@cc98.org"
+              >contact@cc98.org</a
+            >。
           </div>
 
           <div class="mb-3">
@@ -244,9 +248,9 @@
     document.querySelector(
       "#source-text"
     ).innerText = `${errorInfo.source} (${errorInfo.line}, ${errorInfo.col})`;
-    document.querySelector("#stack-text").innerText = `${(errorInfo.error &&
-      errorInfo.error.stack) ||
-      "无"}`;
+    document.querySelector("#stack-text").innerText = `${
+      (errorInfo.error && errorInfo.error.stack) || "无"
+    }`;
 
     delete errorInfo;
   }
@@ -291,10 +295,12 @@
     // 解析浏览器与操作系统信息
     const systemInfo = frowser.parse(window.navigator.userAgent);
     // 自动填充部分信息
-    document.getElementById("os-input").value ||= `${systemInfo.os.name ||
-      ""} ${systemInfo.os.versionName || systemInfo.os.version || ""}`.trim();
-    document.getElementById("browser-input").value ||= `${systemInfo.browser
-      .name || ""} ${systemInfo.browser.version || ""}`.trim();
+    document.getElementById("os-input").value ||= `${
+      systemInfo.os.name || ""
+    } ${systemInfo.os.versionName || systemInfo.os.version || ""}`.trim();
+    document.getElementById("browser-input").value ||= `${
+      systemInfo.browser.name || ""
+    } ${systemInfo.browser.version || ""}`.trim();
   }
 
   function onFormSubmit(e) {
@@ -341,7 +347,7 @@
       "我已经尝试了页面上给出的所有解决方案，都未能解决这个问题，请问下一步我该如何操作？",
       "",
       "祝好！",
-      ""
+      "",
     ].join("\n");
 
     let link = `mailto:contact@cc98.org?subject=${encodeURIComponent(
