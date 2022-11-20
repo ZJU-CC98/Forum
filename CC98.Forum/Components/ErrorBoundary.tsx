@@ -1,53 +1,76 @@
-import * as React from 'react';
+import * as React from "react";
 
-type props = {
-
-}
-
-type state = {
-  isError: boolean,
-  error: Error,
-}
-
-export default class ErrorBoundary extends React.PureComponent<props, state> {
-  state: state = {
-    isError: false,
-    error: null,
+declare global {
+  interface Window {
+    errorInfo: {
+      event: string;
+      source: string;
+      line: number;
+      col: number;
+      error: Error;
+    };
   }
+}
 
-  componentDidCatch(error: Error) {
-    console.error(error)
+interface ErrorBoundaryProps {}
 
+interface ErrorBoundaryStates {
+  error?: Error;
+  errorInfo?: React.ErrorInfo;
+}
+
+// 测试用
+export class ErrorEmitter extends React.PureComponent {
+  componentDidMount(): void {
+    throw new Error("Test Error");
+  }
+  render() {
+    return <React.Fragment></React.Fragment>;
+  }
+}
+
+export default class ErrorBoundary extends React.PureComponent<
+  ErrorBoundaryProps,
+  ErrorBoundaryStates
+> {
+  templateRef: React.RefObject<HTMLTemplateElement>;
+  rootRef: React.RefObject<HTMLDivElement>;
+
+  state: ErrorBoundaryStates = {};
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     this.setState({
-      isError: true,
-      error
-    })
+      error,
+      errorInfo,
+    });
   }
 
-  handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
-    e.preventDefault();
-    location.reload();
-  }
-
-  render(){
-    if(this.state.isError) {
-      const style: React.CSSProperties = {
-        cursor: 'pointer',
-        color: '#0000ee'
+  componentDidUpdate(
+    _: Readonly<ErrorBoundaryProps>,
+    prevState: Readonly<ErrorBoundaryStates>
+  ): void {
+    if (this.state.error && !prevState.error) {
+      window.errorInfo = {
+        event: this.state.error.message,
+        source: (this.state.errorInfo?.componentStack || "").trim(),
+        line: 0,
+        col: 0,
+        error: this.state.error,
       };
+      const errorTemplate = document.getElementById(
+        "error-template"
+      ) as HTMLTemplateElement;
+      const root = document.getElementById("root") as HTMLDivElement;
+      root.replaceWith(errorTemplate.content.cloneNode(true));
+    }
+  }
 
+  render() {
+    if (this.state.error) {
       return (
-        <div style={{ paddingLeft: '2rem' }}>
-          <h1>Something went wrong</h1>
-          <p>you can <a href="#" style={style} onClick={this.handleClick}>refresh</a> to retry.</p>
-          <p>if this still happens, please contact with <a style={style} href="mailto:contact@cc98.org">contact@cc98.org</a>.</p>
-          <hr />
-          <p>{this.state.error.name}: {this.state.error.message}</p>
-          <p>URL: {location.href}</p>
-          <p>platform: {navigator.platform}</p>
-          <p>appVersion: {navigator.appVersion}</p>
-          <p style={{ whiteSpace: 'pre-wrap' }}>{this.state.error.stack}</p>
-        </div>
+        <React.Fragment>
+          <div></div>
+        </React.Fragment>
       );
     } else {
       return this.props.children;
