@@ -5,7 +5,7 @@ import { UserInfo } from '../../States/AppState';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 
-const themeList = ['系统默认', '冬季', '春季（浅）', '春季（深）', '夏季', '秋季（橙）', '秋季（红）', '双十一', '中秋（暗）', '中秋（亮）', '小雪（暗）', '小雪（亮）', '春节（暗）', '春节（亮）', '仲春', '端午', '清明','秋色之空（暗）','秋色之空（亮）'];
+const themeList = ['系统默认', '冬季', '春季（浅）', '春季（深）', '夏季', '秋季（橙）', '秋季（红）', '双十一', '中秋（暗）', '中秋（亮）', '小雪（暗）', '小雪（亮）', '春节（暗）', '春节（亮）', '仲春', '端午', '清明', '秋色之空（暗）', '秋色之空（亮）', '冬3（暗）', '冬3（亮）'];
 
 interface Props {
   userInfo: UserInfo;
@@ -50,7 +50,7 @@ class Theme extends React.Component<Props> {
           <button style={{ backgroundColor: 'rgb(52,150,159)' }} key={9} onClick={() => this.handleSubmit(9)} disabled={this.props.userInfo.theme === 9}>中秋（亮）</button>
         </div>
         <div className="user-theme-config">
-          <button style={{ backgroundColor: 'rgb(3, 57, 117)' }} key={10} onClick={() => this.handleSubmit(10)} disabled={this.props.userInfo.theme === 10}>小雪（暗）</button>
+          <button style={{ backgroundColor: 'rgb(3, 57, 117)', color: "white" }} key={10} onClick={() => this.handleSubmit(10)} disabled={this.props.userInfo.theme === 10}>小雪（暗）</button>
           <button style={{ backgroundColor: 'rgb(122, 146, 194)' }} key={11} onClick={() => this.handleSubmit(11)} disabled={this.props.userInfo.theme === 11}>小雪（亮）</button>
           <button style={{ backgroundColor: 'rgb(205,0,0)' }} key={12} onClick={() => this.handleSubmit(12)} disabled={this.props.userInfo.theme === 12}>春节（暗）</button>
           <button style={{ backgroundColor: 'rgb(214,14,36)' }} key={13} onClick={() => this.handleSubmit(13)} disabled={this.props.userInfo.theme === 13}>春节（亮）</button>
@@ -59,8 +59,12 @@ class Theme extends React.Component<Props> {
         <div className="user-theme-config">
           <button style={{ backgroundColor: 'rgb(53, 120, 188)' }} key={15} onClick={() => this.handleSubmit(15)} disabled={this.props.userInfo.theme === 15}>端午</button>
           <button style={{ backgroundColor: 'rgb(106, 132, 113)' }} key={16} onClick={() => this.handleSubmit(16)} disabled={this.props.userInfo.theme === 16}>清明</button>
-          <button style={{ backgroundColor: 'rgb(183, 115, 65)' }} key={16} onClick={() => this.handleSubmit(17)} disabled={this.props.userInfo.theme === 17}>秋色之空（暗）</button>
-          <button style={{ backgroundColor: 'rgb(235, 142, 85)' }} key={16} onClick={() => this.handleSubmit(18)} disabled={this.props.userInfo.theme === 18}>秋色之空（亮）</button>
+          <button style={{ backgroundColor: 'rgb(183, 115, 65)' }} key={17} onClick={() => this.handleSubmit(17)} disabled={this.props.userInfo.theme === 17}>秋色之空（暗）</button>
+          <button style={{ backgroundColor: 'rgb(235, 142, 85)' }} key={18} onClick={() => this.handleSubmit(18)} disabled={this.props.userInfo.theme === 18}>秋色之空（亮）</button>
+          <button style={{ backgroundColor: 'rgb(58, 52, 99)', color: "white" }} key={19} onClick={() => this.handleSubmit(19)} disabled={this.props.userInfo.theme === 19}>冬3（暗）</button>
+        </div>
+        <div className="user-theme-config">
+          <button style={{ backgroundColor: 'rgb(238, 144, 134)' }} key={20} onClick={() => this.handleSubmit(20)} disabled={this.props.userInfo.theme === 20}>冬3（亮）</button>
         </div>
       </div>
     );
