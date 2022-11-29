@@ -615,7 +615,7 @@ input[type="radio"] {
 }
 
 .good {
-  height: 1.7rem;
+  min-height: 1.7rem;
   width: 35rem;
   display: flex;
   flex-direction: row;
@@ -636,11 +636,13 @@ input[type="radio"] {
 }
 
 .userName {
+  flex-shrink: 0;
   width: 5rem;
   margin-left: 0.625rem;
 }
 
 .grades {
+  flex-shrink: 0;
   margin-left: 1.25rem;
   width: 8rem;
 }
