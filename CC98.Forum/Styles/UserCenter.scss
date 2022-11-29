@@ -1006,13 +1006,21 @@
 
 .user-theme-config {
   display: flex;
-  justify-content: space-around;
-  margin: 2rem 0;
+  justify-content: space-evenly;
+  /* margin: 2rem 0; */
+  flex-wrap: wrap;
 
   button {
-    width: 7rem;
-    height: 2rem;
+    width: 14rem;
+    height: 6rem;
     border-radius: 3px;
+    margin: 1rem;
+    background: center no-repeat;
+    background-size: cover;
+    border: solid black;
+    /* border-color: black; */
+    /* color: white; */
+    /* font: initial;*/
 
     &:hover {
       opacity: 0.8;
