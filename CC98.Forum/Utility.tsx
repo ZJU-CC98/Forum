@@ -700,6 +700,8 @@ export async function getFocusTopic(
 
 import { boardInfo } from "./Utility/boardInfoJson";
 import { UserInfo } from "./States/AppState";
+import { themeDayNightGroups, themeList } from "./Components/UserCenter/Theme";
+import { _ } from "core-js";
 
 export function syncGetBoardNameById(boardId) {
   for (let item of boardInfo) {
@@ -3055,8 +3057,136 @@ declare let themeNames: string[];
  * 切换主题
  */
 export function changeTheme(theme: number) {
-  $("#mainStylesheet").attr("href", `/static/content/${themeNames[theme]}`);
+  const realTheme = getRealThemeNumber(theme);
+  $("#mainStylesheet").attr("href", `/static/content/${themeNames[realTheme]}`);
 }
+
+/**
+ * 根据用户的主题设置，获取实际生效的主题。
+ */
+function getRealThemeNumber(theme: number) : number {
+
+  const item = themeList[theme];
+  const groupIndex = themeDayNightGroups.findIndex(i => i.day == item.name || i.night == item.name);
+
+  // 当前选择的主题不支持日夜切换，则不进行任何改动
+  if (groupIndex === -1) {
+    return theme;
+  }
+
+  const group = themeDayNightGroups[groupIndex];
+  const dayNightValue = getDayNight();
+
+  let actualThemeName: string = null;
+
+  switch (dayNightValue) {
+    case DayNight.Day:
+      actualThemeName = group.day;
+      break;
+    case DayNight.Night:
+      actualThemeName = group.night;
+      break;
+    // 出现错误
+    default:
+      return theme;
+  }
+
+  // 查找真正的主题名字
+  const actualIndex = themeList.findIndex(i => i.name == actualThemeName);
+  return actualIndex === -1 ? theme : actualIndex;
+}
+
+/**
+ * 定义日夜模式。
+ */
+enum DayNight {
+  /**
+   * 日间模式。
+   */
+  Day,
+  /**
+   * 夜间模式。
+   */
+  Night,
+}
+
+
+  /**
+   * 获取一个值，指示当前浏览器是否支持主题颜色切换功能。
+   * @returns 当前浏览器是否支持主题颜色切换功能。
+   */
+   
+export function  isBrowserDayNightModeSupported() : boolean {
+  return window.matchMedia('(prefers-color-scheme)').matches;
+}
+
+/**
+ * 根据浏览器信息获得日夜模式值。
+ * @returns {DayNight} 浏览器当前提供的日夜模式值。
+ */
+function getDayNightByBrowser() : DayNight {
+
+  return window.matchMedia('(prefers-color-scheme: light)').matches
+    ? DayNight.Day
+    : DayNight.Night
+}
+
+/**
+ * 根据日夜时间设置获得日夜模式值。
+ * @param {string} dayStart 日间开始时间。
+ * @param {string} nightStart 夜间开始时间。
+ * @returns {DayNight} 根据用户设置判定当前的日夜值。
+ */
+function getDayNightByTimeSetting(dayStart: string, nightStart: string) : DayNight {
+  const now = new Date();
+
+  // 2006-01-02
+  const datePart = now.toISOString().substring(0, 10);
+
+  const dayThreshold = new Date(datePart + 'T' + dayStart);
+  const nightThreshold = new Date(datePart + 'T' + nightStart);
+
+  // 8 点到 23 点为日间
+  if (dayThreshold < nightThreshold) {
+    return (now >= dayThreshold && now < nightThreshold) 
+      ? DayNight.Day
+      : DayNight.Night;
+  // 1 点到 9 点为夜间
+  } else {
+    return (now >= nightThreshold && now < dayThreshold)
+    ? DayNight.Night
+    : DayNight.Day;
+  }
+
+}
+
+/**
+ * 获取当前用户的主题设置。
+ * @returns 当前用户的主题设置。
+ */
+function getMyThemeSetting() : State.ThemeSetting {
+  return null;
+}
+
+/**
+ * 获取日夜设置值。
+ * @returns {DayNight | null} 如果启用了日夜设置，则返回当前有效的日夜信息。否则，返回 null。
+ */
+function getDayNight() :  (DayNight | null) {
+  
+  var setting = getMyThemeSetting();
+
+  if (!setting.enableDayNightSwitch) {
+    return null;
+  }
+
+  if (isBrowserDayNightModeSupported() && setting.syncWithBrowserDayNightMode) {
+    return getDayNightByBrowser();
+  } else {
+    return getDayNightByTimeSetting(setting.dayStartTime, setting.nightStartTime);
+  }
+}
+
 export async function queryWealth(boardId) {
   const headers = await formAuthorizeHeader();
   const url = `/manage/reward-daily-record?boardId=${boardId}`;

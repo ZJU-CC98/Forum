@@ -4,6 +4,7 @@ import * as Actions from '../../Actions/UserCenter';
 import { ThemeSetting, UserInfo } from '../../States/AppState';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
+import { string } from 'prop-types';
 
 /** 
  * 该组件需要使用的属性列表。
@@ -22,7 +23,7 @@ interface Props {
 /**
  * 主题列表
  */
-interface StyleList {
+export interface IThemeItem {
   /**主题的顺序 */
   order: number
   /**主题的名字 */
@@ -35,7 +36,7 @@ interface StyleList {
  * 具体的主题按钮样式
  * 每次添加新主题时修改这里
  */
-const buttonStyles: StyleList[] = [
+export const themeList: IThemeItem[] = [
   { order: 0, name: "系统默认", style: { color: "black", backgroundColor: '#ffffff' } },
   { order: 1, name: "冬季", style: { backgroundColor: '#79b8ca', backgroundImage: "url(/static/images/header-image-thumb/winter.jpg)" } },
   { order: 2, name: "春季（浅）", style: { backgroundColor: '#b1d396', backgroundImage: "url(/static/images/header-image-thumb/spring.jpg)" } },
@@ -59,9 +60,34 @@ const buttonStyles: StyleList[] = [
   { order: 20, name: "冬日暖雪（亮）", style: { backgroundColor: 'rgb(181, 127, 163)', backgroundImage: "url(/static/images/header-image-thumb/winter_2022.jpg)" } },
 ]
 
-let themeList = []
-for (let i of buttonStyles) {
-  themeList.push(i.name)
+/**
+ * 定义具有日夜模式的皮肤关系。
+ */
+export class ThemeDayNightGroup {
+  /**
+   * 日间主题名称。
+   */
+  day: string;
+  /**
+   * 夜间主题名称。
+   */
+  night: string;
+}
+
+/**
+ * 具有日夜关系的主题列表。
+ */
+export const themeDayNightGroups: ThemeDayNightGroup[] = [
+  {  day: '中秋（亮）', night: '中秋（暗）',},
+  {  day: '小雪（亮）', night: '小雪（暗）',}, 
+  {  day: '春节（亮）', night: '春节（暗）',}, 
+  {  day: '秋色之空（亮）', night: '秋色之空（暗）',},
+  {  day: '冬日暖雪（亮）', night: '冬日暖雪（暗）',}
+];
+
+let themeButtons = []
+for (let i of themeList) {
+  themeButtons.push(i.name)
 }
 
 /**
@@ -87,13 +113,6 @@ class ThemeSettingComponent extends React.Component<IThemeSettingProps, ThemeSet
     this.submitChange = this.submitChange.bind(this);
   }
 
-  /**
-   * 获取一个值，指示当前浏览器是否支持主题颜色切换功能。
-   * @returns 当前浏览器是否支持主题颜色切换功能。
-   */
-  isBrowserSyncSupported() : boolean {
-    return window.matchMedia('(prefers-color-scheme)').matches;
-  }
 
   handleInputChange(event: React.ChangeEvent<HTMLInputElement>) : void {
     const target = event.target;
@@ -130,7 +149,7 @@ class ThemeSettingComponent extends React.Component<IThemeSettingProps, ThemeSet
   render() {
 
     const supportTip : React.ReactNode = 
-      this.isBrowserSyncSupported()
+      Utility.isBrowserDayNightModeSupported()
       ? []
       : <div title="你当前使用的浏览器不支持切换日夜模式，因此自动切换无法工作。网站将按照你设置的固定时间进行切换。不过，你仍然可以设置这个选项，以便于在支持它的电脑和浏览器上使用这个功能。"> 提示 </div>
 
@@ -180,7 +199,7 @@ class Theme extends React.Component<Props> {
     } catch (e) {
     }
   }
-  generateButton = (item: StyleList) => {
+  generateButton = (item: IThemeItem) => {
     return <button style={item.style} key={item.order} onClick={() => this.handleSubmit(item.order)} disabled={this.props.userInfo.theme === item.order}>{item.name}</button>
   }
 
@@ -196,7 +215,7 @@ class Theme extends React.Component<Props> {
         </div>
 
         <div className="user-theme-config">        
-          {buttonStyles.map(this.generateButton)}
+          {themeList.map(this.generateButton)}
         </div>
       </div>
     );
