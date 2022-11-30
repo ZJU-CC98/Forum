@@ -276,7 +276,8 @@ class ThemeSettingComponent extends React.Component<
    */
   handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const value =
+      target.type === "checkbox" ? target.checked : target.value + ":00";
     const name = target.name;
 
     this.setState({
