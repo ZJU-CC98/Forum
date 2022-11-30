@@ -1018,16 +1018,20 @@
     background: center no-repeat;
     background-size: cover;
     border: solid black;
-    /* border-color: black; */
-    /* color: white; */
-    /* font: initial;*/
+    color:rgba(255,255,255,0);
+    font-size: 1.5rem;
+
 
     &:hover {
-      opacity: 0.8;
+      //opacity: 0.8;
+      background-color: #b77341;
+      color: white;
+      cursor: pointer;
+      background-image: none !important;
     }
 
     &:active {
-      opacity: 0.6;
+      //opacity: 0.6;
     }
   }
 

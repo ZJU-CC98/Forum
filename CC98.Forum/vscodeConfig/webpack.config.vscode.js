@@ -70,9 +70,9 @@ module.exports = {
     css_autumn_2022_dark: "./Themes/autumn_2022_dark.scss",
     //秋色之空（亮）
     css_autumn_2022_light: "./Themes/autumn_2022_light.scss",
-    //冬3（暗）
+    //冬日暖雪（暗）
     css_winter_2022_dark: "./Themes/winter_2022_dark.scss",
-    //冬3（亮）
+    //冬日暖雪（亮）
     css_winter_2022_light: "./Themes/winter_2022_light.scss",
   },
 
