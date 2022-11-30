@@ -3057,14 +3057,23 @@ declare let themeNames: string[];
  * 切换主题
  */
 export function changeTheme(theme: number) {
-  const realTheme = getRealThemeNumber(theme);
-  $("#mainStylesheet").attr("href", `/static/content/${themeNames[realTheme]}`);
+  $("#mainStylesheet").attr("href", `/static/content/${themeNames[theme]}`);
 }
 
 /**
  * 根据用户的主题设置，获取实际生效的主题。
  */
-function getRealThemeNumber(themeIndex: number): number {
+
+/**
+ * 根据第二个参数提供的设置，或本地缓存的用户的主题设置，获取实际生效的主题。
+ * @param themeIndex
+ * @param setting
+ * @returns
+ */
+export function getRealThemeNumber(
+  themeIndex: number,
+  setting?: State.ThemeSetting
+): number {
   const item = themeList[themeIndex];
   const groupIndex = themeDayNightGroups.findIndex(
     (i) => i.day == item.name || i.night == item.name
@@ -3076,7 +3085,7 @@ function getRealThemeNumber(themeIndex: number): number {
   }
 
   const group = themeDayNightGroups[groupIndex];
-  const dayNightValue = getDayNight();
+  const dayNightValue = getDayNight(setting);
 
   let actualThemeName: string = null;
 
@@ -3177,8 +3186,8 @@ function getMyThemeSetting(): State.ThemeSetting {
  * 获取日夜设置值。
  * @returns 如果启用了日夜设置，则返回当前有效的日夜信息。否则，返回 null。
  */
-function getDayNight(): DayNight | null {
-  var setting = getMyThemeSetting();
+function getDayNight(setting?: State.ThemeSetting): DayNight | null {
+  setting ??= getMyThemeSetting();
 
   if (setting === null) {
     return null;

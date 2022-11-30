@@ -9,7 +9,7 @@ import { string } from "prop-types";
 /**
  * 该组件需要使用的属性列表。
  */
-interface Props {
+interface ThemeProps {
   /**
    * 当前界面关联的用户信息。
    */
@@ -23,7 +23,7 @@ interface Props {
 /**
  * 主题列表
  */
-export interface IThemeItem {
+export interface ThemItem {
   /**主题的顺序 */
   order: number;
   /**主题的名字 */
@@ -36,7 +36,7 @@ export interface IThemeItem {
  * 具体的主题按钮样式
  * 每次添加新主题时修改这里
  */
-export const themeList: IThemeItem[] = [
+export const themeList: ThemItem[] = [
   {
     order: 0,
     name: "系统默认",
@@ -211,7 +211,7 @@ export const themeList: IThemeItem[] = [
 /**
  * 定义具有日夜模式的皮肤关系。
  */
-export class ThemeDayNightGroup {
+export interface ThemeDayNightGroup {
   /**
    * 日间主题名称。
    */
@@ -241,7 +241,7 @@ for (let i of themeList) {
 /**
  * 为 ThemeSettingComponent 控件提供输入。
  */
-interface IThemeSettingProps {
+interface ThemeSettingProps {
   /**
    * 控件关联的主题设置信息。
    */
@@ -256,18 +256,18 @@ interface IThemeSettingProps {
  * 提供主题设置界面。
  */
 class ThemeSettingComponent extends React.Component<
-  IThemeSettingProps,
+  ThemeSettingProps,
   ThemeSetting
 > {
   /**
    * 绑定
    * @param props
    */
-  constructor(props: IThemeSettingProps) {
+  constructor(props: ThemeSettingProps) {
     super(props);
     this.state = props.setting;
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.submitChange = this.submitChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   /**
@@ -288,9 +288,9 @@ class ThemeSettingComponent extends React.Component<
    * 调用父组件方法提交设置更改
    * @param event
    */
-  async submitChange(event: React.FormEvent): Promise<any> {
+  async handleSubmit(event: React.FormEvent): Promise<any> {
     event.preventDefault();
-    this.props.onSettingChange(this.state);
+    await this.props.onSettingChange(this.state);
   }
 
   render() {
@@ -305,7 +305,7 @@ class ThemeSettingComponent extends React.Component<
       );
 
     return (
-      <form onSubmit={this.submitChange}>
+      <form onSubmit={this.handleSubmit}>
         <label>
           <input
             name="enableDayNightSwitch"
@@ -362,8 +362,8 @@ class ThemeSettingComponent extends React.Component<
   }
 }
 
-class Theme extends React.Component<Props> {
-  constructor(props) {
+class Theme extends React.Component<ThemeProps> {
+  constructor(props: ThemeProps) {
     super(props);
     this.handleThemeSettingChange = this.handleThemeSettingChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -380,21 +380,28 @@ class Theme extends React.Component<Props> {
       let response = await Utility.cc98Fetch(url, {
         headers,
         method: "PUT",
-        body: JSON.stringify(this.state),
+        body: JSON.stringify(setting),
       });
 
       if (!response.ok) {
         throw new Error(response.statusText);
       }
 
+      // 获取推断后的主题下标
+      const theme = Utility.getRealThemeNumber(
+        this.props.userInfo.theme,
+        setting
+      );
+
       // 更新用户信息
       this.props.changeUserInfo({
         ...this.props.userInfo,
+        theme,
         themeSetting: setting,
       });
 
       // 刷新主题
-      Utility.changeTheme(this.props.userInfo.theme);
+      Utility.changeTheme(theme);
     } catch (e) {}
   };
 
@@ -412,15 +419,18 @@ class Theme extends React.Component<Props> {
         throw new Error(res.statusText);
       }
 
+      // 获取推断后的主题下标
+      theme = Utility.getRealThemeNumber(theme);
+
       // 更新用户信息
-      this.props.changeUserInfo({ ...this.props.userInfo, theme: theme });
+      this.props.changeUserInfo({ ...this.props.userInfo, theme });
 
       // 刷新主题
       Utility.changeTheme(theme);
     } catch (e) {}
   };
 
-  generateButton = (item: IThemeItem) => {
+  generateButton = (item: ThemItem) => {
     return (
       <button
         style={item.style}
