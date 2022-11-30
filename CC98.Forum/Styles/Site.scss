@@ -32,10 +32,10 @@ $color-urlVisited: #741b47;
 .mainPage .gray-scale {
   // display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: -50vh;
+  left: -50vw;
+  width: 200vw;
+  height: 200vh;
   background-color: lightgray;
   mix-blend-mode: hue;
   z-index: 9999;
