@@ -876,7 +876,8 @@ export class MainPage extends React.Component<{}, { data }> {
     );
 
     return (
-      <div className="mainPage" style={{filter: 'grayscale(1)'}}>
+      <div className="mainPage">
+        <div className="gray-scale"></div>
         <DocumentTitle title={`CC98论坛`} />
         <div className="leftPart">
           <AnnouncementComponent data={data.announcement} />
