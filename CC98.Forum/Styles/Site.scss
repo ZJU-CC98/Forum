@@ -21,11 +21,16 @@ $color-black: rgb(32, 32, 32);
 $color-url: #0b5394;
 $color-urlVisited: #741b47;
 
+// 如需开启首页灰度
+// 请把 .main-container .header 设为 filter: grayscale(1)
+// 并把 .mainPage .gray-scale 的 display: none; 注释掉
+
 .main-container .header {
   filter: grayscale(1);
 }
 
 .mainPage .gray-scale {
+  // display: none;
   position: fixed;
   top: 0;
   left: 0;
