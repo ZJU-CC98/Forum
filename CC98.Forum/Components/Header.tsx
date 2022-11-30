@@ -487,7 +487,7 @@ export class Header extends React.Component<{}, AppState> {
     let pathname = location.pathname;
     if (pathname === "/") {
       return (
-        <div className="header">
+        <div className="header" style={{filter: 'grayscale(1)'}}>
           {/*<Redirect />*/}
           <div className="topBar-mainPage">
             <div className="topBarRow">

@@ -21,17 +21,6 @@ $color-black: rgb(32, 32, 32);
 $color-url: #0b5394;
 $color-urlVisited: #741b47;
 
-* {
-  -webkit-filter: grayscale(100%);
-  -moz-filter: grayscale(100%);
-  -ms-filter: grayscale(100%);
-  -o-filter: grayscale(100%);
-  
-  filter: grayscale(100%);
-
-  filter: gray;
-}
-
 blockquote {
   color: #666;
   margin: 0;
