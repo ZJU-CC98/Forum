@@ -3047,7 +3047,7 @@ export async function readAll() {
 export function noticeMessageShow(id: string) {
   $(`#${id}`).removeClass("displaynone");
   $(`#${id}`).removeClass("noticeDisplaynone");
-  setTimeout(function() {
+  setTimeout(function () {
     $(`#${id}`).addClass("noticeDisplaynone");
   }, 1);
 }
@@ -3064,14 +3064,15 @@ export function changeTheme(theme: number) {
 /**
  * 根据用户的主题设置，获取实际生效的主题。
  */
-function getRealThemeNumber(theme: number) : number {
-
-  const item = themeList[theme];
-  const groupIndex = themeDayNightGroups.findIndex(i => i.day == item.name || i.night == item.name);
+function getRealThemeNumber(themeIndex: number): number {
+  const item = themeList[themeIndex];
+  const groupIndex = themeDayNightGroups.findIndex(
+    (i) => i.day == item.name || i.night == item.name
+  );
 
   // 当前选择的主题不支持日夜切换，则不进行任何改动
   if (groupIndex === -1) {
-    return theme;
+    return themeIndex;
   }
 
   const group = themeDayNightGroups[groupIndex];
@@ -3088,12 +3089,12 @@ function getRealThemeNumber(theme: number) : number {
       break;
     // 出现错误
     default:
-      return theme;
+      return themeIndex;
   }
 
   // 查找真正的主题名字
-  const actualIndex = themeList.findIndex(i => i.name == actualThemeName);
-  return actualIndex === -1 ? theme : actualIndex;
+  const actualIndex = themeList.findIndex((i) => i.name == actualThemeName);
+  return actualIndex === -1 ? themeIndex : actualIndex;
 }
 
 /**
@@ -3110,25 +3111,23 @@ enum DayNight {
   Night,
 }
 
+/**
+ * 获取一个值，指示当前浏览器是否支持主题颜色切换功能。
+ * @returns 当前浏览器是否支持主题颜色切换功能。
+ */
 
-  /**
-   * 获取一个值，指示当前浏览器是否支持主题颜色切换功能。
-   * @returns 当前浏览器是否支持主题颜色切换功能。
-   */
-   
-export function  isBrowserDayNightModeSupported() : boolean {
-  return window.matchMedia('(prefers-color-scheme)').matches;
+export function isBrowserDayNightModeSupported(): boolean {
+  return window.matchMedia("(prefers-color-scheme)").matches;
 }
 
 /**
  * 根据浏览器信息获得日夜模式值。
  * @returns {DayNight} 浏览器当前提供的日夜模式值。
  */
-function getDayNightByBrowser() : DayNight {
-
-  return window.matchMedia('(prefers-color-scheme: light)').matches
+function getDayNightByBrowser(): DayNight {
+  return window.matchMedia("(prefers-color-scheme: light)").matches
     ? DayNight.Day
-    : DayNight.Night
+    : DayNight.Night;
 }
 
 /**
@@ -3137,44 +3136,53 @@ function getDayNightByBrowser() : DayNight {
  * @param {string} nightStart 夜间开始时间。
  * @returns {DayNight} 根据用户设置判定当前的日夜值。
  */
-function getDayNightByTimeSetting(dayStart: string, nightStart: string) : DayNight {
+function getDayNightByTimeSetting(
+  dayStart: string,
+  nightStart: string
+): DayNight {
   const now = new Date();
 
   // 2006-01-02
   const datePart = now.toISOString().substring(0, 10);
 
-  const dayThreshold = new Date(datePart + 'T' + dayStart);
-  const nightThreshold = new Date(datePart + 'T' + nightStart);
+  const dayThreshold = new Date(datePart + "T" + dayStart);
+  const nightThreshold = new Date(datePart + "T" + nightStart);
 
   // 8 点到 23 点为日间
   if (dayThreshold < nightThreshold) {
-    return (now >= dayThreshold && now < nightThreshold) 
+    return now >= dayThreshold && now < nightThreshold
       ? DayNight.Day
       : DayNight.Night;
-  // 1 点到 9 点为夜间
+    // 1 点到 9 点为夜间
   } else {
-    return (now >= nightThreshold && now < dayThreshold)
-    ? DayNight.Night
-    : DayNight.Day;
+    return now >= nightThreshold && now < dayThreshold
+      ? DayNight.Night
+      : DayNight.Day;
   }
-
 }
 
 /**
  * 获取当前用户的主题设置。
  * @returns 当前用户的主题设置。
  */
-function getMyThemeSetting() : State.ThemeSetting {
-  return null;
+function getMyThemeSetting(): State.ThemeSetting {
+  try {
+    return JSON.parse(localStorage.getItem("userInfo").slice(4)).themeSetting;
+  } catch (e) {
+    return null;
+  }
 }
 
 /**
  * 获取日夜设置值。
- * @returns {DayNight | null} 如果启用了日夜设置，则返回当前有效的日夜信息。否则，返回 null。
+ * @returns 如果启用了日夜设置，则返回当前有效的日夜信息。否则，返回 null。
  */
-function getDayNight() :  (DayNight | null) {
-  
+function getDayNight(): DayNight | null {
   var setting = getMyThemeSetting();
+
+  if (setting === null) {
+    return null;
+  }
 
   if (!setting.enableDayNightSwitch) {
     return null;
@@ -3183,7 +3191,10 @@ function getDayNight() :  (DayNight | null) {
   if (isBrowserDayNightModeSupported() && setting.syncWithBrowserDayNightMode) {
     return getDayNightByBrowser();
   } else {
-    return getDayNightByTimeSetting(setting.dayStartTime, setting.nightStartTime);
+    return getDayNightByTimeSetting(
+      setting.dayStartTime,
+      setting.nightStartTime
+    );
   }
 }
 
@@ -3394,7 +3405,7 @@ export const pDebounce = (fn, wait, options: any = {}) => {
   let timer;
   let resolveList = [];
 
-  return function(...arguments_) {
+  return function (...arguments_) {
     return new Promise((resolve) => {
       const runImmediately = options.leading && !timer;
 
