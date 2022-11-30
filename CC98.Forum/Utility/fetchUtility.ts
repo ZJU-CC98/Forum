@@ -54,14 +54,14 @@ export async function getToken() {
   }
 }
 
-export async function formAuthorizeHeader() {
+export async function formAuthorizeHeader() : Promise<Headers> {
   const token = await getToken();
   const headers = new Headers();
   headers.append("Authorization", token);
   return headers;
 }
 
-export async function cc98Fetch(url, init?: RequestInit) {
+export async function cc98Fetch(url, init?: RequestInit) : Promise<Response> {
   // const response1 = await fetch("/config.production.json");
   // let data;
   // if (response1.status !== 404) {

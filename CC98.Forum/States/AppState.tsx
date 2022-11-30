@@ -385,7 +385,37 @@ export class UserInfo {
    * 获得的赞
    */
   receivedLikeCount: number;
+
+  /**
+   * 用户的主题设置。
+   */
+  themeSetting: ThemeSetting; 
 }
+
+
+/**
+ * 主题设置对象。
+ */
+ export class ThemeSetting {
+
+  /**
+   * 是否开启主题日夜切换功能。
+   */
+  enableDayNightSwitch : boolean;
+  /**
+   * 是否跟随浏览器的日夜模式同步切换。
+   */
+  syncWithBrowserDayNightMode: boolean;
+  /**
+   * 日间开始时间。
+   */
+  dayStartTime : string;
+  /**
+   * 夜间开始时间。
+   */
+  nightStartTime: string;
+}
+
 
 /**
  * 表示用户最近帖子

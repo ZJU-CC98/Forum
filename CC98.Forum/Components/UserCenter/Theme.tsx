@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
 import * as Actions from '../../Actions/UserCenter';
-import { UserInfo } from '../../States/AppState';
+import { ThemeSetting, UserInfo } from '../../States/AppState';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 
@@ -64,6 +64,104 @@ for (let i of buttonStyles) {
   themeList.push(i.name)
 }
 
+/**
+ * 为 ThemeSettingComponent 控件提供输入。
+ */
+interface IThemeSettingProps {
+  /**
+   * 控件关联的主题设置信息。
+   */
+  setting: ThemeSetting;
+}
+
+/**
+ * 提供主题设置界面。
+ */
+class ThemeSettingComponent extends React.Component<IThemeSettingProps, ThemeSetting> {
+
+  constructor(props) {
+    super(props);
+
+    this.state = props.setting;
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.submitChange = this.submitChange.bind(this);
+  }
+
+  /**
+   * 获取一个值，指示当前浏览器是否支持主题颜色切换功能。
+   * @returns 当前浏览器是否支持主题颜色切换功能。
+   */
+  isBrowserSyncSupported() : boolean {
+    return window.matchMedia('(prefers-color-scheme)').matches;
+  }
+
+  handleInputChange(event: React.ChangeEvent<HTMLInputElement>) : void {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    } as any);
+  }
+
+  /**
+   * 将设置更改同步到服务器。
+   */
+  async submitChange() : Promise<any> {
+    try {
+      let headers =  await Utility.formAuthorizeHeader();
+      headers.append('Content-Type', 'application/json');
+
+      const url = "me/theme-setting";
+      let response = await Utility.cc98Fetch(url, {
+        headers,
+        method: 'PUT',
+        body: JSON.stringify(this.state),
+      });
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+    } catch (e) {
+    }
+  }
+
+  render() {
+
+    const supportTip : React.ReactNode = 
+      this.isBrowserSyncSupported()
+      ? []
+      : <div title="你当前使用的浏览器不支持切换日夜模式，因此自动切换无法工作。网站将按照你设置的固定时间进行切换。不过，你仍然可以设置这个选项，以便于在支持它的电脑和浏览器上使用这个功能。"> 提示 </div>
+
+    return  <form onSubmit={this.submitChange}>
+      <label>
+        <input type="checkbox" checked={this.state.enableDayNightSwitch} onChange={this.handleInputChange} /> 启用皮肤昼夜更换功能
+      </label>
+      <p className="help-text">只有同时提供暗色和亮色选项的皮肤才支持昼夜更换功能。如果你选择其它皮肤，这个选项将不会产生任何效果。</p>
+
+      <div>
+        <label htmlFor="day-start-input">日间开始时刻</label>
+        <input id="day-start-input" type="time" required={true} onChange={this.handleInputChange} />
+        
+        <label htmlFor="night-start-input">夜间开始时刻</label>
+        <input id="night-start-input" type="time" required={true} onChange={this.handleInputChange} />
+      </div>
+      
+      <div>
+        <label>
+          <input type="checkbox" checked={this.state.syncWithBrowserDayNightMode} onChange={this.handleInputChange} /> 和浏览器的日夜模式自动同步 {supportTip}
+        </label>
+      </div>
+      <p className="help-text">注意：你的浏览器必须向网站提供是否使用日夜模式的相关信息，这个设置才会生效。目前，并不是所有浏览器都具有这项功能。浏览器不支持时，将会使用上面设置的日夜开始时刻设置更换皮肤。</p>
+
+      <button type="submit">保存设置</button>
+
+  </form>
+  }
+
+}
+
 class Theme extends React.Component<Props> {
   handleSubmit = async (theme: number) => {
     try {
@@ -93,29 +191,7 @@ class Theme extends React.Component<Props> {
 
         <div>
 
-          <div>
-            <label>
-              <input type="checkbox" /> 启用皮肤昼夜更换功能
-            </label>
-            <p className="help-text">只有通知提供暗色和亮色的主题才支持昼夜更换功能。如果你选择其他皮肤，这个选项将不会产生任何效果。</p>
-
-            <div>
-              <label htmlFor="">日间开始时刻</label>
-              <input type="time" />
-              
-              <label htmlFor="">夜间开始时刻</label>
-              <input type="time" />
-            </div>
-            
-            <div>
-              <label>
-                <input type="checkbox" /> 和浏览器的日夜模式自动同步
-              </label>
-            </div>
-            <p className="help-text">注意：你的浏览器必须向网站提供是否使用日夜模式的相关信息，这个设置才会生效。目前，并不是所有浏览器都具有这项功能。浏览器不支持时，将会使用上面设置的日夜开始时刻更换皮肤。</p>
-           
-
-          </div>
+         <ThemeSettingComponent setting={this.props.userInfo.themeSetting} />
           
         </div>
 
