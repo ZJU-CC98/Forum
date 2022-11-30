@@ -36,8 +36,8 @@ $color-urlVisited: #741b47;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: black;
-  mix-blend-mode: color;
+  background-color: lightgray;
+  mix-blend-mode: hue;
   z-index: 9999;
   pointer-events: none;
 }
