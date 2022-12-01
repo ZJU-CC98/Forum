@@ -22,22 +22,16 @@ $color-url: #0b5394;
 $color-urlVisited: #741b47;
 
 // 如需开启首页灰度
-// 请把 .main-container .header 设为 filter: grayscale(1)
-// 并把 .mainPage .gray-scale 的 display: none; 注释掉
+// 把 .main-container .header .gray-scale 的 display: none; 注释掉
 
-.main-container .header {
-  filter: grayscale(1);
-}
-
-.mainPage .gray-scale {
+.main-container .header .gray-scale {
   // display: none;
   position: fixed;
-  top: -50vh;
-  left: -50vw;
-  width: 200vw;
-  height: 200vh;
-  background-color: lightgray;
-  mix-blend-mode: hue;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: grayscale(1);
   z-index: 9999;
   pointer-events: none;
 }

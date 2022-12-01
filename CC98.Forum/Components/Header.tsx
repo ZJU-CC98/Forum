@@ -58,7 +58,10 @@ class DropDownConnect extends React.Component<props, state> {
     }
 
     //每天刷新一次用户信息
-    if (Utility.isLogOn() && !Utility.getLocalStorage("shouldNotRefreshUserInfo")) {
+    if (
+      Utility.isLogOn() &&
+      !Utility.getLocalStorage("shouldNotRefreshUserInfo")
+    ) {
       this.props.refreshUserInfo();
       Utility.setLocalStorage("shouldNotRefreshUserInfo", true, 86400);
     }
@@ -223,7 +226,9 @@ class DropDownConnect extends React.Component<props, state> {
                 <li>
                   回复我的
                   {this.props.messageCount.replyCount ? (
-                    <div className="message-counterLi">{this.props.messageCount.replyCount}</div>
+                    <div className="message-counterLi">
+                      {this.props.messageCount.replyCount}
+                    </div>
                   ) : null}
                 </li>
               </Link>
@@ -231,7 +236,9 @@ class DropDownConnect extends React.Component<props, state> {
                 <li>
                   @ 我的
                   {this.props.messageCount.atCount ? (
-                    <div className="message-counterLi">{this.props.messageCount.atCount}</div>
+                    <div className="message-counterLi">
+                      {this.props.messageCount.atCount}
+                    </div>
                   ) : null}
                 </li>
               </Link>
@@ -239,7 +246,9 @@ class DropDownConnect extends React.Component<props, state> {
                 <li>
                   系统通知
                   {this.props.messageCount.systemCount ? (
-                    <div className="message-counterLi">{this.props.messageCount.systemCount}</div>
+                    <div className="message-counterLi">
+                      {this.props.messageCount.systemCount}
+                    </div>
                   ) : null}
                 </li>
               </Link>
@@ -247,7 +256,9 @@ class DropDownConnect extends React.Component<props, state> {
                 <li>
                   我的私信
                   {this.props.messageCount.messageCount ? (
-                    <div className="message-counterLi">{this.props.messageCount.messageCount}</div>
+                    <div className="message-counterLi">
+                      {this.props.messageCount.messageCount}
+                    </div>
                   ) : null}
                 </li>
               </Link>
@@ -325,13 +336,15 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
     });
 
     searchBoxSelect.click(function () {
-      if (searchBoxSub.css("display") === "block") searchBoxSub.css("display", "none");
+      if (searchBoxSub.css("display") === "block")
+        searchBoxSub.css("display", "none");
       else searchBoxSub.css("display", "block");
       return false; //阻止事件冒泡
     });
 
     downArrow.click(function () {
-      if (searchBoxSub.css("display") === "block") searchBoxSub.css("display", "none");
+      if (searchBoxSub.css("display") === "block")
+        searchBoxSub.css("display", "none");
       else searchBoxSub.css("display", "block");
       return false; //阻止事件冒泡
     });
@@ -357,12 +370,17 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
     searchIco.click(async () => {
       let val: any = $("#searchText").val();
       if (val && val != "") {
-        if (searchBoxSelect.text() === "主题" || searchBoxSelect.text() === "全站") {
+        if (
+          searchBoxSelect.text() === "主题" ||
+          searchBoxSelect.text() === "全站"
+        ) {
           // notification.warning({
           //   message: '非常抱歉',
           //   description: '搜索功能优化中，暂不可用。'
           // });
-          this.props.history.push(`/search?boardId=0&keyword=${encodeURI(encodeURI(val))}`);
+          this.props.history.push(
+            `/search?boardId=0&keyword=${encodeURI(encodeURI(val))}`
+          );
         } else if (searchBoxSelect.text() === "版内") {
           // notification.warning({
           //   message: '非常抱歉',
@@ -387,7 +405,9 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
             console.log(url3[1]);
             console.log("目前是在版内啊");
           }
-          this.props.history.push(`/search?boardId=${boardId}&keyword=${encodeURI(encodeURI(val))}`);
+          this.props.history.push(
+            `/search?boardId=${boardId}&keyword=${encodeURI(encodeURI(val))}`
+          );
         } else if (searchBoxSelect.text() === "用户") {
           let data = await Utility.getUserInfoByName(val);
           if (data) {
@@ -400,7 +420,9 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
           //   message: '非常抱歉',
           //   description: '搜索功能优化中，暂不可用。'
           // });
-          this.props.history.push(`/searchBoard?keyword=${encodeURI(encodeURI(val))}`);
+          this.props.history.push(
+            `/searchBoard?keyword=${encodeURI(encodeURI(val))}`
+          );
         }
       }
     });
@@ -442,7 +464,12 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
             <div className="caret-down">
               <i className="fa fa-caret-down" />
             </div>
-            <input id="searchText" type="text" placeholder="请输入搜索内容" onKeyPress={this.keypress_submit} />
+            <input
+              id="searchText"
+              type="text"
+              placeholder="请输入搜索内容"
+              onKeyPress={this.keypress_submit}
+            />
             <div className="searchIco">
               <i className="fa fa-search" />
             </div>
@@ -463,7 +490,12 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
             <div className="caret-down">
               <i className="fa fa-caret-down" />
             </div>
-            <input id="searchText" type="text" placeholder="请输入搜索内容" onKeyPress={this.keypress_submit} />
+            <input
+              id="searchText"
+              type="text"
+              placeholder="请输入搜索内容"
+              onKeyPress={this.keypress_submit}
+            />
             <div className="searchIco">
               <i className="fa fa-search" />
             </div>
@@ -487,7 +519,8 @@ export class Header extends React.Component<{}, AppState> {
     let pathname = location.pathname;
     if (pathname === "/") {
       return (
-        <div className="header" style={{filter: 'grayscale(1)'}}>
+        <div className="header">
+          <div className="gray-scale"></div>
           {/*<Redirect />*/}
           <div className="topBar-mainPage">
             <div className="topBarRow">
