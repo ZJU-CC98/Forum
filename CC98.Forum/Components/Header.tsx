@@ -520,7 +520,6 @@ export class Header extends React.Component<{}, AppState> {
     if (pathname === "/") {
       return (
         <div className="header">
-          <div className="gray-scale"></div>
           {/*<Redirect />*/}
           <div className="topBar-mainPage">
             <div className="topBarRow">
