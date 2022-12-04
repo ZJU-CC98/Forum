@@ -33,6 +33,7 @@ $color-urlVisited: #741b47;
   width: 100%;
   height: 100%;
   backdrop-filter: grayscale(0.95);
+  -webkit-backdrop-filter: grayscale(0.95);
   pointer-events: none;
 }
 
