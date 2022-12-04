@@ -238,6 +238,17 @@ for (let i of themeList) {
   themeButtons.push(i.name);
 }
 
+interface ThemeSettingSuccessResult {
+  ok: true;
+}
+
+interface ThemeSettingFailResult {
+  ok: false;
+  message: string;
+}
+
+type ThemeSettingResult = ThemeSettingSuccessResult | ThemeSettingFailResult;
+
 /**
  * 为 ThemeSettingComponent 控件提供输入。
  */
@@ -249,7 +260,7 @@ interface ThemeSettingProps {
   /**
    * 修改用户界面操作执行的回调。
    */
-  onSettingChange: (setting: ThemeSetting) => void | Promise<void>;
+  onSettingChange: (setting: ThemeSetting) => Promise<ThemeSettingResult>;
 }
 
 /**
@@ -259,6 +270,8 @@ class ThemeSettingComponent extends React.Component<
   ThemeSettingProps,
   ThemeSetting
 > {
+  resultRef: React.RefObject<HTMLElement>;
+  resultTimeout;
   /**
    * 绑定
    * @param props
@@ -268,6 +281,7 @@ class ThemeSettingComponent extends React.Component<
     this.state = props.setting;
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.resultRef = React.createRef();
   }
 
   /**
@@ -289,9 +303,21 @@ class ThemeSettingComponent extends React.Component<
    * 调用父组件方法提交设置更改
    * @param event
    */
-  async handleSubmit(event: React.FormEvent): Promise<any> {
+  async handleSubmit(event: React.FormEvent): Promise<void> {
     event.preventDefault();
-    await this.props.onSettingChange(this.state);
+    const themeSettingResult = await this.props.onSettingChange(this.state);
+    const resultSpanElement = this.resultRef.current;
+    clearTimeout(this.resultTimeout);
+    if (themeSettingResult.ok) {
+      resultSpanElement.textContent = "保存成功";
+    } else {
+      resultSpanElement.textContent =
+        "保存失败：" + (themeSettingResult as ThemeSettingFailResult).message;
+    }
+    resultSpanElement.style.display = "unset";
+    this.resultTimeout = setTimeout(() => {
+      resultSpanElement.style.display = "none";
+    }, 3000);
   }
 
   render() {
@@ -309,6 +335,7 @@ class ThemeSettingComponent extends React.Component<
       <form onSubmit={this.handleSubmit}>
         <label>
           <input
+            className="ant-checkbox"
             name="enableDayNightSwitch"
             type="checkbox"
             checked={this.state.enableDayNightSwitch}
@@ -317,11 +344,27 @@ class ThemeSettingComponent extends React.Component<
           启用皮肤昼夜更换功能
         </label>
         <p className="help-text">
-          只有同时提供暗色和亮色选项的皮肤才支持昼夜更换功能。如果你选择其它皮肤，这个选项将不会产生任何效果。
+          只有同时提供亮色和暗色选项的皮肤才支持昼夜更换功能。如果你选择其它皮肤，这个选项将不会产生任何效果。
         </p>
 
         <div>
-          <label htmlFor="day-start-input">日间开始时刻</label>
+          <label>
+            <input
+              className="ant-checkbox"
+              name="syncWithBrowserDayNightMode"
+              type="checkbox"
+              checked={this.state.syncWithBrowserDayNightMode}
+              onChange={this.handleInputChange}
+            />{" "}
+            自动同步浏览器的昼夜模式 {supportTip}
+          </label>
+        </div>
+        <p className="help-text">
+          你的浏览器必须支持获取昼夜模式的接口，否则这个设置将不会生效。
+        </p>
+
+        <div>
+          <label htmlFor="day-start-input">白昼开始时刻</label>
           <input
             id="day-start-input"
             name="dayStartTime"
@@ -329,6 +372,9 @@ class ThemeSettingComponent extends React.Component<
             required={true}
             onChange={this.handleInputChange}
             value={this.state.dayStartTime}
+            style={{
+              margin: "0px 10px",
+            }}
           />
 
           <label htmlFor="night-start-input">夜间开始时刻</label>
@@ -339,25 +385,29 @@ class ThemeSettingComponent extends React.Component<
             required={true}
             onChange={this.handleInputChange}
             value={this.state.nightStartTime}
+            style={{
+              margin: "0px 10px",
+            }}
           />
         </div>
-
-        <div>
-          <label>
-            <input
-              name="syncWithBrowserDayNightMode"
-              type="checkbox"
-              checked={this.state.syncWithBrowserDayNightMode}
-              onChange={this.handleInputChange}
-            />{" "}
-            和浏览器的日夜模式自动同步 {supportTip}
-          </label>
-        </div>
         <p className="help-text">
-          注意：你的浏览器必须向网站提供是否使用日夜模式的相关信息，这个设置才会生效。目前，并不是所有浏览器都具有这项功能。浏览器不支持时，将会使用上面设置的日夜开始时刻设置更换皮肤。
+          当浏览器不支持获取昼夜模式的接口时，将会回退使用此设置所设定的昼夜开始时刻更换皮肤。
         </p>
 
-        <button type="submit">保存设置</button>
+        <button
+          className="ant-btn ant-btn-primary"
+          style={{ padding: "0px 10px" }}
+          type="submit"
+        >
+          保存设置
+        </button>
+        <span
+          ref={this.resultRef}
+          style={{
+            marginLeft: "10px",
+            display: "none",
+          }}
+        ></span>
       </form>
     );
   }
@@ -403,7 +453,16 @@ class Theme extends React.Component<ThemeProps> {
 
       // 刷新主题
       Utility.changeTheme(theme);
-    } catch (e) {}
+
+      return {
+        ok: true as true,
+      } as ThemeSettingSuccessResult;
+    } catch (e) {
+      return {
+        ok: false as false,
+        message: (e as Error).message,
+      } as ThemeSettingFailResult;
+    }
   };
 
   handleSubmit = async (theme: number) => {
