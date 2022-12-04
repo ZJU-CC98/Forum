@@ -34,6 +34,7 @@ $color-urlVisited: #741b47;
   height: 100%;
   backdrop-filter: grayscale(0.95);
   -webkit-backdrop-filter: grayscale(0.95);
+  z-index: 9999;
   pointer-events: none;
 }
 
