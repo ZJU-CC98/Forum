@@ -517,7 +517,7 @@ class Theme extends React.Component<ThemeProps> {
             onSettingChange={this.handleThemeSettingChange}
           />
         </div>
-
+        <hr />
         <div className="user-theme-config">
           {themeList.map(this.generateButton)}
         </div>
