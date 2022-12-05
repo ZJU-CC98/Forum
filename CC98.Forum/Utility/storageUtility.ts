@@ -82,7 +82,7 @@ export function getMyInfo(): MyInfo {
  * @returns {string} 当前活动的访问令牌。
  */
 export function getAccessToken(): string {
-    return getAccessToken();
+    return getLocalStorage<string>("accessToken");
 }
 
 /**
