@@ -310,8 +310,8 @@ export class Reply extends React.Component<
 
   render() {
     let privilege = null;
-    if (Utility.getLocalStorage("userInfo"))
-      privilege = Utility.getLocalStorage("userInfo").privilege;
+    if (Utility.getMyInfo())
+      privilege = Utility.getMyInfo().privilege;
     if (this.props.isHot && this.state.inWaiting) return null;
     if (!this.state.inWaiting) {
       if (!this.state.contents || !this.state.contents.length) {

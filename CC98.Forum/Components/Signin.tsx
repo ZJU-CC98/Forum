@@ -32,7 +32,7 @@ export class Signin extends React.Component<{ history }, { signinInfo; content }
     this.props.history.push(`/topic/${signInTopicId}/${page}#${floor}`);
     this.setState({ content: "" });
     //设定已签到状态和有效期
-    let userInfo = Utility.getLocalStorage("userInfo");
+    let userInfo = Utility.getMyInfo();
     let workTime = (new Date(new Date().setHours(0, 0, 0, 0)).getTime() + 86400000 - new Date().getTime()) / 1000;
     Utility.setLocalStorage(`signin_${userInfo.id}`, true, workTime);
   }
@@ -42,7 +42,7 @@ export class Signin extends React.Component<{ history }, { signinInfo; content }
     const bonusRate = 1;
     if (this.state.signinInfo.hasSignedInToday) {
       //设定已签到状态和有效期
-      let userInfo = Utility.getLocalStorage("userInfo");
+      let userInfo = Utility.getMyInfo();
       let workTime = (new Date(new Date().setHours(0, 0, 0, 0)).getTime() + 86400000 - new Date().getTime()) / 1000;
       Utility.setLocalStorage(`signin_${userInfo.id}`, true, workTime);
       //设定已签到信息
@@ -58,7 +58,7 @@ export class Signin extends React.Component<{ history }, { signinInfo; content }
       );
     } else {
       //设定未签到信息
-      let userInfo = Utility.getLocalStorage("userInfo");
+      let userInfo = Utility.getMyInfo();
       Utility.removeLocalStorage(`signin_${userInfo.id}`);
       info = (
         <div className="column">

@@ -129,7 +129,7 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 	diffY: number;
 	constructor(props: Props) {
 		super(props);
-		const userInfo = Utility.getLocalStorage('userInfo');
+		const userInfo = Utility.getMyInfo();
 		this.state = {
 			avatarURL: '',
 			info: '',
@@ -462,7 +462,7 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 		const style = {
 			display: 'none'
 		};
-		const userInfo = Utility.getLocalStorage('userInfo');
+		const userInfo = Utility.getMyInfo();
 		return (
 			<div>
 				<h2>修改头像</h2>

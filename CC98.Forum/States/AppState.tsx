@@ -392,6 +392,16 @@ export class UserInfo {
   themeSetting: ThemeSetting; 
 }
 
+/**
+ * 当前用户的信息。
+ */
+ export class MyInfo extends UserInfo {
+  /**
+   * 用户是否已经通过验证。
+   */
+  isVerified: boolean;
+}
+
 
 /**
  * 主题设置对象。

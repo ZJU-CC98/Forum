@@ -26,10 +26,10 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
     }
 
     async componentDidMount() {
-        let token = Utility.getLocalStorage("accessToken");
+        let token = Utility.getAccessToken();
 
         //获取到本人信息
-        let myInfo = Utility.getLocalStorage("userInfo");
+        let myInfo = Utility.getMyInfo();
 
 
         //如果有未读消息则清空联系人缓存

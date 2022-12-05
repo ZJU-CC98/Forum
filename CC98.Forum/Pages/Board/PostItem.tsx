@@ -35,8 +35,8 @@ const Item: React.SFC<Props> = ({ data, order }) => {
 
   // 自己发的
   let curName;
-  if (Utility.getLocalStorage('userInfo'))
-    curName = Utility.getLocalStorage('userInfo').name;
+  if (Utility.getMyInfo())
+    curName = Utility.getMyInfo().name;
   if (data.userName === curName) {
     icon = 'my';
     iconText = '我的帖子';

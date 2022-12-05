@@ -451,7 +451,7 @@ ${newProps.content.content}[/quote]
         isAnonymous: isAnonymous,
       };
       const contentJson = JSON.stringify(content);
-      const token = Utility.getLocalStorage("accessToken");
+      const token = Utility.getAccessToken();
       const myHeaders = new Headers();
       myHeaders.append("Authorization", token);
       myHeaders.append("Content-Type", "application/json");
@@ -831,7 +831,7 @@ ${newProps.content.content}[/quote]
 
     const manageItems = [];
     const isManager = Utility.isMaster(this.props.boardInfo.boardMasters);
-    const myInfo = Utility.getLocalStorage("userInfo");
+    const myInfo = Utility.getMyInfo();
     const isMe = myInfo && myInfo.id === this.props.topicInfo.userId;
     const hasManageFeature =
       isMe &&

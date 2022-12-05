@@ -366,7 +366,7 @@ export class Test extends React.Component<{}, { testContent: string }> {
       days: 10,
     };
     const postForumIndexColumnInfo = JSON.stringify(content);
-    const token = Utility.getLocalStorage("accessToken");
+    const token = Utility.getAccessToken();
     let myHeaders = new Headers();
     myHeaders.append("Authorization", token);
     myHeaders.append("Content-Type", "application/json");
@@ -380,7 +380,7 @@ export class Test extends React.Component<{}, { testContent: string }> {
   async signIn() {
     const url = `/me/signin`;
 
-    const token = Utility.getLocalStorage("accessToken");
+    const token = Utility.getAccessToken();
     let myHeaders = new Headers();
     myHeaders.append("Authorization", token);
     myHeaders.append("Content-Type", "application/json");
@@ -812,7 +812,7 @@ export class MainPage extends React.Component<{}, { data }> {
   }
 
   async getData() {
-    let data = Utility.getLocalStorage("mainPageData");
+    let data = Utility.getLocalStorage<any>("mainPageData");
     if (!data) {
       const response = await Utility.cc98Fetch("/config/index");
       data = await response.json();

@@ -170,10 +170,10 @@ class EditForm extends RouteComponent<
         response = await Utility.cc98Fetch(url, { headers });
         let masters = (await response.json()).boardMasters;
         if (
-          Utility.getLocalStorage("userInfo") &&
+          Utility.getMyInfo() &&
           !(
             Utility.isMaster(masters) ||
-            (Utility.getLocalStorage("userInfo").userTitleIds || []).indexOf(
+            (Utility.getMyInfo().userTitleIds || []).indexOf(
               91
             ) !== -1
           ) &&
@@ -1004,9 +1004,9 @@ class EditForm extends RouteComponent<
 
     // issue #38 普通用户不显示校园活动
     if (
-      Utility.getLocalStorage("userInfo") &&
+      Utility.getMyInfo() &&
       (Utility.isMaster(this.state.masters) ||
-        (Utility.getLocalStorage("userInfo").userTitleIds || []).indexOf(91) !==
+        (Utility.getMyInfo().userTitleIds || []).indexOf(91) !==
           -1)
     ) {
       topicType = (

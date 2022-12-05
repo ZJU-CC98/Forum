@@ -22,6 +22,7 @@ import {
   setLocalStorage,
   getLocalStorage,
   removeLocalStorage,
+  getMyInfo,
 } from "./Utility/storageUtility";
 
 import {
@@ -739,7 +740,7 @@ export async function getBoardName(boardId: number) {
 
 export function isLogOn(): boolean {
   const token = getLocalStorage("refresh_token");
-  const userInfo = getLocalStorage("userInfo");
+  const userInfo = getMyInfo();
   return !!(token && userInfo);
 }
 
@@ -1908,8 +1909,8 @@ export async function getBoardId(boardName: string) {
   return boardResult;
 }
 export function isFollowThisBoard(boardId) {
-  if (!getLocalStorage("userInfo")) return false;
-  const customBoards = getLocalStorage<UserInfo>("userInfo").customBoards;
+  if (!getMyInfo()) return false;
+  const customBoards = getMyInfo().customBoards;
   if (customBoards) {
     for (let item of customBoards) {
       if (item == boardId) {
@@ -2576,7 +2577,7 @@ export function getTotalPageof10(replyCount) {
 
 export function isMaster(masters) {
 
-  const userInfo = getLocalStorage<UserInfo>("userInfo");
+  const userInfo = getMyInfo();
 
   if (userInfo) {
     const privilege = userInfo.privilege;
@@ -3122,12 +3123,13 @@ export function checkThemeToChange(): void {
 /**
  * 根据第二个参数提供的设置，或本地缓存的用户的主题设置，获取实际生效的主题。
  * @param {number} themeIndex 用户希望设置的主题值。
+ * @param {State.ThemeSetting} setting 用户希望使用的主题设置。如果参数为 null 则表示使用系统内的设置。
  * @returns {number} 实际应当生效的主题值。
  */
-export function getRealThemeNumber(themeIndex: number): number {
+export function getRealThemeNumber(themeIndex: number, setting?: State.ThemeSetting): number {
 
   // 获取当前用户的主题设置
-  const setting = getMyThemeSetting();
+  setting ??= getMyThemeSetting();
 
   // 如果没有有效的轮换设置（未登录或者未启用），则不进行后面任何操作
   if (!setting) {
@@ -3235,7 +3237,7 @@ function getDayNightByTimeSetting(
  */
 function getMyThemeSetting(): State.ThemeSetting {
   try {
-    return getLocalStorage<UserInfo>("userInfo").themeSetting;
+    return getMyInfo().themeSetting;
   } catch (e) {
     return null;
   }
@@ -3452,7 +3454,7 @@ export async function getUserWealth() {
   let wealth = getLocalStorage("wealth");
   if (!wealth) {
     await refreshUserInfo();
-    let userInfo = getLocalStorage<UserInfo>("userInfo");
+    let userInfo = getMyInfo();
     wealth = userInfo.wealth;
     setLocalStorage("wealth", wealth, 300);
   }

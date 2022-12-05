@@ -18,9 +18,10 @@ export default class extends React.Component<Props, State> {
     let isLogOn = false;
     let isVerified = false;
     let isLocked = true;
-    if (Utility.getLocalStorage("userInfo")) {
+
+    if (Utility.getMyInfo()) {
       isLogOn = true;
-      if (!Utility.getLocalStorage("userInfo").isVerified) {
+      if (!Utility.getMyInfo().isVerified) {
         isVerified = false;
         tip = (
           <div style={{ marginLeft: "1rem", color: "red" }}>
@@ -33,7 +34,7 @@ export default class extends React.Component<Props, State> {
         isVerified = true;
       }
 
-      if (Utility.getLocalStorage("userInfo").lockState !== 0) {
+      if (Utility.getMyInfo().lockState !== 0) {
         isLocked = true;
         tip = (
           <div style={{ marginLeft: "1rem", color: "red" }}>您被全站禁言。</div>

@@ -215,7 +215,7 @@ export class MessageWindow extends React.Component<
    *单条私信的的样式
    */
   coverMessageProps = (item: MessageProps) => {
-    let userInfo = Utility.getLocalStorage("userInfo");
+    let userInfo = Utility.getMyInfo();
     let data = this.props.data;
     if (item.receiverId == userInfo.id) {
       //如果我是接收者调用这个样式，处于左边

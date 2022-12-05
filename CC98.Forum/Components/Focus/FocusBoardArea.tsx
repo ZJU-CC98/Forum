@@ -45,9 +45,9 @@ export class FocusBoardArea extends React.Component<
     //给关注版面添加选中效果
 
     let data = [];
-    let token = Utility.getLocalStorage("accessToken");
+    let token = Utility.getAccessToken();
     //获取关注版面的id列表
-    let userInfo = Utility.getLocalStorage("userInfo");
+    let userInfo = Utility.getMyInfo();
     let boardid = userInfo.customBoards;
 
     const headers = new Headers();

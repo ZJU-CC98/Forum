@@ -1,11 +1,13 @@
+import { MyInfo, UserInfo } from "../States/AppState";
+
 //与缓存相关的函数
-export function setStorage(key: string, value: any[]) {
-    let v = value;
-    if (typeof v == 'object') {
-        v = JSON.stringify(v);
+export function setStorage(key: string, value: any) {
+    let v: string;
+    if (typeof value == 'object') {
+        v = JSON.stringify(value);
         v = `obj-${v}`;
     } else {
-        v = `str-${v}`;
+        v = `str-${value}`;
     }
     sessionStorage.setItem(key, v);
 }
@@ -68,6 +70,22 @@ export function setLocalStorage(key: string, value: any, expireIn: number = 0) {
 }
 
 /**
+ * 获取当前的用户信息。
+ * @returns {MyInfo} 当前的用户信息。
+ */
+export function getMyInfo(): MyInfo {
+    return getLocalStorage<MyInfo>("userInfo");
+}
+
+/**
+ * 获取当前的访问令牌。
+ * @returns {string} 当前活动的访问令牌。
+ */
+export function getAccessToken(): string {
+    return getAccessToken();
+}
+
+/**
  * 从存储区中获得具有给定键的对象。
  * @typeParam T 存储对象的类型。
  * @param {string} key 存储对象的键。
@@ -96,7 +114,8 @@ export function getLocalStorage<T>(key: string): T {
 
         // 锁定用户检测退出登录
         if (key === 'userInfo') {
-            if (obj.lockState === 1 || obj.lockState === 2) {
+            const myInfo = obj as MyInfo;
+            if (myInfo.lockState === 1 || myInfo.lockState === 2) {
                 localStorage.clear()
                 window.location.href = 'https://www.cc98.org/logon'
                 return obj;
@@ -104,7 +123,7 @@ export function getLocalStorage<T>(key: string): T {
         }
         return obj
     } else if (v.indexOf('str-') === 0) {
-        return v.slice(4);
+        return v.slice(4) as T;
     }
 }
 

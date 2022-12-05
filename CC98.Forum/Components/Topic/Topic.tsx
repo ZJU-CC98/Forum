@@ -17,6 +17,7 @@ import { NotFoundTopic, UnauthorizedTopic, ServerError } from '../Status';
 import { TopicInfo } from './Topic-TopicInfo';
 import { NoticeMessage } from '../NoticeMessage';
 import DocumentTitle from '../DocumentTitle';
+import { NoticeSetting } from '../Message/MessageSetting';
 const initQuoteContext = {
     content: "",
     userName: "",
@@ -62,7 +63,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         const userName = this.match.params.userName;
         const floor = (topicInfo.replyCount + 1) % 10;
         //检查用户是否设置跳转到最新回复
-        let noticeSetting = Utility.getLocalStorage("noticeSetting");
+        let noticeSetting = Utility.getLocalStorage<NoticeSetting>("noticeSetting");
         if (page != newPage) {
             console.log("当前页不是最新一页");
             //如果设置了跳转到最新回复或者刚好翻页，则跳转
@@ -182,13 +183,13 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
         let sendTopic = null;
-        if (Utility.getLocalStorage("userInfo"))
+        if (Utility.getMyInfo())
             sendTopic = <SendTopic onChange={this.handleChange} boardInfo={this.state.boardInfo} content={this.state.quote} topicInfo={this.state.topicInfo} />;
         else
             sendTopic = <div>您还未登录，无法发言，请先登录。</div>;
-        if (Utility.getLocalStorage("userInfo") && !Utility.getLocalStorage("userInfo").isVerified)
+        if (Utility.getMyInfo() && !Utility.getMyInfo().isVerified)
             sendTopic = <div>您的帐号未认证，无法发言，请先前往 <a href="https://account.cc98.org">https://account.cc98.org</a> 认证激活。</div>;
-        if (Utility.getLocalStorage("userInfo") && Utility.getLocalStorage("userInfo").lockState !== 0)
+        if (Utility.getMyInfo() && Utility.getMyInfo().lockState !== 0)
             sendTopic = <div>您的帐号被全站禁言。</div>;
         let tip = null;
         if (this.state.topicInfo && this.state.topicInfo.state === 1)

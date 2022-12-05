@@ -46,7 +46,7 @@ export class Replier extends RouteComponent<
         buttonIsDisabled: true,
         buttonInfo: "...",
       });
-      const token = Utility.getLocalStorage("accessToken");
+      const token = Utility.getAccessToken();
       const userId = this.props.userInfo.id;
       const url = `/me/followee/${userId}`;
       const headers = new Headers();
@@ -80,7 +80,7 @@ export class Replier extends RouteComponent<
         buttonIsDisabled: true,
         buttonInfo: "...",
       });
-      const token = Utility.getLocalStorage("accessToken");
+      const token = Utility.getAccessToken();
 
       const userId = this.props.userInfo.id;
       const url = `/me/followee/${userId}`;
@@ -408,9 +408,9 @@ export class Replier extends RouteComponent<
       </div>
     );
     let btn = null;
-    if (Utility.getLocalStorage("userInfo")) {
+    if (Utility.getMyInfo()) {
       if (
-        Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name &&
+        Utility.getMyInfo().name !== this.props.userInfo.name &&
         !this.props.isAnonymous
       ) {
         const email = `/message/message?id=${this.props.userInfo.id}`;

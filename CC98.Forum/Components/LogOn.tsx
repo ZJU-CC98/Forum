@@ -130,7 +130,7 @@ class LogOnExact extends React.Component<Props, LogOnState> {
             Utility.setLocalStorage("accessToken", token, data.expires_in);
             Utility.setLocalStorage('refresh_token', data.refresh_token, 2592000); // refresh_token有效期一个月
             await Utility.refreshUserInfo();
-            let userInfo: UserInfo = Utility.getLocalStorage('userInfo');
+            let userInfo: UserInfo = Utility.getMyInfo();
             if (userInfo.lockState === 1 || userInfo.lockState === 2) {
                 throw new Error('账号已锁定');
             }

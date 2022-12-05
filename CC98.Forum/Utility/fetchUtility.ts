@@ -2,6 +2,7 @@ import {
   getLocalStorage,
   setLocalStorage,
   removeLocalStorage,
+  getAccessToken,
 } from "./storageUtility";
 
 import {
@@ -21,7 +22,7 @@ export async function getToken() : Promise<string> {
     return null;
   }
 
-  let token = getLocalStorage<string>("accessToken");
+  let token = getAccessToken();
   if (token) {
     return token;
   }

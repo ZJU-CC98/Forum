@@ -50,8 +50,8 @@ export default withRouter(class extends React.Component<withRouterProps & Props,
 
   }
   isAllowedtoEdit(userPrivilege) {
-    if (Utility.getLocalStorage("userInfo")) {
-      const myPrivilege = Utility.getLocalStorage("userInfo").privilege;
+    if (Utility.getMyInfo()) {
+      const myPrivilege = Utility.getMyInfo().privilege;
       if (myPrivilege === '管理员') return true;
       if (userPrivilege === '管理员') return false;
       if (Utility.isMaster(this.props.boardInfo.boardMasters)) return true;
@@ -140,7 +140,7 @@ export default withRouter(class extends React.Component<withRouterProps & Props,
 
     let editIcon = null;
     const editUrl = `/editor/edit/${this.props.postInfo.id}`;
-    if (Utility.getLocalStorage("userInfo"))
+    if (Utility.getMyInfo())
       if (this.isAllowedtoEdit(this.props.userInfo.privilege) || this.props.postInfo.isMe) {
 
         editIcon = <Link to={editUrl}><div className="operation1" onClick={this.edit}>   编辑</div></Link>;
@@ -158,7 +158,7 @@ export default withRouter(class extends React.Component<withRouterProps & Props,
 
     let manageBtn = null;
 
-    if (Utility.isMaster(this.props.boardInfo.boardMasters) == true || (this.props.boardInfo.id === 144 && Utility.getLocalStorage("userInfo") && Utility.getLocalStorage("userInfo").name === this.props.topicInfo.userName)) {
+    if (Utility.isMaster(this.props.boardInfo.boardMasters) == true || (this.props.boardInfo.id === 144 && Utility.getMyInfo() && Utility.getMyInfo().name === this.props.topicInfo.userName)) {
       manageBtn = <div className="operation1" id={manageIcon} style={{ cursor: "pointer" }} onClick={this.showManageUI}>管理</div>;
     }
     let judgeIcon = <div className="operation1" onClick={this.showJudgeUI}>   评分</div>;

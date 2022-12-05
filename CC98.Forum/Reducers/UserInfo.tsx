@@ -24,7 +24,7 @@ export class UserInfoStore {
    * 表示当前登录用户的用户信息
    */
   currentUserInfo: Appstate.UserInfo =
-    Utility.getLocalStorage("userInfo") || new Appstate.UserInfo();
+    Utility.getMyInfo() || new Appstate.UserInfo();
   /**
    * 表示当前访问的用户页的页面状态
    */

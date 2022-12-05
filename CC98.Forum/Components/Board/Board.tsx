@@ -741,15 +741,15 @@ export class ListButtonAndAds extends React.Component<{ boardInfo; adsUrl }> {
     let isLogon = false;
     let isVerified = true;
     let isLocked = false;
-    if (Utility.getLocalStorage("userInfo")) isLogon = true;
+    if (Utility.getMyInfo()) isLogon = true;
     if (
-      Utility.getLocalStorage("userInfo") &&
-      !Utility.getLocalStorage("userInfo").isVerified
+      Utility.getMyInfo() &&
+      !Utility.getMyInfo().isVerified
     )
       isVerified = false;
     if (
-      Utility.getLocalStorage("userInfo") &&
-      Utility.getLocalStorage("userInfo").lockState !== 0
+      Utility.getMyInfo() &&
+      Utility.getMyInfo().lockState !== 0
     )
       isLocked = true;
     if (!isLogon) alert("请登陆！");
@@ -766,9 +766,9 @@ export class ListButtonAndAds extends React.Component<{ boardInfo; adsUrl }> {
     let isVerified = false;
     let isLocked = true;
     let tip = null;
-    if (Utility.getLocalStorage("userInfo")) {
+    if (Utility.getMyInfo()) {
       isLogOn = true;
-      if (!Utility.getLocalStorage("userInfo").isVerified) {
+      if (!Utility.getMyInfo().isVerified) {
         isVerified = false;
         tip = (
           <div style={{ marginLeft: "1rem", color: "red" }}>
@@ -778,7 +778,7 @@ export class ListButtonAndAds extends React.Component<{ boardInfo; adsUrl }> {
           </div>
         );
       } else isVerified = true;
-      if (Utility.getLocalStorage("userInfo").lockState !== 0) {
+      if (Utility.getMyInfo().lockState !== 0) {
         isLocked = true;
         tip = (
           <div style={{ marginLeft: "1rem", color: "red" }}>您被全站禁言。</div>
@@ -1933,8 +1933,8 @@ export class TopicTitleAndContent extends React.Component<
 
       //自己
       let curName;
-      if (Utility.getLocalStorage("userInfo"))
-        curName = Utility.getLocalStorage("userInfo").name;
+      if (Utility.getMyInfo())
+        curName = Utility.getMyInfo().name;
       else curName = "";
       //普通
       if (this.props.topState === 0) {
