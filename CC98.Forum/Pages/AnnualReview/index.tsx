@@ -1,5 +1,5 @@
 import React from 'react'
-import { getAnnualReview, getLocalStorage } from '../../Utility'
+import { getAnnualReview, getMyInfo } from '../../Utility'
 import Page1 from './page1'
 import Page2 from './page2'
 import Page3 from './page3'
@@ -45,8 +45,8 @@ export default class extends React.Component {
         const { data, page } = this.state
         const isMobile = navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)
         if (!data) return <Spin />
-        if (getLocalStorage('userInfo')) {
-            data.userInfo = getLocalStorage('userInfo')
+        if (getMyInfo()) {
+            data.userInfo = getMyInfo()
         }
         return <div className={isMobile ? 'annual-review-body' : 'annual-review-body'}>
             {page !== 0 ? <Icon type="up" onClick={this.previousPage} style={{ fontSize: '2rem', cursor: 'pointer', zIndex: 99 }} /> : <div style={{ height: '2rem' }}></div>}
