@@ -17,7 +17,38 @@ import { shouldUseIndexedDb } from "./config";
 import zh_CN from "antd/lib/locale-provider/zh_CN";
 import { LocaleProvider } from "antd";
 import moment from "moment";
+import { checkThemeToChange } from "./Utility";
 moment.locale("zh-cn");
+
+/**
+ * 定时器回调函数集合。
+ */
+const timerCallbacks: (() => void)[] = [];
+
+/**
+ * 定时器回调核心方法。
+ */
+function timeoutCore() {
+  for (let item of timerCallbacks) {
+    item();
+  }
+}
+
+/**
+ * 初始化网页定时器。
+ */
+function initializeTimer() {
+  window.setTimeout(timeoutCore, 1000);
+}
+
+/**
+ * 为系统添加一个新的定时器回调过程。
+ * @param {function} callback 要添加的定时器回调过程方法。
+ */
+export function addTimerCallback(callback: () => void) {
+  timerCallbacks.push(callback);
+}
+
 /**
  * 项目初始化代码
  */
@@ -47,6 +78,12 @@ async function initialize() {
   } else {
     initWatermark();
   }
+
+  initializeTimer();
+
+  // 添加主题检查程序
+  addTimerCallback(checkThemeToChange);
+
 }
 
 initialize();

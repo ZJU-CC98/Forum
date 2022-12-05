@@ -702,6 +702,7 @@ import { boardInfo } from "./Utility/boardInfoJson";
 import { UserInfo } from "./States/AppState";
 import { themeDayNightGroups, themeList } from "./Components/UserCenter/Theme";
 import { _ } from "core-js";
+import { setTheme } from "bizcharts";
 
 export function syncGetBoardNameById(boardId) {
   for (let item of boardInfo) {
@@ -3052,12 +3053,63 @@ export function noticeMessageShow(id: string) {
   }, 1);
 }
 
+/**
+ * 表示用户希望设置的主题的键。
+ */
+const userSetThemeKey = "user-set-theme";
+/**
+ * 表示实际使用的主题的键。
+ */
+const useThemeKey = "use-theme";
+
+
+/**
+ * 执行更新主题的核心操作。
+ * @param {number} theme 要更新的主题编号。
+ */
+function changeThemeCore(theme: number) {
+  // 存入实际设置值
+  setLocalStorage(userSetThemeKey, theme);
+  // 更改样式表
+  $("#mainStylesheet").attr("href", `/static/content/${themeNames[theme]}`);
+}
+
 declare let themeNames: string[];
 /**
- * 切换主题
+ * 切换主题。
+ * @param {number} theme 要更换的主题。
  */
 export function changeTheme(theme: number) {
-  $("#mainStylesheet").attr("href", `/static/content/${themeNames[theme]}`);
+  
+  // 存入设置值。
+  setLocalStorage(userSetThemeKey, theme);
+
+  // 获取真正的主题值（根据日夜设置，该值可能和用户希望设置的值并不相同）。
+  const realTheme = getRealThemeNumber(theme)
+
+  // 执行更新主题操作。
+  changeThemeCore(realTheme);
+}
+
+/**
+ * 从存储区检查主题设置并判断是否需要更新主题。
+ */
+export function checkThemeToChange(): void {
+
+  // 当前存储值
+  const currentSetTheme = getLocalStorage<number>(userSetThemeKey);
+  const currentUsedTheme = getLocalStorage<number>(useThemeKey);
+
+  // 新主题值
+  const newTheme = getRealThemeNumber(currentSetTheme);
+
+  // 无需改变主题则不进行任何操作
+  if (newTheme === currentUsedTheme) {
+    return;
+  }
+
+  // 执行更新主题操作
+  changeThemeCore(newTheme);
 }
 
 /**
@@ -3066,9 +3118,9 @@ export function changeTheme(theme: number) {
 
 /**
  * 根据第二个参数提供的设置，或本地缓存的用户的主题设置，获取实际生效的主题。
- * @param themeIndex
- * @param setting
- * @returns
+ * @param {number} themeIndex 用户希望设置的主题值。
+ * @param {State.ThemeSetting} setting 主题相关的设置数据。 
+ * @returns {number} 实际应当生效的主题值。
  */
 export function getRealThemeNumber(
   themeIndex: number,
@@ -3124,7 +3176,6 @@ enum DayNight {
  * 获取一个值，指示当前浏览器是否支持主题颜色切换功能。
  * @returns 当前浏览器是否支持主题颜色切换功能。
  */
-
 export function isBrowserDayNightModeSupported(): boolean {
   return window.matchMedia("(prefers-color-scheme)").matches;
 }
