@@ -301,3 +301,5 @@ __pycache__/
 yarn.lock
 package-lock.json
 .npmrc
+
+/CC98.Forum/dist/static/config.production.json
