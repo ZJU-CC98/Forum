@@ -1909,7 +1909,7 @@ export async function getBoardId(boardName: string) {
 }
 export function isFollowThisBoard(boardId) {
   if (!getLocalStorage("userInfo")) return false;
-  const customBoards = getLocalStorage("userInfo").customBoards;
+  const customBoards = getLocalStorage<UserInfo>("userInfo").customBoards;
   if (customBoards) {
     for (let item of customBoards) {
       if (item == boardId) {
@@ -2575,10 +2575,13 @@ export function getTotalPageof10(replyCount) {
 }
 
 export function isMaster(masters) {
-  if (getLocalStorage("userInfo")) {
-    const privilege = getLocalStorage("userInfo").privilege;
-    const myName = getLocalStorage("userInfo").name;
-    const myId = getLocalStorage("userInfo").id;
+
+  const userInfo = getLocalStorage<UserInfo>("userInfo");
+
+  if (userInfo) {
+    const privilege = userInfo.privilege;
+    const myName = userInfo.name;
+    const myId = userInfo.id;
     if (privilege === "管理员" || privilege === "超级版主") {
       return true;
     }
@@ -3449,7 +3452,7 @@ export async function getUserWealth() {
   let wealth = getLocalStorage("wealth");
   if (!wealth) {
     await refreshUserInfo();
-    let userInfo = getLocalStorage("userInfo");
+    let userInfo = getLocalStorage<UserInfo>("userInfo");
     wealth = userInfo.wealth;
     setLocalStorage("wealth", wealth, 300);
   }

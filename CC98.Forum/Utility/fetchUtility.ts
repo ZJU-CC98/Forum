@@ -11,13 +11,17 @@ import {
 import store, { history } from "../Store";
 import * as Actions from "../Actions/UserCenter";
 
-export async function getToken() {
-  const refreshToken = getLocalStorage("refresh_token");
+/**
+ * 获取当前的用户登录令牌。
+ * @returns {string} 用户当前有效的登录令牌。
+ */
+export async function getToken() : Promise<string> {
+  const refreshToken = getLocalStorage<string>("refresh_token");
   if (!refreshToken) {
     return null;
   }
 
-  let token = getLocalStorage("accessToken");
+  let token = getLocalStorage<string>("accessToken");
   if (token) {
     return token;
   }
