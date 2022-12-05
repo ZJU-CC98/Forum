@@ -3073,7 +3073,7 @@ const useThemeKey = "use-theme";
  */
 function changeThemeCore(theme: number) {
   // 存入实际设置值
-  setLocalStorage(userSetThemeKey, theme);
+  setLocalStorage(useThemeKey, theme);
   // 更改样式表
   $("#mainStylesheet").attr("href", `/static/content/${themeNames[theme]}`);
 }

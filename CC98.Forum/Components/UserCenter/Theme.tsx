@@ -479,9 +479,6 @@ class Theme extends React.Component<ThemeProps> {
         throw new Error(res.statusText);
       }
 
-      // 获取推断后的主题下标
-      theme = Utility.getRealThemeNumber(theme);
-
       // 更新用户信息
       this.props.changeUserInfo({ ...this.props.userInfo, theme });
 
