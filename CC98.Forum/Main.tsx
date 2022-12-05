@@ -38,7 +38,7 @@ function timeoutCore() {
  * 初始化网页定时器。
  */
 function initializeTimer() {
-  window.setTimeout(timeoutCore, 1000);
+  window.setInterval(timeoutCore, 1000);
 }
 
 /**
