@@ -3088,7 +3088,7 @@ export function changeTheme(theme: number) {
   setLocalStorage(userSetThemeKey, theme);
 
   // 获取真正的主题值（根据日夜设置，该值可能和用户希望设置的值并不相同）。
-  const realTheme = getRealThemeNumber(theme)
+  const realTheme = getRealThemeNumber(theme);
 
   // 执行更新主题操作。
   changeThemeCore(realTheme);
@@ -3122,13 +3122,18 @@ export function checkThemeToChange(): void {
 /**
  * 根据第二个参数提供的设置，或本地缓存的用户的主题设置，获取实际生效的主题。
  * @param {number} themeIndex 用户希望设置的主题值。
- * @param {State.ThemeSetting} setting 主题相关的设置数据。 
  * @returns {number} 实际应当生效的主题值。
  */
-export function getRealThemeNumber(
-  themeIndex: number,
-  setting?: State.ThemeSetting
-): number {
+export function getRealThemeNumber(themeIndex: number): number {
+
+  // 获取当前用户的主题设置
+  const setting = getMyThemeSetting();
+
+  // 如果没有有效的轮换设置（未登录或者未启用），则不进行后面任何操作
+  if (!setting) {
+    return themeIndex;
+  }
+
   const item = themeList[themeIndex];
   const groupIndex = themeDayNightGroups.findIndex(
     (i) => i.day == item.name || i.night == item.name
@@ -3230,7 +3235,7 @@ function getDayNightByTimeSetting(
  */
 function getMyThemeSetting(): State.ThemeSetting {
   try {
-    return JSON.parse(localStorage.getItem("userInfo").slice(4)).themeSetting;
+    return getLocalStorage<UserInfo>("userInfo").themeSetting;
   } catch (e) {
     return null;
   }
@@ -3240,12 +3245,7 @@ function getMyThemeSetting(): State.ThemeSetting {
  * 获取日夜设置值。
  * @returns 如果启用了日夜设置，则返回当前有效的日夜信息。否则，返回 null。
  */
-function getDayNight(setting?: State.ThemeSetting): DayNight | null {
-  setting ??= getMyThemeSetting();
-
-  if (setting === null) {
-    return null;
-  }
+function getDayNight(setting: State.ThemeSetting): DayNight | null {
 
   if (!setting.enableDayNightSwitch) {
     return null;
