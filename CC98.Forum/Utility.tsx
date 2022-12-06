@@ -3128,6 +3128,13 @@ export function checkThemeToChange(): void {
  */
 export function getRealThemeNumber(themeIndex: number, setting?: State.ThemeSetting): number {
 
+  /**
+   * 用户选择默认主题，则使用系统定义的实际主题值。
+   */
+  if (themeIndex == 0) {
+    themeIndex = Constants.config.defaultTheme;
+  }
+
   // 获取当前用户的主题设置
   setting ??= getMyThemeSetting();
 

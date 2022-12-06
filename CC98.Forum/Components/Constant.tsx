@@ -10,6 +10,10 @@ export interface IConfig {
 	 * 图片上传路径。
 	 */
 	imageUploadUrl: string;
+	/**
+	 * 默认主题值。
+	 */
+	defaultTheme: number;
 }
 
 /**
