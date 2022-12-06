@@ -48,11 +48,13 @@ export module Constants {
 			const productionConfig = await productionConfigResponse.json() as IConfig;
 			config = { ...config, ...productionConfig };
 
+			// 暴露到全局
+			window["cc98-config"] = config;
+
 		} catch (e) {
 			
 		}
 	}
-
 }
 
 
