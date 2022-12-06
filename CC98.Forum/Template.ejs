@@ -34,13 +34,14 @@
     <script type="text/javascript">
       // 控制用户缓存
       // 需要清理缓存时更新 version
-      var version = "3.2.5";
+      const version = "3.2.5";
       if (localStorage.getItem("version") !== version) {
         localStorage.clear();
         localStorage.setItem("version", version);
       }
     </script>
-    <% const themeNames = ["default_theme_placeholder"]; htmlWebpackPlugin.files.css.forEach((cssFile) => themeNames.push(cssFile.split("/").pop())); themeNames[0] = themeNames[18]; %>
+    <% const themeNames = ["default_theme_placeholder"]; htmlWebpackPlugin.files.css.forEach((cssFile) => themeNames.push(cssFile.split("/").pop())); 
+    themeNames[0] = themeNames[18]; %>
     <script type="text/javascript">
       // 动态载入样式
       const themeNames = <%= JSON.stringify(themeNames) %>;
@@ -70,12 +71,14 @@
           ).theme;
         }
 
-        if (!userSelectedThemeIndex) {
+        const themeName = themeNames[userSelectedThemeIndex];
+
+        if (!themeName) {
           throw new Error("用户未选择主题");
         }
         document.head.insertAdjacentHTML(
           "beforeend",
-          `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeNames[userSelectedThemeIndex]}">`
+          `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeName}">`
         );
       } catch (e) {
         document.head.insertAdjacentHTML(
