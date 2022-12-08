@@ -19,7 +19,7 @@
             source,
             line,
             col,
-            error
+            error,
           };
           // 获取模板内容
           /** @type {HTMLTemplateElement} */
@@ -40,18 +40,13 @@
         localStorage.setItem("version", version);
       }
     </script>
-    
   </head>
 
-  <body style="display:flex;justify-content:center;">
+  <body style="display: flex; justify-content: center">
     <!-- 错误处理模板 -->
-    <template id="error-template">
-      <%= errorTemplate %>
-    </template>
+    <template id="error-template"> <%= errorTemplate %> </template>
     <!-- 不支持的浏览器模板 -->
-    <template id="unsupported-template">
-      <%= unsupportedTemplate %>
-    </template>
+    <template id="unsupported-template"> <%= unsupportedTemplate %> </template>
     <div id="root"></div>
     <script type="text/javascript" src="/static/scripts/lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/static/scripts/lib/moment/moment.js"></script>
@@ -80,58 +75,54 @@
       }
     </script>
 
-<% const themeNames = ["default_theme_placeholder"]; htmlWebpackPlugin.files.css.forEach((cssFile) => themeNames.push(cssFile.split("/").pop())); %>
-<script type="text/javascript">
-  // 动态载入样式
-  const themeNames = <%= JSON.stringify(themeNames) %>;
-  try {
-    const refreshTokenExpirationTime = localStorage.getItem(
-      "refresh_token_expirationTime"
-    );
-    const isLogOn =
-      refreshTokenExpirationTime &&
-      parseInt(refreshTokenExpirationTime, 10) * 1000 > Date.now();
-    if (!isLogOn) {
-      throw new Error("用户未登录");
-    }
+    <% const themeNames = ["default_theme_placeholder"]; htmlWebpackPlugin.files.css.forEach((cssFile) => themeNames.push(cssFile.split("/").pop())); %>
+    <script type="text/javascript">
+      // 动态载入样式
+      const themeNames = <%= JSON.stringify(themeNames) %>;
 
-    let userSelectedThemeIndex= -1;
+      try {
+        const refreshTokenExpirationTime = localStorage.getItem(
+          "refresh_token_expirationTime"
+        );
+        const isLogOn =
+          refreshTokenExpirationTime &&
+          parseInt(refreshTokenExpirationTime, 10) * 1000 > Date.now();
+        if (!isLogOn) {
+          throw new Error("用户未登录");
+        }
 
-    // 是否已经记录了上次更新的主题，如果有，则使用上次主题
-    const useTheme = localStorage.getItem("use-theme");
-    if (useTheme !== null) {
-      userSelectedThemeIndex = parseInt(localStorage.getItem("use-theme").slice(4));
-    }
+        let userSelectedThemeIndex= -1;
 
-    // 如果未记录之前的主题主题，则从用户信息中提取主题
-    if (isNaN(userSelectedThemeIndex)) {
-        userSelectedThemeIndex = JSON.parse(
-        localStorage.getItem("userInfo").slice(4)
-      ).theme;
-    }
+        // 是否已经记录了上次更新的主题，如果有，则使用上次主题
+        const useTheme = localStorage.getItem("use-theme");
+        if (useTheme !== null) {
+          userSelectedThemeIndex = parseInt(localStorage.getItem("use-theme").slice(4));
+        }
 
-    const themeName = themeNames[userSelectedThemeIndex];
+        // 如果未记录之前的主题主题，则从用户信息中提取主题
+        if (isNaN(userSelectedThemeIndex)) {
+            userSelectedThemeIndex = JSON.parse(
+            localStorage.getItem("userInfo").slice(4)
+          ).theme;
+        }
 
-    if (!themeName) {
-      throw new Error("用户未选择主题");
-    }
-    document.head.insertAdjacentHTML(
-      "beforeend",
-      `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeName}">`
-    );
-  } catch (e) {
+        const themeName = themeNames[userSelectedThemeIndex];
 
-    // 使用默认主题
-
-    const config = window["cc98_config"];
-
-    document.head.insertAdjacentHTML(
-      "beforeend",
-      `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeNames[config.defaultTheme]}">`
-    );
-  }
-</script>
-
-
+        if (!themeName) {
+          throw new Error("用户未选择主题");
+        }
+        document.head.insertAdjacentHTML(
+          "beforeend",
+          `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeName}">`
+        );
+      } catch (e) {
+        window.addEventListener("configload", ({ detail: config }) => {
+          document.head.insertAdjacentHTML(
+            "beforeend",
+            `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeNames[config.defaultTheme]}">`
+          );
+        })
+      }
+    </script>
   </body>
 </html>
