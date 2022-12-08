@@ -25,7 +25,7 @@ $color-urlVisited: #741b47;
 // 把 .main-container .header::after 的 display: none; 注释掉
 
 .main-container .header::after {
-  // display: none;
+  display: none;
   content: " ";
   position: fixed;
   top: 0;
