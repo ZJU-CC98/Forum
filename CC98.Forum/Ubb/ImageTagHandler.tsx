@@ -1,29 +1,38 @@
-﻿import * as React from 'react';
-import * as Ubb from './Core';
-import LazyLoad from 'react-lazyload';
-import * as parse from 'url-parse';
+﻿import * as React from "react";
+import * as Ubb from "./Core";
+import LazyLoad from "react-lazyload";
+import * as parse from "url-parse";
 
 export class ImageTagHandler extends Ubb.TextTagHandler {
-  get supportedTagNames(): string { return 'img' };
+  get supportedTagNames(): string {
+    return "img";
+  }
 
-  execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+  execCore(
+    content: string,
+    tagData: Ubb.UbbTagData,
+    context: Ubb.UbbCodeContext
+  ): React.ReactNode {
     /** 图片的Uri */
     const imageUri = content;
     /** 图片的title */
-    const title = tagData.value('title');
+    const title = tagData.value("title");
     /** 控制图片是否默认显示的值 */
-    let isShowedValue = parseInt(tagData.value('img'));
+    let isShowedValue = parseInt(tagData.value("img"));
 
     let { allowImage, allowExternalImage, allowToolbox } = context.options;
 
     //不允许外链图片
-    if (!allowExternalImage && !parse(imageUri).hostname.includes('cc98.org')) {
+    if (!allowExternalImage && !parse(imageUri).hostname.includes("cc98.org")) {
       allowImage = false;
     }
 
     // 不允许显示图像
-    if (!allowImage || context.data.imageCount >= context.options.maxImageCount) {
-      return <p>签名档禁止使用外链图片</p>
+    if (
+      !allowImage ||
+      context.data.imageCount >= context.options.maxImageCount
+    ) {
+      return <p>签名档禁止使用外链图片</p>;
     }
 
     //图片计数+1
@@ -32,44 +41,52 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
     //[img=1]默认不显示图片，[img]或[img=0]默认显示图片
 
     // HTML5 模式下，使用 figure 表示插图
-    if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
+    if (
+      context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden
+    ) {
       if (isShowedValue === 1) {
-        return <Image
-          imageUri={imageUri}
-          title={title}
-          isShowed={false}
-          allowToolbox={allowToolbox}
-        />
+        return (
+          <Image
+            imageUri={imageUri}
+            title={title}
+            isShowed={false}
+            allowToolbox={allowToolbox}
+          />
+        );
+      } else {
+        return (
+          <figure>
+            <Image
+              imageUri={imageUri}
+              title={title}
+              isShowed={true}
+              allowToolbox={allowToolbox}
+            />
+            <figcaption>{title}</figcaption>
+          </figure>
+        );
       }
-      else {
-        return <figure>
+    }
+    // 非 HTML5 模式
+    else {
+      if (isShowedValue === 1) {
+        return (
+          <Image
+            imageUri={imageUri}
+            title={title}
+            isShowed={false}
+            allowToolbox={allowToolbox}
+          />
+        );
+      } else {
+        return (
           <Image
             imageUri={imageUri}
             title={title}
             isShowed={true}
             allowToolbox={allowToolbox}
           />
-          <figcaption>{title}</figcaption>
-        </figure>
-      }
-    }
-    // 非 HTML5 模式
-    else {
-      if (isShowedValue === 1) {
-        return <Image
-          imageUri={imageUri}
-          title={title}
-          isShowed={false}
-          allowToolbox={allowToolbox}
-        />
-      }
-      else {
-        return <Image
-          imageUri={imageUri}
-          title={title}
-          isShowed={true}
-          allowToolbox={allowToolbox}
-        />
+        );
       }
     }
   }
@@ -79,8 +96,15 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
  *图片组件
  *用于控制图片是否默认显示
  */
-export class Image extends React.Component<{ imageUri, title, isShowed: boolean, allowToolbox: boolean }, { isShowed: boolean, isToolboxOn: boolean, neverShowToolbox: boolean, rotate: number }> {
-
+export class Image extends React.Component<
+  { imageUri; title; isShowed: boolean; allowToolbox: boolean },
+  {
+    isShowed: boolean;
+    isToolboxOn: boolean;
+    neverShowToolbox: boolean;
+    rotate: number;
+  }
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -92,20 +116,20 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean,
   }
   /** 切换展示状态 */
   toggleIsShowed = () => {
-    this.setState(prevState => ({
-      isShowed: !prevState.isShowed
+    this.setState((prevState) => ({
+      isShowed: !prevState.isShowed,
     }));
-  }
+  };
   /** 开关工具箱 */
   toggleToolbox = (isOpen: boolean) => {
     this.setState(() => ({
-      isToolboxOn: isOpen
+      isToolboxOn: isOpen,
     }));
-  }
+  };
   /** 图片旋转一定角度 */
   rotateImage(deg: number) {
-    this.setState(prevState => ({
-      rotate: prevState.rotate + deg
+    this.setState((prevState) => ({
+      rotate: prevState.rotate + deg,
     }));
   }
 
@@ -115,11 +139,15 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean,
       height: 300,
       once: true,
       offset: 100,
+      overflow: true,
     };
 
     if (this.state.isShowed) {
       //允许显示图片工具箱。
-      if (this.props.allowToolbox === true && this.state.neverShowToolbox === false) {
+      if (
+        this.props.allowToolbox === true &&
+        this.state.neverShowToolbox === false
+      ) {
         let toolbox = null;
         //鼠标移至图片上，显示工具箱。
         if (this.state.isToolboxOn) {
@@ -140,8 +168,8 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean,
               <button onClick={() => this.setState({ neverShowToolbox: true })}>
                 <i className="fa fa-close"></i>
               </button>
-            </div >
-          )
+            </div>
+          );
         }
         //工具箱关闭，正常显示图片。
         else {
@@ -155,32 +183,39 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean,
             {/*一个不显示的div，用于点击收起所有图片*/}
             <div className="visibleImage" onClick={this.toggleIsShowed}></div>
             {toolbox}
-            <LazyLoad {...props} >
+            <LazyLoad {...props}>
               <img
-                style={{ maxWidth: '100%', transform: `rotate(${this.state.rotate}deg)` }}
+                style={{
+                  maxWidth: "100%",
+                  transform: `rotate(${this.state.rotate}deg)`,
+                }}
                 src={this.props.imageUri}
                 alt={this.props.title}
               />
-            </LazyLoad >
+            </LazyLoad>
           </div>
-        )
+        );
       }
       //不允许显示工具箱，只显示图片。
       else {
         return (
-          <LazyLoad {...props} >
+          <LazyLoad {...props}>
             <img
-              style={{ maxWidth: '100%' }}
+              style={{ maxWidth: "100%" }}
               src={this.props.imageUri}
               alt={this.props.title}
             />
           </LazyLoad>
-        )
+        );
       }
     }
     //不显示图片，即返回点击查看图片按钮。
     else {
-      return <div className="hiddenImage" onClick={this.toggleIsShowed}>点击查看图片</div>
+      return (
+        <div className="hiddenImage" onClick={this.toggleIsShowed}>
+          点击查看图片
+        </div>
+      );
     }
   }
 }

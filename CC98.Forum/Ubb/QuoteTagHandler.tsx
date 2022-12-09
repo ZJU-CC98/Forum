@@ -40,9 +40,10 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
         (segments[0] as Ubb.UbbTagSegment).subSegments[0] &&
         (segments[0] as Ubb.UbbTagSegment).subSegments[0].type ===
           Ubb.UbbSegmentType.Text &&
-        ((segments[0] as Ubb.UbbTagSegment)
-          .subSegments[0] as Ubb.UbbTextSegment).text.indexOf("以下是引用") ===
-          0 &&
+        (
+          (segments[0] as Ubb.UbbTagSegment)
+            .subSegments[0] as Ubb.UbbTextSegment
+        ).text.indexOf("以下是引用") === 0 &&
         segments
           .slice(1, segments.length)
           .every(
@@ -117,6 +118,7 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
     context: Ubb.UbbCodeContext
   ): React.ReactNode {
     const style: React.CSSProperties = {
+      position: "relative",
       boxSizing: "border-box",
       width: "100%",
       padding: "10px 0 10px 0",
