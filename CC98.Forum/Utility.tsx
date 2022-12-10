@@ -2576,7 +2576,6 @@ export function getTotalPageof10(replyCount) {
 }
 
 export function isMaster(masters) {
-
   const userInfo = getMyInfo();
 
   if (userInfo) {
@@ -3066,7 +3065,6 @@ const userSetThemeKey = "user-set-theme";
  */
 const useThemeKey = "use-theme";
 
-
 /**
  * 执行更新主题的核心操作。
  * @param {number} theme 要更新的主题编号。
@@ -3084,7 +3082,6 @@ declare let themeNames: string[];
  * @param {number} theme 要更换的主题。
  */
 export function changeTheme(theme: number) {
-  
   // 存入设置值。
   setLocalStorage(userSetThemeKey, theme);
 
@@ -3099,10 +3096,12 @@ export function changeTheme(theme: number) {
  * 从存储区检查主题设置并判断是否需要更新主题。
  */
 export function checkThemeToChange(): void {
-
   // 当前存储值
-  const currentSetTheme = getLocalStorage<number>(userSetThemeKey);
-  const currentUsedTheme = getLocalStorage<number>(useThemeKey);
+  const currentSetTheme = parseInt(
+    getLocalStorage<string>(userSetThemeKey),
+    10
+  );
+  const currentUsedTheme = parseInt(getLocalStorage<string>(useThemeKey), 10);
 
   // 新主题值
   const newTheme = getRealThemeNumber(currentSetTheme);
@@ -3126,12 +3125,14 @@ export function checkThemeToChange(): void {
  * @param {State.ThemeSetting} setting 用户希望使用的主题设置。如果参数为 null 则表示使用系统内的设置。
  * @returns {number} 实际应当生效的主题值。
  */
-export function getRealThemeNumber(themeIndex: number, setting?: State.ThemeSetting): number {
-
+export function getRealThemeNumber(
+  themeIndex: number,
+  setting?: State.ThemeSetting
+): number {
   /**
    * 用户选择默认主题，则使用系统定义的实际主题值。
    */
-  if (themeIndex == 0) {
+  if (themeIndex === 0) {
     themeIndex = Constants.config.defaultTheme;
   }
 
@@ -3145,7 +3146,7 @@ export function getRealThemeNumber(themeIndex: number, setting?: State.ThemeSett
 
   const item = themeList[themeIndex];
   const groupIndex = themeDayNightGroups.findIndex(
-    (i) => i.day == item.name || i.night == item.name
+    (i) => i.day === item.name || i.night === item.name
   );
 
   // 当前选择的主题不支持日夜切换，则不进行任何改动
@@ -3255,7 +3256,6 @@ function getMyThemeSetting(): State.ThemeSetting {
  * @returns 如果启用了日夜设置，则返回当前有效的日夜信息。否则，返回 null。
  */
 function getDayNight(setting: State.ThemeSetting): DayNight | null {
-
   if (!setting.enableDayNightSwitch) {
     return null;
   }
