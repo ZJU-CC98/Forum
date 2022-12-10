@@ -139,7 +139,7 @@ export class Image extends React.Component<
       height: 300,
       once: true,
       offset: 100,
-      overflow: true,
+      // overflow: true,
     };
 
     if (this.state.isShowed) {
