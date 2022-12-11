@@ -3103,6 +3103,9 @@ export function checkThemeToChange(): void {
   );
   const currentUsedTheme = parseInt(getLocalStorage<string>(useThemeKey), 10);
 
+  if (Number.isNaN(currentSetTheme) || Number.isNaN(currentUsedTheme)) {
+    return;
+  }
   // 新主题值
   const newTheme = getRealThemeNumber(currentSetTheme);
 
