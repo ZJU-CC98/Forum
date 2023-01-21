@@ -5,12 +5,12 @@ export default class extends React.Component<{ data }> {
     const { data } = this.props
     if (!data.mostReplyTopicCount && !data.mostViewTopicCount) {
       return (
-        <div className="annual-review-2020-page annual-review-2020-page-bg-cat">
+        <div className="annual-review-page annual-review-page-bg-cat">
           在过去的一年里，你还没有发过主题帖...
         </div>
       );
     }
-    return <div className="annual-review-2020-page annual-review-2020-page-bg-cat">
+    return <div className="annual-review-page annual-review-page-bg-cat">
       <div>在你一年发表的主题帖中，</div>
       {data.mostReplyTopicCount !== 0 && (
         <>

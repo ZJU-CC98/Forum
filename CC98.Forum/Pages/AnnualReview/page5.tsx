@@ -63,7 +63,7 @@ export default class extends React.Component<{ data }> {
       }
     };
     return (
-      <div className="annual-review-2020-page annual-review-2020-page-bg-cat">
+      <div className="annual-review-page annual-review-page-bg-cat">
         {during && (
           <div style={{ marginTop: "7rem", marginBottom: "-2rem" }}>
             你最喜欢在

@@ -3444,7 +3444,7 @@ export async function getAnnualReview() {
     store.dispatch(ErrorActions.throwError("LogOut"));
     return null;
   }
-  const url = "/me/annual-review-2021";
+  const url = "/me/annual-review-2022";
   const headers = await formAuthorizeHeader();
   const response = await cc98Fetch(url, { headers });
   return await response.json();

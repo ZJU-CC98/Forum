@@ -5,7 +5,7 @@ export default class extends React.Component<{ data }> {
     const { data } = this.props;
 
     return (
-      <div className="annual-review-2020-page annual-review-2020-page-bg-cat" style={{ lineHeight: 1.25 }}>
+      <div className="annual-review-page annual-review-page-bg-cat" style={{ lineHeight: 1.25 }}>
         <div style={{ fontWeight: "bolder", marginTop: '2rem' }}>
           亲爱的CC98用户 {data.userInfo.name}：
         </div>
@@ -15,7 +15,7 @@ export default class extends React.Component<{ data }> {
           src={`${data.userInfo.portraitUrl}`}
         ></img>
         <div>
-          在过去的2021年里，你有
+          在过去的2022年里，你有
           <span className="annual-review-page2-topicCount">
             {data.postDay}
           </span>
