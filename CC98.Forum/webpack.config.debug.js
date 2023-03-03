@@ -76,6 +76,8 @@ const config = {
     css_winter_2022_dark: "./Themes/winter_2022_dark.scss",
     //冬日暖雪（亮）
     css_winter_2022_light: "./Themes/winter_2022_light.scss",
+    //春2023
+    css_spring_2023_light: "./Themes/spring_2023.scss",
   },
   output: {
     path: path.resolve(__dirname, "dist/"),

@@ -23,7 +23,7 @@ interface ThemeProps {
 /**
  * 主题列表
  */
-export interface ThemItem {
+export interface ThemeItem {
   /**主题的顺序 */
   order: number;
   /**主题的名字 */
@@ -36,7 +36,7 @@ export interface ThemItem {
  * 具体的主题按钮样式
  * 每次添加新主题时修改这里
  */
-export const themeList: ThemItem[] = [
+export const themeList: ThemeItem[] = [
   {
     order: 0,
     name: "系统默认",
@@ -204,6 +204,14 @@ export const themeList: ThemItem[] = [
     style: {
       backgroundColor: "rgb(181, 127, 163)",
       backgroundImage: "url(/static/images/header-image-thumb/winter_2022.jpg)",
+    },
+  },
+  {
+    order: 21,
+    name: "春2023",
+    style: {
+      backgroundColor: "rgb(149,174,69)",
+      backgroundImage: "url(/static/images/header-image/spring_2023.jpg)",
     },
   },
 ];
@@ -487,7 +495,7 @@ class Theme extends React.Component<ThemeProps> {
     } catch (e) {}
   };
 
-  generateButton = (item: ThemItem) => {
+  generateButton = (item: ThemeItem) => {
     return (
       <button
         style={item.style}
