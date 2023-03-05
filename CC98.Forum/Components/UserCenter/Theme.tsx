@@ -34,7 +34,7 @@ export interface ThemeItem {
 
 /**
  * 具体的主题按钮样式
- * 每次添加新主题时修改这里
+ * 每次添加新主题时修改这里,这里的背景图片为小图
  */
 export const themeList: ThemeItem[] = [
   {
@@ -210,8 +210,8 @@ export const themeList: ThemeItem[] = [
     order: 21,
     name: "春2023",
     style: {
-      backgroundColor: "rgb(149,174,69)",
-      backgroundImage: "url(/static/images/header-image/spring_2023.jpg)",
+      backgroundColor: "rgb(171,195,73)",
+      backgroundImage: "url(/static/images/header-image-thumb/spring_2023.jpg)",
     },
   },
 ];
