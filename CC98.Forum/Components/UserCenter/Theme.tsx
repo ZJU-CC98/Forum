@@ -208,7 +208,15 @@ export const themeList: ThemeItem[] = [
   },
   {
     order: 21,
-    name: "春2023",
+    name: "春樱日和（暗）",
+    style: {
+      backgroundColor: "rgb(171,195,73)",
+      backgroundImage: "url(/static/images/header-image-thumb/spring_2023.jpg)",
+    },
+  },
+  {
+    order: 22,
+    name: "春樱日和（亮）",
     style: {
       backgroundColor: "rgb(171,195,73)",
       backgroundImage: "url(/static/images/header-image-thumb/spring_2023.jpg)",
@@ -239,6 +247,7 @@ export const themeDayNightGroups: ThemeDayNightGroup[] = [
   { day: "春节（亮）", night: "春节（暗）" },
   { day: "秋色之空（亮）", night: "秋色之空（暗）" },
   { day: "冬日暖雪（亮）", night: "冬日暖雪（暗）" },
+  { day: "春樱日和（亮）", night: "春樱日和（暗）" }
 ];
 
 let themeButtons = [];
@@ -492,7 +501,7 @@ class Theme extends React.Component<ThemeProps> {
 
       // 刷新主题
       Utility.changeTheme(theme);
-    } catch (e) {}
+    } catch (e) { }
   };
 
   generateButton = (item: ThemeItem) => {
