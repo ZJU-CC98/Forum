@@ -3,7 +3,7 @@
   "name": "cc98-forum",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --progress --hot --inline --config vscodeConfig/webpack.config.vscode.js",
+    "dev": "set NODE_OPTIONS=\"--openssl-legacy-provider\" && webpack-dev-server --progress --hot --inline --config vscodeConfig/webpack.config.vscode.js",
     "bundle-analyze": "webpack --config vscodeConfig/webpack.config.bundle.js",
     "build:debug": "webpack --config webpack.config.debug.js",
     "build:release": "set NODE_OPTIONS=\"--openssl-legacy-provider\" && webpack --config webpack.config.release.js"

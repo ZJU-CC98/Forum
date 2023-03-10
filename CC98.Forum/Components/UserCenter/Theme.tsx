@@ -210,7 +210,7 @@ export const themeList: ThemeItem[] = [
     order: 21,
     name: "春樱日和（暗）",
     style: {
-      backgroundColor: "rgb(171,195,73)",
+      backgroundColor: "rgb(131,150,55)",
       backgroundImage: "url(/static/images/header-image-thumb/spring_2023.jpg)",
     },
   },
