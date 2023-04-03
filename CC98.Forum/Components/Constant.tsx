@@ -43,7 +43,7 @@ export module Constants {
     // 加载运行时配置（如果存在）
     try {
       const productionConfigResponse = await fetch(
-        "/static/config.production.json"
+        "/static/config.Production.json"
       );
       const productionConfig =
         (await productionConfigResponse.json()) as IConfig;

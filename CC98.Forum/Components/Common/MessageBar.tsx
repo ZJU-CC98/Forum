@@ -57,9 +57,7 @@ export class MessageBar extends React.Component<IProps> {
         }
        
         return <div>
-            <hr />
             <div style={wrapperStyle}>{this.props.message}</div>
-            <hr />
         </div>;
     }
 }
