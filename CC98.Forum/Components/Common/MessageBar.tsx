@@ -45,6 +45,24 @@ export class MessageBar extends React.Component<IProps> {
         let wrapperStyle: React.CSSProperties;
         
         switch (this.props.messageType) {
+            case MessageType.Success: 
+                wrapperStyle = {
+                    backgroundColor: '#F5FAFF',
+                    border: '1px solid rgb(204,204,204)',
+                    padding: '10px 17px',
+                    color: 'darkgreen',
+                    margin: '6px 0'
+                };
+                break;
+            case MessageType.Info: 
+                wrapperStyle = {
+                    backgroundColor: '#F5FAFF',
+                    border: '1px solid rgb(204,204,204)',
+                    padding: '10px 17px',
+                    color: 'darkblue',
+                    margin: '6px 0'
+                };
+                break;
             default:
                 wrapperStyle = {
                     backgroundColor: '#F5FAFF',
