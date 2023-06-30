@@ -7,9 +7,9 @@ export class BiliTagHandler extends Ubb.TextTagHandler {
 	}
 
 	/** 根据B站url，获取分p数
-      * @param  {[string]} url B站url 
-      * @return {[string]} 分p数，默认为1
-      */
+	  * @param  {[string]} url B站url 
+	  * @return {[string]} 分p数，默认为1
+	  */
 	private getBiliPage(url: string): string {
 		let paramstr = url.split("?")[1];
 		let params = paramstr ? paramstr.split("&") : "";
@@ -83,7 +83,7 @@ export class BiliTagHandler extends Ubb.TextTagHandler {
 		} as any;
 
 		return <div>
-			<iframe {...props} src={src} allowfullscreen="allowfullscreen" style={style} width="640" height="480" scrolling="no">
+			<iframe {...props} src={src} allowfullscreen="allowfullscreen" style={style} width="640" height="480" scrolling="no" autoplay="0">
 			</iframe>
 		</div >;
 	}
