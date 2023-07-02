@@ -159,7 +159,7 @@ class Config extends React.Component<Props, States> {
             if (newInfo.QQ && (Number.parseInt(newInfo.QQ) <= 0 || Number.parseInt(newInfo.QQ).toString() !== newInfo.QQ)) {
                 throw new Error('请检查QQ是否正确');
             }
-            let birthDay = new Date(this.state.userInfo.birthdayYear + 10, this.state.userInfo.birthdayMonth - 1, this.state.userInfo.birthdayDay);
+            let birthDay = new Date(this.state.userInfo.birthdayYear, this.state.userInfo.birthdayMonth - 1, this.state.userInfo.birthdayDay);
             if (this.state.userInfo.birthdayYear !== 0 && this.state.userInfo.birthdayYear!==9999 && birthDay.getTime() > Date.now()) {
                 throw new Error('请检查生日是否正确');
             }
