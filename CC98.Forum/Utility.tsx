@@ -854,7 +854,7 @@ export function sortRecentMessage(recentMessage) {
         recentMessage[i].showTime = true;
       } else if (
         transerTime(recentMessage[i].time) -
-          transerTime(recentMessage[i + 1].time) <
+        transerTime(recentMessage[i + 1].time) <
         60000
       ) {
         recentMessage[i].showTime = false;

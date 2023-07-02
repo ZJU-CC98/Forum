@@ -3,6 +3,7 @@ import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 import { AdsComponent } from '../MainPage';
 import * as moment from 'moment';
+import { NoticeMessage } from "../NoticeMessage";
 interface Props {
     topicInfo;
     boardInfo;
@@ -46,9 +47,10 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         this.toggleImageState();
     }
 
-    copyTopicUrl() {
-        const content = `【${this.props.boardInfo.name}】${this.props.topicInfo.title} https://www.cc98.org/topic/${this.props.topicInfo.id} 复制本链接到浏览器或者打开【CC98】微信小程序查看~`;
+    copyTopicUrl(props: Props) {
+        const content = `【${props.boardInfo.name}】${props.topicInfo.title} https://www.cc98.org/topic/${props.topicInfo.id} 复制本链接到浏览器或者打开【CC98】微信小程序查看~`;
         navigator.clipboard.writeText(content)
+        Utility.noticeMessageShow("copySuccess")
     }
 
     async follow() {
@@ -138,10 +140,10 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
                                 显示所有图片
                             </div>}
                         <div
-                            className="shareTopic"
+                            className="followTopic"
                             style={{ width: "6rem" }}
-                            onClick={this.copyTopicUrl}>
-                            复制帖子链接
+                            onClick={() => this.copyTopicUrl(this.props)}>
+                            分享帖子链接
                         </div>
                     </div>
                 </div>
@@ -155,6 +157,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
             <div className="topicInfo-ads">
                 <AdsComponent />
             </div>
+            <NoticeMessage text="已将分享内容复制到剪贴板" id="copySuccess" top="13.7%" left="45%" />
         </div>;
     }
 }

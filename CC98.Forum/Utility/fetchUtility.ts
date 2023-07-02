@@ -16,7 +16,7 @@ import * as Actions from "../Actions/UserCenter";
  * 获取当前的用户登录令牌。
  * @returns {string} 用户当前有效的登录令牌。
  */
-export async function getToken() : Promise<string> {
+export async function getToken(): Promise<string> {
   const refreshToken = getLocalStorage<string>("refresh_token");
   if (!refreshToken) {
     return null;
@@ -27,7 +27,7 @@ export async function getToken() : Promise<string> {
     return token;
   }
 
-  const url = "https://openid.cc98.org/connect/token";
+  const url = Constants.config.openIdUrl + "/connect/token";
   const requestBody = {
     client_id: "9a1fd200-8687-44b1-4c20-08d50a96e5cd",
     client_secret: "8b53f727-08e2-4509-8857-e34bf92b27f2",
@@ -59,14 +59,14 @@ export async function getToken() : Promise<string> {
   }
 }
 
-export async function formAuthorizeHeader() : Promise<Headers> {
+export async function formAuthorizeHeader(): Promise<Headers> {
   const token = await getToken();
   const headers = new Headers();
   headers.append("Authorization", token);
   return headers;
 }
 
-export async function cc98Fetch(url, init?: RequestInit) : Promise<Response> {
+export async function cc98Fetch(url, init?: RequestInit): Promise<Response> {
   // const response1 = await fetch("/config.production.json");
   // let data;
   // if (response1.status !== 404) {

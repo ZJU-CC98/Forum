@@ -7,6 +7,10 @@ export interface IConfig {
    */
   apiUrl: string;
   /**
+   * OPENID 调用基础路径。
+   */
+  openIdUrl: string;
+  /**
    * 图片上传路径。
    */
   imageUploadUrl: string;
@@ -48,7 +52,7 @@ export module Constants {
       const productionConfig =
         (await productionConfigResponse.json()) as IConfig;
       config = { ...config, ...productionConfig };
-    } catch (e) {}
+    } catch (e) { }
 
     const configLoadEvent = new CustomEvent<IConfig>("configload", {
       detail: config,

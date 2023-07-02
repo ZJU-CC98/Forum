@@ -11,6 +11,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import DocumentTitle from './DocumentTitle';
 import { UserInfo } from '../States/AppState';
 import { History } from 'history';
+import { Constants } from '../Components/Constant'
 
 type ownProps = {
     isLogOn: boolean;
@@ -96,7 +97,7 @@ class LogOnExact extends React.Component<Props, LogOnState> {
         console.log('logging...')
         this.props.logOff();
         try {
-            let url = 'https://openid.cc98.org/connect/token';
+            const url = Constants.config.openIdUrl + '/connect/token';
 
             /*
             请求的正文部分，密码模式需要5个参数，其中client_id和client_secret来自申请的应用，grant_type值固定为"password"
