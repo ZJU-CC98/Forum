@@ -468,16 +468,15 @@ export class Replier extends RouteComponent<
           <div className="userMessageOpt">
             帖数 {this.props.userInfo.postCount}
           </div>
-          <div className="userMessageOpt">粉丝 {fanCount}</div>
-
+          <div className="userMessageOpt">
+            粉丝 {fanCount}
+          </div>
           <div className="userMessageOpt">
             威望 {this.props.userInfo.prestige}
           </div>
-
           <div className="userMessageOpt">
-            风评 {this.props.userInfo.popularity}
+            最后登录 {lastLogOn}
           </div>
-          <div className="userMessageOpt">最后登录 {lastLogOn}</div>
         </div>
       );
     }
