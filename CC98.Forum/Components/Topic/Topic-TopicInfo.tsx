@@ -34,7 +34,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         }
         this.toggleImageState();
     }
-    
+
     hideAllImg = () => {
         let btns = document.getElementsByClassName("visibleImage");
         for (let btnId in btns) {
@@ -44,6 +44,11 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
             }
         }
         this.toggleImageState();
+    }
+
+    copyTopicUrl() {
+        const content = `【${this.props.boardInfo.name}】${this.props.topicInfo.title} https://www.cc98.org/topic/${this.props.topicInfo.id} 复制本链接到浏览器或者打开【CC98】微信小程序查看~`;
+        navigator.clipboard.writeText(content)
     }
 
     async follow() {
@@ -132,6 +137,12 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
                                 onClick={this.showAllImg}>
                                 显示所有图片
                             </div>}
+                        <div
+                            className="shareTopic"
+                            style={{ width: "6rem" }}
+                            onClick={this.copyTopicUrl}>
+                            复制帖子链接
+                        </div>
                     </div>
                 </div>
 
