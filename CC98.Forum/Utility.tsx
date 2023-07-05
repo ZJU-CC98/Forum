@@ -2990,6 +2990,15 @@ export function atUserMdUrl(content: string) {
 }
 
 /**
+ * 将帖子内容中用户上传文件或图片的链接替换成https，避免浏览器因http拦截下载附件。
+ * @param content 
+ */
+export function replaceHttpToHttps(content: string): string {
+  //http://file.cc98.org -> https://file.cc98.org
+  return content.replace(/http:\/\/file\.cc98\.org/g, "https://file.cc98.org");
+}
+
+/**
  * 判断是否存在引用内容
  * @param content
  */

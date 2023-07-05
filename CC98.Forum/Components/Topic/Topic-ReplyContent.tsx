@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import * as Utility from "../../Utility";
-import  AwardInfo  from "./Topic-AwardInfo";
+import AwardInfo from "./Topic-AwardInfo";
 import { RouteComponent } from "../RouteComponent";
 import { PostManagement } from "./Topic-PostManagement";
 import { UbbContainer } from "../UbbContainer";
@@ -127,19 +127,19 @@ export class ReplyContent extends React.Component<
       this.setState({
         vote,
       });
-    } catch (e) {}
+    } catch (e) { }
   }
 
   render() {
     const domId = `doc-content${this.props.postId}-${this.props.floor}`;
-    let ubbUrlContent = Utility.atUserUbbUrl(this.props.content);
+    let ubbUrlContent = Utility.replaceHttpToHttps(Utility.atUserUbbUrl(this.props.content));
     const ubbMode = (
       <UbbContainer
         code={ubbUrlContent}
         options={{ ...new UbbCodeOptions(), allowToolbox: true }}
       />
     );
-    let mdUrlContent = Utility.atUserMdUrl(this.props.content);
+    let mdUrlContent = Utility.replaceHttpToHttps(Utility.atUserMdUrl(this.props.content));
     const mdMode = (
       <div className="markdown-container mde-preview">
         <div id={domId} className="mde-preview-content"></div>
