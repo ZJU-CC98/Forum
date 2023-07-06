@@ -38,11 +38,11 @@ export class BiliTagHandler extends Ubb.TextTagHandler {
 
 		//纯数字依然解析成aid
 		if (isPureNumber) {
-			src = `https://player.bilibili.com/player.html?aid=${innerContent}&page=${partNumber}`;
+			src = `https://player.bilibili.com/player.html?aid=${innerContent}&page=${partNumber}&autoplay=0&poster=1`;
 		}
 		//BV开头的字符串，解析成bvid
 		else if (isBVString) {
-			src = `https://player.bilibili.com/player.html?bvid=${innerContent}&page=${partNumber}`;
+			src = `https://player.bilibili.com/player.html?bvid=${innerContent}&page=${partNumber}&autoplay=0&poster=1`;
 		}
 		//bili标签内直接复制b站url，根据具体情况做不同的解析
 		else if (isUrl) {
@@ -55,11 +55,11 @@ export class BiliTagHandler extends Ubb.TextTagHandler {
 
 			if (isAv) {
 				let av = innerContent.split("bilibili.com/video/av")[1].split("?")[0].split("/")[0];
-				src = `https://player.bilibili.com/player.html?aid=${av}&page=${page}`;
+				src = `https://player.bilibili.com/player.html?aid=${av}&page=${page}&autoplay=0&poster=1`;
 			}
 			else if (isBV) {
 				let BV = innerContent.split("bilibili.com/video/")[1].split("?")[0].split("/")[0];
-				src = `https://player.bilibili.com/player.html?bvid=${BV}&page=${page}`;
+				src = `https://player.bilibili.com/player.html?bvid=${BV}&page=${page}&autoplay=0&poster=1`;
 			}
 			//错误的url，不解析
 			else {
@@ -79,11 +79,11 @@ export class BiliTagHandler extends Ubb.TextTagHandler {
 			border: "0",
 			frameborder: "no",
 			framespacing: "0",
-			allowfullscreen: "true"
+			allowfullscreen: "true",
 		} as any;
 
 		return <div>
-			<iframe {...props} src={src} allowfullscreen="allowfullscreen" style={style} width="640" height="480" scrolling="no" autoplay="0">
+			<iframe {...props} src={src} allowfullscreen="allowfullscreen" style={style} width="640" height="480" scrolling="no">
 			</iframe>
 		</div >;
 	}

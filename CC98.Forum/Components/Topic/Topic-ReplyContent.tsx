@@ -24,7 +24,7 @@ export class ReplyContent extends React.Component<
 > {
   constructor(props, content) {
     super(props, content);
-
+    props.content = Utility.replaceHttpToHttps(props.content)
     this.state = {
       postId: this.props.postId,
       vote: null,
@@ -132,14 +132,14 @@ export class ReplyContent extends React.Component<
 
   render() {
     const domId = `doc-content${this.props.postId}-${this.props.floor}`;
-    let ubbUrlContent = Utility.replaceHttpToHttps(Utility.atUserUbbUrl(this.props.content));
+    let ubbUrlContent = Utility.atUserUbbUrl(this.props.content);
     const ubbMode = (
       <UbbContainer
         code={ubbUrlContent}
         options={{ ...new UbbCodeOptions(), allowToolbox: true }}
       />
     );
-    let mdUrlContent = Utility.replaceHttpToHttps(Utility.atUserMdUrl(this.props.content));
+    let mdUrlContent = Utility.atUserMdUrl(this.props.content);
     const mdMode = (
       <div className="markdown-container mde-preview">
         <div id={domId} className="mde-preview-content"></div>

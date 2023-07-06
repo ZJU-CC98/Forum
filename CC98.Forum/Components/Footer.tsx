@@ -1,6 +1,5 @@
 ﻿import * as React from 'react';
 import { AppState } from '../States/AppState';
-import * as $ from 'jquery';
 
 export class Footer extends React.Component<{}, AppState> {   //底部
     render() {
