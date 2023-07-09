@@ -460,7 +460,7 @@ export async function getRandomRecommendedTopic(size: number) {
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await cc98Fetch(`/topic/random-recommendation?&size=${size}`, {
+    const response = await cc98Fetch(`/topic/random-recommendation?size=${size}`, {
       headers,
     });
     switch (response.status) {
