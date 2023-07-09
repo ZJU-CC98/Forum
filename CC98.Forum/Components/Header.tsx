@@ -549,6 +549,9 @@ export class Header extends React.Component<{}, AppState> {
                 <div className="topBarText">
                   <Link to="/focus">关注</Link>
                 </div>
+                <div className="topBarText">
+                  <Link to="/recommendedTopics">精选</Link>
+                </div>
                 <Route component={Search} />
               </div>
               <DropDown />
@@ -587,6 +590,9 @@ export class Header extends React.Component<{}, AppState> {
                 </div>
                 <div className="topBarText">
                   <Link to="/focus">关注</Link>
+                </div>
+                <div className="topBarText">
+                  <Link to="/recommendedTopics">精选</Link>
                 </div>
                 <Route component={Search} />
               </div>

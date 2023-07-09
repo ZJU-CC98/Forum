@@ -14,7 +14,7 @@ export default class Focus extends React.Component {
     /**
      * 从上往下分别为：页面标题(关注版面或者关注用户)、关注版面列表区域、主题列表区域，分别用三个组件表示
      */
-    
+
     render() {
         return (<div className="focus-root">
             <DocumentTitle title={`我的关注 - CC98论坛`} />
@@ -25,7 +25,7 @@ export default class Focus extends React.Component {
                         <Link style={{ textDecoration: 'none' }} to='/focus/user'> <div className="focus-title" id="myFocusUser">关注用户</div></Link>
                         <Link style={{ textDecoration: 'none' }} to='/focus/favorite'> <div className="focus-title" id="myFocusFavorite">收藏更新</div></Link>
                     </div>
-                    <Route exact path="/focus" component={FocusBoardArea}></Route>
+                    <Route exact path="/focus" component={FocusBoardArea} />
                     <Route path='/focus/board' component={FocusBoardArea} />
                     <Route path='/focus/user' component={FocusUserArea} />
                     <Route path='/focus/favorite' component={FocusFavoriteArea} />

@@ -11,6 +11,7 @@ import { BoardList } from "./Board/BoardList";
 import UserCenter from "./UserCenter/UserCenter";
 import { Message } from "./Message/Message";
 import { AllNewTopic } from "./Topic/Topic-New";
+import { AllRecommendedTopic } from "./Topic/Topic-Recommended"
 import Focus from "./Focus/Focus";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
@@ -63,6 +64,7 @@ class App extends React.Component<Props> {
         <Route path="/message" component={Message} />
         <Route path="/focus" component={Focus} />
         <Route path="/newtopics" component={AllNewTopic} />
+        <Route path="/recommendedtopics" component={AllRecommendedTopic} />
         <Route path="/user/:method/:id" component={User} />
         <Route path="/logon" exact component={LogOn} />
         <Route path="/search" component={Search} />

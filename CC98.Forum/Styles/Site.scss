@@ -2140,6 +2140,45 @@ a {
   border-bottom: 2px solid #fb6165;
 }
 
+.recommendation-button-area {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 30px;
+
+  .recommendation-button {
+    display: block;
+    background-color: $theme_color_main;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 1px solid $theme_color_main;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    line-height: normal;
+    white-space: nowrap;
+    font-family: 微软雅黑;
+    margin-right: 1rem;
+    margin-top: 1rem;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .recommendation-button:hover {
+    color: $theme_color_main;
+    background-color: transparent;
+  }
+
+  .recommendation-button:active {
+    color: #ffffff;
+    background-color: $theme_color_main;
+  }
+
+  i {
+    margin-right: 3px;
+  }
+}
+
 .focus-board-area {
   display: flex;
   flex-wrap: wrap;
@@ -2331,6 +2370,11 @@ a {
       height: 16px;
       line-height: 16px;
       font-size: 12px;
+
+      .focus-topic-content {
+        max-width: 700px;
+        text-overflow: ellipsis;
+      }
 
       div {
         flex-shrink: 0;

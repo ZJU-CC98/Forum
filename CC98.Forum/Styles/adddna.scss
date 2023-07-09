@@ -186,9 +186,9 @@
 }
 
 //
-.visibleImage{
-  width:0;
-  height:0;
+.visibleImage {
+  width: 0;
+  height: 0;
 }
 
 //ubb点击下载文件按钮
@@ -246,12 +246,13 @@
   background-color: rgba(0, 0, 0, 0.618);
   position: absolute;
   z-index: 50;
-  button{
+
+  button {
     background: none;
     height: 32px;
-    width:32px;
+    width: 32px;
     font-size: 20px;
-    color:white;
+    color: white;
     margin: 8px;
   }
 }
@@ -1020,7 +1021,7 @@ td {
   display: flex;
   flex-direction: row;
   height: 1.5rem;
-  width: 33rem;
+  width: 30rem;
   border-radius: 0.625rem;
   align-items: center;
   background-color: #fff;

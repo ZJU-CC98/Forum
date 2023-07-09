@@ -447,6 +447,112 @@ export async function getCurUserTopicContent(
 }
 
 /**
+ * 获取随机精选（推荐）帖
+ */
+export async function getRandomRecommendedTopic(size: number) {
+  //如果未登录,直接跳转至登录页面
+  if (!isLogOn()) {
+    store.dispatch(ErrorActions.throwError("LogOut"));
+    return null;
+  }
+  try {
+    const headers = await formAuthorizeHeader();
+    /**
+     * 通过api获取到主题之后转成json格式
+     */
+    const response = await cc98Fetch(`/topic/random-recommendation?&size=${size}`, {
+      headers,
+    });
+    switch (response.status) {
+      case 401:
+        store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+      case 403:
+        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+      case 404:
+      //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
+      case 500:
+      //store.dispatch(ErrorActions.throwError('ServerError'));
+    }
+    let newTopic = await response.json();
+    //console.log("获取到的数据", newTopic);
+    let aTopic = [];
+    let aTopicId = [];
+    let bTopic = [];
+    for (let item of newTopic) {
+      //时间转换
+      item.topic.time = transerTimeToYearMonthDay(item.topic.time);
+      item.topic.lastPostTime = transerTimeToYearMonthDay(item.topic.lastPostTime);
+
+      //阅读数转换
+      if (item.topic.hitCount > 10000) {
+        if (item.topic.hitCount > 100000) {
+          let index = parseInt(`${item.topic.hitCount / 10000}`);
+          item.hitCount = `${index}万`;
+        } else {
+          let index = parseInt(`${item.topic.hitCount / 1000}`) / 10;
+          item.topic.hitCount = `${index}万`;
+        }
+      }
+      //计算总楼层
+      item.topic.floorCount = item.topic.replyCount + 1;
+      //回复数转换
+      if (item.topic.replyCount > 10000) {
+        if (item.topic.replyCount > 100000) {
+          let index = parseInt(`${item.topic.replyCount / 10000}`);
+          item.topic.replyCount = `${index}万`;
+        } else {
+          let index = parseInt(`${item.topic.replyCount / 1000}`) / 10;
+          item.topic.replyCount = `${index}万`;
+        }
+      }
+      //标签转换
+      if (item.topic.tag1) {
+        item.topic.tag1 = await getTagNamebyId(item.topic.tag1);
+        if (item.topic.tag2) {
+          item.topic.tag2 = await getTagNamebyId(item.topic.tag2);
+        }
+      }
+      //处理匿名与非匿名主题，非匿名主题用户批量获取信息
+      if (!item.topic.isAnonymous) {
+        //获取所在版面名称
+        item.topic.boardName = await getBoardName(item.topic.boardId);
+        aTopic.push(item);
+        aTopicId.push(item.topic.userId);
+      } else {
+        item.topic.portraitUrl = "/static/images/_心灵之约.png";
+        item.topic.userName = "匿名用户";
+        item.topic.boardName = await getBoardName(item.topic.boardId);
+        bTopic.push(item);
+      }
+    }
+    //对于非匿名数据批量获取头像地址
+    let usersInfo = await getBasicUsersInfo(aTopicId);
+    for (let i in aTopic) {
+      let thisUserInfo = getThisUserInfo(aTopic[i].topic.userId, usersInfo);
+      aTopic[i].topic.portraitUrl = thisUserInfo.portraitUrl;
+    }
+    for (let i = 0, j = 0, k = 0; i < newTopic.length; i++) {
+      //console.log(`进入循环`);
+      if (j === aTopic.length) {
+        newTopic[i] = bTopic[k];
+        k++;
+      } else if (newTopic[i].id === aTopic[j].id) {
+        //console.log(`条件1 i=${i} j = ${j}`);
+        newTopic[i] = aTopic[j];
+        j++;
+      } else {
+        //console.log(`条件2 i=${i} k = ${k}`);
+        newTopic[i] = bTopic[k];
+        k++;
+      }
+    }
+    return newTopic;
+  } catch (e) {
+    //store.dispatch(ErrorActions.throwError('Disconnected'));
+  }
+}
+
+/**
  * 获取全站新帖
  * @param curPage
  */
@@ -932,6 +1038,30 @@ export function transerRecentTime(time) {
     let strTime = `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}`;
     return strTime;
   }
+}
+
+export function transerTimeToYearMonthDay(time) {
+  let time1 = moment(time).format("YYYY/MM/DD HH:mm:ss");
+  let thatDate = new Date(time1);
+  let thatTime = thatDate.getTime();
+  let thisDate = new Date();
+  let thisTime = new Date().getTime();
+  let delta =
+    (new Date(new Date().setHours(0, 0, 0, 0)).getTime() +
+      86400000 -
+      thatTime) /
+    1000;
+  let month: any = thatDate.getMonth() + 1;
+  if (month < 10) {
+    month = `0${month}`;
+  }
+  let date: any = thatDate.getDate();
+  if (date < 10) {
+    date = `0${date}`;
+  }
+
+  let strTime = `${thatDate.getFullYear()}-${month}-${date}`;
+  return strTime;
 }
 
 /**

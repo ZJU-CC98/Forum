@@ -65,7 +65,7 @@ export class FocusBoardArea extends React.Component<
 
     //给每个版的按钮添加点击事件，单击显示相应版面帖子，双击直接进入版面
     let self = this;
-    $(".focus-board").click(function() {
+    $(".focus-board").click(function () {
       //单击事件的执行代码
       let boardId = this.id.slice(11);
       let currentFocusBoard = { boardId: boardId, boardName: this.innerHTML };
@@ -77,7 +77,7 @@ export class FocusBoardArea extends React.Component<
         currentBoardName: this.innerHTML,
       });
     });
-    $(".focus-board").dblclick(function() {
+    $(".focus-board").dblclick(function () {
       //双击事件的执行代码
       let boardId = this.id.slice(11);
       window.location.href = `/board/${boardId}`;
