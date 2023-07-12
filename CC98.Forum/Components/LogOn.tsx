@@ -171,24 +171,29 @@ class LogOnExact extends React.Component<Props, LogOnState> {
 
     render() {
         return (
-            <div className="login">
-                <DocumentTitle title="登录 - CC98论坛" />
-                <div>
-                    <img src="/static/images/login.png" />
+            <div>
+                <div className="login-announcement">
+                    <p className="login-message"><span>温馨提示：<br />　　本论坛仅限校内交流使用，任何内容在未经允许的情况下禁止外传到公网。按照网络实名制的要求及学校和论坛的相关规定，本论坛账号禁止外借他人使用。违规用户将视情节轻重进行全站处罚。请全体用户共同珍惜和维护良好的讨论环境。</span></p>
+                </div>
+                <div className="login">
+                    <DocumentTitle title="登录 - CC98论坛" />
                     <div>
-                        <img src="/static/images/login_welcome.png" />
-                        <form onSubmit={this.handleLogin} autoComplete="on">
-                            <div className="login-form">
-                                <p>用户名</p><input name="username" type="text" id="loginName" onChange={this.handleNameChange} value={this.state.loginName} autoComplete="username" />
-                            </div>
-                            <div className="login-form">
-                                <p>密码</p><input name="password" type="password" id="loginPassword" onChange={this.handlePasswordChange} autoComplete="current-password" />
-                            </div>
-                            <p className="login-message" id="loginMessage">{this.state.loginMessage}</p>
-                            <button type="submit" disabled={this.state.isLoging}>登录账号</button>
-                        </form>
-                        <p className="login-message"><span>还没账号？我要 <a href="//account.cc98.org/" target="_blank">注册</a></span></p>
-                        <p className="login-message"><span>密码错误？我要 <a href="//account.cc98.org/" target="_blank">找回</a></span></p>
+                        <img src="/static/images/login.png" />
+                        <div>
+                            <img src="/static/images/login_welcome.png" />
+                            <form onSubmit={this.handleLogin} autoComplete="on">
+                                <div className="login-form">
+                                    <p>用户名</p><input name="username" type="text" id="loginName" onChange={this.handleNameChange} value={this.state.loginName} autoComplete="username" />
+                                </div>
+                                <div className="login-form">
+                                    <p>密码</p><input name="password" type="password" id="loginPassword" onChange={this.handlePasswordChange} autoComplete="current-password" />
+                                </div>
+                                <p className="login-message" id="loginMessage">{this.state.loginMessage}</p>
+                                <button type="submit" disabled={this.state.isLoging}>登录账号</button>
+                            </form>
+                            <p className="login-message"><span>还没账号？我要 <a href="//account.cc98.org/" target="_blank">注册</a></span></p>
+                            <p className="login-message"><span>密码错误？我要 <a href="//account.cc98.org/" target="_blank">找回</a></span></p>
+                        </div>
                     </div>
                 </div>
             </div>

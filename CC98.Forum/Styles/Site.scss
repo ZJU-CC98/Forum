@@ -3605,6 +3605,25 @@ variable {
   margin-top: 1rem;
 }
 
+.login-announcement {
+  background-color: white;
+  width: 1140px;
+  display: flex;
+  border: 1px solid rgb(204, 204, 204);
+  font-size: 16px;
+
+  p {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }
+
+  a {
+    color: rgb(40, 167, 225);
+  }
+}
+
 .antd-table table tr td {
   height: 100px;
 }

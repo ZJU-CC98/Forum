@@ -20,7 +20,7 @@ export class Footer extends React.Component<{}, AppState> {   //底部
                     <a href="http://luckweb.057101.com/bt2/index.asp" target="_blank">缘网</a>
                 </div>
                 <div className="footerRow">
-                    Copyright © 2003-{(new Date()).getFullYear()} CC98 Durian v3.4.0 | <a href="mailto:contact@cc98.org">Email: contact@cc98.org</a>
+                    Copyright © 2003-{(new Date()).getFullYear()} CC98 Durian v3.4.1 | <a href="mailto:contact@cc98.org">Email: contact@cc98.org</a>
                 </div>
             </div>
         </div>
