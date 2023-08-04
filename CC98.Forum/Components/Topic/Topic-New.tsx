@@ -63,6 +63,8 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
     });
     //滚动条事件监听
     document.addEventListener("scroll", this.handleScroll);
+
+    this.classicMode();
   }
 
   /**
@@ -150,6 +152,31 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
       }
     }
   }
+
+  async classicMode() {
+    $("#classic-mode-area").show();
+    $("#media-only-mode-area").hide();
+    $("#new-topic-classic-button").addClass("focus-hover");
+    $("#new-topic-card-button").removeClass("focus-hover");
+    $("#new-topic-media-only-button").removeClass("focus-hover");
+  }
+
+  async cardMode() {
+    $("#classic-mode-area").hide();
+    $("#media-only-mode-area").hide();
+    $("#new-topic-classic-button").removeClass("focus-hover");
+    $("#new-topic-card-button").addClass("focus-hover");
+    $("#new-topic-media-only-button").removeClass("focus-hover");
+  }
+
+  async mediaOnlyMode() {
+    $("#classic-mode-area").hide();
+    $("#media-only-mode-area").show();
+    $("#new-topic-classic-button").removeClass("focus-hover");
+    $("#new-topic-card-button").removeClass("focus-hover");
+    $("#new-topic-media-only-button").addClass("focus-hover");
+  }
+
   /**
    * 将主题排列好
    */
@@ -159,7 +186,40 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
         <DocumentTitle title={`查看新帖 - CC98论坛`} />
         <div className="focus">
           <Category />
-          <div className="focus-topic-area">
+          <div className="focus-board-area">
+            <button className="focus-board new-topic focus-hover" id="new-topic-classic-button" onClick={() => { this.classicMode() }}>
+              经典模式
+            </button>
+            <button className="focus-board new-topic" id="new-topic-card-button" onClick={() => { this.cardMode() }}>
+              卡片模式
+            </button>
+            <button className="focus-board new-topic" id="new-topic-media-only-button" onClick={() => { this.mediaOnlyMode() }}>
+              只看媒体
+            </button>
+          </div>
+          <div className="focus-topic-area" id="classic-mode-area">
+            <div className="focus-topic-topicArea">
+              {this.state.data.map(convertFocusPost)}
+            </div>
+            <div className="focus-topic-loading" id="focus-topic-loading">
+              <Spin size="large" />
+            </div>
+            <div
+              className="focus-topic-loaddone displaynone"
+              id="focus-topic-loaddone"
+            >
+              无法加载更多了，小水怡情，可不要沉迷哦~
+            </div>
+            <button
+              type="button"
+              id="scrollToTop"
+              className={this.state.buttonClassName}
+              onClick={this.scrollToTop}
+            >
+              回到顶部
+            </button>
+          </div>
+          <div className="focus-topic-area" id="media-only-mode-area">
             <div className="focus-topic-topicArea">
               {this.state.data.map(convertFocusPost)}
             </div>
@@ -211,6 +271,8 @@ function convertFocusPost(item: FocusTopic, index: number) {
       tag1={item.tag1}
       tag2={item.tag2}
       floorCount={item.floorCount}
+      contentType={item.contentType}
+      mediaContent={item.mediaContent}
     />
   );
 }

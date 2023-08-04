@@ -2159,7 +2159,7 @@ a {
     white-space: nowrap;
     font-family: 微软雅黑;
     margin-right: 1rem;
-    margin-top: 1rem;
+    //margin-top: 1rem;
     flex-shrink: 0;
     cursor: pointer;
   }
@@ -2201,6 +2201,10 @@ a {
     margin-top: 1rem;
     flex-shrink: 0;
     cursor: pointer;
+  }
+
+  .focus-board.new-topic {
+    margin-top: 0rem;
   }
 
   .focus-hover {

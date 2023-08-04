@@ -226,6 +226,8 @@ function convertFocusPost(item: FocusTopic) {
       tag1={item.tag1}
       tag2={item.tag2}
       floorCount={item.floorCount}
+      contentType={item.contentType}
+      mediaContent={item.mediaContent}
     />
   );
 }
