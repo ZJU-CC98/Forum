@@ -1,6 +1,7 @@
 ﻿import * as React from "react";
 import { FocusTopic } from "../../Props/FocusTopic";
 import { FocusTopicSingle } from "../Focus/FocusTopicSingle";
+import { CardTopicSingle } from "../Focus/CardTopicSingle";
 import { FocusTopicAreaState } from "../../States/FocusTopicAreaState";
 import * as Utility from "../../Utility";
 import {
@@ -18,14 +19,20 @@ import Spin from "antd/es/spin";
  */
 export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
   isLoadable: boolean;
+  mediaOnly: boolean;
   /**
    * 构造函数
    * @param props
    */
   constructor(props) {
     super(props);
+
+    this.mediaOnly = false;
+    let keyStr = this.mediaOnly ? "AllNewMediaTopic" : "AllNewTopic";
+
     //先看一下有没有缓存的帖子数据
-    var data = Utility.getStorage("AllNewTopic");
+
+    var data = Utility.getStorage(keyStr);
     if (!data) {
       data = [];
     }
@@ -39,17 +46,32 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
     this.handleFetchNewTopics = this.handleFetchNewTopics.bind(this);
   }
 
+  async getAndSetTopic(from: number) {
+    this.isLoadable = false;
+    let t1 = new Date().getTime();
+    let data = await Utility.getAllNewTopic(from, this.mediaOnly);
+    if (data) {
+      //缓存获取到的数据
+      let keyStr = this.mediaOnly ? "AllNewMediaTopic" : "AllNewTopic";
+      Utility.setStorage(keyStr, data);
+      this.setState({ data: data, from: data.length });
+    }
+    let t2 = new Date().getTime();
+    let timeSpan = t2 - t1;
+    if (timeSpan < 1000) {
+      await new Promise(resolve => setTimeout(resolve, 1000 - timeSpan));
+    }
+    this.isLoadable = true;
+  }
+
   /**
    * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
    */
   async componentDidMount() {
-    let data = await Utility.getAllNewTopic(0);
 
-    if (data) {
-      //缓存获取到的数据
-      Utility.setStorage("AllNewTopic", data);
-      this.setState({ data: data, from: data.length });
-    }
+    //todo: 从服务器获取用户设置信息并切到对应页面
+    this.mediaOnly = false;
+    this.classicMode();
 
     //获取新帖触发事件监听
     document.addEventListener("wheel", this.handleFetchNewTopics, {
@@ -64,7 +86,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
     //滚动条事件监听
     document.addEventListener("scroll", this.handleScroll);
 
-    this.classicMode();
+
   }
 
   /**
@@ -121,7 +143,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
       this.isLoadable = false;
       try {
         const debouncedFn = Utility.pDebounce(Utility.getAllNewTopic, 1000);
-        var newData: any = await debouncedFn(this.state.from);
+        var newData: any = await debouncedFn(this.state.from, this.mediaOnly);
         //var newData = await Utility.getAllNewTopic(this.state.from);
       } catch (err) {
         /**
@@ -145,7 +167,8 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
         this.setState({ data: data, from: data.length }, () => {
           this.isLoadable = true;
         });
-        Utility.setStorage(`AllNewTopic`, data);
+        let keyStr = this.mediaOnly ? "AllNewMediaTopic" : "AllNewTopic";
+        Utility.setStorage(keyStr, data);
       } else {
         this.isLoadable = true;
         return;
@@ -154,27 +177,39 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
   }
 
   async classicMode() {
-    $("#classic-mode-area").show();
-    $("#media-only-mode-area").hide();
-    $("#new-topic-classic-button").addClass("focus-hover");
-    $("#new-topic-card-button").removeClass("focus-hover");
-    $("#new-topic-media-only-button").removeClass("focus-hover");
+    if (this.isLoadable) {
+      $("#classic-mode-area").show();
+      $("#card-mode-area").hide();
+      $("#new-topic-classic-button").addClass("focus-hover");
+      $("#new-topic-card-button").removeClass("focus-hover");
+      $("#new-topic-media-only-button").removeClass("focus-hover");
+      this.mediaOnly = false;
+      await this.getAndSetTopic(0);
+    }
   }
 
   async cardMode() {
-    $("#classic-mode-area").hide();
-    $("#media-only-mode-area").hide();
-    $("#new-topic-classic-button").removeClass("focus-hover");
-    $("#new-topic-card-button").addClass("focus-hover");
-    $("#new-topic-media-only-button").removeClass("focus-hover");
+    if (this.isLoadable) {
+      $("#classic-mode-area").hide();
+      $("#card-mode-area").show();
+      $("#new-topic-classic-button").removeClass("focus-hover");
+      $("#new-topic-card-button").addClass("focus-hover");
+      $("#new-topic-media-only-button").removeClass("focus-hover");
+      this.mediaOnly = false;
+      await this.getAndSetTopic(0);
+    }
   }
 
   async mediaOnlyMode() {
-    $("#classic-mode-area").hide();
-    $("#media-only-mode-area").show();
-    $("#new-topic-classic-button").removeClass("focus-hover");
-    $("#new-topic-card-button").removeClass("focus-hover");
-    $("#new-topic-media-only-button").addClass("focus-hover");
+    if (this.isLoadable) {
+      $("#classic-mode-area").hide();
+      $("#card-mode-area").show();
+      $("#new-topic-classic-button").removeClass("focus-hover");
+      $("#new-topic-card-button").removeClass("focus-hover");
+      $("#new-topic-media-only-button").addClass("focus-hover");
+      this.mediaOnly = true;
+      await this.getAndSetTopic(0);
+    }
   }
 
   /**
@@ -219,9 +254,9 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
               回到顶部
             </button>
           </div>
-          <div className="focus-topic-area" id="media-only-mode-area">
+          <div className="card-topic-area" id="card-mode-area">
             <div className="focus-topic-topicArea">
-              {this.state.data.map(convertFocusPost)}
+              {this.state.data.map(convertCardPost)}
             </div>
             <div className="focus-topic-loading" id="focus-topic-loading">
               <Spin size="large" />
@@ -253,6 +288,36 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
 function convertFocusPost(item: FocusTopic, index: number) {
   return (
     <FocusTopicSingle
+      key={item.id}
+      title={item.title}
+      hitCount={item.hitCount}
+      id={item.id}
+      boardId={item.boardId}
+      boardName={item.boardName}
+      replyCount={item.replyCount}
+      userId={item.userId}
+      userName={item.userName}
+      portraitUrl={item.portraitUrl}
+      time={item.time}
+      likeCount={item.likeCount}
+      dislikeCount={item.dislikeCount}
+      lastPostUser={item.lastPostUser}
+      lastPostTime={item.lastPostTime}
+      tag1={item.tag1}
+      tag2={item.tag2}
+      floorCount={item.floorCount}
+      contentType={item.contentType}
+      mediaContent={item.mediaContent}
+    />
+  );
+}
+
+/**
+ * 单个主题数据转换成单个卡片主题组件
+ */
+function convertCardPost(item: FocusTopic, index: number) {
+  return (
+    <CardTopicSingle
       key={item.id}
       title={item.title}
       hitCount={item.hitCount}

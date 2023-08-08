@@ -24,7 +24,6 @@ export class ReplyContent extends React.Component<
 > {
   constructor(props, content) {
     super(props, content);
-    props.content = Utility.replaceHttpToHttps(props.content)
     this.state = {
       postId: this.props.postId,
       vote: null,

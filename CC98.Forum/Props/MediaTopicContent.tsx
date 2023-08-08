@@ -7,10 +7,6 @@ export class MediaTopicContent {
      */
     thumbnail: string[];
     /**
-     * 封面：用于视频和音频类型的主题帖
-     */
-    cover: string;
-    /**
      * 时长：用于视频和音频类型的主题帖
      */
     duration: number;

@@ -175,6 +175,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
     let usersInfo = [];
     if (content.length === 0) return [];
     for (let j = 0; j < topicNumberInPage; j++) {
+      content[j].content = this.replaceHttpToHttps(content[j].content);
       if (content[j].isAnonymous == false) {
         for (let i in content) {
           usersId[i] = content[i].userId;
@@ -556,7 +557,7 @@ export async function getRandomRecommendedTopic(size: number) {
  * 获取全站新帖
  * @param curPage
  */
-export async function getAllNewTopic(from: number) {
+export async function getAllNewTopic(from: number, mediaOnly: boolean = false) {
   //如果未登录,直接跳转至登录页面
   if (!isLogOn()) {
     store.dispatch(ErrorActions.throwError("LogOut"));
@@ -574,7 +575,13 @@ export async function getAllNewTopic(from: number) {
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await cc98Fetch(`/topic/new?from=${from}&size=${size}`, {
+    var url = '';
+    if (mediaOnly === true) {
+      url = `/topic/new-media?from=${from}&size=${size}`;
+    } else {
+      url = `/topic/new?from=${from}&size=${size}`;
+    }
+    const response = await cc98Fetch(url, {
       headers,
     });
     switch (response.status) {
@@ -594,8 +601,8 @@ export async function getAllNewTopic(from: number) {
     let bTopic = [];
     for (let item of newTopic) {
       //时间转换
-      item.time = transerRecentTime(item.time);
-      item.lastPostTime = transerRecentTime(item.lastPostTime);
+      item.time = transerRecentTime(item.time, false);
+      item.lastPostTime = transerRecentTime(item.lastPostTime, false);
 
       //阅读数转换
       if (item.hitCount > 10000) {
@@ -987,7 +994,7 @@ export function transerTime(time) {
  * api返回的UTC时间格式转换成"1分钟前，昨天18：45"这样的形式
  * @param time
  */
-export function transerRecentTime(time) {
+export function transerRecentTime(time, showSecond = true) {
   let time1 = moment(time).format("YYYY/MM/DD HH:mm:ss");
   let thatDate = new Date(time1);
   let thatTime = thatDate.getTime();
@@ -1019,23 +1026,33 @@ export function transerRecentTime(time) {
     sec = `0${sec}`;
   }
   if (delta > 259200) {
-    let strTime = `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}`;
+    let strTime = showSecond ?
+      `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}` :
+      `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}`;
     return strTime;
   } else if (delta > 172800) {
-    let strTime = `${hours}:${min}:${sec}`;
+    let strTime = showSecond ?
+      `${hours}:${min}:${sec}` :
+      `${hours}:${min}`;
     return `前天 ${strTime}`;
   } else if (delta > 86400) {
-    let strTime = `${hours}:${min}:${sec}`;
+    let strTime = showSecond ?
+      `${hours}:${min}:${sec}` :
+      `${hours}:${min}`;
     return `昨天 ${strTime}`;
   } else if (thisTime - thatTime > 3600000) {
-    let strTime = `${hours}:${min}:${sec}`;
+    let strTime = showSecond ?
+      `${hours}:${min}:${sec}` :
+      `${hours}:${min}`;
     return `今天 ${strTime}`;
   } else if (thisTime - thatTime > 0) {
     let min0: any = (thisTime - thatTime) / 60000;
     min = parseInt(min0);
     return `${min}分钟前`;
   } else {
-    let strTime = `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}`;
+    let strTime = showSecond ?
+      `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}` :
+      `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}`;
     return strTime;
   }
 }
