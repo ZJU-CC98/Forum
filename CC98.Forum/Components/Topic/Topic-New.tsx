@@ -2,7 +2,7 @@
 import { FocusTopic } from "../../Props/FocusTopic";
 import { FocusTopicSingle } from "../Focus/FocusTopicSingle";
 import { CardTopicSingle } from "../Focus/CardTopicSingle";
-import { FocusTopicAreaState } from "../../States/FocusTopicAreaState";
+import { NewTopicAreaState } from "../../States/NewTopicAreaState";
 import * as Utility from "../../Utility";
 import {
   BrowserRouter as Router,
@@ -12,12 +12,14 @@ import {
 } from "react-router-dom";
 import DocumentTitle from "../DocumentTitle";
 import Spin from "antd/es/spin";
+import { UserInfo } from "../../States/AppState";
+import { userInfo } from "os";
 //import pDebounce from "p-debounce";
 
 /**
  * 表示全站最新主题列表
  */
-export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
+export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
   isLoadable: boolean;
   mediaOnly: boolean;
   /**
@@ -27,20 +29,22 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
   constructor(props) {
     super(props);
 
+    this.isLoadable = true;
     this.mediaOnly = false;
     let keyStr = this.mediaOnly ? "AllNewMediaTopic" : "AllNewTopic";
-
     //先看一下有没有缓存的帖子数据
-
     var data = Utility.getStorage(keyStr);
     if (!data) {
       data = [];
     }
-    this.isLoadable = true;
+    let userInfo = Utility.getLocalStorage<UserInfo>("userInfo");
+    console.log(userInfo);
+
     this.state = {
       data: data,
       from: 0,
       buttonClassName: "",
+      userInfo: userInfo
     };
     this.handleScroll = this.handleScroll.bind(this);
     this.handleFetchNewTopics = this.handleFetchNewTopics.bind(this);
@@ -212,10 +216,24 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
     }
   }
 
+  getCountString(i: number): string {
+    if (i > 99999) {
+      return `${Math.floor(i / 10000)}万`;
+    }
+    else if (i > 9999) {
+      let w = Math.floor(i / 10000);
+      let q = Math.floor(i % 10000 / 1000);
+      return `${w}.${q}万`;
+    }
+    return Math.floor(i).toString();
+  }
+
   /**
    * 将主题排列好
    */
   render() {
+    let postCountStr = this.state.userInfo.postCount.toString();
+
     return (
       <div className="focus-root">
         <DocumentTitle title={`查看新帖 - CC98论坛`} />
@@ -232,11 +250,12 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
               只看媒体
             </button>
           </div>
+
           <div className="focus-topic-area" id="classic-mode-area">
             <div className="focus-topic-topicArea">
               {this.state.data.map(convertFocusPost)}
             </div>
-            <div className="focus-topic-loading" id="focus-topic-loading">
+            {/* <div className="focus-topic-loading" id="focus-topic-loading">
               <Spin size="large" />
             </div>
             <div
@@ -252,30 +271,52 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
               onClick={this.scrollToTop}
             >
               回到顶部
-            </button>
+            </button> */}
           </div>
+
           <div className="card-topic-area" id="card-mode-area">
-            <div className="focus-topic-topicArea">
+            <div className="card-topic-area-left">
+              <div className="card-user">
+                <div className="card-user-background"></div>
+                <div className="card-user-portrait">
+                  <img src={this.state.userInfo.portraitUrl} />
+                  <a href="../usercenter" target="_blank">{this.state.userInfo.name}</a>
+                </div>
+                <div className="card-user-stats">
+                  <div className="card-user-stats-item">
+                    <a>{this.getCountString(this.state.userInfo.postCount)}</a>
+                    帖数
+                  </div>
+                  <div className="card-user-stats-item">
+                    <a>{this.state.userInfo.followCount}</a>
+                    关注
+                  </div>
+                  <div className="card-user-stats-item">
+                    <a>{this.state.userInfo.fanCount}</a>
+                    粉丝
+                  </div>
+                  <div className="card-user-stats-item">
+                    <a>{this.getCountString(this.state.userInfo.receivedLikeCount)}</a>
+                    获赞
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="card-topic-area-middle">
               {this.state.data.map(convertCardPost)}
             </div>
-            <div className="focus-topic-loading" id="focus-topic-loading">
-              <Spin size="large" />
-            </div>
-            <div
-              className="focus-topic-loaddone displaynone"
-              id="focus-topic-loaddone"
-            >
-              无法加载更多了，小水怡情，可不要沉迷哦~
-            </div>
-            <button
-              type="button"
-              id="scrollToTop"
-              className={this.state.buttonClassName}
-              onClick={this.scrollToTop}
-            >
-              回到顶部
-            </button>
+            <div className="card-topic-area-right"></div>
           </div>
+
+          <div className="focus-topic-loading" id="focus-topic-loading">
+            <Spin size="large" />
+          </div>
+          <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">
+            无法加载更多了，小水怡情，可不要沉迷哦~
+          </div>
+          <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>
+            回到顶部
+          </button>
         </div>
       </div>
     );

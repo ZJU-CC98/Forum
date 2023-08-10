@@ -44,10 +44,8 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
         }
         let lastPostUrl = `/topic/${this.props.id}/${pageNum}`;
         let lastPostUserUrl = `/user/name/${encodeURI(this.props.lastPostUser)}`;
-        let tagInfo = '';
         let userName: any = this.props.userName;
 
-        var thumbnail = '';
         let imageCount = !this.props.mediaContent || !this.props.mediaContent.thumbnail ?
             0 :
             (this.props.mediaContent.thumbnail.length > 6 ?
@@ -110,18 +108,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                     </div>
                     <div><a href={lastPostUrl} target="_blank">{this.props.lastPostTime}</a></div>
                 </div>
-                {/* <a className="card-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
-                    <div className="focus-topic-info">
-                        <div>{tagInfo}</div>
-                        <div><i className="fa fa-clock-o fa-lg"></i>{this.props.time}</div>
-                        <div><i className="fa fa-eye fa-lg"></i> {this.props.hitCount}</div>
-                        <div>最后回复：<a href={lastPostUserUrl} target="_blank" id={`lastpost_${this.props.id}`}>{this.props.lastPostUser}</a></div>
-                        <div><a href={lastPostUrl} target="_blank">{this.props.lastPostTime}</a></div>
-                    </div> */}
-
             </div>
-            {/* <div className="focus-topic-rightBar"></div>
-                <a className="focus-topic-right" href={boardUrl} target="_blank"><div className="focus-topic-board">{this.props.boardName}</div></a> */}
         </div>);
     }
 }
