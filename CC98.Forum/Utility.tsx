@@ -3662,6 +3662,9 @@ export async function copyToClipboard(text: string) {
         outerHeight: "0",
         position: "fixed",
       });
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
       successful = document.execCommand("copy");
     } finally {
       textArea.remove();
