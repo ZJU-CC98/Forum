@@ -49,8 +49,14 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
 
     copyTopicUrl(props: Props) {
         const content = `【${props.boardInfo.name}】${props.topicInfo.title} https://www.cc98.org/topic/${props.topicInfo.id} 复制本链接到浏览器或者打开【CC98】微信小程序查看~`;
-        navigator.clipboard.writeText(content)
-        Utility.noticeMessageShow("copySuccess")
+        Utility.copyToClipboard(content)
+            .then(() => {
+                Utility.noticeMessageShow("copySuccess");
+            })
+            .catch((err) => {
+                Utility.noticeMessageShow("copyError");
+                console.error(`Unable to copy text: ${content}`, err);
+            });
     }
 
     async follow() {
@@ -158,6 +164,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
                 <AdsComponent />
             </div>
             <NoticeMessage text="已将分享内容复制到剪贴板" id="copySuccess" top="13.7%" left="45%" />
+            <NoticeMessage text="将分享内容复制到剪贴板时出现错误" id="copyError" top="13.7%" left="45%" />
         </div>;
     }
 }
