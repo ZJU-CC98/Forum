@@ -2435,7 +2435,7 @@ a {
   display: flex;
   flex-direction: row;
   width: 560px;
-  margin-top: 12px;
+  margin-bottom: 6px;
   overflow: hidden;
   background-color: $background_color_textarea;
   border: solid 1.5px $theme_color_main;
@@ -2503,6 +2503,10 @@ a {
       //   word-wrap: break-word;
       // }
     }
+
+    // .card-topic-audio {
+    //   margin-bottom: 15px;
+    // }
 
     .card-topic-thumbnail {
       display: flex;
@@ -2618,7 +2622,7 @@ a {
       color: #555555;
       display: flex;
       flex-direction: row;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
 
       div {
         flex-shrink: 0;
@@ -2641,72 +2645,6 @@ a {
         }
       }
     }
-  }
-}
-
-.card-user {
-  display: flex;
-  flex-direction: column;
-  width: 250px;
-  margin-top: 12px;
-  overflow: hidden;
-  background-color: $background_color_textarea;
-  border: solid 1.5px $theme_color_main;
-  border-radius: 0.25rem;
-
-  .card-user-portrait {
-    display: flex;
-    flex-direction: row;
-
-    img {
-      width: 80px;
-      height: 80px;
-      margin: -35px 15px 10px 15px;
-      border-radius: 50%;
-    }
-
-    a {
-      font-size: 22px;
-      color: #000;
-
-      &:hover {
-        color: $theme_color_main;
-      }
-    }
-  }
-
-  .card-user-stats {
-    display: flex;
-    flex-direction: row;
-    margin: 10px 14px 10px 24px;
-
-    .card-user-stats-item {
-      display: flex;
-      flex-direction: column;
-      color: #555555;
-      font-size: 14px;
-      text-align: center;
-      width: 45px;
-      margin: 0 8px 10px 0px;
-
-      a {
-        font-size: 18px;
-        color: #000;
-
-        &:hover {
-          color: $theme_color_main;
-        }
-      }
-    }
-  }
-
-
-  .card-user-background {
-    height: 65px;
-    width: 250px;
-    background-image: $background_image_card;
-    background-size: contain;
-    margin-bottom: 10px;
   }
 }
 
@@ -2803,6 +2741,88 @@ a {
     animation-name: fadeOut;
     animation-duration: 500ms;
     animation-fill-mode: forwards;
+  }
+}
+
+.card-user {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  background-color: $background_color_textarea;
+  border: solid 1.5px $theme_color_main;
+  border-radius: 0.25rem;
+
+  .card-user-portrait {
+    display: flex;
+    flex-direction: row;
+
+    img {
+      width: 80px;
+      height: 80px;
+      margin: -40px 15px 0px 15px;
+      border-radius: 50%;
+    }
+
+    a {
+      font-size: 22px;
+      color: #000;
+
+      &:hover {
+        color: $theme_color_main;
+      }
+    }
+  }
+
+  .card-user-stats {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 14px 10px 24px;
+
+    .card-user-stats-item {
+      display: flex;
+      flex-direction: column;
+      color: #555555;
+      font-size: 14px;
+      text-align: center;
+      width: 45px;
+      margin: 0 8px 6px 0px;
+
+      a {
+        font-size: 18px;
+        color: #000;
+
+        &:hover {
+          color: $theme_color_main;
+        }
+      }
+    }
+  }
+
+
+  .card-user-background {
+    height: 65px;
+    width: 250px;
+    background-image: $background_image_card;
+    background-size: contain;
+    margin-bottom: 8px;
+  }
+}
+
+.card-board {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  background-color: $background_color_textarea;
+  border: solid 1.5px $theme_color_main;
+  border-radius: 0.25rem;
+
+  .card-board-title {
+    font-size: 18px;
+    margin: 15px;
   }
 }
 

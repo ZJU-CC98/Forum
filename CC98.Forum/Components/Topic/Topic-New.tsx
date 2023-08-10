@@ -284,22 +284,26 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
                 </div>
                 <div className="card-user-stats">
                   <div className="card-user-stats-item">
-                    <a>{this.getCountString(this.state.userInfo.postCount)}</a>
+                    <a href="../usercenter" target="_blank">{this.getCountString(this.state.userInfo.postCount)}</a>
                     帖数
                   </div>
                   <div className="card-user-stats-item">
-                    <a>{this.state.userInfo.followCount}</a>
+                    <a href="../usercenter/myfollowings" target="_blank">{this.state.userInfo.followCount}</a>
                     关注
                   </div>
                   <div className="card-user-stats-item">
-                    <a>{this.state.userInfo.fanCount}</a>
+                    <a href="../usercenter/myfans" target="_blank">{this.state.userInfo.fanCount}</a>
                     粉丝
                   </div>
                   <div className="card-user-stats-item">
-                    <a>{this.getCountString(this.state.userInfo.receivedLikeCount)}</a>
+                    <a href="../usercenter/myposts/ishot/1/1" target="_blank">{this.getCountString(this.state.userInfo.receivedLikeCount)}</a>
                     获赞
                   </div>
                 </div>
+              </div>
+
+              <div className="card-board">
+                <div className="card-board-title">版面列表</div>
               </div>
             </div>
             <div className="card-topic-area-middle">

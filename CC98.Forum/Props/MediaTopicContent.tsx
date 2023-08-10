@@ -18,4 +18,6 @@ export class MediaTopicContent {
      * 宽度：用于视频类型的主题帖
      */
     width: number;
+    audio: string;
+    video: string;
 }
