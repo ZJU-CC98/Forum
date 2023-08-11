@@ -29,7 +29,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
 
     showOriginalImage(thumbnailUrl: string) {
         let imageUrl = thumbnailUrl.replace("thumbnail/earlier/", "").replace("thumbnail/", "");
-        console.log(imageUrl);
+        //console.log(imageUrl);
         $(`#card_original_image_${this.props.id}`).attr('src', imageUrl);
         $(`#card_thumbnail_area_${this.props.id}`).hide();
         $(`#card_original_image_area_${this.props.id}`).show();
@@ -107,7 +107,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 // IE 11 下会抛一个 InvalidStateError 的错误，忽略
             }
             audioContent = (<div className="aplayer"
-                style={{ whiteSpace: 'normal', width: '350px', margin: '0 0 15px 0' }}
+                style={{ whiteSpace: 'normal', margin: '0 0 15px 0' }}
                 ref={it => this.audioDiv = it}>
             </div>);
         }

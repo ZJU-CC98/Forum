@@ -2701,47 +2701,47 @@ a {
     color: $color-black;
   }
 
-  button {
-    width: 6rem;
-    position: fixed;
-    bottom: 5%;
-    right: 13%;
-    height: 3rem;
-    border-radius: 1rem;
-    opacity: 0.5;
-    display: none;
-    z-index: 2;
-    margin: 0;
-    padding: 0.7rem;
-    border: 0;
-    font-size: 1.1rem;
-    cursor: pointer;
+  // button {
+  //   width: 6rem;
+  //   position: fixed;
+  //   bottom: 5%;
+  //   right: 13%;
+  //   height: 3rem;
+  //   border-radius: 1rem;
+  //   opacity: 0.5;
+  //   display: none;
+  //   z-index: 2;
+  //   margin: 0;
+  //   padding: 0.7rem;
+  //   border: 0;
+  //   font-size: 1.1rem;
+  //   cursor: pointer;
 
-    &:hover {
-      opacity: 0.8;
-    }
+  //   &:hover {
+  //     opacity: 0.8;
+  //   }
 
-    &:active {
-      opacity: 1;
-    }
+  //   &:active {
+  //     opacity: 1;
+  //   }
 
-    &:focus {
-      outline: none;
-    }
-  }
+  //   &:focus {
+  //     outline: none;
+  //   }
+  // }
 
-  .btn-show {
-    animation-name: fadeIn;
-    animation-duration: 1s;
-    display: inherit;
-  }
+  // .btn-show {
+  //   animation-name: fadeIn;
+  //   animation-duration: 1s;
+  //   display: inherit;
+  // }
 
-  .btn-disappare {
-    display: inherit;
-    animation-name: fadeOut;
-    animation-duration: 500ms;
-    animation-fill-mode: forwards;
-  }
+  // .btn-disappare {
+  //   display: inherit;
+  //   animation-name: fadeOut;
+  //   animation-duration: 500ms;
+  //   animation-fill-mode: forwards;
+  // }
 }
 
 .card-user {

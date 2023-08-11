@@ -38,7 +38,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
       data = [];
     }
     let userInfo = Utility.getLocalStorage<UserInfo>("userInfo");
-    console.log(userInfo);
+    //console.log(userInfo);
 
     this.state = {
       data: data,
@@ -131,7 +131,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
    */
   async handleFetchNewTopics() {
     //控制获取新帖
-    console.log("new topic, is loadable=" + this.isLoadable);
+    //console.log("new topic, is loadable=" + this.isLoadable);
     if (Utility.isBottom() && this.isLoadable) {
       /**
        *查看新帖数目大于100条时不再继续加载
