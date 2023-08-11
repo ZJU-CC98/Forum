@@ -43,7 +43,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
     this.state = {
       data: data,
       from: 0,
-      buttonClassName: "",
+      //buttonClassName: "top-button",
       userInfo: userInfo
     };
     this.handleScroll = this.handleScroll.bind(this);
@@ -112,17 +112,21 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
    */
   async handleScroll() {
     //控制回到顶部按钮出现
-    if (window.pageYOffset > 234) {
-      this.setState({
-        buttonClassName: "btn-show",
-      });
+    if (window.scrollY > 234) {
+      $("#scroll-to-top-button").removeClass("btn-disappear");
+      $("#scroll-to-top-button").addClass("btn-show");
+      // this.setState({
+      //   buttonClassName: "top-button btn-show",
+      // });
     }
     //控制回到顶部按钮消失
-    if (window.pageYOffset < 234) {
-      this.setState((prevState) => ({
-        buttonClassName:
-          prevState.buttonClassName === "" ? "" : "btn-disappare",
-      }));
+    if (window.scrollY < 234) {
+      $("#scroll-to-top-button").removeClass("btn-show");
+      $("#scroll-to-top-button").addClass("btn-disappear");
+      // this.setState((prevState) => ({
+      //   buttonClassName:
+      //     prevState.buttonClassName === "top-button" ? "top-button" : "top-button btn-disappare",
+      // }));
     }
   }
 
@@ -132,6 +136,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
   async handleFetchNewTopics() {
     //控制获取新帖
     //console.log("new topic, is loadable=" + this.isLoadable);
+    //console.log(`isBottom: ${Utility.isBottom()}`);
     if (Utility.isBottom() && this.isLoadable) {
       /**
        *查看新帖数目大于100条时不再继续加载
@@ -232,8 +237,8 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
    * 将主题排列好
    */
   render() {
-    let postCountStr = this.state.userInfo.postCount.toString();
-
+    //console.log("rendering new");
+    //console.log(`data count: ${this.state.data.length}`);
     return (
       <div className="focus-root">
         <DocumentTitle title={`查看新帖 - CC98论坛`} />
@@ -255,23 +260,6 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
             <div className="focus-topic-topicArea">
               {this.state.data.map(convertFocusPost)}
             </div>
-            {/* <div className="focus-topic-loading" id="focus-topic-loading">
-              <Spin size="large" />
-            </div>
-            <div
-              className="focus-topic-loaddone displaynone"
-              id="focus-topic-loaddone"
-            >
-              无法加载更多了，小水怡情，可不要沉迷哦~
-            </div>
-            <button
-              type="button"
-              id="scrollToTop"
-              className={this.state.buttonClassName}
-              onClick={this.scrollToTop}
-            >
-              回到顶部
-            </button> */}
           </div>
 
           <div className="card-topic-area" id="card-mode-area">
@@ -288,11 +276,11 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
                     帖数
                   </div>
                   <div className="card-user-stats-item">
-                    <a href="../usercenter/myfollowings" target="_blank">{this.state.userInfo.followCount}</a>
+                    <a href="../usercenter/myfollowings" target="_blank">{this.getCountString(this.state.userInfo.followCount)}</a>
                     关注
                   </div>
                   <div className="card-user-stats-item">
-                    <a href="../usercenter/myfans" target="_blank">{this.state.userInfo.fanCount}</a>
+                    <a href="../usercenter/myfans" target="_blank">{this.getCountString(this.state.userInfo.fanCount)}</a>
                     粉丝
                   </div>
                   <div className="card-user-stats-item">
@@ -307,7 +295,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
               </div>
             </div>
             <div className="card-topic-area-middle">
-              {this.state.data.map(convertCardPost)}
+              {this.mediaOnly ? this.state.data.map(convertCardMediaOnlyPost) : this.state.data.map(convertCardPost)}
             </div>
             <div className="card-topic-area-right"></div>
           </div>
@@ -318,7 +306,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
           <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">
             无法加载更多了，小水怡情，可不要沉迷哦~
           </div>
-          <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>
+          <button type="button" id="scroll-to-top-button" className={"top-button"} onClick={this.scrollToTop}>
             回到顶部
           </button>
         </div>
@@ -333,7 +321,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
 function convertFocusPost(item: FocusTopic, index: number) {
   return (
     <FocusTopicSingle
-      key={item.id}
+      key={`classic_topic_${item.id}`}
       title={item.title}
       hitCount={item.hitCount}
       id={item.id}
@@ -363,7 +351,37 @@ function convertFocusPost(item: FocusTopic, index: number) {
 function convertCardPost(item: FocusTopic, index: number) {
   return (
     <CardTopicSingle
-      key={item.id}
+      key={`card_topic_${item.id}`}
+      title={item.title}
+      hitCount={item.hitCount}
+      id={item.id}
+      boardId={item.boardId}
+      boardName={item.boardName}
+      replyCount={item.replyCount}
+      userId={item.userId}
+      userName={item.userName}
+      portraitUrl={item.portraitUrl}
+      time={item.time}
+      likeCount={item.likeCount}
+      dislikeCount={item.dislikeCount}
+      lastPostUser={item.lastPostUser}
+      lastPostTime={item.lastPostTime}
+      tag1={item.tag1}
+      tag2={item.tag2}
+      floorCount={item.floorCount}
+      contentType={item.contentType}
+      mediaContent={item.mediaContent}
+    />
+  );
+}
+
+/**
+ * 单个主题数据转换成单个卡片主题组件，用于只看媒体
+ */
+function convertCardMediaOnlyPost(item: FocusTopic, index: number) {
+  return (
+    <CardTopicSingle
+      key={`card_topic_media_only_${item.id}`}
       title={item.title}
       hitCount={item.hitCount}
       id={item.id}

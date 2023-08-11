@@ -3,6 +3,7 @@ import { FocusTopic } from '../../Props/FocusTopic';
 import * as Utility from '../../Utility';
 
 var APlayer = require('aplayer');
+var playerCount = 0;
 
 /**
  * 卡片模式的单个主题
@@ -40,6 +41,16 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
         $(`#card_original_image_area_${this.props.id}`).hide();
     }
 
+    convertThumbnail(item: string, index: number) {
+        return (
+            <img
+                key={`thumbnail_${item}`}
+                src={item}
+                onClick={() => { this.showOriginalImage(item); }}
+            />
+        );
+    }
+
     render() {
         let topicUrl = `/topic/${this.props.id}/1`;
         let userUrl = `/user/id/${this.props.userId}`;
@@ -66,14 +77,16 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 case 1:
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-1">
-                            {this.props.mediaContent.thumbnail.map((str) => { return <img src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img src={str} id={`thumbnail_image_${this.props.id}_${i}`} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {/* {this.props.mediaContent.thumbnail.map(this.convertThumbnail)} */}
                         </div>);
                     break;
                 case 2:
                 case 4:
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-2">
-                            {this.props.mediaContent.thumbnail.map((str) => { return <img src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img src={str} id={`thumbnail_image_${this.props.id}_${i}`} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {/* {this.props.mediaContent.thumbnail.map(this.convertThumbnail)} */}
                         </div>);
                     break;
                 case 3:
@@ -81,7 +94,8 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 case 6:
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-3">
-                            {this.props.mediaContent.thumbnail.map((str) => { return <img src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img src={str} id={`thumbnail_image_${this.props.id}_${i}`} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {/* {this.props.mediaContent.thumbnail.map(this.convertThumbnail)} */}
                         </div>);
                     break;
                 default:
@@ -92,6 +106,8 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
         let audioContent = null;
         if (this.props.contentType === 3) {
             try {
+                playerCount += 1;
+                //console.log(`player count: ${playerCount}`);
                 this.ap = new APlayer({
                     element: this.audioDiv,
                     autoplay: false,
@@ -140,6 +156,6 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                     <div><a href={lastPostUrl} target="_blank">{this.props.lastPostTime}</a></div>
                 </div>
             </div>
-        </div >);
+        </div>);
     }
 }

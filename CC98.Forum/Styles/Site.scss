@@ -2113,6 +2113,67 @@ a {
   width: 1140px;
   min-height: 780px;
   margin-bottom: 60px;
+
+  .top-button {
+    width: 6rem;
+    position: fixed;
+    bottom: 5%;
+    right: 13%;
+    height: 2rem;
+    border-radius: 1rem;
+    opacity: 0.5;
+    display: none;
+    z-index: 2;
+    margin: 0;
+    padding: 0.7rem;
+    border: 0;
+    font-size: 1.1rem;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:active {
+      opacity: 1;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .top-button.btn-show {
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    display: inherit;
+  }
+
+  .top-button.btn-disappear {
+    display: inherit;
+    animation-name: fadeOut;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+  }
+
+  .focus-topic-loading {
+    margin-top: 20px;
+    text-align: center;
+
+    img {
+      width: 200px;
+      height: 18px;
+    }
+  }
+
+  .focus-topic-loaddone {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: $color-black;
+  }
 }
 
 .focus-nav {
@@ -2243,64 +2304,22 @@ a {
     }
   }
 
-  .focus-topic-loading {
-    margin-top: 20px;
-    text-align: center;
+  // .focus-topic-loading {
+  //   margin-top: 20px;
+  //   text-align: center;
 
-    img {
-      width: 200px;
-      height: 18px;
-    }
-  }
+  //   img {
+  //     width: 200px;
+  //     height: 18px;
+  //   }
+  // }
 
-  .focus-topic-loaddone {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 16px;
-    color: $color-black;
-  }
-
-  button {
-    width: 6rem;
-    position: fixed;
-    bottom: 5%;
-    right: 13%;
-    height: 3rem;
-    border-radius: 1rem;
-    opacity: 0.5;
-    display: none;
-    z-index: 2;
-    margin: 0;
-    padding: 0.7rem;
-    border: 0;
-    font-size: 1.1rem;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.8;
-    }
-
-    &:active {
-      opacity: 1;
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  .btn-show {
-    animation-name: fadeIn;
-    animation-duration: 1s;
-    display: inherit;
-  }
-
-  .btn-disappare {
-    display: inherit;
-    animation-name: fadeOut;
-    animation-duration: 500ms;
-    animation-fill-mode: forwards;
-  }
+  // .focus-topic-loaddone {
+  //   margin-top: 20px;
+  //   text-align: center;
+  //   font-size: 16px;
+  //   color: $color-black;
+  // }
 }
 
 .focus-allNewTopic {
@@ -2684,22 +2703,22 @@ a {
     }
   }
 
-  .focus-topic-loading {
-    margin-top: 20px;
-    text-align: center;
+  // .focus-topic-loading {
+  //   margin-top: 20px;
+  //   text-align: center;
 
-    img {
-      width: 200px;
-      height: 18px;
-    }
-  }
+  //   img {
+  //     width: 200px;
+  //     height: 18px;
+  //   }
+  // }
 
-  .focus-topic-loaddone {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 16px;
-    color: $color-black;
-  }
+  // .focus-topic-loaddone {
+  //   margin-top: 20px;
+  //   text-align: center;
+  //   font-size: 16px;
+  //   color: $color-black;
+  // }
 
   // button {
   //   width: 6rem;

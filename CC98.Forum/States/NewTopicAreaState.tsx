@@ -7,7 +7,7 @@ import { UserInfo } from "./AppState";
 export class NewTopicAreaState {
     data: FocusTopic[];
     from: number;
-    buttonClassName: string;
+    //buttonClassName: string;
     stop?: boolean;
     userInfo: UserInfo;
 }
