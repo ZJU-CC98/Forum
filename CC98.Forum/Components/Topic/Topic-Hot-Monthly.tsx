@@ -88,7 +88,7 @@ export class MonthlyHotTopic extends React.Component<{}, FocusTopicAreaState> {
     this.state = {
       data: [],
       from: 0,
-      buttonClassName: "",
+      //buttonClassName: "",
     };
   }
 

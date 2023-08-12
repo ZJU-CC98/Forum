@@ -1,7 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-import * as React from "react";
+﻿import * as React from "react";
 import { FocusTopic } from "../../Props/FocusTopic";
 import { FocusBoard } from "../../Props/FocusBoard";
 import { FocusTopicSingle } from "./FocusTopicSingle";
@@ -32,7 +29,7 @@ export class FocusTopicArea extends React.Component<
     this.state = {
       data: data,
       from: 0,
-      buttonClassName: "",
+      //buttonClassName: "",
       stop: false,
     };
     this.handleScroll = this.handleScroll.bind(this);
@@ -99,16 +96,13 @@ export class FocusTopicArea extends React.Component<
   async handleScroll() {
     //控制回到顶部按钮出现
     if (window.pageYOffset > 234) {
-      this.setState({
-        buttonClassName: "btn-show",
-      });
+      $("#scroll-to-top-button").removeClass("btn-disappear");
+      $("#scroll-to-top-button").addClass("btn-show");
     }
     //控制回到顶部按钮消失
     if (window.pageYOffset < 234) {
-      this.setState((prevState) => ({
-        buttonClassName:
-          prevState.buttonClassName === "" ? "" : "btn-disappare",
-      }));
+      $("#scroll-to-top-button").removeClass("btn-show");
+      $("#scroll-to-top-button").addClass("btn-disappear");
     }
   }
 
@@ -176,11 +170,12 @@ export class FocusTopicArea extends React.Component<
    */
   render() {
     return (
-      <div className="focus-topic-area">
-        <div className="focus-topic-topicArea">
-          {this.state.data.map(convertFocusPost)}
-        </div>
-        <div className="focus-topic-loading" id="focus-topic-loading">
+      <div>
+        <div className="focus-topic-area">
+          <div className="focus-topic-topicArea">
+            {this.state.data.map(convertFocusPost)}
+          </div>
+          {/* <div className="focus-topic-loading" id="focus-topic-loading">
           <Spin size="large" />
         </div>
         <div
@@ -196,7 +191,17 @@ export class FocusTopicArea extends React.Component<
           onClick={this.scrollToTop}
         >
           回到顶部
-        </button>
+        </button> */}
+          <div className="focus-topic-loading" id="focus-topic-loading">
+            <Spin size="large" />
+          </div>
+          <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">
+            无法加载更多了，小水怡情，可不要沉迷哦~
+          </div>
+          <button type="button" id="scroll-to-top-button" className={"top-button"} onClick={this.scrollToTop}>
+            回到顶部
+          </button>
+        </div>
       </div>
     );
   }

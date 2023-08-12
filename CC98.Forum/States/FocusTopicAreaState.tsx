@@ -5,6 +5,6 @@
 export class FocusTopicAreaState {
     data: FocusTopic[];
     from: number;
-    buttonClassName: string;
+    //buttonClassName: string;
     stop?: boolean;
 }
