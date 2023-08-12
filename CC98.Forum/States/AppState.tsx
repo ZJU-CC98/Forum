@@ -1,7 +1,7 @@
 ﻿/**
  * 表示应用程序的状态。
  */
-export class AppState {}
+export class AppState { }
 /**
  * 投票状态
  */
@@ -46,7 +46,7 @@ export class TopicTitleState {
  * 文章内容
  */
 export class ContentState {
-  constructor() {}
+  constructor() { }
   id: number;
   content: string;
   time: string;
@@ -111,10 +111,10 @@ export class ListTagState {
 
 export class TopicTitleAndContentState {
   /*  constructor(title, authorName, lastReply) {
-		  this.authorName = authorName;
-		  this.lastReply = lastReply;
-		    this.title = title;
-	  }*/
+      this.authorName = authorName;
+      this.lastReply = lastReply;
+        this.title = title;
+    }*/
   constructor() {
     //this.userName = userName;
     //this.title = title;
@@ -389,13 +389,18 @@ export class UserInfo {
   /**
    * 用户的主题设置。
    */
-  themeSetting: ThemeSetting; 
+  themeSetting: ThemeSetting;
+
+  /**
+   * 用户的主题列表浏览模式设置。
+   */
+  topicViewMode: 0 | 1 | 2;
 }
 
 /**
  * 当前用户的信息。
  */
- export class MyInfo extends UserInfo {
+export class MyInfo extends UserInfo {
   /**
    * 用户是否已经通过验证。
    */
@@ -406,12 +411,12 @@ export class UserInfo {
 /**
  * 主题设置对象。
  */
- export class ThemeSetting {
+export class ThemeSetting {
 
   /**
    * 是否开启主题日夜切换功能。
    */
-  enableDayNightSwitch : boolean;
+  enableDayNightSwitch: boolean;
   /**
    * 是否跟随浏览器的日夜模式同步切换。
    */
@@ -419,7 +424,7 @@ export class UserInfo {
   /**
    * 日间开始时间。
    */
-  dayStartTime : string;
+  dayStartTime: string;
   /**
    * 夜间开始时间。
    */

@@ -12,8 +12,7 @@ import {
 } from "react-router-dom";
 import DocumentTitle from "../DocumentTitle";
 import Spin from "antd/es/spin";
-import { UserInfo } from "../../States/AppState";
-import { userInfo } from "os";
+import { MyInfo } from "../../States/AppState";
 //import pDebounce from "p-debounce";
 
 /**
@@ -22,7 +21,8 @@ import { userInfo } from "os";
 export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
   isLoadable: boolean;
   mediaOnly: boolean;
-  /**
+  myInfo: MyInfo;
+  /**MyInfo
    * 构造函数
    * @param props
    */
@@ -30,22 +30,22 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
     super(props);
 
     this.isLoadable = true;
-    this.mediaOnly = false;
-    let keyStr = this.mediaOnly ? "AllNewMediaTopic" : "AllNewTopic";
+    this.myInfo = Utility.getMyInfo();
+    console.log(`in constructor, topic-view-mode: ${this.myInfo.topicViewMode}`);
     //先看一下有没有缓存的帖子数据
-    var data = Utility.getStorage(keyStr);
-    if (!data) {
-      data = [];
-    }
-    let userInfo = Utility.getLocalStorage<UserInfo>("userInfo");
-    //console.log(userInfo);
+    // var data = Utility.getStorage(keyStr);
+    // if (!data) {
+    //   data = [];
+    // }
+    // //console.log(userInfo);
 
     this.state = {
-      data: data,
+      data: [],
       from: 0,
       //buttonClassName: "top-button",
-      userInfo: userInfo
+      //userInfo: userInfo
     };
+
     this.handleScroll = this.handleScroll.bind(this);
     this.handleFetchNewTopics = this.handleFetchNewTopics.bind(this);
   }
@@ -74,8 +74,20 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
   async componentDidMount() {
 
     //todo: 从服务器获取用户设置信息并切到对应页面
-    this.mediaOnly = false;
-    this.classicMode();
+    //this.mediaOnly = false;
+    //this.classicMode();
+    switch (this.myInfo.topicViewMode) {
+      case 1:
+        this.cardMode(true);
+        break;
+      case 2:
+        this.mediaOnlyMode(true);
+        break;
+      case 0:
+      default:
+        this.classicMode(true);
+        break;
+    }
 
     //获取新帖触发事件监听
     document.addEventListener("wheel", this.handleFetchNewTopics, {
@@ -135,8 +147,6 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
    */
   async handleFetchNewTopics() {
     //控制获取新帖
-    //console.log("new topic, is loadable=" + this.isLoadable);
-    //console.log(`isBottom: ${Utility.isBottom()}`);
     if (Utility.isBottom() && this.isLoadable) {
       /**
        *查看新帖数目大于100条时不再继续加载
@@ -185,39 +195,50 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
     }
   }
 
-  async classicMode() {
+  async classicMode(init: boolean = false) {
+    //console.log(`in classic model: `);
+    //console.log(Utility.getMyInfo());
     if (this.isLoadable) {
+      if (!init) {
+        Utility.setUserTopicViewMode(0);
+      }
       $("#classic-mode-area").show();
       $("#card-mode-area").hide();
       $("#new-topic-classic-button").addClass("focus-hover");
       $("#new-topic-card-button").removeClass("focus-hover");
       $("#new-topic-media-only-button").removeClass("focus-hover");
       this.mediaOnly = false;
-      await this.getAndSetTopic(0);
+      await this.getAndSetTopic(init ? 0 : this.state.from);
     }
   }
 
-  async cardMode() {
+  async cardMode(init: boolean = false) {
     if (this.isLoadable) {
+      if (!init) {
+        Utility.setUserTopicViewMode(1);
+      }
       $("#classic-mode-area").hide();
       $("#card-mode-area").show();
       $("#new-topic-classic-button").removeClass("focus-hover");
       $("#new-topic-card-button").addClass("focus-hover");
       $("#new-topic-media-only-button").removeClass("focus-hover");
       this.mediaOnly = false;
-      await this.getAndSetTopic(0);
+      await this.getAndSetTopic(init ? 0 : this.state.from);
     }
   }
 
-  async mediaOnlyMode() {
+  async mediaOnlyMode(init: boolean = false) {
     if (this.isLoadable) {
+      if (!init) {
+        Utility.setUserTopicViewMode(2);
+      }
       $("#classic-mode-area").hide();
       $("#card-mode-area").show();
       $("#new-topic-classic-button").removeClass("focus-hover");
       $("#new-topic-card-button").removeClass("focus-hover");
       $("#new-topic-media-only-button").addClass("focus-hover");
       this.mediaOnly = true;
-      await this.getAndSetTopic(0);
+      await this.getAndSetTopic(init ? 0 : this.state.from);
     }
   }
 
@@ -267,24 +288,24 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
               <div className="card-user">
                 <div className="card-user-background"></div>
                 <div className="card-user-portrait">
-                  <img src={this.state.userInfo.portraitUrl} />
-                  <a href="../usercenter" target="_blank">{this.state.userInfo.name}</a>
+                  <img src={this.myInfo.portraitUrl} />
+                  <a href="../usercenter" target="_blank">{this.myInfo.name}</a>
                 </div>
                 <div className="card-user-stats">
                   <div className="card-user-stats-item">
-                    <a href="../usercenter" target="_blank">{this.getCountString(this.state.userInfo.postCount)}</a>
+                    <a href="../usercenter" target="_blank">{this.getCountString(this.myInfo.postCount)}</a>
                     帖数
                   </div>
                   <div className="card-user-stats-item">
-                    <a href="../usercenter/myfollowings" target="_blank">{this.getCountString(this.state.userInfo.followCount)}</a>
+                    <a href="../usercenter/myfollowings" target="_blank">{this.getCountString(this.myInfo.followCount)}</a>
                     关注
                   </div>
                   <div className="card-user-stats-item">
-                    <a href="../usercenter/myfans" target="_blank">{this.getCountString(this.state.userInfo.fanCount)}</a>
+                    <a href="../usercenter/myfans" target="_blank">{this.getCountString(this.myInfo.fanCount)}</a>
                     粉丝
                   </div>
                   <div className="card-user-stats-item">
-                    <a href="../usercenter/myposts/ishot/1/1" target="_blank">{this.getCountString(this.state.userInfo.receivedLikeCount)}</a>
+                    <a href="../usercenter/myposts/ishot/1/1" target="_blank">{this.getCountString(this.myInfo.receivedLikeCount)}</a>
                     获赞
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 ﻿import * as React from 'react';
 import { FocusTopic } from '../../Props/FocusTopic';
 import * as Utility from '../../Utility';
+import Focus from './Focus';
 
 var APlayer = require('aplayer');
 var playerCount = 0;
@@ -77,7 +78,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 case 1:
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-1">
-                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} id={`thumbnail_image_${this.props.id}_${i}`} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
                             {/* {this.props.mediaContent.thumbnail.map(this.convertThumbnail)} */}
                         </div>);
                     break;
@@ -85,7 +86,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 case 4:
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-2">
-                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} id={`thumbnail_image_${this.props.id}_${i}`} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
                             {/* {this.props.mediaContent.thumbnail.map(this.convertThumbnail)} */}
                         </div>);
                     break;
@@ -94,7 +95,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 case 6:
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-3">
-                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} id={`thumbnail_image_${this.props.id}_${i}`} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
                             {/* {this.props.mediaContent.thumbnail.map(this.convertThumbnail)} */}
                         </div>);
                     break;
@@ -159,3 +160,31 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
         </div>);
     }
 }
+
+const AudioPlayer = React.memo(function AudioPlayer(topic: FocusTopic) {
+    let audioContent = null;
+    if (this.props.contentType === 3) {
+        try {
+            playerCount += 1;
+            console.log(`player count: ${playerCount}`);
+            this.ap = new APlayer({
+                element: this.audioDiv,
+                autoplay: false,
+                preload: 'metadata',
+                music: {
+                    url: encodeURI(topic.mediaContent.audio),
+                    title: topic.title,
+                    author: topic.userName,
+                    pic: '/static/images/audio_cover.png'
+                }
+            });
+        } catch (e) {
+            // IE 11 下会抛一个 InvalidStateError 的错误，忽略
+        }
+        audioContent = (<div className="aplayer"
+            style={{ whiteSpace: 'normal', margin: '0 0 15px 0' }}
+            ref={it => this.audioDiv = it}>
+        </div>);
+    }
+    return audioContent;
+});
