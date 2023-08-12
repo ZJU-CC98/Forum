@@ -31,7 +31,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
 
     this.isLoadable = true;
     this.myInfo = Utility.getMyInfo();
-    console.log(`in constructor, topic-view-mode: ${this.myInfo.topicViewMode}`);
+    //console.log(`in constructor, topic-view-mode: ${this.myInfo.topicViewMode}`);
     //先看一下有没有缓存的帖子数据
     // var data = Utility.getStorage(keyStr);
     // if (!data) {
@@ -208,7 +208,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
       $("#new-topic-card-button").removeClass("focus-hover");
       $("#new-topic-media-only-button").removeClass("focus-hover");
       this.mediaOnly = false;
-      await this.getAndSetTopic(init ? 0 : this.state.from);
+      await this.getAndSetTopic(0);
     }
   }
 
@@ -223,7 +223,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
       $("#new-topic-card-button").addClass("focus-hover");
       $("#new-topic-media-only-button").removeClass("focus-hover");
       this.mediaOnly = false;
-      await this.getAndSetTopic(init ? 0 : this.state.from);
+      await this.getAndSetTopic(0);
     }
   }
 
@@ -238,7 +238,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
       $("#new-topic-card-button").removeClass("focus-hover");
       $("#new-topic-media-only-button").addClass("focus-hover");
       this.mediaOnly = true;
-      await this.getAndSetTopic(init ? 0 : this.state.from);
+      await this.getAndSetTopic(0);
     }
   }
 
