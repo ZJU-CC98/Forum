@@ -10,8 +10,6 @@ var playerCount = 0;
  * 卡片模式的单个主题
  */
 export class CardTopicSingle extends React.Component<FocusTopic> {
-    ap: any;
-
     constructor(props) {
         super(props);
         //this.state = { mediaContent: this.props.mediaContent };
@@ -27,10 +25,6 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
             $(`#card_lastpost_${this.props.id}`).removeAttr('target');
             $(`#card_portrait_image_${this.props.id}`).addClass('card-topic-anonymous');
         }
-    }
-
-    componentWillUnmount() {
-        this.ap && this.ap.destroy();
     }
 
     showOriginalImage(thumbnailUrl: string) {
@@ -105,30 +99,6 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
             }
         }
 
-        let audioContent = null;
-        if (this.props.contentType === 3) {
-            try {
-                playerCount += 1;
-                console.log(`player count: ${playerCount}`);
-                this.ap = new APlayer({
-                    container: document.getElementById(`card_audio_${this.props.id}`),
-                    autoplay: false,
-                    preload: 'metadata',
-                    music: {
-                        url: encodeURI(this.props.mediaContent.audio),
-                        title: this.props.title,
-                        author: this.props.userName,
-                        pic: '/static/images/audio_cover.png'
-                    }
-                });
-            } catch (e) {
-                // IE 11 下会抛一个 InvalidStateError 的错误，忽略
-            }
-            audioContent = (<div className="aplayer" key={`card_audio_${this.props.id}`} id={`card_audio_${this.props.id}`}
-                style={{ whiteSpace: 'normal', margin: '0 0 15px 0' }}>
-            </div>);
-        }
-
         return (<div className="card-topic">
             <a className="card-topic-left" href={userUrl} target="_blank" id={`card_portrait_${this.props.id}`}>
                 <img className="card-topic-portraitUrl" id={`card_portrait_image_${this.props.id}`} src={this.props.portraitUrl}></img>
@@ -141,7 +111,6 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 <div className="card-topic-original-image" id={`card_original_image_area_${this.props.id}`}>
                     <img src="" id={`card_original_image_${this.props.id}`} onClick={() => { this.hideOriginalImage(); }} />
                 </div>
-                {/* <div className="card-topic-audio" id={`card_audio_${this.props.id}`}>{audioContent}</div> */}
                 {this.props.contentType === 3 ? convertAudioPlayer(this.props) : null}
                 <div className="card-topic-board">
                     <div className="card-topic-boardName"><a href={boardUrl} target="_blank">{this.props.boardName}</a></div>
@@ -162,19 +131,21 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
     }
 }
 
-interface IMediaProps {
+interface IAudioProps {
     src: string;
     title: string;
     userName: string;
     topicId: number;
 }
 
-class AudioPlayer extends React.Component<IMediaProps> {
+class AudioPlayer extends React.Component<IAudioProps> {
     div: HTMLDivElement;
     ap: any;
 
     componentDidMount() {
         try {
+            playerCount += 1;
+            console.log(`player count: ${playerCount}`);
             this.ap = new APlayer({
                 element: this.div,
                 autoplay: false,
@@ -186,9 +157,6 @@ class AudioPlayer extends React.Component<IMediaProps> {
                     pic: '/static/images/audio_cover.png'
                 }
             });
-            //去掉文件名后面的横杠
-            //this.div.getElementsByClassName('aplayer-author')[0].innerHTML = '';
-
         } catch (e) {
             // IE 11 下会抛一个 InvalidStateError 的错误，忽略
         }
