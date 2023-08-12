@@ -10,6 +10,8 @@ var playerCount = 0;
  * 卡片模式的单个主题
  */
 export class CardTopicSingle extends React.Component<FocusTopic> {
+    imageCount: number = 0;
+
     constructor(props) {
         super(props);
         //this.state = { mediaContent: this.props.mediaContent };
@@ -29,15 +31,18 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
 
     showOriginalImage(thumbnailUrl: string) {
         let imageUrl = thumbnailUrl.replace("thumbnail/earlier/", "").replace("thumbnail/", "");
-        //console.log(imageUrl);
         $(`#card_original_image_${this.props.id}`).attr('src', imageUrl);
-        $(`#card_thumbnail_area_${this.props.id}`).hide();
         $(`#card_original_image_area_${this.props.id}`).show();
+        if (this.imageCount === 1) {
+            $(`#card_thumbnail_area_${this.props.id}`).hide();
+        }
     }
 
     hideOriginalImage() {
-        $(`#card_thumbnail_area_${this.props.id}`).show();
         $(`#card_original_image_area_${this.props.id}`).hide();
+        if (this.imageCount === 1) {
+            $(`#card_thumbnail_area_${this.props.id}`).show();
+        }
     }
 
     convertThumbnail(item: string, index: number) {
@@ -65,14 +70,14 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
         let lastPostUserUrl = `/user/name/${encodeURI(this.props.lastPostUser)}`;
         let userName: any = this.props.userName;
 
-        let imageCount = !this.props.mediaContent || !this.props.mediaContent.thumbnail ?
+        this.imageCount = !this.props.mediaContent || !this.props.mediaContent.thumbnail ?
             0 :
             (this.props.mediaContent.thumbnail.length > 6 ?
                 6 :
                 this.props.mediaContent.thumbnail.length);
         let thumbnailContent = null;
         if (this.props.contentType === 4) {
-            switch (imageCount) {
+            switch (this.imageCount) {
                 case 1:
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-1">
@@ -107,10 +112,10 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 <a className="card-topic-userName" href={userUrl} target="_blank" id={`card_username_${this.props.id}`}>{userName}</a>
                 <a className="card-topic-time" href={topicUrl} target="_blank">{this.props.time}</a>
                 <a className="card-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
-                <div className="card-topic-thumbnail" id={`card_thumbnail_area_${this.props.id}`}>{thumbnailContent}</div>
                 <div className="card-topic-original-image" id={`card_original_image_area_${this.props.id}`}>
                     <img src="" id={`card_original_image_${this.props.id}`} onClick={() => { this.hideOriginalImage(); }} />
                 </div>
+                <div className="card-topic-thumbnail" id={`card_thumbnail_area_${this.props.id}`}>{thumbnailContent}</div>
                 {this.props.contentType === 3 ? convertAudioPlayer(this.props) : null}
                 <div className="card-topic-board">
                     <div className="card-topic-boardName"><a href={boardUrl} target="_blank">{this.props.boardName}</a></div>
