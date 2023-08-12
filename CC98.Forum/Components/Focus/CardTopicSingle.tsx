@@ -11,7 +11,11 @@ var playerCount = 0;
  */
 export class CardTopicSingle extends React.Component<FocusTopic> {
     ap: any;
-    audioDiv: HTMLDivElement;
+
+    constructor(props) {
+        super(props);
+        //this.state = { mediaContent: this.props.mediaContent };
+    }
 
     componentDidMount() {
         if (!this.props.userId) {
@@ -79,7 +83,6 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-1">
                             {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
-                            {/* {this.props.mediaContent.thumbnail.map(this.convertThumbnail)} */}
                         </div>);
                     break;
                 case 2:
@@ -87,7 +90,6 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-2">
                             {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
-                            {/* {this.props.mediaContent.thumbnail.map(this.convertThumbnail)} */}
                         </div>);
                     break;
                 case 3:
@@ -96,7 +98,6 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-3">
                             {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
-                            {/* {this.props.mediaContent.thumbnail.map(this.convertThumbnail)} */}
                         </div>);
                     break;
                 default:
@@ -110,7 +111,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 playerCount += 1;
                 console.log(`player count: ${playerCount}`);
                 this.ap = new APlayer({
-                    element: this.audioDiv,
+                    container: document.getElementById(`card_audio_${this.props.id}`),
                     autoplay: false,
                     preload: 'metadata',
                     music: {
@@ -123,9 +124,8 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
             } catch (e) {
                 // IE 11 下会抛一个 InvalidStateError 的错误，忽略
             }
-            audioContent = (<div className="aplayer"
-                style={{ whiteSpace: 'normal', margin: '0 0 15px 0' }}
-                ref={it => this.audioDiv = it}>
+            audioContent = (<div className="aplayer" key={`card_audio_${this.props.id}`} id={`card_audio_${this.props.id}`}
+                style={{ whiteSpace: 'normal', margin: '0 0 15px 0' }}>
             </div>);
         }
 
@@ -141,7 +141,8 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 <div className="card-topic-original-image" id={`card_original_image_area_${this.props.id}`}>
                     <img src="" id={`card_original_image_${this.props.id}`} onClick={() => { this.hideOriginalImage(); }} />
                 </div>
-                <div className="card-topic-audio" id={`card_audio_${this.props.id}`}>{audioContent}</div>
+                {/* <div className="card-topic-audio" id={`card_audio_${this.props.id}`}>{audioContent}</div> */}
+                {this.props.contentType === 3 ? convertAudioPlayer(this.props) : null}
                 <div className="card-topic-board">
                     <div className="card-topic-boardName"><a href={boardUrl} target="_blank">{this.props.boardName}</a></div>
                     {this.props.tag1 ? <div className="card-topic-tag">{this.props.tag1}</div> : null}
@@ -161,30 +162,58 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
     }
 }
 
-const AudioPlayer = React.memo(function AudioPlayer(topic: FocusTopic) {
-    let audioContent = null;
-    if (this.props.contentType === 3) {
+interface IMediaProps {
+    src: string;
+    title: string;
+    userName: string;
+    topicId: number;
+}
+
+class AudioPlayer extends React.Component<IMediaProps> {
+    div: HTMLDivElement;
+    ap: any;
+
+    componentDidMount() {
         try {
-            playerCount += 1;
-            console.log(`player count: ${playerCount}`);
             this.ap = new APlayer({
-                element: this.audioDiv,
+                element: this.div,
                 autoplay: false,
                 preload: 'metadata',
                 music: {
-                    url: encodeURI(topic.mediaContent.audio),
-                    title: topic.title,
-                    author: topic.userName,
+                    url: encodeURI(this.props.src),
+                    title: this.props.title,
+                    author: this.props.userName,
                     pic: '/static/images/audio_cover.png'
                 }
             });
+            //去掉文件名后面的横杠
+            //this.div.getElementsByClassName('aplayer-author')[0].innerHTML = '';
+
         } catch (e) {
             // IE 11 下会抛一个 InvalidStateError 的错误，忽略
         }
-        audioContent = (<div className="aplayer"
-            style={{ whiteSpace: 'normal', margin: '0 0 15px 0' }}
-            ref={it => this.audioDiv = it}>
-        </div>);
     }
-    return audioContent;
-});
+
+    componentWillUnmount() {
+        this.ap && this.ap.destroy();
+    }
+
+    render() {
+        return <div className="aplayer"
+            style={{ whiteSpace: 'normal', margin: '0 0 15px 0' }}
+            ref={it => this.div = it}>
+        </div>;
+    }
+}
+
+function convertAudioPlayer(item: FocusTopic) {
+    return (
+        <AudioPlayer
+            key={`card_audio_${item.id}`}
+            title={item.title}
+            src={item.mediaContent.audio}
+            userName={item.userName}
+            topicId={item.id}
+        />
+    );
+}
