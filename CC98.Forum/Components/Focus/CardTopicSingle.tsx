@@ -155,6 +155,7 @@ class AudioPlayer extends React.Component<IAudioProps> {
                 element: this.div,
                 autoplay: false,
                 preload: 'metadata',
+                loop: 'none',
                 music: {
                     url: encodeURI(this.props.src),
                     title: this.props.title,
