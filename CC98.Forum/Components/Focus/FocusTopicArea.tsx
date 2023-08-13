@@ -95,12 +95,12 @@ export class FocusTopicArea extends React.Component<
    */
   async handleScroll() {
     //控制回到顶部按钮出现
-    if (window.pageYOffset > 234) {
+    if (window.scrollY > 234) {
       $("#scroll-to-top-button").removeClass("btn-disappear");
       $("#scroll-to-top-button").addClass("btn-show");
     }
     //控制回到顶部按钮消失
-    if (window.pageYOffset < 234) {
+    if (window.scrollY < 234) {
       $("#scroll-to-top-button").removeClass("btn-show");
       $("#scroll-to-top-button").addClass("btn-disappear");
     }
