@@ -263,32 +263,17 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
         <div className="focus">
           <Category />
           <div className="focus-board-area">
-            <button
-              className="focus-board new-topic focus-hover"
-              id="new-topic-classic-button"
-              onClick={() => {
-                this.classicMode();
-              }}
-            >
+            <button className="focus-board new-topic focus-hover" id="new-topic-classic-button" onClick={() => { this.classicMode(); }}>
               经典模式
             </button>
-            <button
-              className="focus-board new-topic"
-              id="new-topic-card-button"
-              onClick={() => {
-                this.cardMode();
-              }}
-            >
+            <button className="focus-board new-topic" id="new-topic-card-button" onClick={() => { this.cardMode(); }}            >
               卡片模式
             </button>
-            <button
-              className="focus-board new-topic"
-              id="new-topic-media-only-button"
-              onClick={() => {
-                this.mediaOnlyMode();
-              }}
-            >
+            <button className="focus-board new-topic" id="new-topic-media-only-button" onClick={() => { this.mediaOnlyMode(); }}            >
               只看媒体
+            </button>
+            <button className="refresh-button" id="new-topic-refresh-button" onClick={() => { this.getAndSetTopic(0); }}>
+              <i className="fa fa-refresh fa-md"></i>刷新
             </button>
           </div>
 
