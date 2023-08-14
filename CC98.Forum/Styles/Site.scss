@@ -2543,12 +2543,9 @@ a {
       img {
         width: 50px;
         height: 50px;
-        //border-radius: 0.25rem;
-        margin: 0 5px 5px 5px;
-        // border-color: $theme_color_topbar;
-        // border: 3px;
-        vertical-align: middle;
-        opacity: 60%;
+        border-radius: 0.25rem;
+        margin: 0 10px 5px 0;
+        opacity: 50%;
 
         &:hover {
           cursor: pointer;
@@ -2700,7 +2697,7 @@ a {
 .card-topic-area {
   display: flex;
   flex-direction: row;
-  margin-top: 0.625rem;
+  margin-top: 1.375rem;
 
   .card-topic-area-left {
     display: flex;

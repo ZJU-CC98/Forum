@@ -37,6 +37,12 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
         if (this.imageCount > 1) {
             $(`#card_thumbnail_mini_area_${this.props.id}`).show();
             $(`#card_thumbnail_mini_image_${this.props.id}_${idx}`).addClass('card-topic-thumbnail-mini-clicked');
+            this.props.mediaContent.thumbnail.forEach((_, i, __) => {
+                if (idx !== i) {
+                    $(`#card_thumbnail_mini_image_${this.props.id}_${i}`).removeClass('card-topic-thumbnail-mini-clicked');
+                }
+            })
+
         }
     }
 
