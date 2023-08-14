@@ -14,6 +14,7 @@ import DocumentTitle from "../DocumentTitle";
 import Spin from "antd/es/spin";
 import { MyInfo } from "../../States/AppState";
 import { CardBoard } from "../Focus/CardBoard";
+import { CardRecommendTopic } from "../Focus/CardRecommendTopic";
 //import pDebounce from "p-debounce";
 
 /**
@@ -348,7 +349,11 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
                 ? this.state.data.map(convertCardMediaOnlyPost)
                 : this.state.data.map(convertCardPost)}
             </div>
-            <div className="card-topic-area-right"></div>
+            <div className="card-topic-area-right">
+              <div className="card-user-may-mising">
+                <CardRecommendTopic/>
+              </div>
+            </div>
           </div>
 
           <div className="focus-topic-loading" id="focus-topic-loading">

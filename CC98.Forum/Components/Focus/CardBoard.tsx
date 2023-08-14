@@ -51,6 +51,7 @@ const BoardPanel = (Data: any) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          paddingLeft:Data.order<=7?"25px":"0px",
         }}
       >
         {BoardPanelContent(Data.boards)}
@@ -104,8 +105,8 @@ export class CardBoard extends React.Component<{}, CardBoardState> {
   }
   async componentDidMount() {
     let data = await Utility.getBoards();
-    this.setState({ data: data });
-    console.log(this.state.data);
+    if(data != undefined||data != null)this.setState({ data: data });
+    // console.log(this.state.data);
   }
   render() {
     return (

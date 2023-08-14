@@ -2863,6 +2863,22 @@ a {
   }
 }
 
+.card-user-may-mising{
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  background-color: $background_color_textarea;
+  border: solid 1.5px $theme_color_main;
+  border-radius: 0.25rem;
+  .card-user-may-mising-title{
+    font-size: 18px;
+    margin: 15px;
+    margin-right: 5px;
+    display: inline;
+  }
+}
 /*.focus-topic {
     display: flex;
     min-height: 98px;
@@ -4824,4 +4840,93 @@ ol {
 
 .red-color {
   color: red;
+}
+
+.card-recommendation-button-area {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 20px;
+
+  .card-recommendation-button {
+    display: block;
+    background-color: $theme_color_main;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 1px solid $theme_color_main;
+    padding: 0.375rem 0.45rem;
+    font-size: 0.75rem;
+    border-radius: 0.25rem;
+    line-height: normal;
+    white-space: nowrap;
+    font-family: 微软雅黑;
+    margin-right: 0.2rem;
+    //margin-top: 1rem;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .card-recommendation-button:hover {
+    color: $theme_color_main;
+    background-color: transparent;
+  }
+
+  .card-recommendation-button:active {
+    color: #ffffff;
+    background-color: $theme_color_main;
+  }
+
+  i {
+    margin-right: 3px;
+  }
+}
+
+.card-recommendation-topic-container{
+  align-items: center;
+  display: flex;
+  height: 80px;
+  margin: 0px 6px;
+  .card-recommendation-topic-container-item{
+    align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    // height: 55px;
+    margin: 4px 0;
+    width: 100%;
+    .card-recommendation-topic {
+      cursor: pointer;
+      margin: 3px 12px 0 20px;
+      position: relative;
+      .card-recommendation-topic-title {
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        // word-break: break-all;
+      }
+      .card-recommendation-topic-title:hover {
+        color: #1890ff;
+      }
+      .card-recommendation-topic-detail{
+        align-items: center;
+        color: #9499a0;
+        display: flex;
+        font-size: 13px;
+        height: 18px;
+        line-height: 18px;
+        margin: 2px 0;
+      }
+      i{
+        position: absolute;
+        left:-20px;
+        top: 4px;
+        color:$theme_color_main
+      }
+    }
+  }
+  .card-recommendation-topic-container-item:hover{
+    background-color: #f1f2f3;
+  }
 }
