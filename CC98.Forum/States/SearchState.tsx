@@ -9,5 +9,5 @@ export class SearchState {
     words: string[];
     data: FocusTopic[];
     from: number;
-    buttonClassName: string;
+    //buttonClassName: string;
 }
