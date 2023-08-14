@@ -272,7 +272,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
             <button className="focus-board new-topic" id="new-topic-media-only-button" onClick={() => { this.mediaOnlyMode(); }}            >
               只看媒体
             </button>
-            <button className="refresh-button" id="new-topic-refresh-button" onClick={() => { this.getAndSetTopic(0); }}>
+            <button className="refresh-button" id="new-topic-refresh-button" onClick={() => { if (this.isLoadable) { this.getAndSetTopic(0); } }}>
               <i className="fa fa-refresh fa-md"></i>刷新
             </button>
           </div>
