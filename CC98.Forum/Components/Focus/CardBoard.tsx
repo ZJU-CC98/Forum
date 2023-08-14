@@ -75,6 +75,7 @@ const BoardPanelContent = (Data: any) => {
               paddingBottom: "4px",
               whiteSpace: "nowrap",
             }}
+            className="card-topic-area-left-content-collapse-item"
           >
             <Link target={"_blank"} to={`/board/${item.id}`} style={{ fontSize: "14px" }}>· {item.name.replace("（", "(").replace("）", ")")}</Link>
           </div>

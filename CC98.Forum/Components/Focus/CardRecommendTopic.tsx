@@ -83,15 +83,12 @@ export class CardRecommendTopic extends React.Component<
   render(): React.ReactNode {
     return (
       <>
-        <div className="card-user-may-mising-title">可能错过了</div>
-        {this.state.data != undefined || this.state.data != null
-          ? CardRecommendTopicSingle(this.state.data)
-          : ""}
         <div className="card-recommendation-button-area">
+        <div className="card-user-may-mising-title">可能错过了</div>
           <button
             className="card-recommendation-button"
             id="card-recommendation-last"
-            style={{ height: "fit-content",visibility:"hidden" }}
+            style={{ height: "fit-content",visibility:"hidden" ,paddingRight:"0",marginRight:"0",marginLeft:"50px"}}
             onClick={() => this.getLastRandomTopics()}
           >
             <i className="fa fa-hand-o-left fa-md"></i>上一批
@@ -99,12 +96,15 @@ export class CardRecommendTopic extends React.Component<
           <button
             className="card-recommendation-button"
             id="card-recommendation-refresh"
-            style={{ height: "fit-content" }}
+            style={{ height: "fit-content" ,marginRight:"12px"}}
             onClick={() => this.getNewRandomTopics()}
           >
             <i className="fa fa-refresh fa-md"></i>换一换
           </button>
         </div>
+        {this.state.data != undefined || this.state.data != null
+          ? CardRecommendTopicSingle(this.state.data)
+          : ""}
       </>
     );
   }
@@ -125,7 +125,7 @@ const CardRecommendTopicSingle = (Data: any) => {
               <Link to={`/topic/${item.id}`} target={"_blank"}>{StringCutOff(item.title)}</Link>
             </div>
             <div className="card-recommendation-topic-detail">
-              {item.boardName} {item.hitCount}浏览 {item.replyCount}讨论
+              <Link target={"_blank"} to={`/board/${item.boardId}`}>{item.boardName}&nbsp;</Link> {item.hitCount}浏览 {item.replyCount}回复
             </div>
           </div>
         </div>

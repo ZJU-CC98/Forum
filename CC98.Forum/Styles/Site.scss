@@ -2746,15 +2746,18 @@ a {
       .card-topic-area-left-content-collapse{
         background: $background_color_textarea;
         border: 0;
-      th, td {
-        border: 0;
-        padding: 6px;
-        padding-left:0px ;
-      }
       .ant-collapse-content-box{
         padding: 4px;
         padding-left: 15px;
       }
+      }
+    }
+    .card-topic-area-left-content-collapse-item{
+      a{
+        color: inherit;
+      }
+      a:hover{
+        color:$theme_color_main;
       }
     }
   }
@@ -4971,6 +4974,9 @@ ol {
         text-overflow: ellipsis;
         word-break: break-all;
         font-size: 14px;
+        a:hover{
+          color: $theme_color_main;
+        }
       }
       .card-recommendation-topic-title:hover {
         color: #1890ff;
@@ -4983,6 +4989,12 @@ ol {
         height: 18px;
         line-height: 18px;
         margin: 2px 0;
+        a{
+          color: inherit;
+        }
+        a:hover{
+          color: $theme_color_main;
+        }
       }
       i{
         position: absolute;
