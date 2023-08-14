@@ -13,6 +13,7 @@ import {
 import DocumentTitle from "../DocumentTitle";
 import Spin from "antd/es/spin";
 import { MyInfo } from "../../States/AppState";
+import { CardBoard } from "../Focus/CardBoard";
 //import pDebounce from "p-debounce";
 
 /**
@@ -63,7 +64,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
     let t2 = new Date().getTime();
     let timeSpan = t2 - t1;
     if (timeSpan < 1000) {
-      await new Promise(resolve => setTimeout(resolve, 1000 - timeSpan));
+      await new Promise((resolve) => setTimeout(resolve, 1000 - timeSpan));
     }
     this.isLoadable = true;
   }
@@ -72,7 +73,6 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
    * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
    */
   async componentDidMount() {
-
     //todo: 从服务器获取用户设置信息并切到对应页面
     //this.mediaOnly = false;
     //this.classicMode();
@@ -101,8 +101,6 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
     });
     //滚动条事件监听
     document.addEventListener("scroll", this.handleScroll);
-
-
   }
 
   /**
@@ -245,10 +243,9 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
   getCountString(i: number): string {
     if (i > 99999) {
       return `${Math.floor(i / 10000)}万`;
-    }
-    else if (i > 9999) {
+    } else if (i > 9999) {
       let w = Math.floor(i / 10000);
-      let q = Math.floor(i % 10000 / 1000);
+      let q = Math.floor((i % 10000) / 1000);
       return `${w}.${q}万`;
     }
     return Math.floor(i).toString();
@@ -266,13 +263,31 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
         <div className="focus">
           <Category />
           <div className="focus-board-area">
-            <button className="focus-board new-topic focus-hover" id="new-topic-classic-button" onClick={() => { this.classicMode() }}>
+            <button
+              className="focus-board new-topic focus-hover"
+              id="new-topic-classic-button"
+              onClick={() => {
+                this.classicMode();
+              }}
+            >
               经典模式
             </button>
-            <button className="focus-board new-topic" id="new-topic-card-button" onClick={() => { this.cardMode() }}>
+            <button
+              className="focus-board new-topic"
+              id="new-topic-card-button"
+              onClick={() => {
+                this.cardMode();
+              }}
+            >
               卡片模式
             </button>
-            <button className="focus-board new-topic" id="new-topic-media-only-button" onClick={() => { this.mediaOnlyMode() }}>
+            <button
+              className="focus-board new-topic"
+              id="new-topic-media-only-button"
+              onClick={() => {
+                this.mediaOnlyMode();
+              }}
+            >
               只看媒体
             </button>
           </div>
@@ -285,38 +300,53 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
 
           <div className="card-topic-area" id="card-mode-area">
             <div className="card-topic-area-left">
-              <div className="card-user">
-                <div className="card-user-background"></div>
-                <div className="card-user-portrait">
-                  <img src={this.myInfo.portraitUrl} />
-                  <a href="../usercenter" target="_blank">{this.myInfo.name}</a>
+              <div className="card-topic-area-left-content">
+                <div className="card-user">
+                  <div className="card-user-background"></div>
+                  <div className="card-user-portrait">
+                    <img src={this.myInfo.portraitUrl} />
+                    <a href="../usercenter" target="_blank">
+                      {this.myInfo.name}
+                    </a>
+                  </div>
+                  <div className="card-user-stats">
+                    <div className="card-user-stats-item">
+                      <a href="../usercenter" target="_blank">
+                        {this.getCountString(this.myInfo.postCount)}
+                      </a>
+                      帖数
+                    </div>
+                    <div className="card-user-stats-item">
+                      <a href="../usercenter/myfollowings" target="_blank">
+                        {this.getCountString(this.myInfo.followCount)}
+                      </a>
+                      关注
+                    </div>
+                    <div className="card-user-stats-item">
+                      <a href="../usercenter/myfans" target="_blank">
+                        {this.getCountString(this.myInfo.fanCount)}
+                      </a>
+                      粉丝
+                    </div>
+                    <div className="card-user-stats-item">
+                      <a href="../usercenter/myposts/ishot/1/1" target="_blank">
+                        {this.getCountString(this.myInfo.receivedLikeCount)}
+                      </a>
+                      获赞
+                    </div>
+                  </div>
                 </div>
-                <div className="card-user-stats">
-                  <div className="card-user-stats-item">
-                    <a href="../usercenter" target="_blank">{this.getCountString(this.myInfo.postCount)}</a>
-                    帖数
-                  </div>
-                  <div className="card-user-stats-item">
-                    <a href="../usercenter/myfollowings" target="_blank">{this.getCountString(this.myInfo.followCount)}</a>
-                    关注
-                  </div>
-                  <div className="card-user-stats-item">
-                    <a href="../usercenter/myfans" target="_blank">{this.getCountString(this.myInfo.fanCount)}</a>
-                    粉丝
-                  </div>
-                  <div className="card-user-stats-item">
-                    <a href="../usercenter/myposts/ishot/1/1" target="_blank">{this.getCountString(this.myInfo.receivedLikeCount)}</a>
-                    获赞
-                  </div>
-                </div>
-              </div>
 
-              <div className="card-board">
-                <div className="card-board-title">版面列表</div>
+                <div className="card-board">
+                  <div className="card-board-title">版面列表</div>
+                  <CardBoard />
+                </div>
               </div>
             </div>
             <div className="card-topic-area-middle">
-              {this.mediaOnly ? this.state.data.map(convertCardMediaOnlyPost) : this.state.data.map(convertCardPost)}
+              {this.mediaOnly
+                ? this.state.data.map(convertCardMediaOnlyPost)
+                : this.state.data.map(convertCardPost)}
             </div>
             <div className="card-topic-area-right"></div>
           </div>
@@ -324,10 +354,18 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
           <div className="focus-topic-loading" id="focus-topic-loading">
             <Spin size="large" />
           </div>
-          <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">
+          <div
+            className="focus-topic-loaddone displaynone"
+            id="focus-topic-loaddone"
+          >
             无法加载更多了，小水怡情，可不要沉迷哦~
           </div>
-          <button type="button" id="scroll-to-top-button" className={"top-button"} onClick={this.scrollToTop}>
+          <button
+            type="button"
+            id="scroll-to-top-button"
+            className={"top-button"}
+            onClick={this.scrollToTop}
+          >
             回到顶部
           </button>
         </div>
