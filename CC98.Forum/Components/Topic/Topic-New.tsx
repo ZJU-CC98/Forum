@@ -14,7 +14,10 @@ import DocumentTitle from "../DocumentTitle";
 import Spin from "antd/es/spin";
 import { MyInfo } from "../../States/AppState";
 import { CardBoard } from "../Focus/CardBoard";
+<<<<<<< HEAD
 import { CardRecommendTopic } from "../Focus/CardRecommendTopic";
+=======
+>>>>>>> refs/remotes/origin/dev-endless-eight
 //import pDebounce from "p-debounce";
 
 /**
@@ -264,6 +267,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
         <div className="focus">
           <Category />
           <div className="focus-board-area">
+<<<<<<< HEAD
             <button
               className="focus-board new-topic focus-hover"
               id="new-topic-classic-button"
@@ -289,7 +293,19 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
                 this.mediaOnlyMode();
               }}
             >
+=======
+            <button className="focus-board new-topic focus-hover" id="new-topic-classic-button" onClick={() => { this.classicMode(); }}>
+              经典模式
+            </button>
+            <button className="focus-board new-topic" id="new-topic-card-button" onClick={() => { this.cardMode(); }}            >
+              卡片模式
+            </button>
+            <button className="focus-board new-topic" id="new-topic-media-only-button" onClick={() => { this.mediaOnlyMode(); }}            >
+>>>>>>> refs/remotes/origin/dev-endless-eight
               只看媒体
+            </button>
+            <button className="refresh-button" id="new-topic-refresh-button" onClick={() => { if (this.isLoadable) { this.getAndSetTopic(0); } }}>
+              <i className="fa fa-refresh fa-md"></i>刷新
             </button>
           </div>
 
@@ -348,11 +364,14 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
               {this.mediaOnly
                 ? this.state.data.map(convertCardMediaOnlyPost)
                 : this.state.data.map(convertCardPost)}
+<<<<<<< HEAD
             </div>
             <div className="card-topic-area-right">
               <div className="card-user-may-mising">
                 <CardRecommendTopic/>
               </div>
+=======
+>>>>>>> refs/remotes/origin/dev-endless-eight
             </div>
           </div>
 

@@ -42,7 +42,7 @@ const blankdata = [
 const BoardPanel = (Data: any) => {
   return (
     <Panel
-      header={<div style={{color:"black"}}>{Data.name}</div>}
+      header={<div style={{ color: "black" }}>{Data.name}</div>}
       key={Data.order}
       className="card-topic-area-left-content-collapse"
     >
@@ -76,7 +76,7 @@ const BoardPanelContent = (Data: any) => {
               whiteSpace: "nowrap",
             }}
           >
-            <Link to={`/board/${item.id}`} style={{fontSize:"14px"}}>· {item.name.replace("（","(").replace("）",")")}</Link>
+            <Link target={"_blank"} to={`/board/${item.id}`} style={{ fontSize: "14px" }}>· {item.name.replace("（", "(").replace("）", ")")}</Link>
           </div>
         );
       })}
@@ -86,10 +86,10 @@ const BoardPanelContent = (Data: any) => {
 
 //判定是否需要换行
 const IsStringShort = (str: string) => {
-  if(str.includes("（")){
+  if (str.includes("（")) {
     //replace （） to ()
-    str = str.replace("（","(").replace("）",")")
-    return str.length > 8?true:false;
+    str = str.replace("（", "(").replace("）", ")")
+    return str.length > 8 ? true : false;
   }
   if (str.length > 7) {
     return true;

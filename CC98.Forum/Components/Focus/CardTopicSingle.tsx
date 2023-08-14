@@ -29,20 +29,40 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
         }
     }
 
-    showOriginalImage(thumbnailUrl: string) {
+    showOriginalImage(thumbnailUrl: string, idx: number = 0) {
         let imageUrl = thumbnailUrl.replace("thumbnail/earlier/", "").replace("thumbnail/", "");
         $(`#card_original_image_${this.props.id}`).attr('src', imageUrl);
         $(`#card_original_image_area_${this.props.id}`).show();
-        if (this.imageCount === 1) {
-            $(`#card_thumbnail_area_${this.props.id}`).hide();
+        $(`#card_thumbnail_area_${this.props.id}`).hide();
+        if (this.imageCount > 1) {
+            $(`#card_thumbnail_mini_area_${this.props.id}`).show();
+            $(`#card_thumbnail_mini_image_${this.props.id}_${idx}`).addClass('card-topic-thumbnail-mini-clicked');
+            this.props.mediaContent.thumbnail.forEach((_, i, __) => {
+                if (idx !== i) {
+                    $(`#card_thumbnail_mini_image_${this.props.id}_${i}`).removeClass('card-topic-thumbnail-mini-clicked');
+                }
+            })
+
         }
     }
 
     hideOriginalImage() {
         $(`#card_original_image_area_${this.props.id}`).hide();
-        if (this.imageCount === 1) {
-            $(`#card_thumbnail_area_${this.props.id}`).show();
+        $(`#card_thumbnail_area_${this.props.id}`).show();
+        if (this.imageCount > 1) {
+            $(`#card_thumbnail_mini_area_${this.props.id}`).hide();
         }
+    }
+
+    changeMiniImage(thumbnailUrl: string, idx: number) {
+        let imageUrl = thumbnailUrl.replace("thumbnail/earlier/", "").replace("thumbnail/", "");
+        $(`#card_original_image_${this.props.id}`).attr('src', imageUrl);
+        $(`#card_thumbnail_mini_image_${this.props.id}_${idx}`).addClass('card-topic-thumbnail-mini-clicked');
+        this.props.mediaContent.thumbnail.forEach((_, i, __) => {
+            if (idx !== i) {
+                $(`#card_thumbnail_mini_image_${this.props.id}_${i}`).removeClass('card-topic-thumbnail-mini-clicked');
+            }
+        })
     }
 
     convertThumbnail(item: string, index: number) {
@@ -50,7 +70,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
             <img
                 key={`thumbnail_${item}`}
                 src={item}
-                onClick={() => { this.showOriginalImage(item); }}
+                onClick={() => { this.showOriginalImage(item, index); }}
             />
         );
     }
@@ -81,14 +101,14 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 case 1:
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-1">
-                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str, i); }} /> })}
                         </div>);
                     break;
                 case 2:
                 case 4:
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-2">
-                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str, i); }} /> })}
                         </div>);
                     break;
                 case 3:
@@ -96,7 +116,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 case 6:
                     thumbnailContent = (
                         <div className="card-topic-thumbnail-3">
-                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str); }} /> })}
+                            {this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_${this.props.id}_${i}`} src={str} onClick={() => { this.showOriginalImage(str, i); }} /> })}
                         </div>);
                     break;
                 default:
@@ -112,6 +132,11 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 <a className="card-topic-userName" href={userUrl} target="_blank" id={`card_username_${this.props.id}`}>{userName}</a>
                 <a className="card-topic-time" href={topicUrl} target="_blank">{this.props.time}</a>
                 <a className="card-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
+                <div className="card-topic-thumbnail-mini" id={`card_thumbnail_mini_area_${this.props.id}`}>
+                    {this.imageCount > 1
+                        ? this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_mini_${this.props.id}_${i}`} id={`card_thumbnail_mini_image_${this.props.id}_${i}`} src={str} onClick={() => { this.changeMiniImage(str, i) }} /> })
+                        : null}
+                </div>
                 <div className="card-topic-original-image" id={`card_original_image_area_${this.props.id}`}>
                     <img src="" id={`card_original_image_${this.props.id}`} onClick={() => { this.hideOriginalImage(); }} />
                 </div>

@@ -2108,6 +2108,7 @@ a {
 }
 
 .focus {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 1140px;
@@ -2245,6 +2246,41 @@ a {
   flex-wrap: wrap;
   min-height: 30px;
 
+  .refresh-button {
+    position: absolute;
+    right: 0;
+    display: block;
+    background-color: $theme_color_main;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 1px solid $theme_color_main;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    line-height: normal;
+    white-space: nowrap;
+    font-family: 微软雅黑;
+    margin-right: 1rem;
+    //margin-top: 1rem;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .refresh-button:hover {
+    color: $theme_color_main;
+    background-color: transparent;
+  }
+
+  .refresh-button:active {
+    color: #ffffff;
+    background-color: $theme_color_main;
+  }
+
+  i {
+    margin-right: 3px;
+  }
+
   .focus-board {
     display: block;
     color: $theme_color_main;
@@ -2283,7 +2319,7 @@ a {
 .focus-topic-area {
   display: flex;
   flex-direction: column;
-  margin-top: 0.625rem;
+  margin-top: 0.45rem;
 
   .focus-topic-topicArea {
     display: flex;
@@ -2527,6 +2563,33 @@ a {
     //   margin-bottom: 15px;
     // }
 
+    .card-topic-thumbnail-mini {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      max-width: 390px;
+      margin-bottom: 5px;
+      //background-color: rgba(220, 220, 220, 0.7);
+      display: none;
+
+      .card-topic-thumbnail-mini-clicked {
+        opacity: 100%;
+      }
+
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 0.25rem;
+        margin: 0 10px 0 0;
+        opacity: 50%;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 100%;
+        }
+      }
+    }
+
     .card-topic-thumbnail {
       display: flex;
       flex-direction: row;
@@ -2670,11 +2733,12 @@ a {
 .card-topic-area {
   display: flex;
   flex-direction: row;
-  margin-top: 0.625rem;
+  margin-top: 1.2rem;
 
   .card-topic-area-left {
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
     margin-right: 10px;
 
     .card-topic-area-left-content{
@@ -2692,6 +2756,29 @@ a {
         padding: 4px;
         padding-left: 15px;
       }
+=======
+    margin-right: 6px;
+
+    .card-topic-area-left-content {
+
+      // position: sticky;
+      // top: 10px;
+      .card-topic-area-left-content-collapse {
+        background: $background_color_textarea;
+        border: 0;
+
+        th,
+        td {
+          border: 0;
+          padding: 6px;
+          padding-left: 0px;
+        }
+
+        .ant-collapse-content-box {
+          padding: 4px;
+          padding-left: 15px;
+        }
+>>>>>>> refs/remotes/origin/dev-endless-eight
       }
     }
   }
@@ -2699,7 +2786,7 @@ a {
   .card-topic-area-middle {
     display: flex;
     flex-direction: column;
-    margin-right: 10px;
+    margin-right: 6px;
   }
 
   .card-topic-area-right {

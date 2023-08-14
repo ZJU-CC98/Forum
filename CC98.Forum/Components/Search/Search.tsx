@@ -27,7 +27,7 @@ export class Search extends React.Component<{}, SearchState> {
       words: [],
       data: [],
       from: 0,
-      buttonClassName: "",
+      //buttonClassName: "",
     };
     this.getMore = this.getMore.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
@@ -227,17 +227,14 @@ export class Search extends React.Component<{}, SearchState> {
 
   //监听滚动时间控制回到顶部按钮样式
   handleScroll(e) {
-    if (window.pageYOffset > 234) {
-      this.setState({
-        buttonClassName: "btn-show",
-      });
+    if (window.scrollY > 234) {
+      $("#scroll-to-top-button").removeClass("btn-disappear");
+      $("#scroll-to-top-button").addClass("btn-show");
     }
 
-    if (window.pageYOffset < 234) {
-      this.setState((prevState) => ({
-        buttonClassName:
-          prevState.buttonClassName === "" ? "" : "btn-disappare",
-      }));
+    if (window.scrollY < 234) {
+      $("#scroll-to-top-button").removeClass("btn-show");
+      $("#scroll-to-top-button").addClass("btn-disappear");
     }
   }
 
@@ -279,8 +276,8 @@ export class Search extends React.Component<{}, SearchState> {
             </div>
             <button
               type="button"
-              id="scrollToTop"
-              className={this.state.buttonClassName}
+              id="scroll-to-top-button"
+              className="top-button"
               onClick={this.scrollToTop}
             >
               回到顶部
