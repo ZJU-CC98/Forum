@@ -84,11 +84,11 @@ export class CardRecommendTopic extends React.Component<
     return (
       <>
         <div className="card-recommendation-button-area">
-        <div className="card-user-may-mising-title">可能错过了</div>
+          <div className="card-user-may-mising-title">可能错过</div>
           <button
             className="card-recommendation-button"
             id="card-recommendation-last"
-            style={{ height: "fit-content",visibility:"hidden" ,paddingRight:"0",marginRight:"0",marginLeft:"50px"}}
+            style={{ height: "fit-content", visibility: "hidden", paddingRight: "0", marginRight: "0", marginLeft: "50px" }}
             onClick={() => this.getLastRandomTopics()}
           >
             <i className="fa fa-hand-o-left fa-md"></i>上一批
@@ -96,7 +96,7 @@ export class CardRecommendTopic extends React.Component<
           <button
             className="card-recommendation-button"
             id="card-recommendation-refresh"
-            style={{ height: "fit-content" ,marginRight:"12px"}}
+            style={{ height: "fit-content", marginRight: "12px" }}
             onClick={() => this.getNewRandomTopics()}
           >
             <i className="fa fa-refresh fa-md"></i>换一换
@@ -119,7 +119,7 @@ const CardRecommendTopicSingle = (Data: any) => {
             <i
               className="fa fa-commenting-o"
               aria-hidden="true"
-              // style={{  }}
+            // style={{  }}
             ></i>
             <div className="card-recommendation-topic-title">
               <Link to={`/topic/${item.id}`} target={"_blank"}>{StringCutOff(item.title)}</Link>
