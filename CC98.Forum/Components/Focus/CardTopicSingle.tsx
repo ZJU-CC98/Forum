@@ -150,11 +150,12 @@ class AudioPlayer extends React.Component<IAudioProps> {
     componentDidMount() {
         try {
             playerCount += 1;
-            console.log(`player count: ${playerCount}`);
+            //console.log(`player count: ${playerCount}`);
             this.ap = new APlayer({
                 element: this.div,
                 autoplay: false,
                 preload: 'metadata',
+                loop: 'none',
                 music: {
                     url: encodeURI(this.props.src),
                     title: this.props.title,
