@@ -2527,6 +2527,36 @@ a {
     //   margin-bottom: 15px;
     // }
 
+    .card-topic-thumbnail-mini {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      max-width: 390px;
+      margin-bottom: 5px;
+      //background-color: rgba(220, 220, 220, 0.7);
+      display: none;
+
+      .card-topic-thumbnail-mini-clicked {
+        opacity: 100%;
+      }
+
+      img {
+        width: 50px;
+        height: 50px;
+        //border-radius: 0.25rem;
+        margin: 0 5px 5px 5px;
+        // border-color: $theme_color_topbar;
+        // border: 3px;
+        vertical-align: middle;
+        opacity: 60%;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 100%;
+        }
+      }
+    }
+
     .card-topic-thumbnail {
       display: flex;
       flex-direction: row;
@@ -2677,21 +2707,25 @@ a {
     flex-direction: column;
     margin-right: 10px;
 
-    .card-topic-area-left-content{
+    .card-topic-area-left-content {
+
       // position: sticky;
       // top: 10px;
-      .card-topic-area-left-content-collapse{
+      .card-topic-area-left-content-collapse {
         background: $background_color_textarea;
         border: 0;
-      th, td {
-        border: 0;
-        padding: 6px;
-        padding-left:0px ;
-      }
-      .ant-collapse-content-box{
-        padding: 4px;
-        padding-left: 15px;
-      }
+
+        th,
+        td {
+          border: 0;
+          padding: 6px;
+          padding-left: 0px;
+        }
+
+        .ant-collapse-content-box {
+          padding: 4px;
+          padding-left: 15px;
+        }
       }
     }
   }
