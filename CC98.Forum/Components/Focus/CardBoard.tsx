@@ -11,38 +11,38 @@ const { Panel } = Collapse;
 
 
 interface CardBoardState {
-  data: any[]; 
+  data: any[];
 }
 const blankdata = [
   {
-      "id": 763,
-      "name": "置顶",
-      "order": 1,
-      "masters": [],
-      "boards": [
-          {
-              "id": 758,
-              "name": "似水流年·暑假",
-          },
-          {
-              "id": 182,
-              "name": "心灵之约",
-          },
-          {
-              "id": 198,
-              "name": "新生宝典·军训",
-          },
-          {
-              "id": 184,
-              "name": "论坛指南",
-          }
-      ]
+    "id": 763,
+    "name": "置顶",
+    "order": 1,
+    "masters": [],
+    "boards": [
+      {
+        "id": 758,
+        "name": "似水流年·暑假",
+      },
+      {
+        "id": 182,
+        "name": "心灵之约",
+      },
+      {
+        "id": 198,
+        "name": "新生宝典·军训",
+      },
+      {
+        "id": 184,
+        "name": "论坛指南",
+      }
+    ]
   }]
 
 const BoardPanel = (Data: any) => {
   return (
     <Panel
-      header={<div style={{color:"black"}}>{Data.name}</div>}
+      header={<div style={{ color: "black" }}>{Data.name}</div>}
       key={Data.order}
       className="card-topic-area-left-content-collapse"
     >
@@ -65,7 +65,7 @@ const BoardPanelContent = (Data: any) => {
 
   return (
     <div style={{ display: "flex", flexWrap: "wrap", width: "100%" }}>
-      {Data.map((item: any,index:number) => {
+      {Data.map((item: any, index: number) => {
         return (
           <div
             key={index}
@@ -75,7 +75,7 @@ const BoardPanelContent = (Data: any) => {
               whiteSpace: "nowrap",
             }}
           >
-            <Link to={`/board/${item.id}`} style={{fontSize:"14px"}}>· {item.name.replace("（","(").replace("）",")")}</Link>
+            <Link target={"_blank"} to={`/board/${item.id}`} style={{ fontSize: "14px" }}>· {item.name.replace("（", "(").replace("）", ")")}</Link>
           </div>
         );
       })}
@@ -85,10 +85,10 @@ const BoardPanelContent = (Data: any) => {
 
 //判定是否需要换行
 const IsStringShort = (str: string) => {
-  if(str.includes("（")){
+  if (str.includes("（")) {
     //replace （） to ()
-    str = str.replace("（","(").replace("）",")")
-    return str.length > 8?true:false;
+    str = str.replace("（", "(").replace("）", ")")
+    return str.length > 8 ? true : false;
   }
   if (str.length > 7) {
     return true;
