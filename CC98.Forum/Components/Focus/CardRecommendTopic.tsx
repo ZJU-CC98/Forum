@@ -62,7 +62,9 @@ export class CardRecommendTopic extends React.Component<
       );
       Utility.setStorage("CurrentRandomTopics", newData);
       this.setState({ data: newData });
-      document.getElementById("card-recommendation-last").hidden = false;
+      // document.getElementById("card-recommendation-last").hidden = false;
+      //change css visibility
+      document.getElementById("card-recommendation-last").style.visibility = "visible";
       this.isLoadable = true;
     }
   }
@@ -70,7 +72,8 @@ export class CardRecommendTopic extends React.Component<
   async getLastRandomTopics() {
     let data = Utility.getStorage("LastRandomTopics");
     if (data != undefined || data != null || data != "undefined") {
-      document.getElementById("card-recommendation-last").hidden = true;
+      // document.getElementById("card-recommendation-last").hidden = true;
+      document.getElementById("card-recommendation-last").style.visibility = "hidden";
       this.setState({ data: data });
       Utility.setStorage("CurrentRandomTopics", data);
       Utility.removeStorage("LastRandomTopics");
@@ -88,8 +91,7 @@ export class CardRecommendTopic extends React.Component<
           <button
             className="card-recommendation-button"
             id="card-recommendation-last"
-            //   hidden={true}
-            style={{ height: "fit-content" }}
+            style={{ height: "fit-content",visibility:"hidden" }}
             onClick={() => this.getLastRandomTopics()}
           >
             <i className="fa fa-hand-o-left fa-md"></i>上一批
@@ -120,7 +122,7 @@ const CardRecommendTopicSingle = (Data: any) => {
               // style={{  }}
             ></i>
             <div className="card-recommendation-topic-title">
-              <Link to={`/topic/${item.id}`}>{StringCutOff(item.title)}</Link>
+              <Link to={`/topic/${item.id}`} target={"_blank"}>{StringCutOff(item.title)}</Link>
             </div>
             <div className="card-recommendation-topic-detail">
               {item.boardName} {item.hitCount}浏览 {item.replyCount}讨论
