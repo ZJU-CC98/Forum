@@ -3674,3 +3674,114 @@ export async function setUserTopicViewMode(mode: number) {
     refreshUserInfo();
   }
 }
+
+/**
+ * 获取随机(最近)帖
+ */
+export async function getRandomTopic(size: number) {
+  //如果未登录,直接跳转至登录页面
+  if (!isLogOn()) {
+    store.dispatch(ErrorActions.throwError("LogOut"));
+    return null;
+  }
+  try {
+    /**
+     * 一次性固定获取个主题
+     */
+    const headers = await formAuthorizeHeader();
+    /**
+     * 通过api获取到主题之后转成json格式
+     */
+    const response = await cc98Fetch(`/topic/random-recent?size=${size}`, {
+      headers,
+    });
+    switch (response.status) {
+      case 401:
+        store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+      case 403:
+        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+      case 404:
+      //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
+      case 500:
+      //store.dispatch(ErrorActions.throwError('ServerError'));
+    }
+    let newTopic = await response.json();
+    //console.log("获取到的数据", newTopic);
+    let aTopic = [];
+    let aTopicId = [];
+    let bTopic = [];
+    for (let item of newTopic) {
+      //时间转换
+      item.time = transerRecentTime(item.time, false);
+      item.lastPostTime = transerRecentTime(item.lastPostTime, false);
+
+      //阅读数转换
+      if (item.hitCount > 10000) {
+        if (item.hitCount > 100000) {
+          let index = parseInt(`${item.hitCount / 10000}`);
+          item.hitCount = `${index}万`;
+        } else {
+          let index = parseInt(`${item.hitCount / 1000}`) / 10;
+          item.hitCount = `${index}万`;
+        }
+      }
+      //计算总楼层
+      item.floorCount = item.replyCount + 1;
+      //回复数转换
+      if (item.replyCount > 10000) {
+        if (item.replyCount > 100000) {
+          let index = parseInt(`${item.replyCount / 10000}`);
+          item.replyCount = `${index}万`;
+        } else {
+          let index = parseInt(`${item.replyCount / 1000}`) / 10;
+          item.replyCount = `${index}万`;
+        }
+      }
+      //标签转换
+      if (item.tag1) {
+        item.tag1 = await getTagNamebyId(item.tag1);
+        if (item.tag2) {
+          item.tag2 = await getTagNamebyId(item.tag2);
+        }
+      }
+      //处理匿名与非匿名主题，非匿名主题用户批量获取信息
+      if (!item.isAnonymous) {
+        //获取所在版面名称
+        item.boardName = await getBoardName(item.boardId);
+        aTopic.push(item);
+        aTopicId.push(item.userId);
+      } else {
+        item.portraitUrl = "/static/images/_心灵之约.png";
+        item.userName = "匿名用户";
+        item.boardName = await getBoardName(item.boardId);
+        bTopic.push(item);
+      }
+    }
+    //对于非匿名数据批量获取头像地址
+    let usersInfo = await getBasicUsersInfo(aTopicId);
+    for (let i in aTopic) {
+      let thisUserInfo = getThisUserInfo(aTopic[i].userId, usersInfo);
+      aTopic[i].portraitUrl = thisUserInfo.portraitUrl;
+    }
+    for (let i = 0, j = 0, k = 0; i < newTopic.length; i++) {
+      //console.log(`进入循环`);
+      if (j === aTopic.length) {
+        newTopic[i] = bTopic[k];
+        k++;
+      } else if (newTopic[i].id === aTopic[j].id) {
+        //console.log(`条件1 i=${i} j = ${j}`);
+        newTopic[i] = aTopic[j];
+        j++;
+      } else {
+        //console.log(`条件2 i=${i} k = ${k}`);
+        newTopic[i] = bTopic[k];
+        k++;
+      }
+    }
+    //console.log("这里会执行吗");
+    console.log("获取到的数据", newTopic);
+    return newTopic;
+  } catch (e) {
+    //store.dispatch(ErrorActions.throwError('Disconnected'));
+  }
+}
