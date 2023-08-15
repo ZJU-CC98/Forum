@@ -3666,6 +3666,7 @@ export const pDebounce = (fn, wait, options: any = {}) => {
   };
 };
 
+
 export async function setUserTopicViewMode(mode: number) {
   let url = `/me/topic-view-mode?mode=${mode}`;
   let headers = await formAuthorizeHeader();
@@ -3785,3 +3786,32 @@ export async function getRandomTopic(size: number) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
+
+export async function copyToClipboard(text: string) {
+  if (!navigator.clipboard) {
+    const textArea = document.createElement("textarea");
+    let successful = false;
+    try {
+      textArea.value = text;
+      Object.assign(textArea.style, {
+        top: "-999",
+        left: "-999",
+        outerWidth: "0",
+        outerHeight: "0",
+        position: "fixed",
+      });
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      successful = document.execCommand("copy");
+    } finally {
+      textArea.remove();
+    }
+    if (successful) {
+      return;
+    }
+    throw new Error("Failed to run document.execCommand().");
+  }
+  await navigator.clipboard.writeText(text);
+}
+
