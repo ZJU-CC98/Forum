@@ -1314,10 +1314,6 @@ export class InputTitle extends React.Component<
       return false; //阻止事件冒泡
     });
 
-    /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
-        如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
-        或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
-
     tagBoxLi.click(function () {
       tagBoxSelect.text($(this).text());
     });
@@ -1351,10 +1347,6 @@ export class InputTitle extends React.Component<
       else tagBoxSub1.css("display", "block");
       return false; //阻止事件冒泡
     });
-
-    /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
-        如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
-        或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
 
     tagBoxLi1.click(function () {
       tagBoxSelect1.text($(this).text());

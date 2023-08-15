@@ -319,107 +319,6 @@ export class MainPageTopicComponent extends React.Component<
 }
 
 /**
- * 测试用组件~
- **/
-export class Test extends React.Component<{}, { testContent: string }> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      testContent: "",
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.urlTextHanderler = this.urlTextHanderler.bind(this);
-  }
-
-  handleChange(e) {
-    this.setState({
-      testContent: e.target.value,
-    });
-  }
-
-  async urlTextHanderler() {
-    const reg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/gim;
-    const reg2 = /cc98\.org/i;
-    const reg3 = /zju\.edu\.cn/i;
-    const reg4 = /nexushd\.org/i;
-    const url = this.state.testContent;
-    const matchResult = url.match(reg);
-    if (matchResult) {
-      const domainName = matchResult[0];
-      let isInternalLink =
-        reg2.test(domainName) || reg3.test(domainName) || reg4.test(domainName);
-
-      //return isInternalLink;
-    } else {
-      //console.log("这不是链接！");
-    }
-  }
-
-  async postAd() {
-    const url = `/index/column/24`;
-    const content = {
-      type: 4,
-      title: "一个图片不一样的广告",
-      url: "www.cc98.org",
-      imageUrl: "/images/推荐功能.jpg",
-      enable: true,
-      days: 10,
-    };
-    const postForumIndexColumnInfo = JSON.stringify(content);
-    const token = Utility.getAccessToken();
-    let myHeaders = new Headers();
-    myHeaders.append("Authorization", token);
-    myHeaders.append("Content-Type", "application/json");
-    let response = await Utility.cc98Fetch(url, {
-      method: "PUT",
-      headers: myHeaders,
-      body: postForumIndexColumnInfo,
-    });
-    //console.log("发送成功！")
-  }
-  async signIn() {
-    const url = `/me/signin`;
-
-    const token = Utility.getAccessToken();
-    let myHeaders = new Headers();
-    myHeaders.append("Authorization", token);
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Content-Type", "application/json");
-
-    let content = "日常";
-    const response = await Utility.cc98Fetch(url, {
-      method: "POST",
-      headers: myHeaders,
-      body: content,
-    });
-  }
-
-  render() {
-    return (
-      <div className="mainPageList">
-        <div className="mainPageTitle2">
-          <div className="mainPageTitleRow">
-            <i className="fa fa-volume-up"></i>
-            <div className="mainPageTitleText">测试区</div>
-          </div>
-        </div>
-        <div className="mainPageListContent2">
-          <div>这里是可爱的adddna测试的地方~</div>
-          <input
-            name="testContent"
-            type="text"
-            id="loginName"
-            onChange={this.handleChange}
-            value={this.state.testContent}
-          />
-          <div>封印封印</div>
-        </div>
-      </div>
-    );
-  }
-}
-
-/**
  * 首页栏目类
  * 用于首页的栏目，包括推荐阅读、推荐功能以及校园新闻。
  * 该类的成员对象包括：图片url（校园新闻不需要），标题，url，以及摘要（仅推荐阅读需要）
@@ -818,7 +717,7 @@ export class MainPage extends React.Component<{}, { data }> {
       data = await response.json();
       let hotTopicData = data.hotTopic;
       //若获取到的首页数据中的十大数据为空，则不缓存首页数据，这样用户立即刷新页面就可以获取最新的十大数据
-      //当然，该次获取的十大数据为空，这则由十大组件处理（显示之前缓存的十大数据）
+      //此时会显示之前缓存的十大数据（由十大组件处理）
       //若获取了正常的首页数据（十大不为空），则缓存60s，这样可以避免用户短时间内频繁访问首页产生大量请求
       if (hotTopicData && hotTopicData.length) {
         Utility.setLocalStorage("mainPageData", data, 60);
