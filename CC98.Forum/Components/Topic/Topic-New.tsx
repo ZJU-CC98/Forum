@@ -15,6 +15,8 @@ import Spin from "antd/es/spin";
 import { MyInfo } from "../../States/AppState";
 import { CardBoard } from "../Focus/CardBoard";
 import { CardRecommendTopic } from "../Focus/CardRecommendTopic";
+import store, { Actions } from "../../Store";
+import * as ErrorActions from "../../Actions/Error";
 //import pDebounce from "p-debounce";
 
 /**
@@ -32,7 +34,9 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
     super(props);
 
     this.isLoadable = true;
-    this.myInfo = Utility.getMyInfo();
+    this.myInfo = Utility.isLogOn() ? Utility.getMyInfo() : null;
+    //console.log(this.myInfo);
+
     //console.log(`in constructor, topic-view-mode: ${this.myInfo.topicViewMode}`);
     //先看一下有没有缓存的帖子数据
     // var data = Utility.getStorage(keyStr);
@@ -75,8 +79,10 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
    */
   async componentDidMount() {
     //todo: 从服务器获取用户设置信息并切到对应页面
-    //this.mediaOnly = false;
-    //this.classicMode();
+    if (!this.myInfo) {
+      return;
+    }
+
     switch (this.myInfo.topicViewMode) {
       case 1:
         this.cardMode(true);
@@ -290,33 +296,33 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
                 <div className="card-user">
                   <div className="card-user-background"></div>
                   <div className="card-user-portrait">
-                    <img src={this.myInfo.portraitUrl} />
+                    <img src={this.myInfo ? this.myInfo.portraitUrl : ""} />
                     <a href="../usercenter" target="_blank">
-                      {this.myInfo.name}
+                      {this.myInfo ? this.myInfo.name : ""}
                     </a>
                   </div>
                   <div className="card-user-stats">
                     <div className="card-user-stats-item">
                       <a href="../usercenter" target="_blank">
-                        {this.getCountString(this.myInfo.postCount)}
+                        {this.myInfo ? this.getCountString(this.myInfo.postCount) : ""}
                       </a>
                       帖数
                     </div>
                     <div className="card-user-stats-item">
                       <a href="../usercenter/myfollowings" target="_blank">
-                        {this.getCountString(this.myInfo.followCount)}
+                        {this.myInfo ? this.getCountString(this.myInfo.followCount) : ""}
                       </a>
                       关注
                     </div>
                     <div className="card-user-stats-item">
                       <a href="../usercenter/myfans" target="_blank">
-                        {this.getCountString(this.myInfo.fanCount)}
+                        {this.myInfo ? this.getCountString(this.myInfo.fanCount) : ""}
                       </a>
                       粉丝
                     </div>
                     <div className="card-user-stats-item">
                       <a href="../usercenter/myposts/ishot/1/1" target="_blank">
-                        {this.getCountString(this.myInfo.receivedLikeCount)}
+                        {this.myInfo ? this.getCountString(this.myInfo.receivedLikeCount) : ""}
                       </a>
                       获赞
                     </div>
@@ -336,7 +342,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
             </div>
             <div className="card-topic-area-right">
               <div className="card-user-may-mising">
-                <CardRecommendTopic/>
+                <CardRecommendTopic />
               </div>
             </div>
           </div>
