@@ -379,6 +379,10 @@
         color: rgb(0, 0, 0);
       }
 
+      .user-post-like-count {
+        color: rgb(0, 0, 0);
+      }
+
       .user-post-content {
         font-size: 0.88rem;
         display: flex;
@@ -1018,7 +1022,7 @@
     background: center no-repeat;
     background-size: cover;
     border: solid black;
-    color:rgba(255,255,255,0);
+    color: rgba(255, 255, 255, 0);
     font-size: 1.5rem;
 
 

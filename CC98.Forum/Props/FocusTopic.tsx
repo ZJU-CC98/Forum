@@ -1,6 +1,6 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
+﻿import { MediaTopicContent } from './MediaTopicContent';
+import { TopicContentType } from './TopicContentType';
+
 /**
  * 表示我关注的某个版面的某个帖子
  */
@@ -29,9 +29,9 @@ export class FocusTopic {
     *主题的回复数（不包括第一次发言），由于太多，所以显示字符串k
     */
     replyCount: string;
-     /**
-    *主题的楼层数
-    */
+    /**
+   *主题的楼层数
+   */
     floorCount: number;
     /**
     *主题作者的id。如果主题为匿名主题，则该参数为 null
@@ -73,4 +73,12 @@ export class FocusTopic {
     *标签2
     */
     tag2: string;
+    /**
+     * 媒体主题的摘要信息
+     */
+    mediaContent: MediaTopicContent;
+    /**
+     * 主题内容的类型
+     */
+    contentType: TopicContentType;
 } 

@@ -72,6 +72,8 @@ function coverFocusPost(item: FocusTopic) {
       tag1={item.tag1}
       tag2={item.tag2}
       floorCount={item.floorCount}
+      contentType={item.contentType}
+      mediaContent={item.mediaContent}
     />
   );
 }
@@ -85,7 +87,7 @@ export class HistoryHotTopic extends React.Component<{}, FocusTopicAreaState> {
     this.state = {
       data: [],
       from: 0,
-      buttonClassName: "",
+      //buttonClassName: "",
     };
   }
 

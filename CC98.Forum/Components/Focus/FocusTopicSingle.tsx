@@ -32,10 +32,10 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
         let lastPostUrl = `/topic/${this.props.id}/${pageNum}`;
         let lastPostUserUrl = `/user/name/${encodeURI(this.props.lastPostUser)}`;
         let tagInfo = '';
-        let userName:any = this.props.userName;
-       /* if (this.props.userName.length > 9) {
-            userName = <div style={{ fontSize: "14px" }}>{this.props.userName}</div>;
-        }*/
+        let userName: any = this.props.userName;
+        /* if (this.props.userName.length > 9) {
+             userName = <div style={{ fontSize: "14px" }}>{this.props.userName}</div>;
+         }*/
         if (this.props.tag1) {
             if (this.props.tag2) {
                 tagInfo = `标签：${this.props.tag1} / ${this.props.tag2}`;

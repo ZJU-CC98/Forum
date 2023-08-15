@@ -13,15 +13,21 @@ export default class extends React.Component<UserCenterExactActivitiesPostProps>
     return (
       <div className="user-post">
         <div className="user-post-info">
+          <a className="user-post-date">
+            {this.props.userRecentPost.time.slice(0, 19).replace("T", " ")}
+          </a>
+          <a className="user-post-like-count">
+            赞：{this.props.userRecentPost.likeCount}
+          </a>
+          <a className="user-post-like-count">
+            踩：{this.props.userRecentPost.dislikeCount}
+          </a>
           <Link
             className="user-post-board"
             to={`/board/${this.props.userRecentPost.boardId}`}
           >
             {this.props.userRecentPost.boardName}
           </Link>
-          <a className="user-post-date">
-            {this.props.userRecentPost.time.slice(0, 19).replace("T", " ")}
-          </a>
         </div>
         <div className="user-post-content">
           <p>

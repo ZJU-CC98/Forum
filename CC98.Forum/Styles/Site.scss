@@ -2108,11 +2108,73 @@ a {
 }
 
 .focus {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 1140px;
   min-height: 780px;
   margin-bottom: 60px;
+
+  .top-button {
+    width: 6rem;
+    position: fixed;
+    bottom: 5%;
+    right: 13%;
+    height: 2rem;
+    border-radius: 1rem;
+    opacity: 0.5;
+    display: none;
+    z-index: 2;
+    margin: 0;
+    padding: 0.7rem;
+    border: 0;
+    font-size: 1.1rem;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:active {
+      opacity: 1;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .top-button.btn-show {
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    display: inherit;
+  }
+
+  .top-button.btn-disappear {
+    display: inherit;
+    animation-name: fadeOut;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+  }
+
+  .focus-topic-loading {
+    margin-top: 20px;
+    text-align: center;
+
+    img {
+      width: 200px;
+      height: 18px;
+    }
+  }
+
+  .focus-topic-loaddone {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: $color-black;
+  }
 }
 
 .focus-nav {
@@ -2159,7 +2221,7 @@ a {
     white-space: nowrap;
     font-family: 微软雅黑;
     margin-right: 1rem;
-    margin-top: 1rem;
+    //margin-top: 1rem;
     flex-shrink: 0;
     cursor: pointer;
   }
@@ -2184,6 +2246,39 @@ a {
   flex-wrap: wrap;
   min-height: 30px;
 
+  .refresh-button {
+    position: absolute;
+    right: 0;
+    display: block;
+    background-color: $theme_color_main;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 1px solid $theme_color_main;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    line-height: normal;
+    white-space: nowrap;
+    font-family: 微软雅黑;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .refresh-button:hover {
+    color: $theme_color_main;
+    background-color: transparent;
+  }
+
+  .refresh-button:active {
+    color: #ffffff;
+    background-color: $theme_color_main;
+  }
+
+  i {
+    margin-right: 3px;
+  }
+
   .focus-board {
     display: block;
     color: $theme_color_main;
@@ -2203,6 +2298,10 @@ a {
     cursor: pointer;
   }
 
+  .focus-board.new-topic {
+    margin-top: 0rem;
+  }
+
   .focus-hover {
     background-color: $theme_color_main;
     color: #ffffff;
@@ -2218,7 +2317,7 @@ a {
 .focus-topic-area {
   display: flex;
   flex-direction: column;
-  margin-top: 0.625rem;
+  margin-top: 0.45rem;
 
   .focus-topic-topicArea {
     display: flex;
@@ -2239,64 +2338,22 @@ a {
     }
   }
 
-  .focus-topic-loading {
-    margin-top: 20px;
-    text-align: center;
+  // .focus-topic-loading {
+  //   margin-top: 20px;
+  //   text-align: center;
 
-    img {
-      width: 200px;
-      height: 18px;
-    }
-  }
+  //   img {
+  //     width: 200px;
+  //     height: 18px;
+  //   }
+  // }
 
-  .focus-topic-loaddone {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 16px;
-    color: $color-black;
-  }
-
-  button {
-    width: 6rem;
-    position: fixed;
-    bottom: 5%;
-    right: 13%;
-    height: 3rem;
-    border-radius: 1rem;
-    opacity: 0.5;
-    display: none;
-    z-index: 2;
-    margin: 0;
-    padding: 0.7rem;
-    border: 0;
-    font-size: 1.1rem;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.8;
-    }
-
-    &:active {
-      opacity: 1;
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  .btn-show {
-    animation-name: fadeIn;
-    animation-duration: 1s;
-    display: inherit;
-  }
-
-  .btn-disappare {
-    display: inherit;
-    animation-name: fadeOut;
-    animation-duration: 500ms;
-    animation-fill-mode: forwards;
-  }
+  // .focus-topic-loaddone {
+  //   margin-top: 20px;
+  //   text-align: center;
+  //   font-size: 16px;
+  //   color: $color-black;
+  // }
 }
 
 .focus-allNewTopic {
@@ -2424,6 +2481,473 @@ a {
       line-height: 20px;
     }
   }
+}
+
+
+.card-topic {
+  display: flex;
+  flex-direction: row;
+  width: 554px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  background-color: $background_color_textarea;
+  border: solid 1.5px $theme_color_main;
+  border-radius: 0.25rem;
+
+  .card-topic-left {
+    display: flex;
+    flex-direction: row;
+    width: 90px;
+    height: 90px;
+    //background-color: $theme_color_main;
+    flex-shrink: 0;
+
+    .card-topic-portraitUrl {
+      width: 60px;
+      height: 60px;
+      margin: 15px;
+      border-radius: 50%;
+    }
+
+    .card-topic-portraitUrl.card-topic-anonymous {
+      background-color: $theme_color_main;
+    }
+  }
+
+  .card-topic-middle {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+    background-color: $background_color_textarea;
+    color: #000;
+    max-width: 440px;
+
+    a {
+      &:hover {
+        //text-decoration: underline;
+        color: $theme_color_main;
+      }
+    }
+
+    .card-topic-userName {
+      font-size: 20px;
+      height: 28px;
+      line-height: 28px;
+      color: #000;
+      margin-top: 20px;
+    }
+
+    .card-topic-time {
+      font-size: 16px;
+      // height: 28px;
+      // line-height: 28px;
+      color: #555555;
+      margin-bottom: 5px;
+    }
+
+    .card-topic-title {
+      font-size: 20px;
+      color: #000;
+      margin-bottom: 5px;
+
+      // .span {
+      //   white-space: nowrap;
+      //   word-wrap: break-word;
+      // }
+    }
+
+    // .card-topic-audio {
+    //   margin-bottom: 15px;
+    // }
+
+    .card-topic-thumbnail-mini {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      max-width: 390px;
+      margin-bottom: 5px;
+      //background-color: rgba(220, 220, 220, 0.7);
+      display: none;
+
+      .card-topic-thumbnail-mini-clicked {
+        opacity: 100%;
+      }
+
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 0.25rem;
+        margin: 0 10px 0 0;
+        opacity: 50%;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 100%;
+        }
+      }
+    }
+
+    .card-topic-thumbnail {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      max-width: 390px;
+      margin-bottom: 5px;
+
+      .card-topic-thumbnail-1 img {
+        max-width: 270px;
+        border-radius: 0.25rem;
+        margin-bottom: 5px;
+
+        &:hover {
+          cursor: zoom-in;
+        }
+      }
+
+      .card-topic-thumbnail-2 img {
+        max-width: 160px;
+        border-radius: 0.25rem;
+        margin-right: 5px;
+        margin-bottom: 5px;
+
+        &:hover {
+          cursor: zoom-in;
+        }
+      }
+
+      .card-topic-thumbnail-3 img {
+        max-width: 120px;
+        border-radius: 0.25rem;
+        margin-right: 5px;
+        margin-bottom: 5px;
+
+        &:hover {
+          cursor: zoom-in;
+        }
+      }
+    }
+
+    .card-topic-original-image {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      width: 440px;
+      margin-bottom: 5px;
+      display: none;
+
+      img {
+        width: 440px;
+        border-radius: 0.25rem;
+        margin-bottom: 5px;
+
+        &:hover {
+          cursor: zoom-out;
+        }
+      }
+    }
+
+    .card-topic-board {
+      font-size: 16px;
+      // height: 24px;
+      // line-height: 24px;
+      color: #555555;
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 10px;
+
+      div {
+        flex-shrink: 0;
+        margin-right: 16px;
+        overflow: hidden;
+        position: relative;
+
+        a {
+          color: #555555;
+        }
+      }
+
+      .card-topic-boardName {
+        //font-size: 20px;
+        border-radius: 0.25rem;
+        border: solid 1.5px $theme_color_main;
+        padding-left: 5px;
+        padding-right: 5px;
+        color: $theme_color_main;
+        height: 24px;
+
+        a {
+          color: $theme_color_main;
+
+          &:hover {
+            color: $theme_color_topbar;
+          }
+        }
+      }
+
+      .card-topic-tag {
+        background-color: $theme_color_main;
+        color: #ffffff;
+        border: solid 1.5px $background_color_textarea;
+        border-radius: 0.25rem;
+        margin-right: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        height: 24px;
+      }
+    }
+
+    .card-topic-info {
+      font-size: 14px;
+      color: #555555;
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 12px;
+
+      div {
+        flex-shrink: 0;
+        margin-right: 12px;
+        overflow: hidden;
+        position: relative;
+
+        a {
+          color: #555555;
+
+          &:hover {
+            color: $theme_color_main;
+          }
+        }
+
+        i {
+          position: relative;
+          margin-right: 4px;
+          bottom: 2px;
+        }
+      }
+    }
+  }
+}
+
+.card-topic-area {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.2rem;
+
+  .card-topic-area-left {
+    display: flex;
+    flex-direction: column;
+    margin-right: 6px;
+
+    .card-topic-area-left-content {
+
+      // position: sticky;
+      // top: 10px;
+      .card-topic-area-left-content-collapse {
+        background: $background_color_textarea;
+        border: 0;
+
+        .ant-collapse-content-box {
+          padding: 4px;
+          padding-left: 15px;
+        }
+      }
+    }
+
+    .card-topic-area-left-content-collapse-item {
+      a {
+        color: inherit;
+      }
+
+      a:hover {
+        color: $theme_color_main;
+      }
+    }
+  }
+
+  .card-topic-area-middle {
+    display: flex;
+    flex-direction: column;
+    margin-right: 6px;
+  }
+
+  .card-topic-area-right {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .focus-topic-getMore {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+    color: $theme_color_main;
+    justify-content: center;
+
+    div {
+      margin-top: 10px;
+      text-align: center;
+    }
+  }
+
+  // .focus-topic-loading {
+  //   margin-top: 20px;
+  //   text-align: center;
+
+  //   img {
+  //     width: 200px;
+  //     height: 18px;
+  //   }
+  // }
+
+  // .focus-topic-loaddone {
+  //   margin-top: 20px;
+  //   text-align: center;
+  //   font-size: 16px;
+  //   color: $color-black;
+  // }
+
+  // button {
+  //   width: 6rem;
+  //   position: fixed;
+  //   bottom: 5%;
+  //   right: 13%;
+  //   height: 3rem;
+  //   border-radius: 1rem;
+  //   opacity: 0.5;
+  //   display: none;
+  //   z-index: 2;
+  //   margin: 0;
+  //   padding: 0.7rem;
+  //   border: 0;
+  //   font-size: 1.1rem;
+  //   cursor: pointer;
+
+  //   &:hover {
+  //     opacity: 0.8;
+  //   }
+
+  //   &:active {
+  //     opacity: 1;
+  //   }
+
+  //   &:focus {
+  //     outline: none;
+  //   }
+  // }
+
+  // .btn-show {
+  //   animation-name: fadeIn;
+  //   animation-duration: 1s;
+  //   display: inherit;
+  // }
+
+  // .btn-disappare {
+  //   display: inherit;
+  //   animation-name: fadeOut;
+  //   animation-duration: 500ms;
+  //   animation-fill-mode: forwards;
+  // }
+}
+
+.card-user {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  background-color: $background_color_textarea;
+  border: solid 1.5px $theme_color_main;
+  border-radius: 0.25rem;
+
+  .card-user-portrait {
+    display: flex;
+    flex-direction: row;
+
+    img {
+      width: 80px;
+      height: 80px;
+      margin: -40px 15px 0px 15px;
+      border-radius: 50%;
+    }
+
+    a {
+      font-size: 22px;
+      color: #000;
+
+      &:hover {
+        color: $theme_color_main;
+      }
+    }
+  }
+
+  .card-user-stats {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 14px 10px 24px;
+
+    .card-user-stats-item {
+      display: flex;
+      flex-direction: column;
+      color: #555555;
+      font-size: 14px;
+      text-align: center;
+      width: 45px;
+      margin: 0 8px 6px 0px;
+
+      a {
+        font-size: 18px;
+        color: #000;
+
+        &:hover {
+          color: $theme_color_main;
+        }
+      }
+    }
+  }
+
+
+  .card-user-background {
+    height: 65px;
+    width: 250px;
+    background-image: $background_image_card;
+    background-size: contain;
+    margin-bottom: 8px;
+  }
+}
+
+.card-board {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  background-color: $background_color_textarea;
+  border: solid 1.5px $theme_color_main;
+  border-radius: 0.25rem;
+
+  .card-board-title {
+    font-size: 18px;
+    margin: 15px;
+  }
+}
+
+.card-user-may-mising {
+  display: flex;
+  flex-direction: column;
+  width: 318px;
+  padding-bottom: 20px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  background-color: $background_color_textarea;
+  border: solid 1.5px $theme_color_main;
+  border-radius: 0.25rem;
+}
+
+.card-user-may-mising-title {
+  font-size: 18px;
+  margin: 15px;
+  margin-right: 5px;
+  display: inline;
 }
 
 /*.focus-topic {
@@ -4387,4 +4911,115 @@ ol {
 
 .red-color {
   color: red;
+}
+
+.card-recommendation-button-area {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 20px;
+  justify-content: space-between;
+
+  .card-recommendation-button {
+    display: block;
+    background-color: $background_color_textarea;
+    // color: #ffffff;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 0px solid $theme_color_main;
+    padding: 0.375rem 0.45rem;
+    font-size: 0.75rem;
+    border-radius: 0.25rem;
+    line-height: normal;
+    white-space: nowrap;
+    font-family: 微软雅黑;
+    margin: 5px;
+    // margin-right: 0.2rem;
+    //margin-top: 1rem;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .card-recommendation-button:hover {
+    color: $theme_color_main;
+    background-color: transparent;
+  }
+
+  // .card-recommendation-button:active {
+  //   color: #ffffff;
+  //   background-color: $theme_color_main;
+  // }
+
+  i {
+    margin-right: 3px;
+  }
+}
+
+.card-recommendation-topic-container {
+  align-items: center;
+  display: flex;
+  // height: 80px;
+  margin: 2px 6px;
+
+  .card-recommendation-topic-container-item {
+    align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    // height: 55px;
+    margin: 4px 0;
+    width: 100%;
+
+    .card-recommendation-topic {
+      cursor: pointer;
+      margin: 3px 12px 0 34px;
+      position: relative;
+
+      .card-recommendation-topic-title {
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        font-size: 14px;
+
+        a:hover {
+          color: $theme_color_main;
+        }
+      }
+
+      .card-recommendation-topic-title:hover {
+        color: #1890ff;
+      }
+
+      .card-recommendation-topic-detail {
+        align-items: center;
+        color: #9499a0;
+        display: flex;
+        font-size: 13px;
+        height: 18px;
+        line-height: 18px;
+        margin: 2px 0;
+
+        a {
+          color: inherit;
+        }
+
+        a:hover {
+          color: $theme_color_main;
+        }
+      }
+
+      i {
+        position: absolute;
+        left: -22px;
+        top: 2px;
+        color: $theme_color_main
+      }
+    }
+  }
+
+  .card-recommendation-topic-container-item:hover {
+    background-color: #f1f2f3;
+  }
 }

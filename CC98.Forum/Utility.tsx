@@ -175,6 +175,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
     let usersInfo = [];
     if (content.length === 0) return [];
     for (let j = 0; j < topicNumberInPage; j++) {
+      content[j].content = replaceHttpToHttps(content[j].content);
       if (content[j].isAnonymous == false) {
         for (let i in content) {
           usersId[i] = content[i].userId;
@@ -556,7 +557,7 @@ export async function getRandomRecommendedTopic(size: number) {
  * 获取全站新帖
  * @param curPage
  */
-export async function getAllNewTopic(from: number) {
+export async function getAllNewTopic(from: number, mediaOnly: boolean = false) {
   //如果未登录,直接跳转至登录页面
   if (!isLogOn()) {
     store.dispatch(ErrorActions.throwError("LogOut"));
@@ -574,7 +575,13 @@ export async function getAllNewTopic(from: number) {
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await cc98Fetch(`/topic/new?from=${from}&size=${size}`, {
+    var url = '';
+    if (mediaOnly === true) {
+      url = `/topic/new-media?from=${from}&size=${size}`;
+    } else {
+      url = `/topic/new?from=${from}&size=${size}`;
+    }
+    const response = await cc98Fetch(url, {
       headers,
     });
     switch (response.status) {
@@ -594,8 +601,8 @@ export async function getAllNewTopic(from: number) {
     let bTopic = [];
     for (let item of newTopic) {
       //时间转换
-      item.time = transerRecentTime(item.time);
-      item.lastPostTime = transerRecentTime(item.lastPostTime);
+      item.time = transerRecentTime(item.time, false);
+      item.lastPostTime = transerRecentTime(item.lastPostTime, false);
 
       //阅读数转换
       if (item.hitCount > 10000) {
@@ -987,7 +994,7 @@ export function transerTime(time) {
  * api返回的UTC时间格式转换成"1分钟前，昨天18：45"这样的形式
  * @param time
  */
-export function transerRecentTime(time) {
+export function transerRecentTime(time, showSecond = true) {
   let time1 = moment(time).format("YYYY/MM/DD HH:mm:ss");
   let thatDate = new Date(time1);
   let thatTime = thatDate.getTime();
@@ -1019,23 +1026,33 @@ export function transerRecentTime(time) {
     sec = `0${sec}`;
   }
   if (delta > 259200) {
-    let strTime = `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}`;
+    let strTime = showSecond ?
+      `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}` :
+      `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}`;
     return strTime;
   } else if (delta > 172800) {
-    let strTime = `${hours}:${min}:${sec}`;
+    let strTime = showSecond ?
+      `${hours}:${min}:${sec}` :
+      `${hours}:${min}`;
     return `前天 ${strTime}`;
   } else if (delta > 86400) {
-    let strTime = `${hours}:${min}:${sec}`;
+    let strTime = showSecond ?
+      `${hours}:${min}:${sec}` :
+      `${hours}:${min}`;
     return `昨天 ${strTime}`;
   } else if (thisTime - thatTime > 3600000) {
-    let strTime = `${hours}:${min}:${sec}`;
+    let strTime = showSecond ?
+      `${hours}:${min}:${sec}` :
+      `${hours}:${min}`;
     return `今天 ${strTime}`;
   } else if (thisTime - thatTime > 0) {
     let min0: any = (thisTime - thatTime) / 60000;
     min = parseInt(min0);
     return `${min}分钟前`;
   } else {
-    let strTime = `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}`;
+    let strTime = showSecond ?
+      `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}:${sec}` :
+      `${thatDate.getFullYear()}-${month}-${date} ${hours}:${min}`;
     return strTime;
   }
 }
@@ -3649,6 +3666,127 @@ export const pDebounce = (fn, wait, options: any = {}) => {
   };
 };
 
+
+export async function setUserTopicViewMode(mode: number) {
+  let url = `/me/topic-view-mode?mode=${mode}`;
+  let headers = await formAuthorizeHeader();
+  let response = await cc98Fetch(url, { headers, method: "PUT" });
+  if (response.ok) {
+    refreshUserInfo();
+  }
+}
+
+/**
+ * 获取随机(最近)帖
+ */
+export async function getRandomTopic(size: number) {
+  //如果未登录,直接跳转至登录页面
+  if (!isLogOn()) {
+    store.dispatch(ErrorActions.throwError("LogOut"));
+    return null;
+  }
+  try {
+    /**
+     * 一次性固定获取个主题
+     */
+    const headers = await formAuthorizeHeader();
+    /**
+     * 通过api获取到主题之后转成json格式
+     */
+    const response = await cc98Fetch(`/topic/random-recent?size=${size}`, {
+      headers,
+    });
+    switch (response.status) {
+      case 401:
+        store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+      case 403:
+        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+      case 404:
+      //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
+      case 500:
+      //store.dispatch(ErrorActions.throwError('ServerError'));
+    }
+    let newTopic = await response.json();
+    //console.log("获取到的数据", newTopic);
+    let aTopic = [];
+    let aTopicId = [];
+    let bTopic = [];
+    for (let item of newTopic) {
+      //时间转换
+      item.time = transerRecentTime(item.time, false);
+      item.lastPostTime = transerRecentTime(item.lastPostTime, false);
+
+      //阅读数转换
+      if (item.hitCount > 10000) {
+        if (item.hitCount > 100000) {
+          let index = parseInt(`${item.hitCount / 10000}`);
+          item.hitCount = `${index}万`;
+        } else {
+          let index = parseInt(`${item.hitCount / 1000}`) / 10;
+          item.hitCount = `${index}万`;
+        }
+      }
+      //计算总楼层
+      item.floorCount = item.replyCount + 1;
+      //回复数转换
+      if (item.replyCount > 10000) {
+        if (item.replyCount > 100000) {
+          let index = parseInt(`${item.replyCount / 10000}`);
+          item.replyCount = `${index}万`;
+        } else {
+          let index = parseInt(`${item.replyCount / 1000}`) / 10;
+          item.replyCount = `${index}万`;
+        }
+      }
+      //标签转换
+      if (item.tag1) {
+        item.tag1 = await getTagNamebyId(item.tag1);
+        if (item.tag2) {
+          item.tag2 = await getTagNamebyId(item.tag2);
+        }
+      }
+      //处理匿名与非匿名主题，非匿名主题用户批量获取信息
+      if (!item.isAnonymous) {
+        //获取所在版面名称
+        item.boardName = await getBoardName(item.boardId);
+        aTopic.push(item);
+        aTopicId.push(item.userId);
+      } else {
+        item.portraitUrl = "/static/images/_心灵之约.png";
+        item.userName = "匿名用户";
+        item.boardName = await getBoardName(item.boardId);
+        bTopic.push(item);
+      }
+    }
+    //对于非匿名数据批量获取头像地址
+    let usersInfo = await getBasicUsersInfo(aTopicId);
+    for (let i in aTopic) {
+      let thisUserInfo = getThisUserInfo(aTopic[i].userId, usersInfo);
+      aTopic[i].portraitUrl = thisUserInfo.portraitUrl;
+    }
+    for (let i = 0, j = 0, k = 0; i < newTopic.length; i++) {
+      //console.log(`进入循环`);
+      if (j === aTopic.length) {
+        newTopic[i] = bTopic[k];
+        k++;
+      } else if (newTopic[i].id === aTopic[j].id) {
+        //console.log(`条件1 i=${i} j = ${j}`);
+        newTopic[i] = aTopic[j];
+        j++;
+      } else {
+        //console.log(`条件2 i=${i} k = ${k}`);
+        newTopic[i] = bTopic[k];
+        k++;
+      }
+    }
+    //console.log("这里会执行吗");
+    console.log("获取到的数据", newTopic);
+    return newTopic;
+  } catch (e) {
+    //store.dispatch(ErrorActions.throwError('Disconnected'));
+  }
+}
+
 export async function copyToClipboard(text: string) {
   if (!navigator.clipboard) {
     const textArea = document.createElement("textarea");
@@ -3676,3 +3814,4 @@ export async function copyToClipboard(text: string) {
   }
   await navigator.clipboard.writeText(text);
 }
+
