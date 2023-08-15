@@ -175,7 +175,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
     let usersInfo = [];
     if (content.length === 0) return [];
     for (let j = 0; j < topicNumberInPage; j++) {
-      content[j].content = this.replaceHttpToHttps(content[j].content);
+      content[j].content = replaceHttpToHttps(content[j].content);
       if (content[j].isAnonymous == false) {
         for (let i in content) {
           usersId[i] = content[i].userId;
