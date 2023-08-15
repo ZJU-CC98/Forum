@@ -353,7 +353,10 @@ class EditForm extends RouteComponent<
           alert("请输入内容");
         }
         if (mes.status === 400) {
-          alert("你的财富值余额不足，在本版面发表匿名主题需要10000财富值");
+          let text = await mes.text()
+          //错误信息，如果返回的错误格式发生变化，可能会出现问题
+          let error = JSON.parse(text).errors.Content[0]
+          alert(`发帖失败，原因：${error}`);
         }
         //   testEditor.setMarkdown("");
         const topicId = await mes.text();
@@ -458,11 +461,21 @@ class EditForm extends RouteComponent<
       let myHeaders = new Headers();
       myHeaders.append("Authorization", token);
       myHeaders.append("Content-Type", "application/json");
+      //我也不知道为什么markdown发帖那里的变量名叫mes，这里就变成response了
       let response = await Utility.cc98Fetch(url, {
         method: "POST",
         headers: myHeaders,
         body: contentJson
       });
+      if (response.status === 402) {
+        alert("请输入内容");
+      }
+      if (response.status === 400) {
+        let text = await response.text()
+        //错误信息，如果返回的错误格式发生变化，可能会出现问题
+        let error = JSON.parse(text).errors.Content[0]
+        alert(`发帖失败，原因：${error}`);
+      }
       //发帖成功，api返回topicid
       const topicId = await response.text();
       console.log("topicid=" + topicId);
@@ -1007,7 +1020,7 @@ class EditForm extends RouteComponent<
       Utility.getMyInfo() &&
       (Utility.isMaster(this.state.masters) ||
         (Utility.getMyInfo().userTitleIds || []).indexOf(91) !==
-          -1)
+        -1)
     ) {
       topicType = (
         <div className="createTopicType">
@@ -1282,11 +1295,11 @@ export class InputTitle extends React.Component<
     const tagBoxSub = $(".tagBoxSub");
     const tagBoxLi = tagBoxSub.find("li");
 
-    $(document).click(function() {
+    $(document).click(function () {
       tagBoxSub.css("display", "none");
     });
 
-    tagBoxSelect.click(function() {
+    tagBoxSelect.click(function () {
       //console.log("click1");
       if (tagBoxSub.css("display") === "block")
         tagBoxSub.css("display", "none");
@@ -1294,7 +1307,7 @@ export class InputTitle extends React.Component<
       return false; //阻止事件冒泡
     });
 
-    downArrow.click(function() {
+    downArrow.click(function () {
       if (tagBoxSub.css("display") === "block")
         tagBoxSub.css("display", "none");
       else tagBoxSub.css("display", "block");
@@ -1305,15 +1318,15 @@ export class InputTitle extends React.Component<
         如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
         或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
 
-    tagBoxLi.click(function() {
+    tagBoxLi.click(function () {
       tagBoxSelect.text($(this).text());
     });
 
-    tagBoxLi.mouseover(function() {
+    tagBoxLi.mouseover(function () {
       this.className = "hover";
     });
 
-    tagBoxLi.mouseout(function() {
+    tagBoxLi.mouseout(function () {
       this.className = "";
     });
 
@@ -1321,18 +1334,18 @@ export class InputTitle extends React.Component<
     const downArrow1 = $(".downArrow1");
     const tagBoxSub1 = $(".tagBoxSub1");
     const tagBoxLi1 = tagBoxSub1.find("li");
-    $(document).click(function() {
+    $(document).click(function () {
       tagBoxSub1.css("display", "none");
     });
 
-    tagBoxSelect1.click(function() {
+    tagBoxSelect1.click(function () {
       if (tagBoxSub1.css("display") === "block")
         tagBoxSub1.css("display", "none");
       else tagBoxSub1.css("display", "block");
       return false; //阻止事件冒泡
     });
 
-    downArrow1.click(function() {
+    downArrow1.click(function () {
       if (tagBoxSub1.css("display") === "block")
         tagBoxSub1.css("display", "none");
       else tagBoxSub1.css("display", "block");
@@ -1343,15 +1356,15 @@ export class InputTitle extends React.Component<
         如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
         或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
 
-    tagBoxLi1.click(function() {
+    tagBoxLi1.click(function () {
       tagBoxSelect1.text($(this).text());
     });
 
-    tagBoxLi1.mouseover(function() {
+    tagBoxLi1.mouseover(function () {
       this.className = "hover";
     });
 
-    tagBoxLi1.mouseout(function() {
+    tagBoxLi1.mouseout(function () {
       this.className = "";
     });
     let tag1 = "",
