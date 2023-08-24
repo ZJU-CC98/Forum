@@ -2030,14 +2030,14 @@ export async function getPortraitUrl(userName) {
   return data.portraitUrl;
 }
 export async function getBoards() {
-  if (!localStorage.getItem("boardsInfo")) {
+  const boards = getLocalStorage("boardsInfo");
+  if (!boards) {
     const url = "/board/all";
     const response = await cc98Fetch(url);
     const data = await response.json();
     setLocalStorage("boardsInfo", data, 3600);
     return data;
   } else {
-    const boards = getLocalStorage("boardsInfo");
     return boards;
   }
 }
