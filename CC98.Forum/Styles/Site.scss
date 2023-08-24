@@ -2397,6 +2397,10 @@ a {
       height: 80px;
       line-height: 80px;
       color: #ffffff;
+      width: 94px;
+      white-space:nowrap; 
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
   }
 
