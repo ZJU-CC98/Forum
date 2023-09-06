@@ -50,7 +50,7 @@ export class UrlTagHandler extends Ubb.RecursiveTagHandler {
         //不允许显示外部链接
         if (context.options.allowExternalUrl === false) {
             //判断是否为外部链接
-            if (url.host !== 'www.cc98.org'&& url.host !== 'cc98.zju.edu.cn') {
+            if (url.host !== 'www.cc98.org'&& url.host !== 'cc98.zju.edu.cn' && url.host !== '' ) {
                 return innerContent;
             }
         }
