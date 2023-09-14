@@ -2744,8 +2744,8 @@ a {
 
     .card-topic-area-left-content {
 
-      // position: sticky;
-      // top: 10px;
+      position: sticky;
+      top: 10px;
       .card-topic-area-left-content-collapse {
         background: $background_color_textarea;
         border: 0;
@@ -2936,6 +2936,8 @@ a {
 }
 
 .card-user-may-mising {
+  position:sticky;
+  top: 10px;
   display: flex;
   flex-direction: column;
   width: 318px;
