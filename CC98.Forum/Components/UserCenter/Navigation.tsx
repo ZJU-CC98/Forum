@@ -119,7 +119,7 @@ export default class extends React.Component<props, UserCenterNavigationState> {
           </li>
         </ul>
         <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>
-          回到顶部
+        <div className="top-button-text">回到顶部</div>
         </button>
       </div>
     );
