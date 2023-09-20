@@ -11,12 +11,12 @@ interface Props {
     tag2;
     isFav;
 }
-export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFollow, showImageState: boolean }>{
+export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFollow, showImageState: boolean, followCount: number }>{
     constructor(props) {
         super(props);
         this.follow = this.follow.bind(this);
         this.unFollow = this.unFollow.bind(this);
-        this.state = { tag1Name: "", tag2Name: "", isFollow: this.props.isFav, showImageState: true }
+        this.state = { tag1Name: "", tag2Name: "", isFollow: this.props.isFav, showImageState: true, followCount: this.props.topicInfo.favoriteCount }
     }
 
     toggleImageState = () => {
@@ -61,11 +61,11 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
 
     async follow() {
         await Utility.setFavoriteTopic(this.props.topicInfo.id);
-        this.setState({ isFollow: true });
+        this.setState({ isFollow: true, followCount: this.state.followCount + 1 });
     }
     async unFollow() {
         await Utility.deleteFavoriteTopic(this.props.topicInfo.id);
-        this.setState({ isFollow: false });
+        this.setState({ isFollow: false, followCount: this.state.followCount - 1 });
     }
     async componentDidMount() {
         let t1 = "", t2 = "";
@@ -88,6 +88,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         e.preventDefault();
         e.target.src = `/static/images/_CC98协会.png`;
     }
+
     render() {
         const title = this.props.topicInfo.title || '';
         /* 过长字符串截断，65 是纯中文情况下的经验值 */
@@ -128,6 +129,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
                         {tags}
                         <div id="time"><div className="viewProp"><i className="fa fa-clock-o fa-lg fa-fw"></i></div> <div className="timeProp tagSize">{moment(this.props.topicInfo.time).format('YYYY-MM-DD HH:mm:ss')}</div></div>
                         <div id="viewtimes"><div className="viewProp"><i className="fa fa-eye fa-lg fa-fw"></i>  </div> <div className="timeProp tagSize">{this.props.topicInfo.hitCount}</div></div>
+                        <div id="followCount"><div className="viewProp">{this.state.isFollow ? <i className="fa fa-star fa-lg fa-fw"></i> : <i className="fa fa-star-o fa-lg fa-fw"></i>} </div> <div className="timeProp tagSize">{this.state.followCount}</div></div>
                         <div className="followTopic" onClick={this.state.isFollow ? this.unFollow : this.follow}>
                             {this.state.isFollow ? "已收藏" : "收藏"}
                         </div>

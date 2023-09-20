@@ -429,7 +429,8 @@ input[type="radio"] {
   height: 0.625rem;
 }
 
-#viewtimes {
+#viewtimes,
+#followCount {
   display: flex;
   flex-direction: row;
   margin-left: 1rem;
@@ -2134,7 +2135,7 @@ a {
     cursor: pointer;
     line-height: 2rem;
 
-    .top-button-text{
+    .top-button-text {
       display: flex;
       width: 100%;
       justify-content: center;
@@ -2405,9 +2406,9 @@ a {
       line-height: 80px;
       color: #ffffff;
       width: 94px;
-      white-space:nowrap; 
-      overflow:hidden;
-      text-overflow:ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -2753,6 +2754,7 @@ a {
 
       position: sticky;
       top: 10px;
+
       .card-topic-area-left-content-collapse {
         background: $background_color_textarea;
         border: 0;
@@ -2943,7 +2945,7 @@ a {
 }
 
 .card-user-may-mising {
-  position:sticky;
+  position: sticky;
   top: 10px;
   display: flex;
   flex-direction: column;
