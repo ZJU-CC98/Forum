@@ -163,7 +163,8 @@ const ScrollListener = () => {
       return;
     }
     if(side.offsetHeight < clientHeight){
-      //如果左边栏高度小于可视区高度，无需额外操作
+      //如果左边栏高度小于可视区高度，不需要偏移
+      side.style.transform = "none";
       return;
     }
     let isSticky = side.classList.toggle("sticky", scrollTop > 161.2); //161.2是计算后的值
