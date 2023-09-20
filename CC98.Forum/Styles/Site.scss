@@ -429,7 +429,8 @@ input[type="radio"] {
   height: 0.625rem;
 }
 
-#viewtimes {
+#viewtimes,
+#followCount {
   display: flex;
   flex-direction: row;
   margin-left: 1rem;
@@ -2119,7 +2120,7 @@ a {
     width: 6rem;
     position: fixed;
     bottom: 5%;
-    right: 13%;
+    right: 5%;
     height: 2rem;
     border-radius: 1rem;
     opacity: 0.5;
@@ -2129,9 +2130,16 @@ a {
     padding: 0.7rem;
     border: 0;
     font-size: 1.1rem;
-    text-align: center;
-    vertical-align: middle;
+    // text-align: center;
+    // vertical-align: middle;
     cursor: pointer;
+    line-height: 2rem;
+
+    .top-button-text {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+    }
 
     &:hover {
       opacity: 0.8;
@@ -2398,9 +2406,9 @@ a {
       line-height: 80px;
       color: #ffffff;
       width: 94px;
-      white-space:nowrap; 
-      overflow:hidden;
-      text-overflow:ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -2744,8 +2752,9 @@ a {
 
     .card-topic-area-left-content {
 
-      // position: sticky;
-      // top: 10px;
+      position: sticky;
+      top: 10px;
+
       .card-topic-area-left-content-collapse {
         background: $background_color_textarea;
         border: 0;
@@ -2936,6 +2945,8 @@ a {
 }
 
 .card-user-may-mising {
+  position: sticky;
+  top: 10px;
   display: flex;
   flex-direction: column;
   width: 318px;

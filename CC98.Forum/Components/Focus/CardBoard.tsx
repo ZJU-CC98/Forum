@@ -7,6 +7,7 @@ import {
   withRouter,
 } from "react-router-dom";
 import { Collapse } from "antd";
+import { is } from "core-js/core/object";
 const { Panel } = Collapse;
 
 
@@ -107,7 +108,7 @@ export class CardBoard extends React.Component<{}, CardBoardState> {
   async componentDidMount() {
     let data = await Utility.getBoards();
     if(data != undefined||data != null)this.setState({ data: data });
-    // console.log(this.state.data);
+    ScrollListener();
   }
   render() {
     return (
@@ -120,4 +121,80 @@ export class CardBoard extends React.Component<{}, CardBoardState> {
       </div>
     );
   }
+}
+
+
+const ScrollListener = () => {
+  // 滚动方向枚举值
+  const DIRECTION_ENUM = {
+    DOWN: "down",
+    UP: "up",
+  };
+
+  let translateY = 0;
+
+  // 记录前一个滚动位置
+  let beforeScrollTop = 0;
+
+  let side: HTMLElement | null = document.querySelector(
+    ".card-topic-area-left-content"
+  );
+
+
+  function handleScroll() {
+    // 距顶部
+    let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    // 可视区高度
+    let clientHeight =
+      document.documentElement.clientHeight || document.body.clientHeight;
+
+
+    // 确定滚动方向
+    let direction = DIRECTION_ENUM.DOWN;
+    if (beforeScrollTop > scrollTop) {
+      direction = DIRECTION_ENUM.UP;
+    }
+
+
+    //判断sticky是否生效
+    if (!side) {
+      //side 不存在
+      return;
+    }
+    if(side.offsetHeight < clientHeight){
+      //如果左边栏高度小于可视区高度，不需要偏移
+      side.style.transform = "none";
+      return;
+    }
+    let isSticky = side.classList.toggle("sticky", scrollTop > 161.2); //161.2是计算后的值
+    //为side 添加transition css
+    if (isSticky) {
+      switch (direction) {
+        case DIRECTION_ENUM.DOWN:
+          translateY -= scrollTop - beforeScrollTop;
+          if (translateY < -(side.offsetHeight - clientHeight+40)) {
+              translateY = -(side.offsetHeight - clientHeight+40);
+          }
+          break;
+        case DIRECTION_ENUM.UP:
+          translateY += beforeScrollTop - scrollTop;
+          if (translateY > 0) {
+            translateY = 0;
+          }
+          break;
+        default:
+          break;
+      }
+      side.style.transform = `translateY(${translateY}px)`;
+    }
+    else{
+      translateY = 0;
+      side.style.transform = "none";
+    }
+    beforeScrollTop = scrollTop;
+  }
+
+  // 监听滚动
+  window.addEventListener('scroll', handleScroll);
 }

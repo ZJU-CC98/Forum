@@ -362,7 +362,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
             className={"top-button"}
             onClick={this.scrollToTop}
           >
-            回到顶部
+            <div className="top-button-text">回到顶部</div>
           </button>
         </div>
       </div>

@@ -280,7 +280,7 @@ export class Search extends React.Component<{}, SearchState> {
               className="top-button"
               onClick={this.scrollToTop}
             >
-              回到顶部
+              <div className="top-button-text">回到顶部</div>
             </button>
           </div>
           <div id="noResult" className="noResult displaynone">
