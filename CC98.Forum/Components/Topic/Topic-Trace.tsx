@@ -23,6 +23,7 @@ export class CurUserPost extends RouteComponent<
   },
   { topicId; page; postId, userId }
   > {
+  throttling: boolean;
   constructor(props, context) {
     super(props, context);
     this.quote = this.quote.bind(this);
@@ -40,6 +41,7 @@ export class CurUserPost extends RouteComponent<
       isFav: false,
       quote: ''
     };
+    this.throttling = false;
   }
   handleQuoteContextChange = context => {
     console.log('传进topic.tsx');
@@ -163,8 +165,16 @@ export class CurUserPost extends RouteComponent<
     }
   }
   handleKeyUp = async (event: any) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+      return; //如果不是方向键，直接返回
+    }
+    if (this.throttling) {
+      console.info("切换过于频繁 触发节流");
+      // 如果节流标志为true，表示事件正在处理中，直接返回
+      return;
+    }
+    this.throttling = true;
     let page = this.state.page;
-    const totalPage = this.state.totalPage;
     switch (event.key) {
         case "ArrowLeft":
             if (page > 1) {
@@ -178,7 +188,7 @@ export class CurUserPost extends RouteComponent<
             }
             break;
         case "ArrowRight":
-            if (page < totalPage) {
+            if (page < this.state.totalPage) {
                 page++;
                 const url =  `/topic/${this.state.topicId}/postId/${this.state.postId}/${page}`;
                 window.scroll({
@@ -191,6 +201,10 @@ export class CurUserPost extends RouteComponent<
         default:
             break;
     }
+    // 使用setTimeout来清除节流标志
+    setTimeout(() => {
+      this.throttling = false;
+    }, 1000); // 1000毫秒是节流的时间间隔
 }
   render() {
     const url = `/topic/${this.match.params.topicId}/postId/${

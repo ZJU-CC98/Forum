@@ -27,6 +27,7 @@ const initQuoteContext = {
 }
 export const QuoteContext = React.createContext((context) => { });
 export class Post extends RouteComponent<{ history }, { topicid, page, totalPage, userName, boardId, topicInfo, boardInfo, fetchState, quote, shouldRender, isFav, IPData }, { topicid, page, userName }> {
+    throttling: boolean;
     constructor(props, context) {
         super(props, context);
         this.update = this.update.bind(this);
@@ -35,6 +36,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         this.state = {
             page: 1, shouldRender: true, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, fetchState: 'ok', quote: "", isFav: false, IPData: []
         };
+        this.throttling = false;
     }
     quote(content, userName, replyTime, floor, postId) {
 
@@ -163,33 +165,46 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         this.setState({ quote: context });
     }
     handleKeyUp = (event: any) => {
-        let page = this.state.page;
-        switch (event.key) {
-            case "ArrowLeft":
-                if (page > 1) {
-                    page--;
-                    const url = `/topic/${this.state.topicid}/${page}`;
-                    window.scroll({
-                        top: 0,
-                        left: 0,
-                    });
-                    this.props.history.push(url);
-                }
-                break;
-            case "ArrowRight":
-                if (page < this.state.totalPage) {
-                    page++;
-                    const url = `/topic/${this.state.topicid}/${page}`;
-                    window.scroll({
-                        top: 0,
-                        left: 0,
-                    });
-                    this.props.history.push(url);
-                }
-                break;
-            default:
-                break;
-        }
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+        return; //如果不是方向键，直接返回
+      }
+      if (this.throttling) {
+        console.info("切换过于频繁 触发节流");
+        // 如果节流标志为true，表示事件正在处理中，直接返回
+        return;
+      }
+      this.throttling = true;
+      let page = this.state.page;
+      switch (event.key) {
+        case "ArrowLeft":
+          if (page > 1) {
+            page--;
+            const url = `/topic/${this.state.topicid}/${page}`;
+            window.scroll({
+              top: 0,
+              left: 0,
+            });
+            this.props.history.push(url);
+          }
+          break;
+        case "ArrowRight":
+          if (page < this.state.totalPage) {
+            page++;
+            const url = `/topic/${this.state.topicid}/${page}`;
+            window.scroll({
+              top: 0,
+              left: 0,
+            });
+            this.props.history.push(url);
+          }
+          break;
+        default:
+          break;
+      }
+      // 使用setTimeout来清除节流标志
+      setTimeout(() => {
+        this.throttling = false;
+      }, 1000); // 1000毫秒是节流的时间间隔
     }
     render() {
         console.log("topic render");
