@@ -165,6 +165,11 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         this.setState({ quote: context });
     }
     handleKeyUp = (event: any) => {
+    //   console.log(event);
+    //   debugger;
+      if(event.target.tagName !== "BODY"){
+        return; //如果焦点不在页面上，直接返回
+      }
       if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
         return; //如果不是方向键，直接返回
       }
@@ -175,6 +180,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
       }
       this.throttling = true;
       let page = this.state.page;
+    //   console.log(event);
       switch (event.key) {
         case "ArrowLeft":
           if (page > 1) {

@@ -165,6 +165,9 @@ export class CurUserPost extends RouteComponent<
     }
   }
   handleKeyUp = async (event: any) => {
+    if(event.target.tagName !== "BODY"){
+      return; //如果焦点不在页面上，直接返回
+    }
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
       return; //如果不是方向键，直接返回
     }
