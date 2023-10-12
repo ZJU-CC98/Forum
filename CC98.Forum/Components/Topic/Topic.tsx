@@ -149,6 +149,10 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         // if (Utility.isMaster(boardInfo.boardMasters))
         //   IPData = await Utility.findIP(this.match.params.topicid);
         this.setState({ isFav, page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, fetchState: topicInfo, IPData: IPData });
+        window.addEventListener("keyup",this.handleKeyUp); //添加键盘事件监听
+    }
+    componentWillUnmount(): void {
+        window.removeEventListener("keyup",this.handleKeyUp);
     }
     getTotalPage(count) {
         return Utility.getTotalPageof10(count);
@@ -157,6 +161,35 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         console.log("传进topic.tsx")
         console.log(context);
         this.setState({ quote: context });
+    }
+    handleKeyUp = (event: any) => {
+        let page = this.state.page;
+        switch (event.key) {
+            case "ArrowLeft":
+                if (page > 1) {
+                    page--;
+                    const url = `/topic/${this.state.topicid}/${page}`;
+                    window.scroll({
+                        top: 0,
+                        left: 0,
+                    });
+                    this.props.history.push(url);
+                }
+                break;
+            case "ArrowRight":
+                if (page < this.state.totalPage) {
+                    page++;
+                    const url = `/topic/${this.state.topicid}/${page}`;
+                    window.scroll({
+                        top: 0,
+                        left: 0,
+                    });
+                    this.props.history.push(url);
+                }
+                break;
+            default:
+                break;
+        }
     }
     render() {
         console.log("topic render");

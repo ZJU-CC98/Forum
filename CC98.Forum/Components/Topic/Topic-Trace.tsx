@@ -147,6 +147,10 @@ export class CurUserPost extends RouteComponent<
       topicInfo: topicInfo,
       boardInfo: boardInfo
     });
+    window.addEventListener("keyup",this.handleKeyUp); //添加键盘事件监听
+  }
+  componentWillUnmount() {
+    window.removeEventListener("keyup",this.handleKeyUp); //移除键盘事件监听
   }
   async getTotalPage(topicId, postId) {
     console.log(postId)
@@ -158,7 +162,36 @@ export class CurUserPost extends RouteComponent<
       return await Utility.getTraceTopicsCount(topicId, postId);
     }
   }
-
+  handleKeyUp = async (event: any) => {
+    let page = this.state.page;
+    const totalPage = this.state.totalPage;
+    switch (event.key) {
+        case "ArrowLeft":
+            if (page > 1) {
+                page--;
+                const url = `/topic/${this.state.topicId}/postId/${this.state.postId}/${page}`;
+               window.scroll({
+                  top: 0,
+                  left: 0,
+              });
+                this.props.history.push(url);
+            }
+            break;
+        case "ArrowRight":
+            if (page < totalPage) {
+                page++;
+                const url =  `/topic/${this.state.topicId}/postId/${this.state.postId}/${page}`;
+                window.scroll({
+                  top: 0,
+                  left: 0,
+              });
+                this.props.history.push(url);
+            }
+            break;
+        default:
+            break;
+    }
+}
   render() {
     const url = `/topic/${this.match.params.topicId}/postId/${
       this.match.params.postId
