@@ -28,6 +28,7 @@ const initQuoteContext = {
 export const QuoteContext = React.createContext((context) => { });
 export class Post extends RouteComponent<{ history }, { topicid, page, totalPage, userName, boardId, topicInfo, boardInfo, fetchState, quote, shouldRender, isFav, IPData }, { topicid, page, userName }> {
     throttling: boolean;
+    replyContentInstance: SendTopic;
     constructor(props, context) {
         super(props, context);
         this.update = this.update.bind(this);
@@ -178,6 +179,12 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         // 如果节流标志为true，表示事件正在处理中，直接返回
         return;
       }
+      if(!this.replyContentInstance.isContentEmpty()){
+        //输入内容不为空
+        if(!window.confirm("您的输入内容尚未提交，是否翻页？")){
+            return;
+        }
+      }
       this.throttling = true;
       let page = this.state.page;
     //   console.log(event);
@@ -238,7 +245,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         const pagerUrl = `/topic/${this.state.topicid}/`;
         let sendTopic = null;
         if (Utility.getMyInfo())
-            sendTopic = <SendTopic onChange={this.handleChange} boardInfo={this.state.boardInfo} content={this.state.quote} topicInfo={this.state.topicInfo} />;
+            sendTopic = <SendTopic onChange={this.handleChange} boardInfo={this.state.boardInfo} content={this.state.quote} topicInfo={this.state.topicInfo} ref={replyContent => this.replyContentInstance = replyContent}/>;
         else
             sendTopic = <div>您还未登录，无法发言，请先登录。</div>;
         if (Utility.getMyInfo() && !Utility.getMyInfo().isVerified)

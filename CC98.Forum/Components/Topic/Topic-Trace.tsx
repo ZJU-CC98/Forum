@@ -24,6 +24,7 @@ export class CurUserPost extends RouteComponent<
   { topicId; page; postId, userId }
   > {
   throttling: boolean;
+  replyContentInstance: SendTopic;
   constructor(props, context) {
     super(props, context);
     this.quote = this.quote.bind(this);
@@ -176,6 +177,12 @@ export class CurUserPost extends RouteComponent<
       // 如果节流标志为true，表示事件正在处理中，直接返回
       return;
     }
+    if(!this.replyContentInstance.isContentEmpty()){
+      //输入内容不为空
+      if(!window.confirm("您的输入内容尚未提交，是否翻页？")){
+          return;
+      }
+    }
     this.throttling = true;
     let page = this.state.page;
     switch (event.key) {
@@ -279,6 +286,7 @@ export class CurUserPost extends RouteComponent<
           boardInfo={this.state.boardInfo}
           content={this.state.quote}
           topicInfo={this.state.topicInfo}
+          ref={replyContent => this.replyContentInstance = replyContent}
         />
       </div>
     );

@@ -583,6 +583,17 @@ ${newProps.content.content}[/quote]
     });
   };
 
+  isContentEmpty = () => {
+    switch (this.state.mode) {
+      case 0:
+        return this.state.content === "";
+      case 1:
+        return this.state.mdeState === "";
+      default:
+        return true; 
+    }
+  }
+
   render() {
     //发帖时间超过365天提示
     const s1 = new Date();
