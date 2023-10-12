@@ -566,6 +566,9 @@ ${newProps.content.content}[/quote]
   };
   closeIP = () => this.setState({ IPData: [] });
   changeEditor() {
+    if (!confirm("切换编辑器会丢失您之前的编辑内容，确定要切换吗？")) {
+      return;
+    }
     if (this.state.mode === 0) {
       this.setState({ mode: 1 });
     } else {
