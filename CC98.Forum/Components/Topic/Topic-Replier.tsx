@@ -437,9 +437,11 @@ export class Replier extends RouteComponent<
       }
     }
     let lastLogOn;
-    const curTime = new Date().getTime();
-    const lastTime = new Date(this.props.userInfo.lastLogOnTime).getTime();
-    const hoursFloat = Math.abs(lastTime - curTime) / 1000 / 60 / 60;
+    const now = new Date();
+    const timeOffset = now.getTimezoneOffset(); //单位分钟，东8区为-480
+    const curTime = now.getTime(); //本地时区时间
+    const lastTime = new Date(this.props.userInfo.lastLogOnTime).getTime(); //东8区时间
+    const hoursFloat = Math.abs(lastTime - curTime) / 1000 / 60 / 60 - (timeOffset + 480) / 60;
     const hours = Math.floor(hoursFloat);
     const daysFloat = hoursFloat / 24;
     const days = Math.floor(daysFloat);
