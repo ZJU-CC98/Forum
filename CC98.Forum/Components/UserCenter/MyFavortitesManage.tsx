@@ -74,31 +74,34 @@ export default Form.create<Props>()(
           case Options.Create:
             console.log(this.props.form.getFieldsValue());
             let createRes = await createFavGroup(
-              this.props.form.getFieldValue("name")
+              this.props.form.getFieldValue("createName")
             );
             if (createRes !== "ok") {
               noticeMessageShow("maxFavGroup");
+              this.setState({confirmLoading:false})
               return false;
             }
             break;
           case Options.Rename:
             console.log(this.props.form.getFieldsValue());
             let renameRes = await updateFavGroup(
-              this.props.form.getFieldValue("id"),
-              this.props.form.getFieldValue("name")
+              this.props.form.getFieldValue("renameId"),
+              this.props.form.getFieldValue("rename")
             );
             if (renameRes !== "ok") {
               noticeMessageShow("other");
+              this.setState({confirmLoading:false})
               return false;
             }
             break;
           case Options.Delete:
             console.log(this.props.form.getFieldsValue());
             let deleteRes = await deleteFavGroup(
-              this.props.form.getFieldValue("id")
+              this.props.form.getFieldValue("deleteId")
             );
             if (deleteRes !== "ok") {
               noticeMessageShow("other");
+              this.setState({confirmLoading:false})
               return false;
             }
             break;
@@ -142,7 +145,7 @@ export default Form.create<Props>()(
       let createForm = (
         <Form>
           <FormItem label="分组名称">
-            {getFieldDecorator("name", {
+            {getFieldDecorator("createName", {
               rules: [
                 {
                   required: this.state.option === Options.Create,
@@ -164,7 +167,7 @@ export default Form.create<Props>()(
         ) : (
           <Form>
             <FormItem label="分组名称">
-              {getFieldDecorator("id", {
+              {getFieldDecorator("renameId", {
                 rules: [
                   {
                     required: this.state.option === Options.Rename,
@@ -174,7 +177,7 @@ export default Form.create<Props>()(
               })(<Select>{options}</Select>)}
             </FormItem>
             <FormItem label="新分组名称">
-              {getFieldDecorator("name", {
+              {getFieldDecorator("rename", {
                 rules: [
                   {
                     required: this.state.option === Options.Rename,
@@ -193,7 +196,7 @@ export default Form.create<Props>()(
         ) : (
           <Form>
             <FormItem label="分组名称">
-              {getFieldDecorator("id", {
+              {getFieldDecorator("deleteId", {
                 rules: [
                   {
                     required: this.state.option === Options.Delete,
@@ -202,6 +205,10 @@ export default Form.create<Props>()(
                 ],
               })(<Select>{options}</Select>)}
             </FormItem>
+            <div>
+              注意：删除后该分组将无法恢复，该分组下的所有收藏主题贴将被移入【默认分组】
+
+            </div>
           </Form>
         );
 
