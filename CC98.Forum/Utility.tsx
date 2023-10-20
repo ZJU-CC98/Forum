@@ -2809,6 +2809,7 @@ export async function deleteFavoriteTopic(topicId) {
   const reponse = await cc98Fetch(url, { method: "DELETE", headers });
   return "ok";
 }
+
 export async function getFavState(topicId) {
   const headers = await formAuthorizeHeader();
   const url = `/topic/${topicId}/isfavorite`;
@@ -2816,6 +2817,45 @@ export async function getFavState(topicId) {
   const data = await response.json();
   return data;
 }
+//创建收藏夹
+export async function createFavGroup(groupName:string) {
+  const headers = await formAuthorizeHeader();
+  const url = `/me/favorite-topic-group`;
+  headers.append("Content-Type", "application/json");
+  const response = await cc98Fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ name: groupName }),
+  });
+  if (response.status === 200) return "ok";
+  else return "error";
+}
+//修改收藏夹名称
+export async function updateFavGroup(groupId, groupName) {
+  const headers = await formAuthorizeHeader();
+  const url = `/me/favorite-topic-group/`;
+  headers.append("Content-Type", "application/json");
+  const response = await cc98Fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ id: groupId, name: groupName }),
+  });
+  if (response.status === 200) return "ok";
+  else return "error";
+}
+//删除收藏夹
+export async function deleteFavGroup(groupId) {
+  const headers = await formAuthorizeHeader();
+  const url = `/me/favorite-topic-group?groupid=${groupId}`;
+  headers.append("Content-Type", "application/json");
+  const response = await cc98Fetch(url, {
+    method: "DELETE",
+    headers,
+  });
+  if (response.status === 200) return "ok";
+  else return "error";
+}
+
 
 export async function editPost(postId, contentType, title, content) {
   const headers = await formAuthorizeHeader();

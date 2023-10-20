@@ -16,6 +16,7 @@ import { ThunkDispatch } from "redux-thunk";
 import Button from "antd/es/button";
 import { getFavoriteAllTopic } from "../../Utility";
 import { type } from "os";
+import MyFavoritesPostsManager from "./MyFavortitesManage";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -92,7 +93,7 @@ class Posts extends React.Component<Props> {
     if (
       this.props.match.params.page !== newProps.match.params.page ||
       this.props.match.params.order !== newProps.match.params.order ||
-      this.props.match.params.order !== newProps.match.params.order
+      this.props.match.params.group !== newProps.match.params.group
     ) {
       const curPage = parseInt(newProps.match.params.page) || 1;
       this.props.getInfo(
@@ -118,19 +119,7 @@ class Posts extends React.Component<Props> {
       );
     }
     this.keyword = keyword;
-    try {
-      let favoriteTopicList = await getFavoriteAllTopic();
-      console.log(favoriteTopicList);
-      this.setState({
-        favoriteTopicList:
-          favoriteTopicList.errorCode === 0
-            ? favoriteTopicList.data
-            : defaultFavoriteTopicGroup,
-      });
-    } catch (e) {
-      this.setState({ favoriteTopicList: defaultFavoriteTopicGroup });
-      console.log(e);
-    }
+    this.updateFavoriteTopicList();
     // favoriteTopicList.ok && this.setState({ favoriteTopicList: favoriteTopicList.body });
     // console.log(favoriteTopicList.json());
     this.props.getInfo(curPage, order,group, true, this.keyword);
@@ -161,31 +150,21 @@ class Posts extends React.Component<Props> {
     }
   };
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-
-  handleOk = () => {
-    this.setState({
-      ModalText: "The modal will be closed after two seconds",
-      confirmLoading: true,
-    });
-    setTimeout(() => {
+  updateFavoriteTopicList = async () => {
+    try {
+      let favoriteTopicList = await getFavoriteAllTopic();
+      console.log(favoriteTopicList);
       this.setState({
-        visible: false,
-        confirmLoading: false,
+        favoriteTopicList:
+          favoriteTopicList.errorCode === 0
+            ? favoriteTopicList.data
+            : defaultFavoriteTopicGroup,
       });
-    }, 2000);
-  };
-
-  handleCancel = () => {
-    console.log("Clicked cancel button");
-    this.setState({
-      visible: false,
-    });
-  };
+    } catch (e) {
+      this.setState({ favoriteTopicList: defaultFavoriteTopicGroup });
+      console.log(e);
+    }
+  }
 
   render() {
     if (this.props.isLoading) {
@@ -222,11 +201,11 @@ class Posts extends React.Component<Props> {
       this.keyword = keyword;
       this.changeGroupAndOrderAndKeyword(defaultGroup,order, keyword);
     };
-    const { visible, confirmLoading, ModalText } = this.state;
+
     console.log(this.state.favoriteTopicList);
     const options = this.state.favoriteTopicList.map((item) => (
       <Option key={item.id} value={item.id}>
-        {item.name}
+        {item.name+"("+item.count+")"}
       </Option>
     ));
     return (
@@ -269,23 +248,7 @@ class Posts extends React.Component<Props> {
               </Button>
             }
           />
-          <Button
-            type="primary"
-            style={{ width: 80}}
-            onClick={this.showModal}
-          >
-            管理分组
-          </Button>
-          <Modal
-            title="Title"
-            visible={visible}
-            onOk={this.handleOk}
-            confirmLoading={confirmLoading}
-            onCancel={this.handleCancel}
-            key="FavoriteTopicManageModal"
-          >
-            <p>{ModalText}</p>
-          </Modal>
+          <MyFavoritesPostsManager history={this.props.history} updateFavoriteTopicList={this.updateFavoriteTopicList} favoriteTopicList={this.state.favoriteTopicList}/>
           <br />
           <div className="user-post-operator-tips">
             收藏搜索目前只能按照最后回复排序
