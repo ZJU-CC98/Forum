@@ -9,11 +9,13 @@ import Pager from "./Pager";
 import * as Actions from "../../Actions/UserCenter";
 import { connect } from "react-redux";
 import { RootState, RootAction } from "../../Store";
-import { Select, Input } from "antd";
+import { Select, Input, Modal } from "antd";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { getFavoritePosts } from "../../AsyncActions/UserCenter";
 import { ThunkDispatch } from "redux-thunk";
 import Button from "antd/es/button";
+import { getFavoriteAllTopic } from "../../Utility";
+import { type } from "os";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -23,13 +25,20 @@ type ownProps = {
   totalPage: number;
   hasTotal: boolean;
   isLoading: boolean;
-  getInfo: (page: number, order: number, forceLoad: boolean | undefined, keyword?: string) => void;
+  getInfo: (
+    page: number,
+    order: number,
+    group: number,
+    forceLoad: boolean | undefined,
+    keyword?: string
+  ) => void;
   changePage: () => void;
 };
 
 type ownMatch = {
   page: string;
   order: string;
+  group: string;
 };
 
 enum PostOrder {
@@ -37,6 +46,8 @@ enum PostOrder {
   LastReply = 1, // 最后回复时间
   FavorTime = 2, // 收藏时间
 }
+
+const defaultGroup = 0;
 
 type Props = RouteComponentProps<ownMatch> & ownProps;
 
@@ -51,42 +62,92 @@ const parseSearch = (str: string) => {
   return obj;
 };
 
+type FavoriteTopicGroupType = {
+  count: number;
+  createTime: string;
+  id: number;
+  name: string;
+};
+
+const defaultFavoriteTopicGroup: FavoriteTopicGroupType[] = [
+  {
+    id: 0,
+    name: "默认分组",
+    count: 10,
+    createTime: "1998-09-08T09:08:00+08:00",
+  },
+];
+
 /**
  * 用户中心我收藏的帖子组件
  */
 class Posts extends React.Component<Props> {
+  state = {
+    ModalText: "Content of the modal",
+    visible: false,
+    confirmLoading: false,
+    favoriteTopicList: defaultFavoriteTopicGroup,
+  };
   componentWillReceiveProps(newProps: Props) {
     if (
       this.props.match.params.page !== newProps.match.params.page ||
+      this.props.match.params.order !== newProps.match.params.order ||
       this.props.match.params.order !== newProps.match.params.order
     ) {
       const curPage = parseInt(newProps.match.params.page) || 1;
-      this.props.getInfo(curPage, Number(newProps.match.params.order), true, this.keyword);
+      this.props.getInfo(
+        curPage,
+        Number(newProps.match.params.order),
+        Number(newProps.match.params.group),
+        true,
+        this.keyword
+      );
       window.scroll(0, 0);
     }
   }
   keyword = "";
-  componentDidMount() {
+  async componentDidMount() {
     const curPage = Number(this.props.match.params.page || "1");
     const order = Number(this.props.match.params.order);
+    const group = Number(this.props.match.params.group || "0");
     const keyword = this.getkeyword();
     // 手动输入企图搜索且排序时重定向
     if (order !== PostOrder.LastReply && keyword !== "") {
-      this.props.history.replace(`/usercenter/myfavorites/order/0/1?keyword=${keyword}`);
+      this.props.history.replace(
+        `/usercenter/myfavorites/order/0/group/0/1?keyword=${keyword}`
+      );
     }
     this.keyword = keyword;
-    this.props.getInfo(curPage, order, true, this.keyword);
+    try {
+      let favoriteTopicList = await getFavoriteAllTopic();
+      console.log(favoriteTopicList);
+      this.setState({
+        favoriteTopicList:
+          favoriteTopicList.errorCode === 0
+            ? favoriteTopicList.data
+            : defaultFavoriteTopicGroup,
+      });
+    } catch (e) {
+      this.setState({ favoriteTopicList: defaultFavoriteTopicGroup });
+      console.log(e);
+    }
+    // favoriteTopicList.ok && this.setState({ favoriteTopicList: favoriteTopicList.body });
+    // console.log(favoriteTopicList.json());
+    this.props.getInfo(curPage, order,group, true, this.keyword);
     this.props.changePage();
   }
 
-  changeOrderAndKeyword = (order: number, keyword: string = "") => {
+  changeGroupAndOrderAndKeyword = (group:number,order: number, keyword: string = "") => {
+    console.log(group,order,keyword);
     if (keyword) {
-      this.props.getInfo(1, 0, true, keyword);
-      this.props.history.push(`/usercenter/myfavorites/order/0/1?keyword=${keyword}`);
+      this.props.getInfo(1, 0,0, true, keyword);
+      this.props.history.push(
+        `/usercenter/myfavorites/order/0/group/0/1?keyword=${keyword}`
+      );
     } else {
-      this.props.getInfo(1, order, true);
+      this.props.getInfo(1, order,group, true);
       this.keyword = "";
-      this.props.history.push(`/usercenter/myfavorites/order/${order}/1`);
+      this.props.history.push(`/usercenter/myfavorites/order/${order}/group/${group}/1`);
     }
   };
 
@@ -98,6 +159,32 @@ class Posts extends React.Component<Props> {
       const data = parseSearch(queryStr);
       return data["keyword"] || "";
     }
+  };
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOk = () => {
+    this.setState({
+      ModalText: "The modal will be closed after two seconds",
+      confirmLoading: true,
+    });
+    setTimeout(() => {
+      this.setState({
+        visible: false,
+        confirmLoading: false,
+      });
+    }, 2000);
+  };
+
+  handleCancel = () => {
+    console.log("Clicked cancel button");
+    this.setState({
+      visible: false,
+    });
   };
 
   render() {
@@ -129,14 +216,34 @@ class Posts extends React.Component<Props> {
       userRecentPosts.splice(i, 0, <hr key={i} />);
     }
     const order = Number(this.props.match.params.order);
+    const group = Number(this.props.match.params.group); 
 
     const handleSearch = (keyword: string) => {
       this.keyword = keyword;
-      this.changeOrderAndKeyword(order, keyword);
+      this.changeGroupAndOrderAndKeyword(defaultGroup,order, keyword);
     };
+    const { visible, confirmLoading, ModalText } = this.state;
+    console.log(this.state.favoriteTopicList);
+    const options = this.state.favoriteTopicList.map((item) => (
+      <Option key={item.id} value={item.id}>
+        {item.name}
+      </Option>
+    ));
     return (
       <div className="user-posts">
         <div className="user-post-operator">
+          <Select
+            value={group}
+            style={{
+              width: 180,
+              marginRight: 40,
+            }}
+            onChange={(value: number) => {
+              this.changeGroupAndOrderAndKeyword(value,order);
+            }}
+          >
+            {options}
+          </Select>
           <Select
             value={order}
             style={{
@@ -144,7 +251,7 @@ class Posts extends React.Component<Props> {
               marginRight: 40,
             }}
             onChange={(value: number) => {
-              this.changeOrderAndKeyword(value);
+              this.changeGroupAndOrderAndKeyword(group,value);
             }}
           >
             <Option value={PostOrder.PostTime}>按发帖时间排序</Option>
@@ -155,14 +262,34 @@ class Posts extends React.Component<Props> {
             defaultValue={this.keyword}
             placeholder="输入关键词"
             onSearch={handleSearch}
-            style={{ width: 280 }}
+            style={{ width: 280, marginRight: 30 }}
             enterButton={
               <Button type="primary" style={{ width: 60 }}>
                 搜索
               </Button>
             }
           />
-          <div className="user-post-operator-tips">收藏搜索目前只能按照最后回复排序</div>
+          <Button
+            type="primary"
+            style={{ width: 80}}
+            onClick={this.showModal}
+          >
+            管理分组
+          </Button>
+          <Modal
+            title="Title"
+            visible={visible}
+            onOk={this.handleOk}
+            confirmLoading={confirmLoading}
+            onCancel={this.handleCancel}
+            key="FavoriteTopicManageModal"
+          >
+            <p>{ModalText}</p>
+          </Modal>
+          <br />
+          <div className="user-post-operator-tips">
+            收藏搜索目前只能按照最后回复排序
+          </div>
         </div>
         <hr />
         {this.props.currentUserFavoriteTopics.length === 0 ? (
@@ -198,8 +325,14 @@ function mapDispatch(dispatch: ThunkDispatch<RootState, void, RootAction>) {
     changePage: () => {
       dispatch(Actions.changeUserCenterPage("myfavoriteposts"));
     },
-    getInfo: (page: number, order: number, forceLoad: boolean | undefined, keyword = "") => {
-      dispatch(getFavoritePosts(page, order, forceLoad, keyword));
+    getInfo: (
+      page: number,
+      order: number,
+      group: number,
+      forceLoad: boolean | undefined,
+      keyword = ""
+    ) => {
+      dispatch(getFavoritePosts(page, order, group,forceLoad, keyword));
     },
   };
 }

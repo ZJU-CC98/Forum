@@ -13,17 +13,19 @@ import * as Utility from "../../Utility";
 export const getFavoritePosts: ActionCreator<ThunkAction<Promise<Action>, RootState, void, RootAction>> = (
   page: number,
   order: number = 0,
+  group: number = 0,
   //TODO: 下面这段forceLoad基本可以干掉了，我检索了一下这个函数，强制load一直都是true
   forceLoad = false,
   keyword: string = ""
 ) => async (dispatch, getState) => {
+  console.log("getFavoritePosts", page, order, group, forceLoad, keyword);
   try {
     const from = (page - 1) * 10;
     let url = "";
     if (keyword) {
       url = `/topic/me/search-favorite?from=${from}&size=11&keyword=${keyword}`;
     } else {
-      url = `/topic/me/favorite?from=${from}&size=11&order=${order}`;
+      url = `/topic/me/favorite?from=${from}&size=11&order=${order}&groupid=${group}`;
     }
     dispatch(Actions.userCenterLoading());
     const userInfo = getState().userInfo;

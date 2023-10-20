@@ -34,9 +34,9 @@ export default class extends React.Component {
           </Route>
         </Switch>
         <Switch>
-          <Route path="/usercenter/myfavorites/order/:order/:page?" exact component={MyFavoritesPosts} />
+          <Route path="/usercenter/myfavorites/order/:order/group/:group/:page?" exact component={MyFavoritesPosts} />
           <Route path="/usercenter/myfavorites">
-            <Redirect to="/usercenter/myfavorites/order/0" />
+            <Redirect to="/usercenter/myfavorites/order/0/group/0" />
           </Route>
         </Switch>
         <Route path="/usercenter/config" component={Config} />

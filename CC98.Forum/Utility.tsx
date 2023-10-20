@@ -2781,12 +2781,28 @@ export async function setHighlight(
   }
   return "ok";
 }
-export async function setFavoriteTopic(topicId) {
+// export async function setFavoriteTopic(topicId) {
+//   const headers = await formAuthorizeHeader();
+//   const url = `/me/favorite/${topicId}`;
+//   const reponse = await cc98Fetch(url, { method: "PUT", headers });
+//   return "ok";
+// }
+//PUT 收藏帖子
+export async function setFavoriteTopic(topicId, groupId = 0) {
   const headers = await formAuthorizeHeader();
-  const url = `/me/favorite/${topicId}`;
+  const url = `/me/favorite/${topicId}?groupid=${groupId}`;
   const reponse = await cc98Fetch(url, { method: "PUT", headers });
   return "ok";
 }
+
+export async function getFavoriteAllTopic() {
+  const headers = await formAuthorizeHeader();
+  const url = `/me/favorite-topic-group`
+  const response = await cc98Fetch(url, { headers });
+  const data = await response.json();
+  return data;
+}
+
 export async function deleteFavoriteTopic(topicId) {
   const headers = await formAuthorizeHeader();
   const url = `/me/favorite/${topicId}`;
