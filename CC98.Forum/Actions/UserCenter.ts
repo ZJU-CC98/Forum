@@ -98,3 +98,5 @@ export const userCenterTransferWealthSuccess = createAction(ActionTypes.USER_CEN
     type: ActionTypes.USER_CENTER_TRANSFER_WEALTH_SUCCESS,
     payload: { userNames }
 }));
+
+export const changeUserFavoriteTopicGroup = createAction(ActionTypes.USER_CENTER_FAVORITE_GROUP_CHANGE);

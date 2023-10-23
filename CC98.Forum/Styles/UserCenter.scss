@@ -353,8 +353,10 @@
     .user-posts {
       .user-post-operator {
         .user-post-operator-tips {
-          display: inline-block;
-          margin-left: 10px;
+          position: absolute;
+          transform: translate(440px, 5px);
+          // display: inline-block;
+          // margin-left: 10px;
         }
       }
 

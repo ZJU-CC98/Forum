@@ -31,6 +31,7 @@ export const getFavoritePosts: ActionCreator<ThunkAction<Promise<Action>, RootSt
     const userInfo = getState().userInfo;
     const favorPosts = getState().userInfo.currentUserFavoriteTopics;
     const hasTotal = getState().userInfo.hasTotal.myfavoriteposts;
+    // debugger;
     if (!forceLoad) {
       // 如果未请求完所有帖子并且帖子总数小于请求的页数
       // 换言之，当用户向后翻页，或直接通过url定位页数时
@@ -58,6 +59,7 @@ export const getFavoritePosts: ActionCreator<ThunkAction<Promise<Action>, RootSt
     let i = posts.length === 11 ? 10 : posts.length;
     // 如果小于11条则总数加载完毕
     if (posts.length !== 11) {
+      console.log("total loaded");
       dispatch(Actions.usercenterPageLoadFinish(page));
     }
     // 显示其中10条

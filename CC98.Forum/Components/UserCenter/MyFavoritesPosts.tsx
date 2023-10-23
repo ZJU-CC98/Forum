@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from "react";
-import Topic from "./ExactActivitiesTopic";
+import Topic from "./ExactFavTopic";
 import { UserRecentTopic } from "../../States/AppState";
 import Pager from "./Pager";
 import * as Actions from "../../Actions/UserCenter";
@@ -34,6 +34,7 @@ type ownProps = {
     keyword?: string
   ) => void;
   changePage: () => void;
+  resetTotal: () => void;
 };
 
 type ownMatch = {
@@ -84,9 +85,6 @@ const defaultFavoriteTopicGroup: FavoriteTopicGroupType[] = [
  */
 class Posts extends React.Component<Props> {
   state = {
-    ModalText: "Content of the modal",
-    visible: false,
-    confirmLoading: false,
     favoriteTopicList: defaultFavoriteTopicGroup,
   };
   componentWillReceiveProps(newProps: Props) {
@@ -122,21 +120,30 @@ class Posts extends React.Component<Props> {
     this.updateFavoriteTopicList();
     // favoriteTopicList.ok && this.setState({ favoriteTopicList: favoriteTopicList.body });
     // console.log(favoriteTopicList.json());
-    this.props.getInfo(curPage, order,group, true, this.keyword);
+    this.props.getInfo(curPage, order, group, true, this.keyword);
+    console.log("componentDidMount");
     this.props.changePage();
   }
 
-  changeGroupAndOrderAndKeyword = (group:number,order: number, keyword: string = "") => {
-    console.log(group,order,keyword);
+  changeGroupAndOrderAndKeyword = (
+    group: number,
+    order: number,
+    keyword: string = ""
+  ) => {
+    console.log("Change",group, order, keyword);
+    this.props.resetTotal();
     if (keyword) {
-      this.props.getInfo(1, 0,0, true, keyword);
+      this.props.getInfo(1, 0, 0, true, keyword);
       this.props.history.push(
         `/usercenter/myfavorites/order/0/group/0/1?keyword=${keyword}`
       );
     } else {
-      this.props.getInfo(1, order,group, true);
+      this.props.getInfo(1, order, group, true);
       this.keyword = "";
-      this.props.history.push(`/usercenter/myfavorites/order/${order}/group/${group}/1`);
+      console.log("changeGroupAndOrderAndKeyword");
+      this.props.history.push(
+        `/usercenter/myfavorites/order/${order}/group/${group}/1`
+      );
     }
   };
 
@@ -164,7 +171,12 @@ class Posts extends React.Component<Props> {
       this.setState({ favoriteTopicList: defaultFavoriteTopicGroup });
       console.log(e);
     }
-  }
+
+    const curPage = Number(this.props.match.params.page || "1");
+    const order = Number(this.props.match.params.order);
+    const group = Number(this.props.match.params.group || "0");
+    this.props.history.push(`/usercenter/myfavorites/order/${order}/group/${group}/${curPage}`)
+  };
 
   render() {
     if (this.props.isLoading) {
@@ -185,27 +197,29 @@ class Posts extends React.Component<Props> {
       </div>
     );
     const curPage = parseInt(this.props.match.params.page) || 1;
+    console.log(this.props.totalPage);
     const totalPage = this.props.hasTotal ? this.props.totalPage : curPage + 1;
     //state转换为JSX
     let userRecentPosts = this.props.currentUserFavoriteTopics.map((item) => (
-      <Topic key={item.id} userRecentTopic={item} />
+      <Topic key={item.id} userRecentTopic={item} updateinfo={()=>{this.updateFavoriteTopicList();this.props.getInfo(curPage, order, group, true, this.keyword)}}/>
     ));
     //添加分隔线
     for (let i = 1; i < userRecentPosts.length; i += 2) {
       userRecentPosts.splice(i, 0, <hr key={i} />);
     }
+    // const curPageNum = parseInt(this.props.match.params.page) || 1;
     const order = Number(this.props.match.params.order);
-    const group = Number(this.props.match.params.group); 
+    const group = Number(this.props.match.params.group);
 
     const handleSearch = (keyword: string) => {
       this.keyword = keyword;
-      this.changeGroupAndOrderAndKeyword(defaultGroup,order, keyword);
+      this.changeGroupAndOrderAndKeyword(defaultGroup, order, keyword);
     };
 
     console.log(this.state.favoriteTopicList);
     const options = this.state.favoriteTopicList.map((item) => (
       <Option key={item.id} value={item.id}>
-        {item.name+"("+item.count+")"}
+        {item.name + " (" + item.count + ")"}
       </Option>
     ));
     return (
@@ -218,7 +232,7 @@ class Posts extends React.Component<Props> {
               marginRight: 40,
             }}
             onChange={(value: number) => {
-              this.changeGroupAndOrderAndKeyword(value,order);
+              this.changeGroupAndOrderAndKeyword(value, order);
             }}
           >
             {options}
@@ -230,7 +244,7 @@ class Posts extends React.Component<Props> {
               marginRight: 40,
             }}
             onChange={(value: number) => {
-              this.changeGroupAndOrderAndKeyword(group,value);
+              this.changeGroupAndOrderAndKeyword(group, value);
             }}
           >
             <Option value={PostOrder.PostTime}>按发帖时间排序</Option>
@@ -243,17 +257,32 @@ class Posts extends React.Component<Props> {
             onSearch={handleSearch}
             style={{ width: 280, marginRight: 30 }}
             enterButton={
-              <Button type="primary" style={{ width: 60 }}>
-                搜索
-              </Button>
+              <div>
+                <Button type="primary" style={{ width: 60 }}>
+                  搜索
+                </Button>
+              </div>
             }
           />
-          <MyFavoritesPostsManager history={this.props.history} updateFavoriteTopicList={this.updateFavoriteTopicList} favoriteTopicList={this.state.favoriteTopicList}/>
-          <br />
           <div className="user-post-operator-tips">
             收藏搜索目前只能按照最后回复排序
           </div>
+          <MyFavoritesPostsManager
+            history={this.props.history}
+            updateFavoriteTopicList={this.updateFavoriteTopicList}
+            favoriteTopicList={this.state.favoriteTopicList}
+          />
+          <br />
         </div>
+        {/* <Button
+          onClick={() => {
+            //use history to refresh
+            this.props.changePage();
+            // this.props.history.push(
+              // `/usercenter/myfavorites/order/${order}/group/${group}/${curPage}`
+            // );
+          }}
+        >测试</Button> */}
         <hr />
         {this.props.currentUserFavoriteTopics.length === 0 ? (
           emptyPage
@@ -263,7 +292,7 @@ class Posts extends React.Component<Props> {
             <Pager
               currentPage={curPage}
               totalPage={totalPage}
-              href={`/usercenter/myfavorites/order/${order}/`}
+              href={`/usercenter/myfavorites/order/${order}/group/${group}/`}
               hasTotal={this.props.hasTotal}
               keyword={this.keyword}
             />
@@ -274,7 +303,8 @@ class Posts extends React.Component<Props> {
   }
 }
 
-function mapState(store: RootState) {
+function mapState(store: RootState)
+ {
   return {
     currentUserFavoriteTopics: store.userInfo.currentUserFavoriteTopics,
     totalPage: store.userInfo.totalPage.myfavoriteposts,
@@ -295,8 +325,9 @@ function mapDispatch(dispatch: ThunkDispatch<RootState, void, RootAction>) {
       forceLoad: boolean | undefined,
       keyword = ""
     ) => {
-      dispatch(getFavoritePosts(page, order, group,forceLoad, keyword));
+      dispatch(getFavoritePosts(page, order, group, forceLoad, keyword));
     },
+    resetTotal:() => dispatch(Actions.changeUserFavoriteTopicGroup())
   };
 }
 

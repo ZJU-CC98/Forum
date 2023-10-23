@@ -259,6 +259,12 @@ export default (
       return { ...state, errorMessage: "", isError: false };
     case ActionTypes.USER_CENTER_TRANSFER_WEALTH_SUCCESS:
       return { ...state, transferSuccessUsers: action.payload.userNames };
+    case ActionTypes.USER_CENTER_FAVORITE_GROUP_CHANGE:
+      return {
+        ...state,
+        hasTotal: { ...state.hasTotal, myfavoriteposts: false },
+      };
+
     default:
       return state;
   }

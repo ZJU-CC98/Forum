@@ -15,7 +15,7 @@ export default class extends React.Component<UserCenterPageCountProps> {
       backgroundColor: "#ccc",
       cursor: "default",
     };
-
+    console.log(this.props);
     if (this.props.totalPage <= 7) {
       i = this.props.totalPage;
       while (i--) {
