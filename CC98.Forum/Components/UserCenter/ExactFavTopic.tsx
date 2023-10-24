@@ -6,16 +6,38 @@ import * as React from "react";
 import { UserRecentTopic } from "../../States/AppState";
 import { Link } from "react-router-dom";
 import { Dropdown, Icon, Menu } from "antd";
-import { deleteFavoriteTopic } from "../../Utility";
+import { deleteFavoriteTopic, moveFavTopic} from "../../Utility";
 import { type } from "os";
+import Modal from "antd/es/modal";
+import MyFavoritesAddModalcontent from "./MyFavoritesAdd";
 
 type Props = UserCenterExactActivitiesTopicProps& {updateinfo: () => void};
-
+const {confirm}=Modal;
 
 /**
  * 用户最近单个收藏帖子组件
  */
 export default class extends React.Component<Props> {
+
+  handleChangeGroup = async (topicid: number) => {
+    let select = 0;
+    confirm({
+      title: "选择收藏分组",
+      content: <MyFavoritesAddModalcontent option={(e)=>{select=e}}/>,
+      onOk: async (e) => {
+        console.log(select);
+        try {
+          await moveFavTopic(topicid,select);
+          this.props.updateinfo();
+        } catch (error) {
+          console.log("Oops errors!");
+        }
+      },
+      onCancel() {},
+    });
+  }
+
+
   render() {
     return (
       <div className="user-post">
@@ -46,20 +68,20 @@ export default class extends React.Component<Props> {
                         console.log("取消收藏", this.props.userRecentTopic.id);
                         await deleteFavoriteTopic(this.props.userRecentTopic.id);
                         this.props.updateinfo();
-                        
                       }}
                     >
                       取消收藏
                     </div>
                   </Menu.Item>
                   <Menu.Item>
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="http://www.taobao.com/"
+                  <div
+                      onClick={async () => {
+                        console.log("移动分组", this.props.userRecentTopic.id);
+                        await this.handleChangeGroup(this.props.userRecentTopic.id);
+                      }}
                     >
                       移动分组
-                    </a>
+                    </div>
                   </Menu.Item>
                 </Menu>
               }

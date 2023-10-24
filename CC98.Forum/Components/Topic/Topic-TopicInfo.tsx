@@ -6,6 +6,7 @@ import * as moment from "moment";
 import { NoticeMessage } from "../NoticeMessage";
 import { Modal, Select } from "antd";
 import { getFavoriteAllTopic } from "../../Utility";
+import MyFavoritesAddModalcontent from "../UserCenter/MyFavoritesAdd";
 interface Props {
   topicInfo;
   boardInfo;
@@ -75,7 +76,7 @@ export class TopicInfo extends React.Component<
     let select = 0;
     confirm({
       title: "选择收藏分组",
-      content: <Modalcontent  option={(e)=>{select=e}}/>,
+      content: <MyFavoritesAddModalcontent option={(e)=>{select=e}}/>,
       onOk: async (e) => {
         console.log(select);
         try {
@@ -89,21 +90,6 @@ export class TopicInfo extends React.Component<
     });
   }
   
-  // async follow() {
-  //   confirm({
-  //     title: "Do you want to delete these items?",
-  //     content: <Modalcontent />,
-  //     onOk() {
-  //       return new Promise((resolve, reject) => {
-  //           await Utility.setFavoriteTopic(this.props.topicInfo.id);
-  //         setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-  //       }).catch(() => console.log("Oops errors!"));
-  //     },
-  //     onCancel() {},
-  //   });
-  //   // await Utility.setFavoriteTopic(this.props.topicInfo.id);
-  //   this.setState({ isFollow: true, followCount: this.state.followCount + 1 });
-  // }
   async unFollow() {
     await Utility.deleteFavoriteTopic(this.props.topicInfo.id);
     this.setState({ isFollow: false, followCount: this.state.followCount - 1 });
@@ -274,62 +260,3 @@ export class TopicInfo extends React.Component<
   }
 }
 
-const { Option } = Select;
-type FavoriteTopicGroupType = {
-  count: number;
-  createTime: string;
-  id: number;
-  name: string;
-};
-const defaultFavoriteTopicGroup: FavoriteTopicGroupType[] = [
-  {
-    id: 0,
-    name: "默认分组",
-    count: 10,
-    createTime: "1998-09-08T09:08:00+08:00",
-  },
-];
-type ModalcontentProps = {option: (e: any) => void;}
-class Modalcontent extends React.Component<ModalcontentProps> {
-  state = {
-    favoriteTopicList: defaultFavoriteTopicGroup,
-  };
-  componentDidMount(): void {
-    this.updateFavoriteTopicList();
-  }
-
-  updateFavoriteTopicList = async () => {
-    try {
-      let favoriteTopicList = await getFavoriteAllTopic();
-      console.log(favoriteTopicList);
-      this.setState({
-        favoriteTopicList:
-          favoriteTopicList.errorCode === 0
-            ? favoriteTopicList.data
-            : defaultFavoriteTopicGroup,
-      });
-    } catch (e) {
-      this.setState({ favoriteTopicList: defaultFavoriteTopicGroup });
-      console.log(e);
-    }
-  };
-  render(): React.ReactNode {
-    const options = this.state.favoriteTopicList.map((item) => (
-      <Option key={item.id} value={item.id}>
-        {item.name + " (" + item.count + ")"}
-      </Option>
-    ));
-    return (
-      <Select
-        style={{
-          width: 180,
-          marginRight: 40,
-        }}
-        defaultValue={0}
-        onChange={(value)=>this.props.option(value)}
-      >
-        {options}
-      </Select>
-    );
-  }
-}

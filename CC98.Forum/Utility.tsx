@@ -817,6 +817,7 @@ import { UserInfo } from "./States/AppState";
 import { themeDayNightGroups, themeList } from "./Components/UserCenter/Theme";
 import { _ } from "core-js";
 import { setTheme } from "bizcharts";
+import { func } from "prop-types";
 
 export function syncGetBoardNameById(boardId) {
   for (let item of boardInfo) {
@@ -2855,7 +2856,19 @@ export async function deleteFavGroup(groupId) {
   if (response.status === 200) return "ok";
   else return "error";
 }
-
+//移动已收藏帖子的分组
+//注意，这个需要帖子已收藏，否则报400。
+export async function moveFavTopic(topicId, groupId) {
+  const headers = await formAuthorizeHeader();
+  const url = `/me/favorite/${topicId}/move?groupid=${groupId}`;
+  headers.append("Content-Type", "application/json");
+  const response = await cc98Fetch(url, {
+    method: "PUT",
+    headers,
+  });
+  if (response.status === 200) return "ok";
+  else return "error";
+}
 
 export async function editPost(postId, contentType, title, content) {
   const headers = await formAuthorizeHeader();

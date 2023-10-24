@@ -149,8 +149,8 @@ export default Form.create<Props>()(
               rules: [
                 {
                   required: this.state.option === Options.Create,
-                  max: 20,
-                  message: "请输入最多二十个字符且不为空的名称",
+                  max: 10,
+                  message: "请输入最多十个字符且不为空的名称",
                 },
               ],
             })(<Input disabled={isFavoriteTopicListMax} />)}
@@ -181,8 +181,8 @@ export default Form.create<Props>()(
                 rules: [
                   {
                     required: this.state.option === Options.Rename,
-                    max: 20,
-                    message: "请输入最多二十个字符且不为空的名称",
+                    max: 10,
+                    message: "请输入最多十个字符且不为空的名称",
                   },
                 ],
               })(<Input />)}
