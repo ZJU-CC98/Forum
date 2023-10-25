@@ -289,6 +289,7 @@ class Posts extends React.Component<Props> {
         ) : (
           <>
             {userRecentPosts}
+            <br/>
             <Pager
               currentPage={curPage}
               totalPage={totalPage}

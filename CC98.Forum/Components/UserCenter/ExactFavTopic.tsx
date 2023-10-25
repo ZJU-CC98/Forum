@@ -6,8 +6,7 @@ import * as React from "react";
 import { UserRecentTopic } from "../../States/AppState";
 import { Link } from "react-router-dom";
 import { Dropdown, Icon, Menu } from "antd";
-import { deleteFavoriteTopic, moveFavTopic} from "../../Utility";
-import { type } from "os";
+import { deleteFavoriteTopic,setFavoriteTopic} from "../../Utility";
 import Modal from "antd/es/modal";
 import MyFavoritesAddModalcontent from "./MyFavoritesAdd";
 
@@ -27,7 +26,7 @@ export default class extends React.Component<Props> {
       onOk: async (e) => {
         console.log(select);
         try {
-          await moveFavTopic(topicid,select);
+          await setFavoriteTopic(topicid, select);
           this.props.updateinfo();
         } catch (error) {
           console.log("Oops errors!");
