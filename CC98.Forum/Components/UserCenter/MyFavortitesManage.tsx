@@ -78,7 +78,7 @@ export default Form.create<Props>()(
             );
             if (createRes !== "ok") {
               noticeMessageShow("maxFavGroup");
-              this.setState({confirmLoading:false})
+              this.setState({ confirmLoading: false })
               return false;
             }
             break;
@@ -90,7 +90,7 @@ export default Form.create<Props>()(
             );
             if (renameRes !== "ok") {
               noticeMessageShow("other");
-              this.setState({confirmLoading:false})
+              this.setState({ confirmLoading: false })
               return false;
             }
             break;
@@ -101,7 +101,7 @@ export default Form.create<Props>()(
             );
             if (deleteRes !== "ok") {
               noticeMessageShow("other");
-              this.setState({confirmLoading:false})
+              this.setState({ confirmLoading: false })
               return false;
             }
             break;
@@ -130,7 +130,7 @@ export default Form.create<Props>()(
       const options = this.props.favoriteTopicList.map((item) =>
         item.id === 0 ? null : (
           <Option key={item.id} value={item.id}>
-            {item.name + "(" + item.count + ")"}
+            {item.name + " (" + item.count + ")"}
           </Option>
         )
       );
@@ -154,9 +154,8 @@ export default Form.create<Props>()(
                 },
               ],
             })(<Input disabled={isFavoriteTopicListMax} />)}
-            {`目前支持的分组上限为10个，你已经创建了${
-              this.props.favoriteTopicList.length - 1
-            }个分组`}
+            {`目前支持的分组上限为10个，你已经创建了${this.props.favoriteTopicList.length - 1
+              }个分组`}
           </FormItem>
         </Form>
       );
@@ -176,7 +175,7 @@ export default Form.create<Props>()(
                 ],
               })(<Select>{options}</Select>)}
             </FormItem>
-            <FormItem label="新分组名称">
+            <FormItem label="将名称修改为">
               {getFieldDecorator("rename", {
                 rules: [
                   {
@@ -206,8 +205,7 @@ export default Form.create<Props>()(
               })(<Select>{options}</Select>)}
             </FormItem>
             <div>
-              注意：删除后该分组将无法恢复，该分组下的所有收藏主题贴将被移入【默认分组】
-
+              注意：删除后该分组将无法恢复，该分组下的所有收藏主题帖将被移入【默认分组】
             </div>
           </Form>
         );
