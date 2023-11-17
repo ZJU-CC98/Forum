@@ -139,8 +139,10 @@ class LogOnExact extends React.Component<Props, LogOnState> {
                 loginMessage: '登录成功 正在返回'
             });
             Utility.changeTheme(userInfo.theme);
-            this.props.logOn();
+            this.props.
+            logOn();
             //跳转
+            debugger;
             setTimeout(() => {
                 if (this.props.history.length === 1) {
                     //  this.props.history.push('/');
