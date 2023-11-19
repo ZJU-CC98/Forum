@@ -42,12 +42,13 @@ class DropDownConnect extends React.Component<props, state> {
      */
     window.addEventListener("storage", (e) => {
       if (e.key === "userInfo") {
-        const oldvalue = JSON.parse(e.oldValue.slice(4));
-        const newvalue = JSON.parse(e.newValue.slice(4));
-        debugger;
-        oldvalue["lastLogOnTime"] = newvalue["lastLogOnTime"] = undefined;
-        if(JSON.stringify(oldvalue) === JSON.stringify(newvalue)) return;
-
+        if (e.oldValue && e.newValue) {
+          const oldvalue = JSON.parse(e.oldValue.slice(4));
+          const newvalue = JSON.parse(e.newValue.slice(4));
+          debugger;
+          oldvalue["lastLogOnTime"] = newvalue["lastLogOnTime"] = undefined;
+          if (JSON.stringify(oldvalue) === JSON.stringify(newvalue)) return;
+        }
         // if (e.oldValue === e.newValue) return;
         if (e.newValue) {
           //如果用户在其他页面重新登陆

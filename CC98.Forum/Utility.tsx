@@ -3686,13 +3686,26 @@ export async function getManageHistory(topicId, from) {
  * 返回用户当前财富值
  */
 export async function getUserWealth() {
-  let wealth = getLocalStorage("wealth");
-  if (!wealth) {
+  //更改为直接从userinfo中获取
+  let userInfo = getMyInfo();
+  let wealth = userInfo.wealth;
+  if(!wealth){
+    //如果没有财富值，刷新用户信息
     await refreshUserInfo();
-    let userInfo = getMyInfo();
+    userInfo = getMyInfo();
     wealth = userInfo.wealth;
-    setLocalStorage("wealth", wealth, 300);
   }
+  if(!wealth){
+    //如果还是没有财富值，那么就是获取失败了
+    return -1;
+  }
+  // let wealth = getLocalStorage("wealth");
+  // if (!wealth) {
+  //   await refreshUserInfo();
+  //   let userInfo = getMyInfo();
+  //   wealth = userInfo.wealth;
+  //   setLocalStorage("wealth", wealth, 300);
+  // }
   return wealth;
 }
 
