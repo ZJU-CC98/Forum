@@ -776,7 +776,7 @@ class EditForm extends RouteComponent<
             </button>
           </div>
         );
-      } else if (this.state.anonymousState === 2) {
+      } else if (this.state.anonymousState === 2 || this.state.anonymousState === 3) {
         ubbButtons = (
           <div
             style={{

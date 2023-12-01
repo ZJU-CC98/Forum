@@ -307,9 +307,8 @@ ${newProps.content.content}
         if (floor > 10) {
           page = parseInt(((floor - 1) / 10).toString()) + 1;
           floor = floor % 10;
-          url = `/topic/${this.props.topicInfo.id}/${page}#${
-            floor === 0 ? 10 : floor
-          }`;
+          url = `/topic/${this.props.topicInfo.id}/${page}#${floor === 0 ? 10 : floor
+            }`;
         } else {
           url = `/topic/${this.props.topicInfo.id}#${newProps.content.floor}`;
         }
@@ -593,7 +592,7 @@ ${newProps.content.content}[/quote]
       case 1:
         return this.state.mdeState === "";
       default:
-        return true; 
+        return true;
     }
   }
 
@@ -613,12 +612,12 @@ ${newProps.content.content}[/quote]
     }
     let mode, editor;
     //版面匿名状态，包括不可匿名、强制匿名（心灵）以及可选匿名
-    //不可匿名为0，强制匿名为1，可选匿名为2
+    //不可匿名为0，强制匿名为1，可选匿名为2，仅楼主可选匿名为3
     const anonymousState = this.props.boardInfo.anonymousState;
     let ubbButtons;
     let markdownButtons;
-    //不可匿名版面
-    if (anonymousState === 0) {
+    //不可匿名版面，或者，仅楼主可选匿名版面并且主楼非匿名或者非楼主回复时
+    if (anonymousState === 0 || (anonymousState === 3 && (!this.props.topicInfo.isAnonymous || !this.props.topicInfo.isMe))) {
       ubbButtons = (
         <button
           id="post-topic-button"
@@ -639,7 +638,8 @@ ${newProps.content.content}[/quote]
           {this.state.buttonInfo}
         </button>
       );
-    } else if (anonymousState === 1) {
+    } else if (anonymousState === 1 || (anonymousState === 3 && this.props.topicInfo.isAnonymous && this.props.topicInfo.isMe)) {
+      //强制匿名版面，或者，仅楼主可选匿名版面并且主楼是匿名并且是楼主回复
       ubbButtons = (
         <div
           style={{
