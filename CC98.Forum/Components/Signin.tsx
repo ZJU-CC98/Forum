@@ -23,18 +23,21 @@ export class Signin extends React.Component<{ history }, { signinInfo; content }
   async signin() {
     Utility.signin(this.state.content);
     const signInMes = await Utility.getGlobalConfig();
-    const signInTopicId = signInMes.signInTopicId;
-    const topicInfo = await Utility.getTopicInfo(signInTopicId);
-    const count = topicInfo.replyCount;
-    const page = Utility.getTotalPageof10(count);
-    let floor = (count + 1) % 10;
-    if (floor === 0) floor = 10;
-    this.props.history.push(`/topic/${signInTopicId}/${page}#${floor}`);
+    //const signInTopicId = signInMes.signInTopicId;
+    //const topicInfo = await Utility.getTopicInfo(signInTopicId);
+    //const count = topicInfo.replyCount;
+    //const page = Utility.getTotalPageof10(count);
+    //let floor = (count + 1) % 10;
+    //if (floor === 0) floor = 10;
+    //this.props.history.push(`/signin`);
+
     this.setState({ content: "" });
     //设定已签到状态和有效期
     let userInfo = Utility.getMyInfo();
     let workTime = (new Date(new Date().setHours(0, 0, 0, 0)).getTime() + 86400000 - new Date().getTime()) / 1000;
     Utility.setLocalStorage(`signin_${userInfo.id}`, true, workTime);
+
+    window.location.reload();
   }
   render() {
     let info;
