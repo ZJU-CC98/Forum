@@ -30,6 +30,7 @@ import { TdTagHandler } from './TdTagHandler';
 import { ThTagHandler } from './ThTagHandler';
 import { TrTagHandler } from './TrTagHandler';
 import { TopicTagHandler } from './TopicTagHandler';
+import { BoardTagHandler } from './BoardTagHandler';
 import { MdTagHandler } from './MdTagHandler';
 import { PmTagHandler } from './PmTagHandler'
 import { BiliTagHandler } from './BiliTagHandler'
@@ -69,6 +70,7 @@ export function createSignatureEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(CenterTagHandler);
 	engine.handlers.register(RightTagHandler);
 	engine.handlers.register(TopicTagHandler);
+	engine.handlers.register(BoardTagHandler);
 	engine.handlers.register(PmTagHandler);
 	engine.handlers.register(NoUbbTagHandler);
 
@@ -112,6 +114,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(ThTagHandler);
 	engine.handlers.register(TrTagHandler);
 	engine.handlers.register(TopicTagHandler);
+	engine.handlers.register(BoardTagHandler);
 	engine.handlers.register(MdTagHandler);
 	engine.handlers.register(LineTagHandler);
 	engine.handlers.register(PmTagHandler);
@@ -129,8 +132,6 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(Ms);
 	engine.handlers.register(CC98);
 	engine.handlers.register(TbTagHandler);
-
-
 
 	// 以下是文字处理程序，注意文字的处理顺序完全取决于处理程序，请注意控制处理程序的顺序
 	//engine.handlers.registerText(BiliTextHandler);
