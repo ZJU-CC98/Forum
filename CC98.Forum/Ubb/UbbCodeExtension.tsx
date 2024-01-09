@@ -49,6 +49,8 @@ import CC98 from './CC98TagHandler';
 import { PosterOnlyTagHanlder } from './PosterOnlyTagHandler';
 import { AllowViewerTagHanlder } from './AllowViewerTagHanlder';
 
+import { MathTagHandler } from './MathTagHandler';
+
 /**
  * 创建一个解析签名档用的engine
  */
@@ -120,6 +122,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(PmTagHandler);
 	engine.handlers.register(NoUbbTagHandler);
 	engine.handlers.register(BiliTagHandler);
+	engine.handlers.register(MathTagHandler);
 
 	engine.handlers.register(NeedReplyTagHandler);
 	engine.handlers.register(PosterOnlyTagHanlder);

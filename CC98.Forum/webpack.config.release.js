@@ -120,6 +120,7 @@ const config = (async () => ({
       { from: "node_modules/bootstrap-icons", to: "static/scripts/lib/bootstrap-icons/" },
       { from: "node_modules/frowser/build", to: "static/scripts/lib/frowser/" },
       { from: "node_modules/font-awesome", to: "static/content/font-awesome/" },
+      { from: "node_modules/mathjax-full", to: "static/scripts/lib/mathjax-full" },
       {
         from: "node_modules/spectrum-colorpicker/spectrum.js",
         to: "static/scripts/lib/spectrum/spectrum.js",

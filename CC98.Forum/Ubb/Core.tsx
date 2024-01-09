@@ -777,6 +777,13 @@ export abstract class UbbTextHandler {
 	 */
   abstract get supportedContent(): string | RegExp;
 
+    /**
+   * 可选的初始化方法，用于初始化标签处理器的一些全局设置。
+   */
+    init() {
+
+    }
+
 	/**
 	 * 处理给定的内容并返回处理结果。
 	 * @param match 通过对内容使用 supportedContent 属性进行正则匹配产生的匹配结果。
@@ -803,6 +810,13 @@ export abstract class UbbTagHandler {
 	 * @param context UBB 处理上下文。
 	 */
   abstract exec(tagSegment: UbbTagSegment, context: UbbCodeContext): ReactNode;
+
+  /**
+   * 可选的初始化方法，用于初始化标签处理器的一些全局设置。
+   */
+  init() {
+
+  }
 
 	/**
 	 * 通过对标签的分析，判断该标签的类型。
@@ -932,7 +946,12 @@ class UbbHandlerList {
 	 */
   register(tagHandlerClass: (new () => UbbTagHandler)) {
     // ReSharper disable once InconsistentNaming
-    this.registerInstance(new tagHandlerClass());
+    const handler = new tagHandlerClass();
+
+    // 初始化操作
+    handler.init();
+    // 注册实例
+    this.registerInstance(handler);
   }
 
 	/**
@@ -960,7 +979,12 @@ class UbbHandlerList {
 	 */
   registerText(textHandlerClass: (new () => UbbTextHandler)) {
     // ReSharper disable once InconsistentNaming
-    this.registerTextInstance(new textHandlerClass());
+    const handler = new textHandlerClass();
+    
+    // 初始化操作
+    handler.init();
+    // 注册实例
+    this.registerTextInstance(handler);
   }
 
 	/**
