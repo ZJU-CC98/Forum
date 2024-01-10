@@ -10,21 +10,16 @@ _[Auser](https://github.com/sgjsakura), [Madridista](https://github.com/Tsukiko1
 
 ```
 git clone https://github.com/ZJU-CC98/Forum.git
-cd Forum/CC98.Forum
-npm install
+cd Forum
+npm i
 npm run dev
 ```
 
 ### Notes
 
-- 请使用 `node v17` 之前的版本（不包括 17，推荐用 16）进行构建，否则某些依赖会报 `digital envelope routines` 错误，相关问题和解决办法可参见这个[提问](https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported)。相比于临时添加环境变量，更推荐使用 [nvm](https://github.com/nvm-sh/nvm) 做 node 的版本管理和切换。
-- `npm install` 和 `yarn add` 的效果不一样，用 `yarn` 安装所有依赖后 `build` 会报错，`npm` 则不会，待进一步检查。
-- 如果因为网络波动和连接性问题，出现包安装过程时间过长导致出错的现象，可以在 `./CC98.Forum` 目录下添加如下的 `.npmrc` 文件：
-
-  ```ini
-  timout=9999999                            # 增加超时时限
-  registry=https://registry.npmmirror.com/  # 将 npm 源更换为镜像源
-  ```
+- 请使用 `node@16` 或更早的版本进行构建，推荐使用 [`nvm`](https://github.com/nvm-sh/nvm) 或 [`nvm-windows`](https://github.com/coreybutler/nvm-windows) 管理和切换 `node` 版本；
+- 包管理工具请使用 `npm`；
+- PR 请提交至默认 `main` 分支，其余皆为开发用分支。
 
 ## File Intro
 
