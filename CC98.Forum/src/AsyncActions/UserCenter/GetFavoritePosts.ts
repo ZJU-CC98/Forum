@@ -30,7 +30,7 @@ export const getFavoritePosts: ActionCreator<ThunkAction<Promise<Action>, RootSt
     dispatch(Actions.userCenterLoading());
     const userInfo = getState().userInfo;
     const favorPosts = getState().userInfo.currentUserFavoriteTopics;
-    const hasTotal = getState().userInfo.hasTotal.myfavoriteposts;
+    const hasTotal = getState().userInfo.hasTotal.myFavoriteTopics;
     // debugger;
     if (!forceLoad) {
       // 如果未请求完所有帖子并且帖子总数小于请求的页数

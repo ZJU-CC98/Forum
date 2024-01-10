@@ -308,8 +308,8 @@ function mapState(store: RootState)
  {
   return {
     currentUserFavoriteTopics: store.userInfo.currentUserFavoriteTopics,
-    totalPage: store.userInfo.totalPage.myfavoriteposts,
-    hasTotal: store.userInfo.hasTotal.myfavoriteposts,
+    totalPage: store.userInfo.totalPage.myFavoritePosts,
+    hasTotal: store.userInfo.hasTotal.myFavoriteTopics,
     isLoading: store.userInfo.isLoading,
   };
 }

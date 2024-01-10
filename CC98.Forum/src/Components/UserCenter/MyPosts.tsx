@@ -114,8 +114,8 @@ class MyPosts extends React.Component<Props> {
 function mapState(store: RootState) {
   return {
     userRecentPosts: store.userInfo.recentPosts,
-    totalPage: store.userInfo.totalPage.myposts,
-    hasTotal: store.userInfo.hasTotal.myposts,
+    totalPage: store.userInfo.totalPage.myPosts,
+    hasTotal: store.userInfo.hasTotal.myPosts,
     isLoading: store.userInfo.isLoading,
   };
 }

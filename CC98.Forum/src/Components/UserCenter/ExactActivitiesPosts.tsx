@@ -97,7 +97,7 @@ class Activities extends React.Component<Props> {
 function mapState(store: RootState) {
   return {
     userRecentPosts: store.userInfo.recentPosts,
-    hasTotal: store.userInfo.hasTotal.myposts,
+    hasTotal: store.userInfo.hasTotal.myPosts,
     isLoading: store.userInfo.isLoading,
   };
 }

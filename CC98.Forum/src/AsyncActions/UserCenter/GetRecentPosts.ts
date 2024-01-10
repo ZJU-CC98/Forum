@@ -19,7 +19,7 @@ export const getRecentTopics: ActionCreator<ThunkAction<
   try {
     dispatch(Actions.userCenterLoading());
     const recentPosts = getState().userInfo.recentTopics;
-    const hasTotal = getState().userInfo.hasTotal.mytopics;
+    const hasTotal = getState().userInfo.hasTotal.myTopics;
     // 如果未请求完所有帖子并且帖子总数小于请求的页数
     // 换言之，当用户向后翻页，或直接通过url定位页数时
     let shouldLoad = recentPosts.length < (page - 1) * 10 + 1 && !hasTotal;
@@ -81,7 +81,7 @@ export const getRecentPosts: ActionCreator<ThunkAction<
   try {
     dispatch(Actions.userCenterLoading());
     const recentPosts = getState().userInfo.recentPosts;
-    const hasTotal = getState().userInfo.hasTotal.myposts;
+    const hasTotal = getState().userInfo.hasTotal.myPosts;
     // 如果未请求完所有帖子并且帖子总数小于请求的页数
     // 换言之，当用户向后翻页，或直接通过url定位页数时
     let shouldLoad = true;
@@ -136,7 +136,7 @@ export const getHotPosts: ActionCreator<ThunkAction<
   try {
     dispatch(Actions.userCenterLoading());
     const recentPosts = getState().userInfo.recentPosts;
-    const hasTotal = getState().userInfo.hasTotal.myposts;
+    const hasTotal = getState().userInfo.hasTotal.myPosts;
     // 如果未请求完所有帖子并且帖子总数小于请求的页数
     // 换言之，当用户向后翻页，或直接通过url定位页数时
     let shouldLoad = recentPosts.length < (page - 1) * 10 + 1 && !hasTotal;

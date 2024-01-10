@@ -7,6 +7,7 @@ import * as Utility from "../Utility";
 import * as Appstate from "../States/AppState";
 import { RootAction } from "../Store";
 import { addUserInfo } from "../IndexedDB/UserStorage";
+import { Reducer } from "redux";
 
 /**
  * 用户中心用Store
@@ -64,7 +65,7 @@ export class UserInfoStore {
   /**
    * 分页信息是否全部加载完
    */
-  hasTotal: hasTotal = new hasTotal();
+  hasTotal: TotalPageLoadState = new TotalPageLoadState();
   /**
    * 分页信息总数
    */
@@ -99,39 +100,82 @@ export class UserInfoStore {
   transferSuccessUsers: string[] = [];
 
   constructor() {
-    this.totalPage.myfollowings = Math.ceil(
+    this.totalPage.myFollowings = Math.ceil(
       this.currentUserInfo.followCount / 10
     );
-    this.totalPage.myfans = Math.ceil(this.currentUserInfo.fanCount / 10);
+    this.totalPage.myFans = Math.ceil(this.currentUserInfo.fanCount / 10);
   }
 }
 
-class hasTotal {
-  profile: boolean = false;
-  mytopics: boolean = false;
-  myposts: boolean = true;
-  myfavoriteposts: boolean = false;
-  myfollowings: boolean = true;
-  myfans: boolean = true;
-}
+/**
+ * 各项数据是否加载完成的标志。
+ */
+class TotalPageLoadState {
 
-class TotalPage {
-  profile: number = 1;
-  mytopics: number = 1;
-  myposts: number = 1;
-  myfavoriteposts: number = 1;
-  myfollowings: number;
-  myfans: number;
+  /**
+   * 个人信息是否加载完成。
+   */
+  profile = false;
+  /**
+   * 我的主题是否加载完成。
+   */
+  myTopics = false;
+  /**
+   * 我的回复是否加载完成。
+   */
+  myPosts = true;
+  /**
+   * 我的收藏是否加载完成。
+   */
+  myFavoriteTopics = false;
+  /**
+   * 我的关注是否加载完成。
+   */
+  myFollowings = true;
+  /**
+   * 我的粉丝是否加载完成。
+   */
+  myFans = true;
 }
 
 /**
- * reducer接收到undefined的state时一定要初始化state
- * 这里用ES6方法，在函数定义中初始化state
+ * 各项用户数据的总页数。
  */
-export default (
-  state = new UserInfoStore(),
-  action: RootAction
-): UserInfoStore => {
+class TotalPage {
+  /**
+   * 个人信息的页数。
+   */
+  profile: number = 1;
+  /**
+   * 我的主题的页数。
+   */
+  myTopics: number = 1;
+  /**
+   * 我的回复的页数。
+   */
+  myPosts: number = 1;
+  /**
+   * 我的收藏的页数。
+   */
+  myFavoritePosts: number = 1;
+  /**
+   * 我的关注的页数。
+   */
+  myFollowings: number;
+  /**
+   * 我的粉丝的页数。
+   */
+  myFans: number;
+}
+
+/**
+ * 处理用户信息更改的 Reducer。
+ * @param state 原有状态。
+ * @param action Redux 操作信息。
+ * @returns 新的状态。
+ */
+export const userInfoReducer: Reducer<UserInfoStore, RootAction> =
+  (state = new UserInfoStore(),  action: RootAction): UserInfoStore => {
   switch (action.type) {
     case ActionTypes.USER_LOG_ON:
       return { ...state, isLogOn: true, ...new UserInfoStore() };
@@ -175,11 +219,11 @@ export default (
         case "myposts":
           return {
             ...state,
-            hasTotal: { ...state.hasTotal, profile: true, myposts: true },
+            hasTotal: { ...state.hasTotal, profile: true, myPosts: true },
             totalPage: {
               ...state.totalPage,
               profile: action.payload.totalPage,
-              myposts: action.payload.totalPage,
+              myPosts: action.payload.totalPage,
             },
           };
         default:
@@ -201,7 +245,7 @@ export default (
         case "myposts":
           return {
             ...state,
-            hasTotal: { ...state.hasTotal, profile: false, myposts: false },
+            hasTotal: { ...state.hasTotal, profile: false, myPosts: false },
           };
         default:
           return {
@@ -224,15 +268,15 @@ export default (
     case ActionTypes.CHNAGE_USER_CENTER_PAGE:
       return { ...state, currentUserCenterPage: action.payload.page };
     case ActionTypes.USER_CENTER_FOLLOW_USER: {
-      let userFollowingInfo = state.currentUserFollowingInfo;
-      let currentUserFollowingInfo: Appstate.UserInfo[] = userFollowingInfo.map(
+      const userFollowingInfo = state.currentUserFollowingInfo;
+      const currentUserFollowingInfo: Appstate.UserInfo[] = userFollowingInfo.map(
         (item) =>
           item.id === action.payload.userId
             ? { ...item, isFollowing: true }
             : item
       );
-      let userFansInfo = state.currentUserFansInfo;
-      let currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map((item) =>
+      const userFansInfo = state.currentUserFansInfo;
+      const currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map((item) =>
         item.id === action.payload.userId
           ? { ...item, isFollowing: true }
           : item
@@ -240,15 +284,15 @@ export default (
       return { ...state, currentUserFollowingInfo, currentUserFansInfo };
     }
     case ActionTypes.USER_CENTER_UNFOLLOW_USER: {
-      let userFollowingInfo = state.currentUserFollowingInfo;
-      let currentUserFollowingInfo: Appstate.UserInfo[] = userFollowingInfo.map(
+      const userFollowingInfo = state.currentUserFollowingInfo;
+      const currentUserFollowingInfo: Appstate.UserInfo[] = userFollowingInfo.map(
         (item) =>
           item.id === action.payload.userId
             ? { ...item, isFollowing: false }
             : item
       );
-      let userFansInfo = state.currentUserFansInfo;
-      let currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map((item) =>
+      const userFansInfo = state.currentUserFansInfo;
+      const currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map((item) =>
         item.id === action.payload.userId
           ? { ...item, isFollowing: false }
           : item
@@ -262,7 +306,7 @@ export default (
     case ActionTypes.USER_CENTER_FAVORITE_GROUP_CHANGE:
       return {
         ...state,
-        hasTotal: { ...state.hasTotal, myfavoriteposts: false },
+        hasTotal: { ...state.hasTotal, myFavoriteTopics: false },
       };
 
     default:

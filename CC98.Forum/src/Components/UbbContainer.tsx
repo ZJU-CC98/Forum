@@ -2,8 +2,8 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
-import * as React from "react";
-import * as Ubb from "../Ubb/UbbCodeExtension";
+import * as React from 'react';
+import * as Ubb from '../Ubb/UbbCodeExtension';
 /**
  * 定义 UBBContainer 组件需要使用的属性。
  */

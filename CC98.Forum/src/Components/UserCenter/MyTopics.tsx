@@ -87,8 +87,8 @@ class MyTopics extends React.Component<Props> {
 function mapState(store: RootState) {
   return {
     userRecentTopics: store.userInfo.recentTopics,
-    totalPage: store.userInfo.totalPage.mytopics,
-    hasTotal: store.userInfo.hasTotal.mytopics,
+    totalPage: store.userInfo.totalPage.myTopics,
+    hasTotal: store.userInfo.hasTotal.myTopics,
     isLoading: store.userInfo.isLoading,
   };
 }

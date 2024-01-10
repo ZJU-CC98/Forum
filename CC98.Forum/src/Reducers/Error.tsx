@@ -2,6 +2,7 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
+import { Reducer } from 'redux';
 import * as ActionTypes from '../ActionTypes';
 import { RootAction } from '../Store';
 
@@ -39,16 +40,19 @@ export class ErrorStore {
 }
 
 /**
- * reducer接收到undefined的state时一定要初始化state
- * 这里用ES6方法，在函数定义中初始化state
+ * 处理错误使用的 Reducer。
+ * @param state 原有状态。
+ * @param action Redux 操作信息。
+ * @returns 新的状态。
  */
-export default (state = new ErrorStore(), action: RootAction): ErrorStore => {
-    switch (action.type) {
-        case ActionTypes.THROW_ERROR:
-            return { ...state, isError: true, errorMessage: action.payload.message };
-        case ActionTypes.SOLVE_ERROR:
-            return { ...state, isError: false };
-        default:
-            return state;
+export const errorReducer: Reducer<ErrorStore, RootAction> = 
+    (state = new ErrorStore(), action: RootAction): ErrorStore => {
+        switch (action.type) {
+            case ActionTypes.THROW_ERROR:
+                return { ...state, isError: true, errorMessage: action.payload.message };
+            case ActionTypes.SOLVE_ERROR:
+                return { ...state, isError: false };
+            default:
+                return state;
+        }
     }
-}

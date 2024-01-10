@@ -74,9 +74,9 @@ class Fans extends React.Component<Props> {
 function mapState(state: RootState) {
     return {
         userFans: state.userInfo.currentUserFansInfo,
-        totalPage: state.userInfo.totalPage.myfans,
+        totalPage: state.userInfo.totalPage.myFans,
         isLoading: state.userInfo.isLoading,
-        hasTotal: state.userInfo.hasTotal.myfans
+        hasTotal: state.userInfo.hasTotal.myFans
     };
 }
 

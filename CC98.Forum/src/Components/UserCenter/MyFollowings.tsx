@@ -74,9 +74,9 @@ class Following extends React.Component<Props> {
 function mapState(state: RootState) {
     return {
         userFollowings: state.userInfo.currentUserFollowingInfo,
-        totalPage: state.userInfo.totalPage.myfollowings,
+        totalPage: state.userInfo.totalPage.myFollowings,
         isLoading: state.userInfo.isLoading,
-        hasTotal: state.userInfo.hasTotal.myfollowings
+        hasTotal: state.userInfo.hasTotal.myFollowings
     };
 }
 
