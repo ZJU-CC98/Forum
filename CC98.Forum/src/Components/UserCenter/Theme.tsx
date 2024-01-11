@@ -474,7 +474,7 @@ class Theme extends React.Component<ThemeProps> {
       return {
         ok: true as true,
       } as ThemeSettingSuccessResult;
-    } catch (e) {
+    } catch (e: any) {
       return {
         ok: false as false,
         message: (e as Error).message,
@@ -501,7 +501,7 @@ class Theme extends React.Component<ThemeProps> {
 
       // 刷新主题
       Utility.changeTheme(theme);
-    } catch (e) { }
+    } catch (e: any) { }
   };
 
   generateButton = (item: ThemeItem) => {

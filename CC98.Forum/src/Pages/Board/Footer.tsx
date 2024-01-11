@@ -7,15 +7,17 @@ import {
   Spin,
   Transfer,
   Select,
-  notification,
-  Icon
+  notification
 } from "antd";
+
+// 关闭 圆形图标
+import { CloseCircleOutlined } from '@ant-design/icons';
+
 import {
   multiDelete as aDelete,
   multiLock as aLock,
   getBoardRecords
 } from "./action";
-import { Link } from "react-router-dom";
 import { IBoard, ITopic } from "@cc98/api";
 import moment from "moment";
 
@@ -224,7 +226,7 @@ class Manage extends React.Component<ChildProps, ChildState> {
       message: "操作错误",
       description: "请至少选择一个帖子",
       duration: 4.5,
-      icon: <Icon type="close-circle" style={{ color: "red" }} />
+      icon: <CloseCircleOutlined style={{ color: "red" }} />
     };
     notification.open(args);
   };

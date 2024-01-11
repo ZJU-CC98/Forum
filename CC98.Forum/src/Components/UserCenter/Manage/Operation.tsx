@@ -97,7 +97,7 @@ export default class Operation extends React.Component<OperationProps, Operation
             }else {
                 throw new Error(res.statusText);
             }
-        } catch (e) {
+        } catch (e: any) {
             this.setState({
                 info: e.message
             });

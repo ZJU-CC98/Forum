@@ -1,10 +1,10 @@
-import store from '../Store';
+import { rootStore } from '../Store';
 
 export namespace BlinkTitle {
     let title: string;
     let timer;
 
-    export function haveUnreadCount(message = store.getState().message): boolean {
+    export function haveUnreadCount(message = rootStore.getState().message): boolean {
         const totalCount = message.atCount + message.messageCount + message.replyCount + message.systemCount;
         return totalCount !== 0;
     }

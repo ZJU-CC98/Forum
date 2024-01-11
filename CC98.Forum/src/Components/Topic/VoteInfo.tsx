@@ -112,7 +112,7 @@ export class VoteContent extends React.PureComponent<props, state> {
             });
             this.props.getInfo();
             if(res.ok) throw new Error('投票成功');
-        } catch(e) {
+        } catch (e: any) {
             this.setState({
                 message: e.message,
                 messageOpacity: 1,

@@ -185,7 +185,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
             $("#custom").spectrum({
                 color: color
             });
-        } catch (e) {
+        } catch (e: any) {
             $("#custom").spectrum({
                 color: "#f00"
             });

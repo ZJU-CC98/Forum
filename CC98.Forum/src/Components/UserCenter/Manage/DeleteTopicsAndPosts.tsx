@@ -55,7 +55,7 @@ export default class Delete extends React.Component<Props, State> {
             this.setState({
                 info: `删掉了${data}条${item}`
             });
-        } catch (e) {
+        } catch (e: any) {
             this.setState({
                 info: e.message
             });

@@ -2,8 +2,7 @@
 import "core-js/shim";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as $ from "jquery";
-import store from "./Store";
+import { rootStore } from "./Store";
 import { Provider } from "react-redux";
 import "whatwg-fetch";
 import "blueimp-canvas-to-blob";
@@ -13,12 +12,16 @@ import { Constants } from "./Components/Constant";
 import App from "./Components/App";
 import ErrorBoundary from "./Components/ErrorBoundary";
 import { IndexedDB } from "./IndexedDB/IndexedDB";
-import { shouldUseIndexedDb } from "./config";
-import zh_CN from "antd/lib/locale-provider/zh_CN";
-import { LocaleProvider } from "antd";
+import { shouldUseIndexedDb } from "./Config";
+import zh_CN from "antd/locale/zh_CN";
+import { ConfigProvider } from "antd";
 import moment from "moment";
 import { checkThemeToChange } from "./Utility";
+import whyDidYouUpdate from 'why-did-you-update';
 moment.locale("zh-cn");
+
+// 环境宿主对象
+declare const process: any;
 
 /**
  * 定时器回调函数集合。
@@ -63,17 +66,16 @@ async function initialize() {
   // 显示应用程序核心内容
   ReactDOM.render(
     <ErrorBoundary>
-      <Provider store={store}>
-        <LocaleProvider locale={zh_CN}>
+      <Provider store={rootStore}>
+        <ConfigProvider locale={zh_CN}>
           <App />
-        </LocaleProvider>
+        </ConfigProvider>
       </Provider>
     </ErrorBoundary>,
     document.getElementById("root")
   );
 
   if (process.env.NODE_ENV === "development") {
-    const { whyDidYouUpdate } = require("why-did-you-update");
     //	whyDidYouUpdate(React);
   } else {
     initWatermark();

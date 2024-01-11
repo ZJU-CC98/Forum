@@ -388,7 +388,7 @@ export class ListHead extends RouteComponent<
       } else {
         throw new Error();
       }
-    } catch (e) {
+    } catch (e: any) {
       this.setState({
         info: `修改失败 ${e.message}`
       });

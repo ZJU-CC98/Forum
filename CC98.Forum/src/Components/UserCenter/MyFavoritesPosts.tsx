@@ -167,7 +167,7 @@ class Posts extends React.Component<Props> {
             ? favoriteTopicList.data
             : defaultFavoriteTopicGroup,
       });
-    } catch (e) {
+    } catch (e: any) {
       this.setState({ favoriteTopicList: defaultFavoriteTopicGroup });
       console.log(e);
     }

@@ -279,7 +279,7 @@ export class SendTopic extends React.Component<Props, State> {
     let wealth;
     try {
       wealth = await Utility.getUserWealth();
-    } catch (e) {
+    } catch (e: any) {
       wealth = "查询财富值余额失败，请前往个人中心查看";
     }
     this.setState({
@@ -421,7 +421,7 @@ ${newProps.content.content}[/quote]
           anonymouslyPostButtonInfo: "请刷新",
         });
       }
-    } catch (e) {
+    } catch (e: any) {
       this.cacheForPost("ubb");
       Utility.noticeMessageShow("other");
       this.setState({
@@ -520,7 +520,7 @@ ${newProps.content.content}[/quote]
           anonymouslyPostButtonInfo: "请刷新",
         });
       }
-    } catch (e) {
+    } catch (e: any) {
       this.cacheForPost("markdown");
       Utility.noticeMessageShow("other");
       this.setState({

@@ -59,7 +59,7 @@ export const getRecentTopics: ActionCreator<ThunkAction<
     }
     dispatch(Actions.changeUserRecentTopics(recentPosts));
     return dispatch(Actions.userCenterLoaded());
-  } catch (e) {
+  } catch (e: any) {
     return dispatch(Actions.userCenterError(e.message));
   }
 };
@@ -117,7 +117,7 @@ export const getRecentPosts: ActionCreator<ThunkAction<
       } as PostsAndTotal)
     );
     return dispatch(Actions.userCenterLoaded());
-  } catch (e) {
+  } catch (e: any) {
     return dispatch(Actions.userCenterError(e.message));
   }
 };
@@ -180,7 +180,7 @@ export const getHotPosts: ActionCreator<ThunkAction<
       Actions.changeUserHotPosts({ posts: recentPosts, total } as PostsAndTotal)
     );
     return dispatch(Actions.userCenterLoaded());
-  } catch (e) {
+  } catch (e: any) {
     return dispatch(Actions.userCenterError(e.message));
   }
 };

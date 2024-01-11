@@ -188,7 +188,7 @@ class AudioPlayer extends React.Component<IAudioProps> {
                     pic: '/static/images/audio_cover.png'
                 }
             });
-        } catch (e) {
+        } catch (e: any) {
             // IE 11 下会抛一个 InvalidStateError 的错误，忽略
         }
     }

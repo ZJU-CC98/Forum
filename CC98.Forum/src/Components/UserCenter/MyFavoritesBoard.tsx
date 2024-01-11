@@ -44,7 +44,7 @@ export default class extends React.Component<UserCenterMyFavoritesBoardProps, Us
             } else {
                 throw {};
             }
-        } catch (e) {
+        } catch (e: any) {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '取关失败',
@@ -78,7 +78,7 @@ export default class extends React.Component<UserCenterMyFavoritesBoardProps, Us
             } else {
                 throw {};
             }
-        } catch (e) {
+        } catch (e: any) {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '关注失败',

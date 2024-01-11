@@ -191,7 +191,7 @@ class Config extends React.Component<Props, States> {
             } else {
                 throw new Error(res.status.toString());
             }
-        } catch (e) {
+        } catch (e: any) {
             this.setState({
                 info: e.message,
                 isLoading: false

@@ -68,7 +68,7 @@ export const getFavoritePosts: ActionCreator<ThunkAction<Promise<Action>, RootSt
       favorPosts.push(item);
     });
     return dispatch(Actions.userCenterLoaded());
-  } catch (e) {
+  } catch (e: any) {
     return dispatch(Actions.userCenterError(e.message));
   }
 };

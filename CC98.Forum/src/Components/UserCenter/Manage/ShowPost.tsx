@@ -105,7 +105,7 @@ export default class ShowTopic extends React.Component<Props, State> {
                 info: posts.length === 0 ? '啥也没有' : '',
                 from: from
             });
-        } catch (e) {
+        } catch (e: any) {
             this.setState({
                 info: e.message,
                 isLoading: false

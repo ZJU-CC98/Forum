@@ -51,7 +51,7 @@ export default class extends React.Component<
         } else {
           throw {};
         }
-      } catch (e) {
+      } catch (e: any) {
         this.setState({
           isLoading: false,
         });
@@ -82,7 +82,7 @@ export default class extends React.Component<
       } else {
         throw new Error();
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log("用户中心帖子加载失败");
     }
   }

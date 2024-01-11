@@ -30,7 +30,7 @@ export const getCurrentUserFavoriteBoards: ActionCreator<ThunkAction<Promise<Act
         // 更新store中的状态，加载完毕
         dispatch(Actions.changeUserFavoriteBoards(boardsInfo));
         return dispatch(Actions.userCenterLoaded());
-    } catch (e) {
+    } catch (e: any) {
         return dispatch(Actions.userCenterError(e.message));
     }
 }

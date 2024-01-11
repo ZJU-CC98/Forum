@@ -7,7 +7,10 @@ import Page4 from './page4'
 import Page5 from './page5'
 import Page6 from './page6'
 import Cover from './cover'
-import { Icon, Spin } from 'antd'
+import { Spin } from 'antd'
+
+import { UpOutlined, DownOutlined } from '@ant-design/icons';
+
 export default class extends React.Component {
     state = {
         data: null,
@@ -49,7 +52,7 @@ export default class extends React.Component {
             data.userInfo = getMyInfo()
         }
         return <div className={isMobile ? 'annual-review-body' : 'annual-review-body'}>
-            {page !== 0 ? <Icon type="up" onClick={this.previousPage} style={{ fontSize: '2rem', cursor: 'pointer', zIndex: 99 }} /> : <div style={{ height: '2rem' }}></div>}
+            {page !== 0 ? <UpOutlined onClick={this.previousPage} style={{ fontSize: '2rem', cursor: 'pointer', zIndex: 99 }} /> : <div style={{ height: '2rem' }}></div>}
             {page === 0 && <div onWheel={e => this.handleWheel(e)}  ><Cover /></div>}
             {page === 1 && <div onWheel={e => this.handleWheel(e)} onMouseDown={this.nextPage}><Page1 data={data} /></div>}
             {page === 2 && <div onWheel={e => this.handleWheel(e)} onMouseDown={this.nextPage}><Page2 data={data} /></div>}
@@ -57,7 +60,7 @@ export default class extends React.Component {
             {page === 4 && <div onWheel={e => this.handleWheel(e)} onMouseDown={this.nextPage}><Page4 data={data} /></div>}
             {page === 5 && <div onWheel={e => this.handleWheel(e)} onMouseDown={this.nextPage}><Page5 data={data} /></div>}
             {page === 6 && <div onWheel={e => this.handleWheel(e)}><Page6 data={data} /></div>}
-            {page !== 6 && <Icon type="down" onClick={this.nextPage} style={{ fontSize: '2rem', cursor: 'pointer', zIndex: 99 }} />}
+            {page !== 6 && <DownOutlined onClick={this.nextPage} style={{ fontSize: '2rem', cursor: 'pointer', zIndex: 99 }} />}
         </div>
     }
 }

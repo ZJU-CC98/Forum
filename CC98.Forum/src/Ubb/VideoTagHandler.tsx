@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Ubb from './Core';
 
-const DPlayer = require('dplayer');
+import DPlayer from 'dplayer';
 
 /**
  * 处理 [video] 标签的处理器。
@@ -59,7 +59,7 @@ class VideoComponent extends React.Component<IProps, IState> {
             try {
                 new Hls()
                 this.initPlayer('hls')
-            } catch(e) {
+            } catch (e: any) {
                 const script = document.createElement('script')
                 script.src = '/static/content/hls.min.js'
                 document.getElementsByTagName('head')[0].appendChild(script)
@@ -84,7 +84,7 @@ class VideoComponent extends React.Component<IProps, IState> {
                     type,
                 },
             });
-        } catch(e) {
+        } catch (e: any) {
             console.log(e, 'new Dplayer Error.')
         }
 

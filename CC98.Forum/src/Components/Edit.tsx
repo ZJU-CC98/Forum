@@ -1,18 +1,12 @@
 ﻿import * as React from "react";
 import * as Utility from "../Utility";
 import { AppState } from "../States/AppState";
-import * as $ from "jquery";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  withRouter
-} from "react-router-dom";
+import $ from "jquery";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import { match } from "react-router";
 import { RouteComponent } from "./RouteComponent";
 import { UbbEditor } from "./UbbEditor";
-import { Constants } from "./Constant";
-import store from "../Store";
+import { rootStore } from "../Store";
 import * as ErrorActions from "../Actions/Error";
 import { Vote, props as VoteProps } from "./EditVoteIput";
 import ReactMde, {
@@ -32,7 +26,10 @@ import {
   Radio
 } from "antd";
 import * as moment from "moment";
-const { MonthPicker, RangePicker } = DatePicker;
+
+import { withRouter } from "../Utility";
+
+const { RangePicker } = DatePicker;
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -223,7 +220,7 @@ class EditForm extends RouteComponent<
     let wealth;
     try {
       wealth = await Utility.getUserWealth();
-    } catch (e) {
+    } catch (e: any) {
       wealth = "查询财富值余额失败，请前往个人中心查看";
     }
     this.setState({
@@ -266,8 +263,11 @@ class EditForm extends RouteComponent<
   update(value) {
     this.setState({ content: value });
   }
-  /** 发送markdown主题 */
-  sendMdTopic = async (isAnonymous: boolean) => {
+  /**
+   * 发送markdown主题。
+   * @param {boolean} isAnonymous 是否匿名方式发送。
+   */
+  async sendMdTopic(isAnonymous: boolean): Promise<void> {
     //投票帖禁止匿名
     let _isAnonymous = isAnonymous;
     if (
@@ -283,7 +283,7 @@ class EditForm extends RouteComponent<
       const info = Vote.isFormIllegal(this.state.voteInfo);
       if (info) {
         alert(info);
-        return null;
+        return;
       }
     }
     //检查标题
@@ -380,13 +380,13 @@ class EditForm extends RouteComponent<
         }
         Utility.removeLocalStorage("contentCache");
         this.props.history.push(`/topic/${topicId}`);
-      } catch (e) {
+      } catch (e: any) {
         console.log(e);
       }
     }
   };
   /** 发送ubb主题 */
-  sendUbbTopic = async (isAnonymous: boolean) => {
+  async sendUbbTopic(isAnonymous: boolean) {
     //投票帖禁止匿名
     let _isAnonymous = isAnonymous;
     console.log("------");
@@ -480,7 +480,7 @@ class EditForm extends RouteComponent<
       const topicId = await response.text();
       console.log("topicid=" + topicId);
       if (topicId === "cannot_post_in_this_board")
-        store.dispatch(ErrorActions.throwError("CannotPost"));
+        rootStore.dispatch(ErrorActions.throwError("CannotPost"));
       else {
         //根据返回的topicid，发送@信息
         const atUsers = Utility.atHanderler(this.state.content);

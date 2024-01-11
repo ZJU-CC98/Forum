@@ -9,7 +9,7 @@ import {
   Constants, // used in cc98Fetch
 } from "../Components/Constant";
 
-import store, { history } from "../Store";
+import {rootStore, history } from "../Store";
 import * as Actions from "../Actions/UserCenter";
 
 /**
@@ -54,7 +54,7 @@ export async function getToken(): Promise<string> {
     removeLocalStorage("userInfo");
     removeLocalStorage("accessToken");
     removeLocalStorage("refresh_token");
-    store.dispatch(Actions.userLogOff());
+    rootStore.dispatch(Actions.userLogOff());
     history.push("/logon");
   }
 }

@@ -3,11 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import {
-    Route,
-    withRouter, 
-    RouteComponentProps
-} from 'react-router-dom';
+import { Route, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { UserInfo } from '../../../States/AppState';
 import UserManage from './Manage';
@@ -17,7 +13,8 @@ import Avatar from '../ExactAvatar';
 import * as Actions from '../../../Actions/UserCenter';
 import * as Utility from '../../../Utility';
 import DocumentTitle from '../../DocumentTitle';
-import { getUserInfo } from '../../../Utility/Fetch/getUserInfo';
+
+import { withRouter } from '../../../Utility';
 
 /**
  * 用户详情页用的Route
@@ -25,8 +22,8 @@ import { getUserInfo } from '../../../Utility/Fetch/getUserInfo';
 export default class extends React.Component {
     render() {
         return (<div className="user-center-router">
-            <Route path="/user/:method/:id?" exact component={UserExactWithRouter} />
-            <Route path="/user/:method/:id/manage" component={UserManage} />
+            <Route path="/user/:method/:id?" Component={UserExactWithRouter} />
+            <Route path="/user/:method/:id/manage" Component={UserManage} />
         </div>);
     }
 }
@@ -97,7 +94,7 @@ class UserExact extends React.Component<Props, States> {
             this.setState({
                 userInfo
             });
-        } catch (e) {
+        } catch (e: any) {
             //未找到用户的处理
             this.props.notFoundUser();
         }

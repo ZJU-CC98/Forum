@@ -111,7 +111,7 @@ export default class extends React.Component<props, State> {
       let res = await cc98Fetch(url + '/all', { headers });
       let data = await res.json();
       this.setState({ data });
-    } catch (e) {
+    } catch (e: any) {
       this.setState({
         info: e.message
       });
@@ -153,7 +153,7 @@ export default class extends React.Component<props, State> {
       } else {
         throw new Error(res.status.toString());
       }
-    } catch (e) {
+    } catch (e: any) {
       this.setState({
         info: e.message
       });

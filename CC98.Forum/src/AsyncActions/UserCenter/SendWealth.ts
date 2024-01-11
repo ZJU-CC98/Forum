@@ -41,7 +41,7 @@ export const sendWealth: ActionCreator<ThunkAction<Promise<Action>, RootState, v
         dispatch(Actions.changeUserInfo(userInfo));
         dispatch(Actions.userCenterTransferWealthSuccess(successNames));
         return dispatch(Actions.userCenterLoaded());
-    } catch (e) {
+    } catch (e: any) {
         dispatch(Actions.userCenterLoaded());
         return dispatch(Actions.userCenterError(e.message));
     }

@@ -73,7 +73,7 @@ class Wealth extends React.Component<Props, State> {
             //转账
             this.setState({ info: '转账中'});
             this.props.sendWealthTo(userNames, wealth, this.state.reason);
-        } catch(e) {
+        } catch (e: any) {
             this.setState({
                 info: e.message
             });

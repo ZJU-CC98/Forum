@@ -50,7 +50,7 @@ export const getUserFansInfo: ActionCreator<ThunkAction<Promise<Action>, RootSta
         fanData.forEach((item, index) => prevFans[index + (page - 1) * 10] = item);
         dispatch(Actions.changeUserFansInfo(prevFans));
         return dispatch(Actions.userCenterLoaded());
-    } catch (e) {
+    } catch (e: any) {
         return dispatch(Actions.userCenterError(e.message));
     }
 }

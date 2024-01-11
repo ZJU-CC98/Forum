@@ -21,7 +21,7 @@ export default class extends React.Component<{ userinfo: UserInfo, handleChange:
             this.setState({
                 displayTitles: data
             });
-        } catch (e) {
+        } catch (e: any) {
 
         }
     }

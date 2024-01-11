@@ -5,8 +5,8 @@
 import * as React from 'react';
 import * as Ubb from './Core';
 
-var remark = require('remark');
-var reactRenderer = require('remark-react');
+import remark from 'remark';
+import reactRenderer from 'remark-react';
 
 export class MdTagHandler extends Ubb.TextTagHandler {
     innerHTML: JSX.Element;

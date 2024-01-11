@@ -125,7 +125,7 @@ export function getTagName(file: File) {
             case config.fileExtendedNames.image.indexOf(fileExtendName) !== -1: return 'img'
             default: throw new Error
         }
-    } catch(e) {
+    } catch (e: any) {
         return 'upload'
     }
 }

@@ -28,7 +28,7 @@ function generateListPager(item: number, id: number) {
   }
 }
 
-const Item: React.SFC<Props> = ({ data, order }) => {
+const Item: React.FunctionComponent<Props> = ({ data, order }) => {
   // 普通帖子
   let icon = 'normal';
   let iconText = '普通帖子';
@@ -223,7 +223,7 @@ class Card extends React.Component<ChildProps, ChildState> {
   }
 }
 
-const PItem: React.SFC<{ item: IPost }> = ({ item }) => (
+const PItem: React.FunctionComponent<{ item: IPost }> = ({ item }) => (
   <div className="board-postItem-card-body">
     <div className="board-postItem-card-information">
       <div>{item.floor}L</div>

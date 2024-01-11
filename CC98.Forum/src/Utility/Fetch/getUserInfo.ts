@@ -14,7 +14,7 @@ import {
     formAuthorizeHeader,
     cc98Fetch
 } from '../fetchUtility';
-import { shouldUseIndexedDb } from '../../config';
+import { shouldUseIndexedDb } from '../../Config';
 
 /**
  * 使用用户id查询用户信息
@@ -57,7 +57,7 @@ export async function getUserInfo(key: number | string): Promise<UserInfo> {
         }
 
         return userInfo;
-    } catch(e) {
+    } catch (e: any) {
 
     }
 }

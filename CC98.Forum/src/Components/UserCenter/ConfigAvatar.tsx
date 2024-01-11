@@ -396,7 +396,7 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 					//根据返回的图片地址修改个人信息
 					this.changeAvatar(data[0]);
 				}				
-			}catch(e){
+			}catch (e: any){
 				this.setState({
 					info: '修改失败',
 					isLoading: false,
@@ -446,7 +446,7 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 				throw new Error();
 			}
 
-		} catch (e) {
+		} catch (e: any) {
 			this.setState({
 				info: '修改失败',
 				isLoading: false,

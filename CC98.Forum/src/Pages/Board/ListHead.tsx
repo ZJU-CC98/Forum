@@ -9,7 +9,7 @@ interface Props {
   handleTag1Change: (value: number) => void;
   handleTag2Change: (value: number) => void;
 }
-const Head: React.SFC<Props> = ({
+const Head: React.FunctionComponent<Props> = ({
   onChange,
   tags,
   handleTag1Change,

@@ -126,7 +126,7 @@ export class ReplyContent extends React.Component<
       this.setState({
         vote,
       });
-    } catch (e) { }
+    } catch (e: any) { }
   }
 
   render() {

@@ -59,7 +59,7 @@ export default class Announcement extends React.Component<props, AnnouncementSta
             } else {
                 throw new Error(res.status.toString());
             }
-        } catch(e) {
+        } catch (e: any) {
             this.setState({ info: `修改失败${e.message}`});
         }
     }
@@ -79,7 +79,7 @@ export default class Announcement extends React.Component<props, AnnouncementSta
             } else {
                 throw new Error(res.status.toString());
             }
-        } catch(e) {
+        } catch (e: any) {
             this.setState({ info: `清除首页缓存失败 ${e.message}` });
         }
 

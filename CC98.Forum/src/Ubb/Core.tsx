@@ -5,7 +5,7 @@
 import { ReactNode } from 'react';
 
 // 重新导出 ReactNode
-export { ReactNode } from 'react';
+export type { ReactNode } from 'react';
 
 /**
  * 提供 UBB 处理上下文所需要的相关数据。

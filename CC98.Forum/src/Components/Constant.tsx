@@ -52,7 +52,7 @@ export module Constants {
       const productionConfig =
         (await productionConfigResponse.json()) as IConfig;
       config = { ...config, ...productionConfig };
-    } catch (e) { }
+    } catch (e: any) { }
 
     const configLoadEvent = new CustomEvent<IConfig>("configload", {
       detail: config,

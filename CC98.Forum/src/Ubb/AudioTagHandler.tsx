@@ -59,7 +59,7 @@ class AudioComponent extends React.Component<IProps> {
       //去掉文件名后面的横杠
       this.div.getElementsByClassName('aplayer-author')[0].innerHTML = '';
 
-    } catch (e) {
+    } catch (e: any) {
       // IE 11 下会抛一个 InvalidStateError 的错误，忽略
     }
   }

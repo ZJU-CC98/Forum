@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
 import { RouteComponent } from '../../Components/RouteComponent';
 import { IBoard, ITopic, ITagGroup } from '@cc98/api';
 import {
@@ -14,6 +13,8 @@ import { Pagination, Spin } from 'antd';
 import List from './PostList';
 import Head from './ListHead';
 import Footer from './Footer'
+
+import { withRouter } from '../../Utility';
 
 interface Props {
   data: IBoard;

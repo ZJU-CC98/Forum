@@ -1,6 +1,6 @@
 import * as Prop from "./Props/AppProps";
 import * as State from "./States/AppState";
-import store, { Actions } from "./Store";
+import { rootStore, Actions } from "./Store";
 import * as UserCenterActions from "./Actions/UserCenter";
 import * as ErrorActions from "./Actions/Error";
 import { TopicTitleAndContent } from "./Components/Board/Board";
@@ -33,7 +33,6 @@ import {
 
 // 获取用户信息相关的代码均已重构
 import { getUserInfo } from "./Utility/Fetch/getUserInfo";
-import { getUserInfo as getUserInfoByName } from "./Utility/Fetch/getUserInfo";
 import { getUsersInfo } from "./Utility/Fetch/getUsersInfo";
 export { getUserInfo } from "./Utility/Fetch/getUserInfo";
 export { getUserInfo as getUserInfoByName } from "./Utility/Fetch/getUserInfo";
@@ -78,7 +77,7 @@ export async function getBoardTopicAsync(curPage, boardId, totalTopicCount) {
     }
 
     return boardtopics;
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
@@ -111,7 +110,7 @@ export async function getTopic(topicid: number) {
     }
 
     return topicMessage;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -232,7 +231,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
     }
 
     return post;
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
@@ -264,7 +263,7 @@ export async function like(topicid, postid, router): Promise<number> {
     // return data;
     //console.info("like fetch " + response.status);
     return response.status;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -295,7 +294,7 @@ export async function dislike(topicid, postid, router): Promise<number> {
     // const data = await response.json();
     // return data;
     return response.status;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -305,21 +304,21 @@ export async function getLikeStateAndCount(topicid, postid, router) {
 
     const response = await cc98Fetch(`/post/${postid}/like`, { headers });
     if (response.status === 401) {
-      store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+      rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
     }
 
     if (response.status === 403) {
-      store.dispatch(ErrorActions.throwError("OperationForbidden"));
+      rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
     }
     if (response.status === 404) {
-      store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+      rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
     }
     if (response.status === 500) {
-      store.dispatch(ErrorActions.throwError("ServerError"));
+      rootStore.dispatch(ErrorActions.throwError("ServerError"));
     }
     const data = await response.json();
     return data;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -366,7 +365,7 @@ export async function getHotReplyContent(topicid: number) {
       }
     }
     return post;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -388,7 +387,7 @@ export async function getCurUserTopic(topicid: number, userId: number) {
     const userMesJson = await userMesResponse.json();
     data[0].userInfo = userMesJson;
     return data[0];
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -442,7 +441,7 @@ export async function getCurUserTopicContent(
       }
     }
     return post;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -453,7 +452,7 @@ export async function getCurUserTopicContent(
 export async function getRandomRecommendedTopic(size: number) {
   //如果未登录,直接跳转至登录页面
   if (!isLogOn()) {
-    store.dispatch(ErrorActions.throwError("LogOut"));
+    rootStore.dispatch(ErrorActions.throwError("LogOut"));
     return null;
   }
   try {
@@ -466,9 +465,9 @@ export async function getRandomRecommendedTopic(size: number) {
     });
     switch (response.status) {
       case 401:
-        store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+        rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
       case 403:
-        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+        rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
       case 404:
       //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
       case 500:
@@ -548,7 +547,7 @@ export async function getRandomRecommendedTopic(size: number) {
       }
     }
     return newTopic;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -560,7 +559,7 @@ export async function getRandomRecommendedTopic(size: number) {
 export async function getAllNewTopic(from: number, mediaOnly: boolean = false) {
   //如果未登录,直接跳转至登录页面
   if (!isLogOn()) {
-    store.dispatch(ErrorActions.throwError("LogOut"));
+    rootStore.dispatch(ErrorActions.throwError("LogOut"));
     return null;
   }
   try {
@@ -586,9 +585,9 @@ export async function getAllNewTopic(from: number, mediaOnly: boolean = false) {
     });
     switch (response.status) {
       case 401:
-        store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+        rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
       case 403:
-        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+        rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
       case 404:
       //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
       case 500:
@@ -669,7 +668,7 @@ export async function getAllNewTopic(from: number, mediaOnly: boolean = false) {
     }
     //console.log("这里会执行吗");
     return newTopic;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -686,7 +685,7 @@ export async function getFocusTopic(
 ) {
   //如果未登录,直接跳转至登录页面
   if (!isLogOn()) {
-    store.dispatch(ErrorActions.throwError("LogOut"));
+    rootStore.dispatch(ErrorActions.throwError("LogOut"));
     return null;
   }
   try {
@@ -725,9 +724,9 @@ export async function getFocusTopic(
     }
     switch (response.status) {
       case 401:
-        store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+        rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
       case 403:
-        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+        rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
       case 404:
       //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
       case 500:
@@ -803,7 +802,7 @@ export async function getFocusTopic(
       }
     }
     return newTopic;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -818,6 +817,7 @@ import { themeDayNightGroups, themeList } from "./Components/UserCenter/Theme";
 import { _ } from "core-js";
 import { setTheme } from "bizcharts";
 import { func } from "prop-types";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export function syncGetBoardNameById(boardId) {
   for (let item of boardInfo) {
@@ -843,7 +843,7 @@ export async function getBoardName(boardId: number) {
     let data = await res.json();
     let boardName = data.name;
     return boardName;
-  } catch (e) {
+  } catch (e: any) {
     return "未知版面";
   }
 }
@@ -864,7 +864,7 @@ export function isLogOn(): boolean {
 export async function getRecentContact(from: number, size: number, router) {
   //如果未登录,直接跳转至登录页面
   if (!isLogOn()) {
-    store.dispatch(ErrorActions.throwError("LogOut"));
+    rootStore.dispatch(ErrorActions.throwError("LogOut"));
     return null;
   }
   try {
@@ -874,17 +874,17 @@ export async function getRecentContact(from: number, size: number, router) {
       { headers }
     );
     if (response.status === 401) {
-      store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+      rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
     }
 
     if (response.status === 403) {
-      store.dispatch(ErrorActions.throwError("OperationForbidden"));
+      rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
     }
     if (response.status === 404) {
-      store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+      rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
     }
     if (response.status === 500) {
-      store.dispatch(ErrorActions.throwError("ServerError"));
+      rootStore.dispatch(ErrorActions.throwError("ServerError"));
     }
     let recentContactId = await response.json();
     //console.log("最近联系人列表id", recentContactId);
@@ -907,7 +907,7 @@ export async function getRecentContact(from: number, size: number, router) {
     //console.log("最近联系人列表", recentContact);
 
     return recentContact;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError(('Disconnected')));
     // 出错后返回空数组，防止缓存存储和提取时对格式解析错误
     return [];
@@ -925,7 +925,7 @@ export async function getRecentMessage(
 ) {
   //如果未登录,直接跳转至登录页面
   if (!isLogOn()) {
-    store.dispatch(ErrorActions.throwError("LogOut"));
+    rootStore.dispatch(ErrorActions.throwError("LogOut"));
     return null;
   }
   try {
@@ -935,14 +935,14 @@ export async function getRecentMessage(
       { headers }
     );
     if (response.status === 401) {
-      store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+      rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
     }
 
     if (response.status === 403) {
-      store.dispatch(ErrorActions.throwError("OperationForbidden"));
+      rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
     }
     if (response.status === 404) {
-      store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+      rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
     }
     if (response.status === 500) {
       //store.dispatch(ErrorActions.throwError('ServerError'));
@@ -950,7 +950,7 @@ export async function getRecentMessage(
     let response1 = await response.json();
     let recentMessage = sortRecentMessage(response1);
     return recentMessage;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError(('Disconnected')));
   }
 }
@@ -1099,14 +1099,14 @@ export async function sortContactList(recentContact, router) {
       try {
         response = await cc98Fetch(`/user/basic/${chatManId}`);
         if (response.status === 404) {
-          store.dispatch(ErrorActions.throwError("NotFoundUser"));
+          rootStore.dispatch(ErrorActions.throwError("NotFoundUser"));
         }
         if (response.status === 500) {
-          store.dispatch(ErrorActions.throwError("ServerError"));
+          rootStore.dispatch(ErrorActions.throwError("ServerError"));
         }
         chatMan = await response.json();
-      } catch (e) {
-        store.dispatch(ErrorActions.throwError("Disconnected"));
+      } catch (e: any) {
+        rootStore.dispatch(ErrorActions.throwError("Disconnected"));
         flag = 0;
       }
       if (flag === 1) {
@@ -1143,20 +1143,20 @@ export async function sortContactList(recentContact, router) {
         try {
           response = await cc98Fetch(`/user/basic/${chatManId}`);
           if (response.status === 401) {
-            store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+            rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
           }
           if (response.status === 403) {
-            store.dispatch(ErrorActions.throwError("OperationForbidden"));
+            rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
           }
           if (response.status === 404) {
-            store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+            rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
           }
           if (response.status === 500) {
-            store.dispatch(ErrorActions.throwError("ServerError"));
+            rootStore.dispatch(ErrorActions.throwError("ServerError"));
           }
           chatMan = await response.json();
-        } catch (e) {
-          store.dispatch(ErrorActions.throwError("Disconnected"));
+        } catch (e: any) {
+          rootStore.dispatch(ErrorActions.throwError("Disconnected"));
           flag = 0;
         }
         if (flag === 1) {
@@ -1188,17 +1188,17 @@ export async function sortContactList(recentContact, router) {
           );
           switch (response0.status) {
             case 401:
-              store.dispatch(ErrorActions.throwError("LogOut"));
+              rootStore.dispatch(ErrorActions.throwError("LogOut"));
             case 403:
-              store.dispatch(ErrorActions.throwError("OperationForbidden"));
+              rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
             case 404:
-              store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+              rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
             case 500:
-              store.dispatch(ErrorActions.throwError("ServerError"));
+              rootStore.dispatch(ErrorActions.throwError("ServerError"));
           }
           response1 = await response0.json();
-        } catch (e) {
-          store.dispatch(ErrorActions.throwError("Disconnected"));
+        } catch (e: any) {
+          rootStore.dispatch(ErrorActions.throwError("Disconnected"));
           flag = 0;
         }
         if (flag == 1) {
@@ -1246,17 +1246,17 @@ export async function sortContactList(recentContact, router) {
             );
             switch (response0.status) {
               case 401:
-                store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+                rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
               case 403:
-                store.dispatch(ErrorActions.throwError("OperationForbidden"));
+                rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
               case 404:
-                store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+                rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
               case 500:
-                store.dispatch(ErrorActions.throwError("ServerError"));
+                rootStore.dispatch(ErrorActions.throwError("ServerError"));
             }
             response1 = await response0.json();
-          } catch (e) {
-            store.dispatch(ErrorActions.throwError("Disconnected"));
+          } catch (e: any) {
+            rootStore.dispatch(ErrorActions.throwError("Disconnected"));
             flag = 0;
           }
           if (flag == 1) {
@@ -1304,7 +1304,7 @@ export async function sortContactList(recentContact, router) {
         } else {
             return 1;
         }
-    } catch (e) {
+    } catch (e: any) {
         //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
@@ -1325,7 +1325,7 @@ export async function getUserDetails(userId) {
       isFollowing: data.isFollowing,
     };
     return body;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -1337,17 +1337,17 @@ export async function getLikeState(topicid, router) {
     const response = await cc98Fetch(`/post/${postId}/like`, { headers });
     switch (response.status) {
       case 401:
-        store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+        rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
       case 403:
-        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+        rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
       case 404:
-        store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+        rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
       case 500:
-        store.dispatch(ErrorActions.throwError("ServerError"));
+        rootStore.dispatch(ErrorActions.throwError("ServerError"));
     }
     const data = await response.json();
     return data;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -1357,17 +1357,17 @@ export async function refreshLikeState(topicId, postId) {
     const response = await cc98Fetch(`/post/${postId}/like`, { headers });
     switch (response.status) {
       case 401:
-        store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+        rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
       case 403:
-        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+        rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
       case 404:
-        store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+        rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
       case 500:
-        store.dispatch(ErrorActions.throwError("ServerError"));
+        rootStore.dispatch(ErrorActions.throwError("ServerError"));
     }
     const data = await response.json();
     return data;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -1392,17 +1392,17 @@ export async function sendTopic(topicId, router) {
     });
     switch (mes.status) {
       case 401:
-        store.dispatch(ErrorActions.throwError("LogOut"));
+        rootStore.dispatch(ErrorActions.throwError("LogOut"));
       case 402:
-        store.dispatch(ErrorActions.throwError("ContentNeeded"));
+        rootStore.dispatch(ErrorActions.throwError("ContentNeeded"));
       case 403:
-        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+        rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
       case 404:
-        store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+        rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
       case 500:
-        store.dispatch(ErrorActions.throwError("ServerError"));
+        rootStore.dispatch(ErrorActions.throwError("ServerError"));
     }
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -1422,7 +1422,7 @@ export async function getCurUserTotalReplyPage(topicId, userId) {
     return replyCount % 10 === 0
       ? replyCount / 10
       : (replyCount - (replyCount % 10)) / 10 + 1;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -1437,7 +1437,7 @@ export async function getTraceTopicsCount(topicId, postId) {
     return data[0].count % 10 === 0
       ? data[0].count / 10
       : (data[0].count - (data[0].count % 10)) / 10 + 1;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -1476,7 +1476,7 @@ export async function getTraceTopics(topicId, postId, page) {
     }
     console.log(data);
     return data;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -1505,7 +1505,7 @@ export async function getAnonymousTraceTopics(topicId, postId, page) {
       data[i].userInfo = userMesJson;
     }
     return data;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -1522,10 +1522,10 @@ export async function sendMessage(bodyContent: string, router) {
     body: bodyContent,
   });
   if (response.status === 401) {
-    store.dispatch(ErrorActions.throwError("LogOut"));
+    rootStore.dispatch(ErrorActions.throwError("LogOut"));
   }
   if (response.status === 500) {
-    store.dispatch(ErrorActions.throwError("ServerError"));
+    rootStore.dispatch(ErrorActions.throwError("ServerError"));
   }
   return response;
 }
@@ -1629,7 +1629,7 @@ export async function uploadFile(file: File) {
     } else {
       throw {};
     }
-  } catch (e) {
+  } catch (e: any) {
     return {
       isSuccess: false,
       content: e.message as string,
@@ -1677,7 +1677,7 @@ export async function followUser(userId: number) {
     } else {
       throw new Error(await res.text());
     }
-  } catch (e) {
+  } catch (e: any) {
     return e.message;
   }
 }
@@ -1700,7 +1700,7 @@ export async function unfollowUser(userId: number) {
     } else {
       throw new Error(res.statusText);
     }
-  } catch (e) {
+  } catch (e: any) {
     return false;
   }
 }
@@ -1783,7 +1783,7 @@ export async function getSearchTopic(
 ) {
   //如果未登录,直接跳转至登录页面
   if (!isLogOn()) {
-    store.dispatch(ErrorActions.throwError("LogOut"));
+    rootStore.dispatch(ErrorActions.throwError("LogOut"));
     return null;
   }
   if (words) {
@@ -1808,16 +1808,16 @@ export async function getSearchTopic(
         );
         switch (response.status) {
           case 401:
-            store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+            rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
           case 403:
-            store.dispatch(ErrorActions.throwError("TooFrequentSearch"));
+            rootStore.dispatch(ErrorActions.throwError("TooFrequentSearch"));
           case 404:
           //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
           case 500:
           //store.dispatch(ErrorActions.throwError('ServerError'));
         }
         newTopic = await response.json();
-      } catch (e) {
+      } catch (e: any) {
         return -1;
       }
     } else {
@@ -1831,19 +1831,19 @@ export async function getSearchTopic(
           }
         );
         if (response.status === 401) {
-          store.dispatch(ErrorActions.throwError("LogOut"));
+          rootStore.dispatch(ErrorActions.throwError("LogOut"));
         }
         if (response.status === 403) {
-          store.dispatch(ErrorActions.throwError("OperationForbidden"));
+          rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
         }
         if (response.status === 404) {
-          store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+          rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
         }
         if (response.status === 500) {
-          store.dispatch(ErrorActions.throwError("ServerError"));
+          rootStore.dispatch(ErrorActions.throwError("ServerError"));
         }
         newTopic = await response.json();
-      } catch (e) {
+      } catch (e: any) {
         return -1;
       }
     }
@@ -2087,7 +2087,7 @@ export async function refreshUserInfo() {
     });
 
     let userInfo = await response.json();
-    store.dispatch(UserCenterActions.changeUserInfo(userInfo));
+    rootStore.dispatch(UserCenterActions.changeUserInfo(userInfo));
     setLocalStorage("userInfo", userInfo, 2592000);
   }
 }
@@ -2116,20 +2116,20 @@ export async function getMessageSystem(from: number, size: number, router) {
       case 401:
         //如果未登录,直接返回未登录
         if (!isLogOn()) {
-          store.dispatch(ErrorActions.throwError("LogOut"));
+          rootStore.dispatch(ErrorActions.throwError("LogOut"));
           return null;
         } else {
-          store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+          rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
           return null;
         }
       case 403:
-        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+        rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
         return null;
       case 404:
-        store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+        rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
         return null;
       case 500:
-        store.dispatch(ErrorActions.throwError("ServerError"));
+        rootStore.dispatch(ErrorActions.throwError("ServerError"));
         return null;
     }
     var newTopic = await response.json(); //先从api得到原始的系统消息数据
@@ -2163,20 +2163,20 @@ export async function getMessageResponse(from: number, size: number, router) {
       case 401:
         //如果未登录,直接返回未登录
         if (!isLogOn()) {
-          store.dispatch(ErrorActions.throwError("LogOut"));
+          rootStore.dispatch(ErrorActions.throwError("LogOut"));
           return [];
         } else {
-          store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+          rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
           return [];
         }
       case 403:
-        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+        rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
         return [];
       case 404:
-        store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+        rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
         return [];
       case 500:
-        store.dispatch(ErrorActions.throwError("ServerError"));
+        rootStore.dispatch(ErrorActions.throwError("ServerError"));
         return [];
     }
     let newTopic = await response.json();
@@ -2211,7 +2211,7 @@ export async function getMessageResponse(from: number, size: number, router) {
       }
     }
     return result;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -2231,20 +2231,20 @@ export async function getMessageAttme(from: number, size: number, router) {
       case 401:
         //如果未登录,直接返回未登录
         if (!isLogOn()) {
-          store.dispatch(ErrorActions.throwError("LogOut"));
+          rootStore.dispatch(ErrorActions.throwError("LogOut"));
           return [];
         } else {
-          store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+          rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
           return [];
         }
       case 403:
-        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+        rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
         return [];
       case 404:
-        store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+        rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
         return [];
       case 500:
-        store.dispatch(ErrorActions.throwError("ServerError"));
+        rootStore.dispatch(ErrorActions.throwError("ServerError"));
         return [];
     }
     let newTopic = await response.json();
@@ -2280,7 +2280,7 @@ export async function getMessageAttme(from: number, size: number, router) {
       }
     }
     return result;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -2663,20 +2663,20 @@ export async function getTopicInfo(topicId) {
     case 401:
       //如果未登录,直接返回未登录
       if (!isLogOn()) {
-        store.dispatch(ErrorActions.throwError("LogOut"));
+        rootStore.dispatch(ErrorActions.throwError("LogOut"));
         return null;
       } else {
-        store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+        rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
         return null;
       }
     case 403:
-      store.dispatch(ErrorActions.throwError("OperationForbidden"));
+      rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
       return null;
     case 404:
-      store.dispatch(ErrorActions.throwError("NotFoundTopic"));
+      rootStore.dispatch(ErrorActions.throwError("NotFoundTopic"));
       return null;
     case 500:
-      store.dispatch(ErrorActions.throwError("ServerError"));
+      rootStore.dispatch(ErrorActions.throwError("ServerError"));
       return null;
   }
 
@@ -3000,7 +3000,7 @@ export async function getBasicUsersInfo(userIds: number[]) {
         finalUsersInfo.push(i);
       }
       return finalUsersInfo;
-    } catch (e) {
+    } catch (e: any) {
       return [];
     }
   }
@@ -3024,7 +3024,7 @@ export async function getBasicPostsInfo(postIds: any[]) {
     let response = await cc98Fetch(url, { headers });
     var data = await response.json();
     return data;
-  } catch (e) {
+  } catch (e: any) {
     return [];
   }
 }
@@ -3064,7 +3064,7 @@ export async function getBasicTopicsInfo(topicIds: any[]) {
     let response = await cc98Fetch(url, { headers });
     var data = await response.json();
     return data;
-  } catch (e) {
+  } catch (e: any) {
     return [];
   }
 }
@@ -3122,7 +3122,7 @@ export function atHanderler(content: string) {
     } else {
       return false;
     }
-  } catch (e) {
+  } catch (e: any) {
     return content;
   }
 }
@@ -3161,7 +3161,7 @@ export function atUserUbbUrl(content: string) {
     } else {
       return content;
     }
-  } catch (e) {
+  } catch (e: any) {
     return content;
   }
 }
@@ -3200,7 +3200,7 @@ export function atUserMdUrl(content: string) {
     } else {
       return content;
     }
-  } catch (e) {
+  } catch (e: any) {
     return content;
   }
 }
@@ -3233,7 +3233,7 @@ export function quoteJudger(content: string) {
 export async function readAll() {
   let path = location.pathname;
   let url = null;
-  let unreadCount = store.getState().message;
+  let unreadCount = rootStore.getState().message;
   const headers = await formAuthorizeHeader();
   if (path === "/message/response") {
     if (unreadCount.replyCount === 0) {
@@ -3259,7 +3259,7 @@ export async function readAll() {
     return null;
   }
   const response = await cc98Fetch(url, { method: "PUT", headers, body: "" });
-  store.dispatch(
+  rootStore.dispatch(
     Actions.changeMessageCount({
       messageCount: 0,
       systemCount: 0,
@@ -3474,7 +3474,7 @@ function getDayNightByTimeSetting(
 function getMyThemeSetting(): State.ThemeSetting {
   try {
     return getMyInfo().themeSetting;
-  } catch (e) {
+  } catch (e: any) {
     return null;
   }
 }
@@ -3535,9 +3535,9 @@ export async function getMonthlyHotTopic(type: string) {
 
   switch (response.status) {
     case 401:
-      store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+      rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
     case 403:
-      store.dispatch(ErrorActions.throwError("OperationForbidden"));
+      rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
     case 404:
     //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
     case 500:
@@ -3666,7 +3666,7 @@ export async function getTpUsers(boardId, from, size) {
 
 export async function getAnnualReview() {
   if (!isLogOn()) {
-    store.dispatch(ErrorActions.throwError("LogOut"));
+    rootStore.dispatch(ErrorActions.throwError("LogOut"));
     return null;
   }
   const url = "/me/annual-review-2022";
@@ -3764,7 +3764,7 @@ export async function setUserTopicViewMode(mode: number) {
 export async function getRandomTopic(size: number) {
   //如果未登录,直接跳转至登录页面
   if (!isLogOn()) {
-    store.dispatch(ErrorActions.throwError("LogOut"));
+    rootStore.dispatch(ErrorActions.throwError("LogOut"));
     return null;
   }
   try {
@@ -3780,9 +3780,9 @@ export async function getRandomTopic(size: number) {
     });
     switch (response.status) {
       case 401:
-        store.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
+        rootStore.dispatch(ErrorActions.throwError("UnauthorizedTopic"));
       case 403:
-        store.dispatch(ErrorActions.throwError("OperationForbidden"));
+        rootStore.dispatch(ErrorActions.throwError("OperationForbidden"));
       case 404:
       //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
       case 500:
@@ -3864,7 +3864,7 @@ export async function getRandomTopic(size: number) {
     //console.log("这里会执行吗");
     console.log("获取到的数据", newTopic);
     return newTopic;
-  } catch (e) {
+  } catch (e: any) {
     //store.dispatch(ErrorActions.throwError('Disconnected'));
   }
 }
@@ -3897,3 +3897,23 @@ export async function copyToClipboard(text: string) {
   await navigator.clipboard.writeText(text);
 }
 
+/**
+ * React withRouter 迁移。
+ * @param Component 组件类对象。
+ * @returns 带有路由功能的包装后组件。
+ */
+export function withRouter(Component) {
+  function ComponentWithRouterProp(props) {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const params = useParams();
+    return (
+      <Component
+        {...props}
+        router={{ location, navigate, params }}
+      />
+    );
+  }
+
+  return ComponentWithRouterProp;
+}

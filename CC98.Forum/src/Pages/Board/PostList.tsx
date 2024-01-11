@@ -5,7 +5,7 @@ import Item from './PostItem';
 interface Props {
   list: ITopic[];
 }
-const List: React.SFC<Props> = ({ list }) => (
+const List: React.FunctionComponent<Props> = ({ list }) => (
   <div className="board-list-body" >
     {list.map((item, index) => (
       <Item key={index} order={index} data={item} />

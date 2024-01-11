@@ -9,6 +9,8 @@
     "build:release": "webpack --config webpack.config.release.ts"
   },
   "dependencies": {
+    "@ant-design/compatible": "^5.1.2",
+    "@ant-design/icons": "^5.2.6",
     "@aspnet/signalr": "1.0.3",
     "@cc98/hell-react-mde": "6.0.1-alpha.1",
     "@reduxjs/toolkit": "^2.0.1",
@@ -61,7 +63,7 @@
     "@types/katex": "0.16.7",
     "@types/mathjax": "0.0.40",
     "@types/msgpack5": "3.4.6",
-    "@types/node": "^20.10.8",
+    "@types/node": "20.10.8",
     "@types/react": "18.2.47",
     "@types/react-dom": "18.2.18",
     "@types/react-lazyload": "3.2.3",

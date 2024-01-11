@@ -36,7 +36,7 @@ class MyFavoritesAddModalcontent extends React.Component<ModalcontentProps> {
             ? favoriteTopicList.data
             : defaultFavoriteTopicGroup,
       });
-    } catch (e) {
+    } catch (e: any) {
       this.setState({ favoriteTopicList: defaultFavoriteTopicGroup });
       console.log(e);
     }

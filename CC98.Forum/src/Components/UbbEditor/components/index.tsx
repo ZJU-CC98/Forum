@@ -117,7 +117,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                 tagName: utility.getTagName(files[index]),
                 content: item
             }))
-        } catch (e) {
+        } catch (e: any) {
             this.message(e.message)
         }
     }

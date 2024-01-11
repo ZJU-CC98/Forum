@@ -63,7 +63,7 @@ export function setLocalStorage(key: string, value: any, expireIn: number = 0) {
         } else {
             localStorage.removeItem(`${key}_expirationTime`);
         }
-    } catch(e) {
+    } catch (e: any) {
         autoClearLocalStorage();
         setLocalStorage(key, value, expireIn);
     }

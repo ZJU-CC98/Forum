@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
 import { getBoardInfo } from './action';
 import { IBoard } from '@cc98/api';
 
@@ -7,6 +6,8 @@ import * as Utility from '../../Utility'
 import Head from './Head';
 import Body from './Body';
 import { RouteComponent } from '../../Components/RouteComponent';
+
+import { withRouter } from '../../Utility';
 
 interface Props {
   history: any;

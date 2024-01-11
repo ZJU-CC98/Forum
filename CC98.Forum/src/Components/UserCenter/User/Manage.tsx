@@ -1,9 +1,4 @@
 ﻿import * as React from 'react';
-import {
-    withRouter, 
-    RouteComponentProps
-} from 'react-router-dom';
-import * as Utility from '../../../Utility';
 import * as Actions from '../../../Actions/UserCenter';
 import { UserInfo } from '../../../States/AppState';
 import { connect } from 'react-redux';
@@ -11,7 +6,7 @@ import Operation from '../Manage/Operation';
 import Delete from '../Manage/DeleteTopicsAndPosts';
 import Post from '../Manage/ShowPost';
 import { getUserInfo } from '../../../Utility/Fetch/getUserInfo';
-import { NotFoundUser } from '../../Status';
+import { withRouter } from '../../../Utility';
 
 interface UserManageState {
     /**
@@ -41,7 +36,7 @@ class UserManage extends React.Component<Props, UserManageState> {
             this.setState({
                 userInfo
             });
-        } catch (e) {
+        } catch (e: any) {
             this.props.notFoundUser();
         }
     }

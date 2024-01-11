@@ -69,7 +69,7 @@ export class Replier extends RouteComponent<
       } else {
         throw {};
       }
-    } catch (e) {
+    } catch (e: any) {
       alert("网络错误");
     }
   }
@@ -104,7 +104,7 @@ export class Replier extends RouteComponent<
       } else {
         throw {};
       }
-    } catch (e) {
+    } catch (e: any) {
       alert("网络错误");
     }
   }

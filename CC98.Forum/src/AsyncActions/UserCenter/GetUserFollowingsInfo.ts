@@ -50,7 +50,7 @@ export const getUserFollowingsInfo: ActionCreator<ThunkAction<Promise<Action>, R
         followData.forEach((item, index) => prevFollow[index + (page - 1) * 10] = item);
         dispatch(Actions.changeUserFollowingsInfo(prevFollow));
         return dispatch(Actions.userCenterLoaded());
-    } catch (e) {
+    } catch (e: any) {
         return dispatch(Actions.userCenterError(e.message));
     }
 }

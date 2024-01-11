@@ -1,23 +1,14 @@
 import React from "react";
 import {
-  G2,
   Chart,
   Geom,
   Axis,
   Tooltip,
-  Coord,
-  Label,
-  Legend,
-  View,
-  Guide,
-  Shape,
-  Facet,
-  Util
 } from "bizcharts";
 
 export default class extends React.Component<{ data }> {
   getBoardUrlById(boardId) {
-    return "/board/" + boardId;
+    return `/board/${boardId}`;
   }
 
   render() {

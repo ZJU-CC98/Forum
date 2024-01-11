@@ -153,7 +153,7 @@ class LogOnExact extends React.Component<Props, LogOnState> {
                     document.location.href = url;
                 }
             }, 100);
-        } catch (e) {
+        } catch (e: any) {
             let info: string;
             Utility.removeLocalStorage('userInfo');
             Utility.removeLocalStorage("accessToken");

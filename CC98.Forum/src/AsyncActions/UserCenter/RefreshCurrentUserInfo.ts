@@ -18,7 +18,7 @@ export const refreshCurrentUserInfo: ActionCreator<ThunkAction<Promise<Action>, 
         if (res.status !== 200) { throw new Error(res.statusText); }
         const userInfo: Appstate.UserInfo = await res.json();
         return dispatch(Actions.changeUserInfo(userInfo));
-    } catch (e) {
+    } catch (e: any) {
         return dispatch(Actions.userCenterError(e.message));
     }
 }
