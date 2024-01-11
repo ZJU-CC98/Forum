@@ -49,7 +49,7 @@ import CC98 from './CC98TagHandler';
 import { PosterOnlyTagHanlder } from './PosterOnlyTagHandler';
 import { AllowViewerTagHanlder } from './AllowViewerTagHanlder';
 
-import { MathTagHandler } from './MathTagHandler';
+import { MathTagHandler, MathTextHandler } from './MathTagHandler';
 
 /**
  * 创建一个解析签名档用的engine
@@ -140,6 +140,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	//engine.handlers.registerText(BiliTextHandler);
     engine.handlers.registerText(UrlTextHandler);
     engine.handlers.registerText(UrlTextHandler2);
+	engine.handlers.registerText(MathTextHandler);
 
 	return engine;
 }

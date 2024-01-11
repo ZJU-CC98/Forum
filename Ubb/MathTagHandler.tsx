@@ -1,8 +1,11 @@
 
 import * as React from 'react';
 import * as Ubb from './Core';
+import { element } from 'prop-types';
 
-import {MathJaxContext, MathJax, MathJax3Config} from 'better-react-mathjax';
+// import {MathJaxContext, MathJax, MathJax3Config} from 'better-react-mathjax';
+
+declare const MathJax;
 
 /**
  * 提供对 [math] 和 [m] 的解析
@@ -17,22 +20,95 @@ export class MathTagHandler extends Ubb.TextTagHandler {
        
         // m 为内联模式，math 为完整模式
         const inlineMode = tagData.tagName === 'm';
+        return <MathComponent math={innerContent} inline={inlineMode} />;
+    }
+}
 
-        // 内置的 tex 标记开始符号
-        const beginMark = ['\\(', '\\[', '$$'];
-        
-        // 是否带有内置开始符号
-        const hasDelimiter = beginMark.some(mark => innerContent.startsWith(mark));
+export class MathTextHandler extends Ubb.UbbTextHandler {
 
-        // 如果未带有开始符号，则手动添加
-        if (!hasDelimiter) {
+    override get supportedContent(): string | RegExp {
+        return /(\$\$(.+)\$\$|\$(.+)\$)/i;
+    }
+
+    override exec(match: RegExpMatchArray, context: Ubb.UbbCodeContext): React.ReactNode {
         
-            innerContent = 
-                inlineMode ? `\\(${innerContent}\\)` : `\\[${innerContent}\\]`;
+        let content: string;
+        let inline: boolean;
+        
+        if (match[2]) {
+            content = match[2];
+            inline = false;
+        } else {
+            content = match[3];
+            inline = true;
         }
 
-        return <MathJaxContext src='/static/scripts/lib/mathjax-full/es5/tex-mml-chtml.js'>
-            <MathJax inline={inlineMode}>{innerContent}</MathJax>
-        </MathJaxContext>
+        return <MathComponent math={content} inline={inline} />
     }
-} 
+}
+
+interface Props {
+    math: string;
+    inline: boolean;
+}
+
+interface States{
+    element: React.ReactNode | null;
+}
+
+/**
+ * 将 HTML 元素转换为 React 元素。
+ * @param element HTML 元素对象。
+ * @param inline 是否为行内模式。
+ * @returns 创建后的 React 元素。
+ */
+function createNodeFromElement(element: HTMLElement, inline: boolean) : React.ReactNode {
+    
+    const container = document.createElement('div');
+    container.appendChild(element);
+
+    const htmlObject = {
+        __html: container.innerHTML
+    };
+
+    return inline ? <span dangerouslySetInnerHTML={htmlObject}  /> : <div dangerouslySetInnerHTML={htmlObject} />;
+}
+
+class MathComponent extends React.Component<Props, States>{
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            element: null
+        }
+    }
+
+    override async componentDidMount(): Promise<void> {
+
+        MathJax.startup.defaultReady();
+        await MathJax.startup.promise;
+
+        MathJax.texReset();
+        const mathElement: HTMLElement = await MathJax.tex2chtmlPromise(this.props.math, { display: !this.props.inline});
+        const element = createNodeFromElement(mathElement, this.props.inline);
+        this.setState({element});
+    }
+
+    override async componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<States>, snapshot?: any): Promise<void> {
+        if (element == null) {
+            return;
+        }
+
+        // 重新排版
+        await MathJax.typesetPromise();
+    }
+
+    render() {
+
+        if (!this.state.element === null) {
+            return <></>;
+        }    
+        
+        return this.state.element;
+    }
+}
