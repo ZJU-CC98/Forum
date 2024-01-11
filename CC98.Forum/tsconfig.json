@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": [],
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "./dist",
+    "strict": true,
+    
+    "jsx": "react",
+
+    /* 语法检查兼容性设置 */
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": false,
+    "noUncheckedIndexedAccess": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": false,
+  },
+
+  "include": ["./src"],
+
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+      "target": "ES5",
+      "composite": true,
+      "types": ["node"],
+      "resolveJsonModule": true,
+      "allowJs": true,
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true
+    },
+  
+    "include": [
+      "./package.json",
+      "./package-lock.json",
+      "./webpack.config.debug.ts",
+      "./webpack.config.release.ts",
+      "./vsCodeConfig/*"
+    ]
+  }
+}
