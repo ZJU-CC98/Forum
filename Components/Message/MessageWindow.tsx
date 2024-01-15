@@ -363,7 +363,7 @@ export class MessageWindow extends React.Component<
               className="message-message-wPostError displaynone"
               onClick={this.handleFocus}
             >
-              您的发送过快，请稍作歇息~
+              发送失败，可能的原因有：发送太快；受到全站禁言或以上的处罚；服务器故障或者正在维护。
             </div>
             <button
               className="message-message-wPostBtn"
@@ -418,7 +418,7 @@ export class MessageWindow extends React.Component<
               className="message-message-wPostError displaynone"
               onClick={this.handleFocus}
             >
-              您的发送过快，请稍作歇息~
+              发送失败，可能的原因有：发送太快；受到全站禁言或以上的处罚；服务器故障或者正在维护。
             </div>
             <button
               className="message-message-wPostBtn"
