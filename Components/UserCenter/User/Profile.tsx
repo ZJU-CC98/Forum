@@ -9,6 +9,7 @@ import { UbbContainer } from '../../UbbContainer';
 import * as Utility from '../../../Utility';
 import { UbbCodeOptions } from '../../../Ubb/Core';
 import { Tag } from 'antd'
+import { isoTime2LocalTime } from '../../../Utility/timeZoneUtility';
 
 interface Props {
     /**
@@ -193,9 +194,9 @@ export default class extends React.Component<Props, States> {
                     <p><span className="user-profile-info">威望</span>{this.props.userInfo.prestige}</p>
                     <p><span className="user-profile-info">粉丝数</span>{this.props.userInfo.fanCount}</p>
                     <p><span className="user-profile-info">风评</span>{this.props.userInfo.popularity}</p>
-                    <p><span className="user-profile-info">注册时间</span>{this.props.userInfo.registerTime.replace('T', ' ')}</p>
-                    <p><span className="user-profile-info">最后登录</span>{this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p>
-                    {this.props.userInfo.birthday === null ? null : <p><span className="user-profile-info">生日</span>{this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')).replace('9999-', '')}{isBirthDay ? <span style={{ fontFamily: 'FontAwesome', marginLeft: '1rem' }} className="fa-birthday-cake" title="生日快乐~"></span> : null}</p>}
+                    <p><span className="user-profile-info">注册时间</span>{isoTime2LocalTime( this.props.userInfo.registerTime,0).replace(/\//g, '-')}</p>
+                    <p><span className="user-profile-info">最后登录</span>{isoTime2LocalTime( this.props.userInfo.lastLogOnTime,1).replace(/\//g, '-')}</p>
+                    {this.props.userInfo.birthday === null ? null : <p><span className="user-profile-info">生日</span>{this.props.userInfo.birthday}{isBirthDay ? <span style={{ fontFamily: 'FontAwesome', marginLeft: '1rem' }} className="fa-birthday-cake" title="生日快乐~"></span> : null}</p>}
                     {this.props.userInfo.displayTitle ? <p><span className="user-profile-info">用户组</span>{this.props.userInfo.displayTitle}</p> : null}
                     {this.props.userInfo.emailAddress ? <p><span className="user-profile-info">邮箱</span>{this.props.userInfo.emailAddress}</p> : null}
                     {this.props.userInfo.qq ? <p><span className="user-profile-info">QQ</span>{this.props.userInfo.qq}</p> : null}
