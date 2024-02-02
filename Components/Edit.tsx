@@ -153,6 +153,10 @@ class EditForm extends RouteComponent<
         }
         data = await response.json();
         const topicInfo = await Utility.getTopicInfo(data.topicId);
+        
+        //2024/2/2 更新后 origin内容不再返回title 转由topicInfo.title获取
+        data.title = topicInfo.title;
+
         let tag1Name = await Utility.getTagNamebyId(topicInfo.tag1);
         if (!tag1Name) tag1Name = "";
         let tag2Name = await Utility.getTagNamebyId(topicInfo.tag2);
