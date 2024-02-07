@@ -2,34 +2,29 @@ import QueueAnim from "rc-queue-anim";
 import { OverPack } from "rc-scroll-anim";
 import React from "react";
 
-export default class extends React.Component<{ data, buttonNode }> {
-  state = {
-    showButton: false,
-  };
-
+export default class extends React.Component<{ data }> {
   render() {
     const { data } = this.props;
-    const buttonNode = this.props.buttonNode;
     return (
-      <OverPack>
+      <div
+        className="annual-review-page annual-review-page-bg-cat"
+        style={{ lineHeight: 1.25 }}
+      >
         <QueueAnim
           key="queueAnim"
-          delay={400}
+          delay={100}
+          interval={200}
           animConfig={[
             { opacity: [1, 0], translateY: [0, 50] },
             { opacity: [1, 0], translateY: [0, -50] },
           ]}
-          onEnd={() => {
-            setTimeout(() => {
-              this.setState({ showButton: true });
-            }, 1000);
+          style={{
+            alignContent: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
           }}
         >
-          <img
-            key="annual-page1-1"
-            src="/static/images/annual-review/bg-cat-2023.png"
-          />
-
           <div
             key="annual-page1-2"
             style={{ fontWeight: "bolder", marginTop: "2rem" }}
@@ -43,7 +38,7 @@ export default class extends React.Component<{ data, buttonNode }> {
             src={`${data.userInfo.portraitUrl}`}
           ></img>
           <div key="annual-page1-4">
-            在过去的2022年里，你有
+            在过去的2023年里，你有
             <span className="annual-review-page2-topicCount">
               {data.postDay}
             </span>
@@ -71,6 +66,17 @@ export default class extends React.Component<{ data, buttonNode }> {
             </span>
             次回复，
           </div>
+          {data.favoriteTopicCount !== 0 && (
+            <div key="annual-page3-4">
+              <div>
+                新收藏了
+                <span className="annual-review-page2-topicCount">
+                  {data.favoriteTopicCount}
+                </span>
+                个主题贴,
+              </div>
+            </div>
+          )}
           {data.hotTopicCount !== 0 && (
             <div key="annual-page1-8">
               上了
@@ -95,8 +101,7 @@ export default class extends React.Component<{ data, buttonNode }> {
             </div>
           )}
         </QueueAnim>
-        {this.state.showButton && buttonNode}
-      </OverPack>
+      </div>
     );
   }
 }

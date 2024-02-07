@@ -1,123 +1,122 @@
 import React from "react";
+import {
+  G2,
+  Chart,
+  Geom,
+  Axis,
+  Tooltip,
+  Coord,
+  Label,
+  Legend,
+  View,
+  Guide,
+  Shape,
+  Facet,
+  Util,
+} from "bizcharts";
 import QueueAnim from "rc-queue-anim";
 
-export default class extends React.Component<{ data; buttonNode }> {
-  state = {
-    showButton: false,
-  };
+export default class extends React.Component<{ data }> {
+  getBoardUrlById(boardId) {
+    return "/board/" + boardId;
+  }
 
   render() {
     const { data } = this.props;
-    const buttonNode = this.props.buttonNode;
 
-    // if (!data.mostReplyTopicCount && !data.mostViewTopicCount) {
-    //     return (
-    //       <div>
-    //         <QueueAnim
-    //           key="queueAnim"
-    //           delay={400}
-    //           animConfig={[
-    //             { opacity: [1, 0], translateY: [0, 50] },
-    //             { opacity: [1, 0], translateY: [0, -50] },
-    //           ]}
-    //           onEnd={() => {
-    //             setTimeout(() => {
-    //               this.setState({ showButton: true });
-    //             }, 1000);
-    //           }}
-    //         >
-    //           <div key="annual-page3-1">
-    //             <div>
-    //               在过去的一年里，
-    //               <br />
-    //               你还没有发过主题帖...
-    //             </div>
-    //           </div>
-    //         </QueueAnim>{" "}
-    //         {this.state.showButton && buttonNode}
-    //       </div>
-    //     );
-    //   }
+    //最爱水98的时间段
+    let during = null;
+    if (data.postCount06 > 0) {
+      during = "深夜";
+    }
+    if (
+      data.postCount612 > data.postCount06 &&
+      data.postCount612 > data.postCount1218 &&
+      data.postCount612 > data.postCount1824
+    ) {
+      during = "上午";
+    }
+    if (
+      data.postCount1218 > data.postCount06 &&
+      data.postCount1218 > data.postCount612 &&
+      data.postCount1218 > data.postCount1824
+    ) {
+      during = "下午";
+    }
+    if (
+      data.postCount1824 > data.postCount06 &&
+      data.postCount1824 > data.postCount1218 &&
+      data.postCount1824 > data.postCount612
+    ) {
+      during = "晚上";
+    }
+
+    //柱状图用数据
+    const postData = [
+      { time: "上午", posts: data.postCount612 },
+      { time: "下午", posts: data.postCount1218 },
+      { time: "晚上", posts: data.postCount1824 },
+      { time: "深夜", posts: data.postCount06 },
+    ];
+    const cols = {
+      posts: {
+        alias: "帖数",
+      },
+    };
     return (
-      <div>
+      <div className="annual-review-page annual-review-page-bg-cat">
         <QueueAnim
           key="queueAnim"
-          delay={800}
+          delay={100}
+          interval={200}
           animConfig={[
             { opacity: [1, 0], translateY: [0, 50] },
             { opacity: [1, 0], translateY: [0, -50] },
           ]}
-          onEnd={() => {
-            setTimeout(() => {
-              this.setState({ showButton: true });
-            }, 1000);
+          style={{
+            alignContent: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
           }}
         >
-          <div key="annual-page3-1">在CC98抽卡游戏中，</div>
-          <div key="annual-page3-2-1">
-            <div>
-              迄今为止你共获得了
-              <QueueAnim
-                animConfig={[
-                  { opacity: [1, 0], translateY: [0, 50] },
-                  { opacity: [1, 0], translateY: [0, -50] },
-                ]}
-              >
-                <div key="annual-page3-2-1-1">
-                  <span className="annual-review-page2-topicCount">
-                    {data.cardDraw.totalMysteryCount}
-                  </span>
-                  张Mystery
-                </div>
-                <div key="annual-page3-2-1-2">
-                  <span className="annual-review-page2-topicCount">
-                    {data.cardDraw.totalSSRCount}
-                  </span>
-                  张SSR
-                </div>
-                <div key="annual-page3-2-1-3">
-                  <span className="annual-review-page2-topicCount">
-                    {data.cardDraw.totalSRCount}
-                  </span>
-                  张SR
-                </div>
-                <div key="annual-page3-2-1-4">
-                  <span className="annual-review-page2-topicCount">
-                    {data.cardDraw.totalRCount}
-                  </span>
-                  张R
-                </div>
-                <div key="annual-page3-2-1-5">
-                  <span className="annual-review-page2-topicCount">
-                    {data.cardDraw.totalNCount}
-                  </span>
-                  张N
-                </div>
-              </QueueAnim>
+          {during && (
+            <div
+              style={{ marginTop: "7rem", marginBottom: "-2rem" }}
+              key="annual-page5-1"
+            >
+              你最喜欢在
+              <span className="annual-review-page1-during">{during}</span>
+              水98。
             </div>
-            卡片
+          )}
+
+          <div style={{ marginTop: "3rem" }} key="annual-page5-2">
+            你发言的时间段统计如下：
           </div>
 
-          <div key="annual-page3-3">
-            <div style={{ marginTop: "2rem" }}>其中在2023年</div>
-
-            <div>
-              你消耗了
-              <span className="annual-review-page2-hotTopicCount">
-                {data.cardDraw.annualPayment}
-              </span>
-              财富值
-            </div>
-            <div>
-              获得了
-              <span className="annual-review-page2-hotTopicCount">
-                {data.cardDraw.annualCount}
-              </span>
-              张卡片
-            </div>
+          <div
+            style={{ marginTop: "1rem", marginRight: "2rem" }}
+            key="annual-page5-3"
+          >
+            <Chart
+              width={document.body.clientHeight * 0.5}
+              height={document.body.clientHeight * 0.35}
+              data={postData}
+              scale={cols}
+              forceFit
+            >
+              <Axis name="time" />
+              <Axis name="posts" />
+              <Tooltip
+                crosshairs={{
+                  type: "y",
+                }}
+              />
+              <Geom type="interval" position="time*posts" />
+            </Chart>
           </div>
         </QueueAnim>
-        {this.state.showButton && buttonNode}
       </div>
     );
   }

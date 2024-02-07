@@ -1,62 +1,112 @@
 import React from "react";
-import { Tag } from "antd";
 import QueueAnim from "rc-queue-anim";
-export default class extends React.Component<{ data }> {
+
+export default class extends React.Component<{ data}> {
+  state = {
+    showButton: false,
+  };
+
   render() {
     const { data } = this.props;
-    const achievements = data.achievement.split("|");
-    const colors = ["magenta", "volcano", "gold", "lime"];
+
     return (
-      <div>
-        <QueueAnim className="demo-page" key="page" type="bottom" delay={800}>
-          <div key="annual-page8-1">你获得了以下成就：</div>
-          <QueueAnim className="demo-page" key="annual-page8-2" type="bottom">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-around",
-                marginTop: "0.5rem",
-                marginLeft: "1rem",
-                marginRight: "1rem",
-                flexWrap: "wrap",
-              }}
-            >
-              {achievements.map((item, index) => (
-                <Tag
-                  style={{
-                    fontSize: "2vh",
-                    height: "3vh",
-                    lineHeight: "2.5vh",
-                    marginBottom: "0.5rem",
-                  }}
-                  key={`tag-${index}`}
-                  color={colors[index % 4]}
-                >
-                  {item}
-                </Tag>
-              ))}
+      <div className="annual-review-page annual-review-page-bg-cat">
+        <QueueAnim
+          key="queueAnim"
+          delay={100}
+          interval={200}
+          animConfig={[
+            { opacity: [1, 0], translateY: [0, 50] },
+            { opacity: [1, 0], translateY: [0, -50] },
+          ]}
+          style={{
+            alignContent: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <div key="annual-page7-1">在CC98竞猜游戏中</div>
+          <div key="annual-page7-2">
+            <div>
+              本年度你共参与了
+              <span className="annual-review-page2-topicCount">
+                {data.bet.totalCount}
+              </span>
+              场竞猜
             </div>
-          </QueueAnim>
-          <div style={{ marginTop: "2rem" }} key="annual-page8-3">
-            在新春佳节到来之际，
+            卡片
           </div>
-          <div key="annual-page8-4">CC98论坛祝你：</div>
-          <div key="annual-page8-5">
-            <span className="annual-review-page6-congratulation">身体健康</span>
+
+          <div key="annual-page7-3">
+            <div>
+              其中
+              <div>
+                胜利
+                <span className="annual-review-page2-topicCount">
+                  {data.bet.winCount}
+                </span>
+                场
+              </div>
+              <div>
+                失败
+                <span className="annual-review-page2-topicCount">
+                  {data.bet.loseCount}
+                </span>
+                场
+              </div>
+              <div>
+                走水
+                <span className="annual-review-page2-topicCount">
+                  {data.bet.drawCount}
+                </span>
+                场
+              </div>
+            </div>
+            <div>
+              胜率为
+              <span className="annual-review-page2-topicCount">
+                {((data.bet.winCount / data.bet.totalCount) * 100).toFixed(1)}%
+              </span>
+            </div>
           </div>
-          <div key="annual-page8-6">
-            <span className="annual-review-page6-congratulation">
-              学习生活顺利
-            </span>
-          </div>
-          <div key="annual-page8-7">
-            <span className="annual-review-page6-congratulation">幸福2024</span>
-          </div>
-          <img
-            key="annual-page8-8"
-            src="/static/images/annual-review/bg-2023.png"
-            style={{ marginLeft:"-50px"}}
-          />
+
+          {data.bet.profit >= 0 && (
+            <div key="annual-page7-4-1">
+              <div>
+                共投注了
+                <span className="annual-review-page2-hotTopicCount">
+                  {data.bet.payment}
+                </span>
+                财富值
+              </div>
+              <div>
+                盈利了
+                <span className="annual-review-page2-hotTopicCount">
+                  {data.bet.profit}
+                </span>
+                ,不错呀!
+              </div>
+            </div>
+          )}
+          {data.bet.profit < 0 && (
+            <div key="annual-page7-4-1">
+              <div>
+                共投注了
+                <span className="annual-review-page2-hotTopicCount">
+                  {data.bet.payment}
+                </span>
+                财富值
+              </div>
+              <div>
+                亏损了
+                <span className="annual-review-page2-hotTopicCount">
+                  {data.bet.profit}
+                </span>
+                ,还要努力哦~
+              </div>
+            </div>
+          )}
         </QueueAnim>
       </div>
     );

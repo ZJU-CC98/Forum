@@ -2,26 +2,24 @@ import QueueAnim from "rc-queue-anim";
 import { OverPack } from "rc-scroll-anim";
 import React from "react";
 
-export default class extends React.Component<{ data; buttonNode }> {
-  state = {
-    showButton: false,
-  };
+export default class extends React.Component<{ data }> {
   render() {
     const { data } = this.props;
-    const buttonNode = this.props.buttonNode;
     return (
-      <div>
+      <div className="annual-review-page annual-review-page-bg-cat">
         <QueueAnim
           key="queueAnim"
-          delay={800}
+          delay={100}
           animConfig={[
             { opacity: [1, 0], translateY: [0, 50] },
             { opacity: [1, 0], translateY: [0, -50] },
           ]}
-          onEnd={() => {
-            setTimeout(() => {
-              this.setState({ showButton: true });
-            }, 1000);
+          interval={200}
+          style={{
+            alignContent: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
           }}
         >
           <div style={{ marginTop: "1rem" }} key="annual-page2-1">
@@ -78,55 +76,8 @@ export default class extends React.Component<{ data; buttonNode }> {
               Ta总共给你点了{data.mostSendLikeUser.likeCount}个赞
             </div>
           )}
-          <div style={{ marginTop: "1.5rem" }} key="annual-page2-3">
-            你给他人评分
-            <span className="annual-review-page2-topicCount">
-              {data.sendRateCount}
-            </span>
-            次，
-          </div>
-          <div key="annual-page2-4">
-            收到了他人给你的
-            <span className="annual-review-page2-replyCount">
-              {data.receiveRateCount}
-            </span>
-            次评分。
-          </div>
 
-          {data.sofaCount > 20 && (
-            <div key="annual-page2-5">
-              <div style={{ marginTop: "1.5rem" }}>你眼疾手快，</div>
-              <div>
-                抢到了
-                <span className="annual-review-page2-replyCount">
-                  {data.sofaCount}
-                </span>
-                次沙发。
-              </div>
-            </div>
-          )}
-
-          {data.sofaCount <= 20 && data.sofaCount > 0 && (
-            <div key="annual-page2-6">
-              <div style={{ marginTop: "1.5rem" }}>你手速尚可，</div>
-              <div>
-                抢到了
-                <span className="annual-review-page2-replyCount">
-                  {data.sofaCount}
-                </span>
-                次沙发。
-              </div>
-            </div>
-          )}
-
-          {data.sofaCount === 0 && (
-            <div key="annual-page2-7">
-              <div style={{ marginTop: "1.5rem" }}>你佛系水帖，</div>
-              <div>从未抢到过沙发。</div>
-            </div>
-          )}
         </QueueAnim>
-        {this.state.showButton && buttonNode}
       </div>
     );
   }
