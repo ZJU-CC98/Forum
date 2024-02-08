@@ -73,7 +73,7 @@ export default class extends React.Component<{ data }> {
                 <span className="annual-review-page2-topicCount">
                   {data.favoriteTopicCount}
                 </span>
-                个主题贴,
+                个主题帖，
               </div>
             </div>
           )}

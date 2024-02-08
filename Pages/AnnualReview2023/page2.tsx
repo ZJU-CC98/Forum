@@ -22,21 +22,20 @@ export default class extends React.Component<{ data }> {
             textAlign: "center",
           }}
         >
-          <div style={{ marginTop: "1rem" }} key="annual-page2-1">
-            你送出了
+          <div style={{ marginTop: "1.5rem" }} key="annual-page2-1">
+            你一共送出了
             <span className="annual-review-page2-topicCount">
               {data.sendLikeCount}
             </span>
-            个赞，
+            个赞。
           </div>
           {data.mostSendLikeUser && (
             <div key="annual-page2-1-1">
-              <div>
-                你最欣赏的用户是
-                <span className="annual-review-page2-topicCount">
-                  {data.mostSendLikeUser.userName}
-                </span>
-              </div>
+              你最欣赏的用户是
+              <span className="annual-review-page2-topicCount">
+                {data.mostSendLikeUser.userName}
+              </span>
+              ，
               <div>
                 <img
                   key="annual-page1-3"
@@ -45,12 +44,15 @@ export default class extends React.Component<{ data }> {
                   src={`${data.mostSendLikeUser.portraitUrl}`}
                 ></img>
               </div>
-              总共给Ta点了{data.mostSendLikeUser.likeCount}个赞
+              给Ta点了
+              <span className="annual-review-page2-topicCount">
+                {data.mostSendLikeUser.likeCount}
+              </span>
+              个赞。
             </div>
           )}
-          <br />
           <div key="annual-page2-2">
-            收到他人给你的
+            你一共收到了他人的
             <span className="annual-review-page2-replyCount">
               {data.receiveLikeCount}
             </span>
@@ -58,13 +60,11 @@ export default class extends React.Component<{ data }> {
           </div>
           {data.mostReceiveLikeUser && (
             <div key="annual-page2-2-1">
-              <div>
-                用户
-                <span className="annual-review-page2-topicCount">
-                  {data.mostReceiveLikeUser.userName}
-                </span>
-                是你的首席鼓励师
-              </div>
+              用户
+              <span className="annual-review-page2-topicCount">
+                {data.mostReceiveLikeUser.userName}
+              </span>
+              是你的首席鼓励师，
               <div>
                 <img
                   key="annual-page1-3"
@@ -73,7 +73,11 @@ export default class extends React.Component<{ data }> {
                   src={`${data.mostReceiveLikeUser.portraitUrl}`}
                 ></img>
               </div>
-              Ta总共给你点了{data.mostSendLikeUser.likeCount}个赞
+              Ta给你点了
+              <span className="annual-review-page2-topicCount">
+                {data.mostReceiveLikeUser.likeCount}
+              </span>
+              个赞。
             </div>
           )}
 
