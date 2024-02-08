@@ -28,6 +28,8 @@
     "msgpack5": "4.2.0",
     "p-debounce": "^2.1.0",
     "prop-types": "^15.6.2",
+    "rc-queue-anim": "^2.0.0",
+    "rc-scroll-anim": "^2.7.6",
     "react": "^16.14.0",
     "react-bootstrap": "0.32.3",
     "react-color": "^2.14.1",

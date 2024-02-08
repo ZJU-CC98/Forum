@@ -3675,6 +3675,18 @@ export async function getAnnualReview() {
   return await response.json();
 }
 
+export async function getAnnualReview2023() {
+  if (!isLogOn()) {
+    store.dispatch(ErrorActions.throwError("LogOut"));
+    return null;
+  }
+  const url = "/me/annual-review-2023";
+  const headers = await formAuthorizeHeader();
+  const response = await cc98Fetch(url, { headers });
+  return await response.json();
+}
+
+
 export async function getManageHistory(topicId, from) {
   const url = `/topic/${topicId}/event?from=${from}&size=7`;
   const headers = await formAuthorizeHeader();
