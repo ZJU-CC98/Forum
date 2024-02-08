@@ -1,7 +1,7 @@
 import React from "react";
 import QueueAnim from "rc-queue-anim";
 
-export default class extends React.Component<{ data}> {
+export default class extends React.Component<{ data }> {
   state = {
     showButton: false,
   };
@@ -26,41 +26,38 @@ export default class extends React.Component<{ data}> {
             textAlign: "center",
           }}
         >
-          <div key="annual-page7-1">在CC98竞猜游戏中</div>
+          <div key="annual-page7-1">在CC98竞猜游戏中，</div>
           <div key="annual-page7-2">
             <div>
               本年度你共参与了
               <span className="annual-review-page2-topicCount">
                 {data.bet.totalCount}
               </span>
-              场竞猜
+              场竞猜，
             </div>
-            卡片
           </div>
-
           <div key="annual-page7-3">
             <div>
-              其中
               <div>
                 胜利
                 <span className="annual-review-page2-topicCount">
                   {data.bet.winCount}
                 </span>
-                场
+                场、
               </div>
               <div>
                 失败
                 <span className="annual-review-page2-topicCount">
                   {data.bet.loseCount}
                 </span>
-                场
+                场、
               </div>
               <div>
                 走水
                 <span className="annual-review-page2-topicCount">
                   {data.bet.drawCount}
                 </span>
-                场
+                场，
               </div>
             </div>
             <div>
@@ -68,6 +65,7 @@ export default class extends React.Component<{ data}> {
               <span className="annual-review-page2-topicCount">
                 {((data.bet.winCount / data.bet.totalCount) * 100).toFixed(1)}%
               </span>
+              。
             </div>
           </div>
 
@@ -78,14 +76,14 @@ export default class extends React.Component<{ data}> {
                 <span className="annual-review-page2-hotTopicCount">
                   {data.bet.payment}
                 </span>
-                财富值
+                财富值，
               </div>
               <div>
                 盈利了
                 <span className="annual-review-page2-hotTopicCount">
                   {data.bet.profit}
                 </span>
-                ,不错呀!
+                财富值，不错呀！
               </div>
             </div>
           )}
@@ -103,7 +101,7 @@ export default class extends React.Component<{ data}> {
                 <span className="annual-review-page2-hotTopicCount">
                   {data.bet.profit}
                 </span>
-                ,还要努力哦~
+                财富值，不要灰心哦~
               </div>
             </div>
           )}

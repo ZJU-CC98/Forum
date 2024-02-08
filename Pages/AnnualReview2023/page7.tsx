@@ -77,8 +77,7 @@ export default class extends React.Component<{ data }> {
           </div>
 
           <div key="annual-page3-3">
-            <div style={{ marginTop: "2rem" }}>其中在2023年</div>
-
+            <div style={{ marginTop: "2rem" }}>其中在2023年，</div>
             <div>
               你消耗了
               <span className="annual-review-page2-hotTopicCount">
