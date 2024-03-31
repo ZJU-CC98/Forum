@@ -7,7 +7,7 @@ import { Replier } from "./Topic-Replier";
 import { ReplyContent } from "./Topic-ReplyContent";
 import { Award } from "./Topic-Award";
 import PostManagement from "./Topic-PostManagement-v2";
-import Judge from "./Topic-Judge-v2";
+import Judge from "./Topic-Judge-v3";
 import ReplierSignature from "./Topic-ReplierSignature";
 import Spin from "antd/es/spin";
 import * as moment from "moment";
