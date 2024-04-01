@@ -256,7 +256,7 @@ export default Form.create<FormProps>()(
             </Item>
           </Menu>
           <Tag color="blue">
-            500贴以上的用户可以进行评分（每日一次），超过7天的发言内容无法评分。
+            500帖以上的用户可以进行评分（每日一次），超过7天的发言内容无法评分。
           </Tag>
           {/* {rcForm} */}
           {this.state.current === "1" ? positiveForm : null}
