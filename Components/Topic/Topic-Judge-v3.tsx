@@ -198,7 +198,7 @@ export default Form.create<FormProps>()(
             {getFieldDecorator("reason", {
               rules: [{ required: true, message: "请选择理由" }],
             })(<Select style={{ width: 200 }} disabled={true}></Select>)}
-            <div>请选择加风评还是扣风评。</div>
+            <div>提示：请先点击“+1”或者“-1”，再选择理由。</div>
           </FormItem>
         </Form>
       );
