@@ -157,12 +157,5 @@ module.exports = {
     historyApiFallback: true,
     port: 44303,
     host: "0.0.0.0",
-
-    // proxy: {
-    //     '/1262843-1.flv': {
-    //         target: 'http://file409.niconi.cc',
-    //         changeOrigin: true,
-    //     }
-    // }
   },
 };
