@@ -213,7 +213,7 @@ class DropDownConnect extends React.Component<props, state> {
               <Link to="/signin">
                 <li>{signinInfo}</li>
               </Link>
-              <li onClick={this.logOff.bind(this)}>注销</li>
+              <li onClick={this.logOff.bind(this)}>退出登录</li>
             </ul>
           </div>
           <div
