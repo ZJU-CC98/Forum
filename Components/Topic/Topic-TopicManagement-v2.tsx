@@ -316,7 +316,10 @@ export default Form.create<FormProps>()(
               <Option key="14">14</Option>
               <Option key="30">30</Option>
               <Option key="98">98</Option>
+              <Option key="180">180</Option>
+              <Option key="365">365</Option>
               <Option key="1000">1000</Option>
+              <Option key="10000">10000 (作为永久使用)</Option>
             </Select>
           </FormItem>
           <FormItem label="理由">
@@ -375,7 +378,10 @@ export default Form.create<FormProps>()(
               <Option key="14">14</Option>
               <Option key="30">30</Option>
               <Option key="98">98</Option>
+              <Option key="180">180</Option>
+              <Option key="365">365</Option>
               <Option key="1000">1000</Option>
+              <Option key="10000">10000 (作为永久使用)</Option>
             </Select>
           </FormItem>
           <FormItem label="理由">
