@@ -52,10 +52,13 @@ export class Signin extends React.Component<{ history }, { signinInfo; content }
       info = (
         <div>
           <div className="row" style={{ justifyContent: "center" }}>
-            你上次的签到日期是{moment(this.state.signinInfo.lastSignInTime).format("YYYY-MM-DD HH:mm:ss")}
+            你已经连续签到了{this.state.signinInfo.lastSignInCount}天
           </div>
           <div className="row" style={{ justifyContent: "center" }}>
-            你已经连续签到了{this.state.signinInfo.lastSignInCount}天
+            上次签到时间是{moment(this.state.signinInfo.lastSignInTime).format("YYYY-MM-DD HH:mm:ss")}
+          </div>
+          <div className="row" style={{ justifyContent: "center" }}>
+            获得财富值{this.state.signinInfo.lastReward}
           </div>
         </div>
       );
