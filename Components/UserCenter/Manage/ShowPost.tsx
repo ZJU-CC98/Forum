@@ -2,6 +2,7 @@
 import * as Utility from '../../../Utility';
 import { getToken, getBoardName } from '../../../Utility';
 import { Link } from 'react-router-dom';
+import { max } from 'moment';
 
 interface State {
     /**
@@ -28,6 +29,10 @@ interface State {
      * 回帖信息
      */
     posts: Post[];
+    /**
+     * 跳转页数
+     */
+    gotoPage: number;
 }
 
 interface Props {
@@ -79,7 +84,8 @@ export default class ShowTopic extends React.Component<Props, State> {
             from: 0,
             isLoading: false,
             days: 1,
-            posts: []
+            posts: [],
+            gotoPage: 1,
         };
     }
 
@@ -103,7 +109,8 @@ export default class ShowTopic extends React.Component<Props, State> {
                 isLoading: false,
                 count: data.count,
                 info: posts.length === 0 ? '啥也没有' : '',
-                from: from
+                from: from,
+                gotoPage: from / 10 + 1
             });
         } catch (e) {
             this.setState({
@@ -122,11 +129,23 @@ export default class ShowTopic extends React.Component<Props, State> {
                 <button type="button" onClick={() => { this.handleSubmit(0); }}>查看</button>
                 <button type="button" disabled={this.state.from === 0} onClick={() => { this.handleSubmit(this.state.from - 10) }}>上一页</button>
                 <button type="button" disabled={(this.state.from + this.state.posts.length) === this.state.count} onClick={() => { this.handleSubmit(this.state.from + 10) }}>下一页</button>
+                <p>页数：</p>
+                <input type="number" onChange={(e) => {
+                    let page = Number.parseInt(e.target.value);
+                    let maxPage = Math.floor((this.state.count + 9) / 10);
+                    if (page < 1) {
+                        page = 1;
+                    } else if (page > maxPage) {
+                        page = maxPage;
+                    }
+                    this.setState({ gotoPage: page });
+                }} value={this.state.gotoPage} />
+                <button type="button" disabled={this.state.posts.length === 0} onClick={() => { this.handleSubmit((this.state.gotoPage - 1) * 10) }}>跳转</button>
             </div>
             <div className="user-manage-return"><p>{this.state.info}</p></div>
             {(!this.state.isLoading) ? (<div>
                 {this.state.posts.map((item) => (<div className="user-manage-post" key={item.topicId}>
-                    <p className="user-manage-post-date">{item.time.slice(0,19).replace('T', ' ')}</p>
+                    <p className="user-manage-post-date">{item.time.slice(0, 19).replace('T', ' ')}</p>
                     {item.floor === -1 ?
                         <p className="user-manage-post-content" title={item.content.slice(0, 1000)}>{item.content}</p> :
                         <Link
@@ -140,7 +159,7 @@ export default class ShowTopic extends React.Component<Props, State> {
                     <p className="user-manage-post-ip">{item.ip}</p>
                 </div>))}
                 {this.state.posts.length > 0 ?
-                    <p style={{textAlign: 'right'}}>总共有{this.state.count}条帖子，当前显示第{Math.floor(this.state.from / 10) + 1}页，共{Math.floor(this.state.count / 10) + 1}页</p>
+                    <p style={{ textAlign: 'right' }}>总共有{this.state.count}条帖子，当前显示第{Math.floor(this.state.from / 10) + 1}页，共{Math.floor(this.state.count / 10) + 1}页</p>
                     : null
                 }
             </div>) : <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>}
