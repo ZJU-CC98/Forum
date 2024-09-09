@@ -2337,11 +2337,11 @@ export async function minus1(topicId, postId, reason) {
 }
 
 /**风评接口v2.0 */
-export async function positiveJudge (postId, reasonId,type){
+export async function positiveJudge(postId, reasonId, type) {
   const url = `/post/${postId}/rating-v2`;
   const headers = await formAuthorizeHeader();
   headers.append("Content-Type", "application/json");
-  const bodyinfo = {  reasonId: reasonId, type: type };
+  const bodyinfo = { reasonId: reasonId, type: type };
   const body = JSON.stringify(bodyinfo);
   const response = await cc98Fetch(url, { method: "PUT", headers, body });
   //如果状态码不存在或者500，返回服务器错误
@@ -2798,6 +2798,13 @@ export async function getBoardTag(boardId) {
   const data = await response.json();
   return data;
 }
+export async function getBoardTagV2(boardId) {
+  const headers = await formAuthorizeHeader();
+  const url = `/board/${boardId}/tag-v2`;
+  const response = await cc98Fetch(url, { headers });
+  const data = await response.json();
+  return data;
+}
 export async function setHighlight(
   topicId,
   isBold,
@@ -2865,7 +2872,7 @@ export async function getFavState(topicId) {
   return data;
 }
 //创建收藏夹
-export async function createFavGroup(groupName:string) {
+export async function createFavGroup(groupName: string) {
   const headers = await formAuthorizeHeader();
   const url = `/me/favorite-topic-group`;
   headers.append("Content-Type", "application/json");
@@ -2944,7 +2951,7 @@ export async function getNewTagInfo() {
   const headers = await formAuthorizeHeader();
   const response = await cc98Fetch(url, { headers });
   const data = await response.json();
-  setLocalStorage("tagInfo", data, 3600);
+  setLocalStorage("tagInfo", data, 600);
   return data;
 }
 export async function getTagIdbyName(name) {
@@ -3747,13 +3754,13 @@ export async function getUserWealth() {
   //更改为直接从userinfo中获取
   let userInfo = getMyInfo();
   let wealth = userInfo.wealth;
-  if(!wealth){
+  if (!wealth) {
     //如果没有财富值，刷新用户信息
     await refreshUserInfo();
     userInfo = getMyInfo();
     wealth = userInfo.wealth;
   }
-  if(!wealth){
+  if (!wealth) {
     //如果还是没有财富值，那么就是获取失败了
     return -1;
   }
@@ -3959,9 +3966,9 @@ export async function copyToClipboard(text: string) {
 /**
  * 获取可用的风评标签
  */
-export async function getJudgeTags(type:number){
+export async function getJudgeTags(type: number) {
   const url = `/post/rating-reason?type=${type}`;
   const headers = await formAuthorizeHeader();
   const response = await cc98Fetch(url, { headers });
-  return   await response.json();
+  return await response.json();
 }

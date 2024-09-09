@@ -42,6 +42,7 @@ class EditForm extends RouteComponent<
     topicInfo;
     boardName;
     tags;
+    tagsV2;
     ready;
     mode;
     content;
@@ -84,6 +85,7 @@ class EditForm extends RouteComponent<
     this.state = {
       masters: [],
       tags: [],
+      tagsV2: { layers: 0, tags: [] },
       boardName: "",
       ready: false,
       mode: 0,
@@ -118,7 +120,7 @@ class EditForm extends RouteComponent<
     const token = await Utility.getToken();
     const headers = new Headers();
     headers.append("Authorization", token);
-    let url, response, data, tags;
+    let url, response, data, tags, tagsV2;
     CustomCommand.editor = this;
     const getCommands: () => ReactMdeTypes.CommandGroup[] = () => [
       { commands: [CustomCommand] }
@@ -137,9 +139,11 @@ class EditForm extends RouteComponent<
         const anonymousState = data.anonymousState;
         //获取标签
         tags = await Utility.getBoardTag(id);
+        tagsV2 = await Utility.getBoardTagV2(id);
         this.setState({
           boardName: boardName,
           tags: tags,
+          tagsV2: tagsV2,
           boardId: id,
           masters: data.boardMasters,
           anonymousState: anonymousState
@@ -153,7 +157,7 @@ class EditForm extends RouteComponent<
         }
         data = await response.json();
         const topicInfo = await Utility.getTopicInfo(data.topicId);
-        
+
         //2024/2/2 更新后 origin内容不再返回title 转由topicInfo.title获取
         data.title = topicInfo.title;
 
@@ -163,6 +167,7 @@ class EditForm extends RouteComponent<
         if (!tag2Name) tag2Name = "";
         let type = topicInfo.type;
         tags = await Utility.getBoardTag(data.boardId);
+        tagsV2 = await Utility.getBoardTagV2(data.boardId);
 
         Utility.setLocalStorage("contentCache", data.content);
         const cache = Utility.getLocalStorage("contentCache");
@@ -196,6 +201,7 @@ class EditForm extends RouteComponent<
             boardId: data.boardId,
             type: type,
             tags: tags,
+            tagsV2: tagsV2,
             topicInfo: topicInfo,
             tag1: tag1Name,
             tag2: tag2Name,
@@ -213,6 +219,7 @@ class EditForm extends RouteComponent<
             boardId: data.boardId,
             type: type,
             tags: tags,
+            tagsV2: tagsV2,
             topicInfo: topicInfo,
             tag1: tag1Name,
             tag2: tag2Name,
@@ -725,6 +732,7 @@ class EditForm extends RouteComponent<
         <InputTitle
           boardId={id}
           tags={this.state.tags}
+          tagsV2={this.state.tagsV2}
           onChange={this.onTitleChange.bind(this)}
           title={this.state.postInfo.title}
           tag1={0}
@@ -983,6 +991,7 @@ class EditForm extends RouteComponent<
           <InputTitle
             boardId={id}
             tags={this.state.tags}
+            tagsV2={this.state.tagsV2}
             onChange={this.onTitleChange.bind(this)}
             title={this.state.postInfo.title}
             tag1={this.state.topicInfo.tag1}
@@ -1017,7 +1026,7 @@ class EditForm extends RouteComponent<
       </div>
     );
 
-    console.log(Utility.isMaster(this.state.masters));
+    //console.log(Utility.isMaster(this.state.masters));
 
     // issue #38 普通用户不显示校园活动
     if (
@@ -1096,7 +1105,7 @@ class EditForm extends RouteComponent<
               住房信息模板
             </Button>
             <span style={{ color: "red", marginLeft: "10px" }}>
-              (出租、合租、转租、出售等已有房源必填)z
+              (出租、合租、转租、出售等已有房源必填)
             </span>
           </div>
 
@@ -1222,8 +1231,8 @@ export class Tags extends React.Component<{}, {}> {
  * TODO:尚未完成
  */
 export class InputTitle extends React.Component<
-  { boardId; onChange; tags; title; tag1; tag2 },
-  { title: string; tags; tag1; tag2; hasEvent: boolean }
+  { boardId; onChange; tags; tagsV2; title; tag1; tag2 },
+  { title: string; tags; tagsV2; tag1; tag2; hasEvent: boolean }
 > {
   constructor(props) {
     super(props);
@@ -1233,6 +1242,7 @@ export class InputTitle extends React.Component<
     this.state = {
       title: this.props.title,
       tags: this.props.tags,
+      tagsV2: this.props.tagsV2,
       tag1: "",
       tag2: "",
       hasEvent: false
@@ -1266,13 +1276,16 @@ export class InputTitle extends React.Component<
 
   componentWillReceiveProps(newProps) {
     if (newProps.title && !this.state.title)
-      this.setState({ title: newProps.title, tags: newProps.tags });
-    else this.setState({ tags: newProps.tags });
+      this.setState({ title: newProps.title, tags: newProps.tags, tagsV2: newProps.tagsV2 });
+    else this.setState({ tags: newProps.tags, tagsV2: newProps.tagsV2 });
   }
 
   componentDidMount() {
     //如果有默认tags就绑定事件
-    if (this.state.tags.length > 0) {
+    // if (this.state.tags.length > 0) {
+    //   this.bindEvent();
+    // }
+    if (this.state.tagsV2.layers > 0) {
       this.bindEvent();
     }
   }
@@ -1299,34 +1312,35 @@ export class InputTitle extends React.Component<
     const tagBoxSub = $(".tagBoxSub");
     const tagBoxLi = tagBoxSub.find("li");
 
-    $(document).click(function () {
+    $(document).on("click", function () {
       tagBoxSub.css("display", "none");
     });
 
-    tagBoxSelect.click(function () {
-      //console.log("click1");
+    tagBoxSelect.on("click", function () {
+      console.log("click1");
       if (tagBoxSub.css("display") === "block")
         tagBoxSub.css("display", "none");
       else tagBoxSub.css("display", "block");
       return false; //阻止事件冒泡
     });
 
-    downArrow.click(function () {
+    downArrow.on("click", function () {
       if (tagBoxSub.css("display") === "block")
         tagBoxSub.css("display", "none");
       else tagBoxSub.css("display", "block");
       return false; //阻止事件冒泡
     });
 
-    tagBoxLi.click(function () {
+    tagBoxLi.on("click", function () {
+      console.log('on click tagBoxLi:');
       tagBoxSelect.text($(this).text());
     });
 
-    tagBoxLi.mouseover(function () {
+    tagBoxLi.on("mouseover", function () {
       this.className = "hover";
     });
 
-    tagBoxLi.mouseout(function () {
+    tagBoxLi.on("mouseout", function () {
       this.className = "";
     });
 
@@ -1334,37 +1348,37 @@ export class InputTitle extends React.Component<
     const downArrow1 = $(".downArrow1");
     const tagBoxSub1 = $(".tagBoxSub1");
     const tagBoxLi1 = tagBoxSub1.find("li");
-    $(document).click(function () {
+    $(document).on("click", function () {
       tagBoxSub1.css("display", "none");
     });
 
-    tagBoxSelect1.click(function () {
+    tagBoxSelect1.on("click", function () {
       if (tagBoxSub1.css("display") === "block")
         tagBoxSub1.css("display", "none");
       else tagBoxSub1.css("display", "block");
       return false; //阻止事件冒泡
     });
 
-    downArrow1.click(function () {
+    downArrow1.on("click", function () {
       if (tagBoxSub1.css("display") === "block")
         tagBoxSub1.css("display", "none");
       else tagBoxSub1.css("display", "block");
       return false; //阻止事件冒泡
     });
 
-    tagBoxLi1.click(function () {
+    tagBoxLi1.on("click", function () {
+      console.log('on click tagBoxLi1:');
       tagBoxSelect1.text($(this).text());
     });
 
-    tagBoxLi1.mouseover(function () {
+    tagBoxLi1.on("mouseover", function () {
       this.className = "hover";
     });
 
-    tagBoxLi1.mouseout(function () {
+    tagBoxLi1.on("mouseout", function () {
       this.className = "";
     });
-    let tag1 = "",
-      tag2 = "";
+    let tag1 = "", tag2 = "";
     if (this.props.tag1 !== 0) {
       tag1 = await Utility.getTagNamebyId(this.props.tag1);
     }
@@ -1375,32 +1389,53 @@ export class InputTitle extends React.Component<
       this.setState({
         title: this.props.title,
         tags: this.props.tags,
+        tagsV2: this.props.tagsV2,
         tag1: tag1,
         tag2: tag2
       });
-    else this.setState({ tags: this.props.tags, tag1: tag1, tag2: tag2 });
+    else this.setState({ tags: this.props.tags, tagsV2: this.props.tagsV2, tag1: tag1, tag2: tag2 });
   };
 
   generateTagOption(item) {
+    //console.log(`generateTagOption: ${item.name}`);
     return <li onClick={this.handleTagChange}>{item.name}</li>;
   }
   render() {
     let drop1 = null;
     let drop2 = null;
-    if (this.state.tags.length > 0)
+    const tagBoxSelect = $(".tagBoxSelect");
+    const tagBoxSelect1 = $(".tagBoxSelect1");
+    console.log('render begin:');
+    console.log(this.state.tagsV2);
+    console.log(this.state.tags);
+    console.log(`layers:${this.state.tagsV2.layers}`);
+    console.log(`tagBoxSelect: ${tagBoxSelect.text()}`);
+    console.log(`tagBoxSelect1: ${tagBoxSelect1.text()}`);
+    console.log(this.state.tagsV2.tags);
+    const findTag = this.state.tagsV2.tags.find(i => i.name === "test");
+    console.log(findTag ? findTag : '未找到tag: test');
+    console.log('render end.');
+
+    if (this.state.tagsV2.layers > 0) {
       drop1 = (
         <ul className="tagBoxSub">
-          {this.state.tags[0].tags.map(this.generateTagOption)}
+          {this.state.tagsV2.tags.map(this.generateTagOption)}
         </ul>
       );
-    if (this.state.tags.length === 2)
-      drop2 = (
-        <ul className="tagBoxSub1">
-          {this.state.tags[1].tags.map(this.generateTagOption)}
-        </ul>
-      );
+    }
+    if (this.state.tagsV2.layers === 2) {
+      //drop2 = (<ul className="tagBoxSub1"><li onClick={this.handleTagChange}>222</li></ul>);
+      if (tagBoxSelect.text()) {
+        drop2 = (<ul className="tagBoxSub1">
+          {this.state.tagsV2.tags.find(i => i.name === tagBoxSelect.text()).subTags.map(this.generateTagOption)}
+        </ul>);
+      } else {
+        drop2 = (<ul className="tagBoxSub1"></ul>);
+        //tagBoxSelect1.text("请先选择标签1");
+      }
+    }
     let tagInfo = null;
-    if (this.state.tags.length === 2) {
+    if (this.state.tagsV2.layers === 2) {
       let defaultTag1 = "";
       let defaultTag2 = "";
       if (this.state.tag1) defaultTag1 = this.state.tag1;
@@ -1423,7 +1458,48 @@ export class InputTitle extends React.Component<
           </div>
         </div>
       );
-    } else if (this.state.tags.length == 1) {
+    } else if (this.state.tagsV2.layers == 1) {
+
+      /*if (this.state.tags.length > 0)
+        drop1 = (
+          <ul className="tagBoxSub">
+            {this.state.tags[0].tags.map(this.generateTagOption)}
+          </ul>
+        );
+      if (this.state.tags.length === 2)
+        drop2 = (
+          <ul className="tagBoxSub1">
+            {this.state.tags[1].tags.map(this.generateTagOption)}
+          </ul>
+        );
+      let tagInfo = null;
+      if (this.state.tags.length === 2) {
+        let defaultTag1 = "";
+        let defaultTag2 = "";
+        if (this.state.tag1) defaultTag1 = this.state.tag1;
+        if (this.state.tag2) defaultTag2 = this.state.tag2;
+        tagInfo = (
+          <div className="row">
+            <div className="row">
+              <div className="tagBoxSelect">{defaultTag1}</div>
+              <div className="downArrow">
+                <img src="/static/images/downArrow.png" width="12" height="12" />
+              </div>
+              {drop1}
+            </div>
+            <div className="row">
+              <div className="tagBoxSelect1">{defaultTag2}</div>
+              <div className="downArrow1">
+                <img src="/static/images/downArrow.png" width="12" height="12" />
+              </div>
+              {drop2}
+            </div>
+          </div>
+        );
+      } else if (this.state.tags.length == 1) {*/
+
+
+
       let defaultTag1 = "";
       if (this.state.tag1) defaultTag1 = this.state.tag1;
       tagInfo = (
