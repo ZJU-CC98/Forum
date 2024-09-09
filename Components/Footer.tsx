@@ -12,7 +12,8 @@ export class Footer extends React.Component<{}, AppState> {   //底部
                     <a href="http://www.cs.zju.edu.cn" target="_blank">计算机学院</a>|
                     <a href="http://www.nexushd.org" target="_blank">NexusHD高清社区</a>|
                     <a href="http://www.qsc.zju.edu.cn" target="_blank">求是潮</a>|
-                    <a href="https://zjuers.com" target="_blank">ZJUers轻首页</a>
+                    <a href="https://zjuers.com" target="_blank">ZJUers轻首页</a>|
+                    <a href="http://www.zjulib.com" target="_blank">浙大图助</a>
                 </div>
                 <div className="footerRowLight">
                     <a href="https://www.zdgd.zju.edu.cn" target="_blank">浙江大学广播电视网</a>|
