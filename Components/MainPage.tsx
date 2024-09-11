@@ -437,12 +437,19 @@ export class AdsComponent extends React.Component<
   }
 
   async getAds() {
-    let ads: MainPageColumn[] = Utility.getStorage("mainAds");
+    let ads: MainPageColumn[] = Utility.getStorage("mainAds-v2");
     if (ads) {
       return ads;
     } else {
       ads = new Array<MainPageColumn>();
-      const response = await Utility.cc98Fetch("/config/global/advertisement");
+      const token = await Utility.getToken();
+      let myHeaders = new Headers();
+      myHeaders.append('Authorization', token);
+      myHeaders.append('Content-Type', 'application/json');
+      const response = await Utility.cc98Fetch("/config/global/advertisement", {
+        method: 'GET',
+        headers: myHeaders,
+      });
       const data = await response.json();
       for (let i = 0; i < data.length; i++) {
         ads[i] = new MainPageColumn(
@@ -452,7 +459,7 @@ export class AdsComponent extends React.Component<
           data[i].content
         );
       }
-      Utility.setStorage("mainAds", ads);
+      Utility.setStorage("mainAds-v2", ads);
       return ads;
     }
   }
