@@ -61,6 +61,7 @@ class PostForumIndexColumnInfo {
    *
    */
   expiredTime: string;
+  visibility: number;
 }
 
 interface State {
@@ -121,7 +122,17 @@ export default class extends React.Component<props, State> {
   handleTdChange(key, value, index: number) {
     this.setState(prevState => {
       let { data } = prevState as State;
-      data[index] = { ...data[index], [key]: value };
+      if (key === "visibility") {
+        let v = prevState.type === 4 ? 1 : 0;
+        try {
+          v = parseInt(value);
+        } catch {
+        }
+        data[index] = { ...data[index], [key]: v };
+      } else {
+        data[index] = { ...data[index], [key]: value };
+      }
+
       //console.log(data);
       this.setState({ data });
     });
@@ -167,6 +178,7 @@ export default class extends React.Component<props, State> {
       newData.isNew = true;
       newData.type = prevState.type;
       newData.id = prevState.data[0].id + 1;
+      newData.visibility = prevState.type === 4 ? 1 : 0;
       return {
         data: [newData, ...prevState.data]
       };
@@ -214,24 +226,24 @@ export default class extends React.Component<props, State> {
       },
       this.state.type === 1
         ? {
-            title: 'content',
-            dataIndex: 'content',
-            key: 'content',
-            width: 200,
-            render: (text, record, index) => (
-              <Input
-                type="text"
-                onChange={e =>
-                  this.handleTdChange(
-                    'content',
-                    e.target.value,
-                    (current - 1) * 10 + index
-                  )
-                }
-                value={text}
-              />
-            )
-          }
+          title: 'content',
+          dataIndex: 'content',
+          key: 'content',
+          width: 200,
+          render: (text, record, index) => (
+            <Input
+              type="text"
+              onChange={e =>
+                this.handleTdChange(
+                  'content',
+                  e.target.value,
+                  (current - 1) * 10 + index
+                )
+              }
+              value={text}
+            />
+          )
+        }
         : null,
       {
         title: 'url',
@@ -254,45 +266,45 @@ export default class extends React.Component<props, State> {
       },
       this.state.type !== 3
         ? {
-            title: 'imageUrl',
-            dataIndex: 'imageUrl',
-            key: 'imageUrl',
-            width: 200,
-            render: (text, record, index) => (
-              <Input
-                type="text"
-                onChange={e =>
-                  this.handleTdChange(
-                    'imageUrl',
-                    e.target.value,
-                    (current - 1) * 10 + index
-                  )
-                }
-                value={text}
-              />
-            )
-          }
+          title: 'imageUrl',
+          dataIndex: 'imageUrl',
+          key: 'imageUrl',
+          width: 200,
+          render: (text, record, index) => (
+            <Input
+              type="text"
+              onChange={e =>
+                this.handleTdChange(
+                  'imageUrl',
+                  e.target.value,
+                  (current - 1) * 10 + index
+                )
+              }
+              value={text}
+            />
+          )
+        }
         : null,
       this.state.type === 1 || this.state.type === 2
         ? {
-            title: 'orderWeight',
-            dataIndex: 'orderWeight',
-            key: 'orderWeight',
-            width: 150,
-            render: (text, record, index) => (
-              <Input
-                type="text"
-                onChange={e =>
-                  this.handleTdChange(
-                    'orderWeight',
-                    e.target.value,
-                    (current - 1) * 10 + index
-                  )
-                }
-                value={text}
-              />
-            )
-          }
+          title: 'orderWeight',
+          dataIndex: 'orderWeight',
+          key: 'orderWeight',
+          width: 150,
+          render: (text, record, index) => (
+            <Input
+              type="text"
+              onChange={e =>
+                this.handleTdChange(
+                  'orderWeight',
+                  e.target.value,
+                  (current - 1) * 10 + index
+                )
+              }
+              value={text}
+            />
+          )
+        }
         : null,
       {
         title: 'enable',
@@ -314,32 +326,50 @@ export default class extends React.Component<props, State> {
       },
       this.state.type === 4
         ? {
-            title: 'days',
-            dataIndex: 'days',
-            key: 'days',
-            render: (text, record, index) => (
-              <Input
-                type="text"
-                onChange={e =>
-                  this.handleTdChange(
-                    'days',
-                    e.target.value,
-                    (current - 1) * 10 + index
-                  )
-                }
-                value={text}
-              />
-            )
-          }
+          title: 'days',
+          dataIndex: 'days',
+          key: 'days',
+          render: (text, record, index) => (
+            <Input
+              type="text"
+              onChange={e =>
+                this.handleTdChange(
+                  'days',
+                  e.target.value,
+                  (current - 1) * 10 + index
+                )
+              }
+              value={text}
+            />
+          )
+        }
         : null,
       this.state.type === 4
         ? {
-            title: 'expiredTime',
-            dataIndex: 'expiredTime',
-            key: 'expiredTime',
-            render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
-          }
+          title: 'expiredTime',
+          dataIndex: 'expiredTime',
+          key: 'expiredTime',
+          render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+        }
         : null,
+      {
+        title: 'visibility',
+        dataIndex: 'visibility',
+        key: 'visibility',
+        render: (text, record, index) => (
+          <Input
+            type="text"
+            onChange={e =>
+              this.handleTdChange(
+                'visibility',
+                e.target.value,
+                (current - 1) * 10 + index
+              )
+            }
+            value={text}
+          />
+        )
+      },
       {
         title: 'save',
         dataIndex: 'save',
@@ -437,36 +467,3 @@ export default class extends React.Component<props, State> {
     );
   }
 }
-
-// {this.state.data.length > 0 ?
-//     <table>
-//         <tbody>
-//             <tr>
-//                 <th>id</th>
-//                 <th>type</th>
-//                 <th>title</th>
-//                 {this.state.type === 1 ? <th>content</th> : null}
-//                 <th>url</th>
-//                 {this.state.type !== 3 ? <th>imageUrl</th> : null}
-//                 {this.state.type === 1 || this.state.type === 2 ? <th>orderWeight</th> : null}
-//                 <th>enable</th>
-//                 {this.state.type === 4 ? <th>days</th> : null}
-//                 {this.state.type === 4 ? <th>expiredTime</th> : null}
-//                 <th>save</th></tr>
-//             {this.state.data.map((item, index) => (
-//                 <tr key={item.id}>
-//                     <td>{item.id}</td>
-//                     <td>{PostForumIndexColumnInfoType[item.type - 1]}</td>
-//                     <td><input type="text" onChange={e => this.handleTdChange('title', e.target.value, index)} value={item.title} /></td>
-//                     {this.state.type === 1 ? <td><input type="text" onChange={e => this.handleTdChange('content', e.target.value, index)} value={item.content} /></td> : null}
-//                     <td><input type="text" onChange={e => this.handleTdChange('url', e.target.value, index)} value={item.url} /></td>
-//                     {this.state.type !== 3 ? <td><input type="text" onChange={e => this.handleTdChange('imageUrl', e.target.value, index)} value={item.imageUrl} /></td> : null}
-//                     {this.state.type === 1 || this.state.type === 2 ? <td><input type="number" onChange={e => this.handleTdChange('orderWeight', Number.parseInt(e.target.value), index)} value={item.orderWeight} /></td> : null}
-//                     <td><input onChange={e => this.handleTdChange('enable', (e.target as HTMLInputElement).checked, index)} type="checkbox" checked={item.enable} /></td>
-//                     {this.state.type === 4 ? <td><input type="number" onChange={e => this.handleTdChange('days', Number.parseInt(e.target.value), index)} value={item.days} /></td> : null}
-//                     {this.state.type === 4 && item.expiredTime ? <td>{item.expiredTime.slice(0, 19).replace('T', ' ')}</td> : null}
-//                     <td><button type="button" onClick={e => this.putCurData(index)}>保存</button></td>
-//                 </tr>
-//             ))}
-//         </tbody>
-//     </table> : null}

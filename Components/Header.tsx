@@ -81,9 +81,9 @@ class DropDownConnect extends React.Component<props, state> {
     Utility.removeLocalStorage("userInfo");
     Utility.removeLocalStorage("usePWA");
     Utility.removeStorage("all");
-
     Utility.changeTheme(0);
     this.props.logOff(); //更新redux中的状态
+    location.reload();
   }
 
   handleMouseEvent(type, className) {

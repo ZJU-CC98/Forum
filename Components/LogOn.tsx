@@ -128,6 +128,7 @@ class LogOnExact extends React.Component<Props, LogOnState> {
             const token = data.token_type + ' ' + data.access_token;
 
             //缓存数据
+            Utility.removeStorage("mainAds-v2");
             Utility.setLocalStorage("accessToken", token, data.expires_in);
             Utility.setLocalStorage('refresh_token', data.refresh_token, 2592000); // refresh_token有效期一个月
             await Utility.refreshUserInfo();
@@ -139,8 +140,7 @@ class LogOnExact extends React.Component<Props, LogOnState> {
                 loginMessage: '登录成功 正在返回'
             });
             Utility.changeTheme(userInfo.theme);
-            this.props.
-            logOn();
+            this.props.logOn();
             //跳转
             debugger;
             setTimeout(() => {
