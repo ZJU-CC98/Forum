@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const fs = require("fs");
 module.exports = {
@@ -94,6 +95,8 @@ module.exports = {
   },
 
   plugins: [
+    new CleanWebpackPlugin(["dist/static/scripts", "dist/static/content", "dist/static/index.html", "dist/static/reset.html"]),
+
     // generate index.html
     new HTMLWebpackPlugin({
       template: "Template.ejs",
