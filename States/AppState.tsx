@@ -395,6 +395,11 @@ export class UserInfo {
    * 用户的主题列表浏览模式设置。
    */
   topicViewMode: 0 | 1 | 2;
+
+  /**
+   * 用户被版面TP的数量。
+   */
+  stopPostBoardCount: number;
 }
 
 /**
