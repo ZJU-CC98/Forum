@@ -146,7 +146,7 @@ export default class extends React.Component<Props, States> {
                                 }}
                             >
                                 收到的赞
-              </Tag>
+                            </Tag>
                             <Tag
                                 className="board-head-information"
                                 style={{
@@ -187,6 +187,21 @@ export default class extends React.Component<Props, States> {
                         >{this.state.buttonInfo}</button>
                     </div>
                 </div>
+                {this.props.userInfo.lockState === 1 || this.props.userInfo.lockState === 2 ?
+                    <div id="userGenderAndBirthday">
+                        <span style={{ fontSize: '12px', color: 'red' }}>该账号处于锁定状态</span>
+                    </div>
+                    :
+                    this.props.userInfo.lockState === 3 ?
+                        <div id="userGenderAndBirthday">
+                            <span style={{ fontSize: '12px', color: 'red' }}>该账号处于全站禁言状态</span>
+                        </div> :
+                        this.props.userInfo.stopPostBoardCount > 0 ?
+                            <div id="userGenderAndBirthday">
+                                <span style={{ fontSize: '12px', color: 'red' }}>该账号被{this.props.userInfo.stopPostBoardCount}个版面禁言中</span>
+                            </div> :
+                            null
+                }
                 <div id="userIntroducion">{this.props.userInfo.introduction}</div>
                 <div id="userGenderAndBirthday">
                     <p><span className="user-profile-info">性别</span>{(this.props.userInfo.gender === 1) ? '男' : '女'} </p>
@@ -194,8 +209,8 @@ export default class extends React.Component<Props, States> {
                     <p><span className="user-profile-info">威望</span>{this.props.userInfo.prestige}</p>
                     <p><span className="user-profile-info">粉丝数</span>{this.props.userInfo.fanCount}</p>
                     <p><span className="user-profile-info">风评</span>{this.props.userInfo.popularity}</p>
-                    <p><span className="user-profile-info">注册时间</span>{isoTime2LocalTime( this.props.userInfo.registerTime,0).replace(/\//g, '-')}</p>
-                    <p><span className="user-profile-info">最后登录</span>{isoTime2LocalTime( this.props.userInfo.lastLogOnTime,1).replace(/\//g, '-')}</p>
+                    <p><span className="user-profile-info">注册时间</span>{isoTime2LocalTime(this.props.userInfo.registerTime, 0).replace(/\//g, '-')}</p>
+                    <p><span className="user-profile-info">最后登录</span>{isoTime2LocalTime(this.props.userInfo.lastLogOnTime, 1).replace(/\//g, '-')}</p>
                     {this.props.userInfo.birthday === null ? null : <p><span className="user-profile-info">生日</span>{this.props.userInfo.birthday.replace('9999-', '')}{isBirthDay ? <span style={{ fontFamily: 'FontAwesome', marginLeft: '1rem' }} className="fa-birthday-cake" title="生日快乐~"></span> : null}</p>}
                     {this.props.userInfo.displayTitle ? <p><span className="user-profile-info">用户组</span>{this.props.userInfo.displayTitle}</p> : null}
                     {this.props.userInfo.emailAddress ? <p><span className="user-profile-info">邮箱</span>{this.props.userInfo.emailAddress}</p> : null}
