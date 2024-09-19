@@ -83,7 +83,7 @@ class DropDownConnect extends React.Component<props, state> {
     Utility.removeStorage("all");
     Utility.changeTheme(0);
     this.props.logOff(); //更新redux中的状态
-    location.reload();
+    window.location.href = '/';
   }
 
   handleMouseEvent(type, className) {
