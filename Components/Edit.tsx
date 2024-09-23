@@ -366,9 +366,12 @@ class EditForm extends RouteComponent<
         }
         if (mes.status === 400) {
           let text = await mes.text()
-          //错误信息，如果返回的错误格式发生变化，可能会出现问题
-          let error = JSON.parse(text).errors.Content[0]
-          alert(`发帖失败，原因：${error}`);
+          alert(`发帖失败，原因：${this.handlePostErrorText(text)}`);
+        }
+        if(mes.status === 403) {
+          let text = await mes.text()
+          alert(`发帖失败，原因：${this.handlePostErrorText(text)}`);
+          return;
         }
         //   testEditor.setMarkdown("");
         const topicId = await mes.text();
@@ -485,8 +488,13 @@ class EditForm extends RouteComponent<
       if (response.status === 400) {
         let text = await response.text()
         //错误信息，如果返回的错误格式发生变化，可能会出现问题
-        let error = JSON.parse(text).errors.Content[0]
-        alert(`发帖失败，原因：${error}`);
+        alert(`发帖失败，原因：${this.handlePostErrorText(text)}`);
+      }
+
+      if(response.status === 403) {
+        let text = await response.text()
+        alert(`发帖失败，原因：${this.handlePostErrorText(text)}`);
+        return;
       }
       //发帖成功，api返回topicid
       const topicId = await response.text();
@@ -518,6 +526,52 @@ class EditForm extends RouteComponent<
       }
     }
   };
+
+  handlePostErrorText = (text: string) => {
+    switch (text) {
+      case "board_not_exists":
+        return "版面不存在";
+      case "board_cannot_vote":
+        return "版面无法投票";
+      case "vote_topic_cannot_be_anonymous":
+        return"投票贴不能匿名发表";
+      case "wealth_not_enough_for_anonymous_topic":
+        return "可选匿名的版面，匿名发主题所需的财富值不足";
+      case "tag_id_error":
+        return "版面标签错误";
+      case "no_vote_info":
+        return "投票信息错误";
+      case "vote_item_error":
+        return "投票项错误";
+      case "max_vote_count_error":
+        return "最大投票数错误";
+      case "vote_expired_days_error":
+        return "投票有效期错误";
+      case "vote_items_error":
+        return "投票项错误";
+      case "cannot_entry_board":
+        return "没有进入版面的权限";
+      case "board_is_locked":
+        return "版面已被锁定";
+      case "cannot_post_school_event":
+        return "没有权限发布校园活动类型的主题帖";
+      case "user_state_is_abnormal":
+        return "被全站禁言中或被锁定账号";
+      case "last_post_in_10_seconds":
+        return "距离上一次发言不足10秒";
+      case "cannot_post_anonymous":
+        return "因匿名发言被处以版面禁言处罚，该处罚未到期，无法在全站匿名发言";
+      case "cannot_post_in_this_board":
+        return "在该版面被禁言中";
+      case "board_minimum_post_count_request":
+        return "该版面发主题帖存在最小发帖数的限制";
+      case "request_too_fast":
+        return "请求过快";
+      default:
+        return "未知错误";
+    }
+
+  }
 
   sendOnymousUbbTopic = () => {
     this.sendUbbTopic(false);
