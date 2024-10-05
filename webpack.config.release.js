@@ -90,6 +90,10 @@ const config = (async () => ({
     css_spring_2023_dark: "./Themes/spring_2023_dark.scss",
     //春樱日和（亮）
     css_spring_2023_light: "./Themes/spring_2023_light.scss",
+    //重阳（暗）
+    css_chongyang_dark: "./Themes/chongyang_dark.scss",
+    //重阳（亮）
+    css_chongyang_light: "./Themes/chongyang_light.scss",
   },
   output: {
     path: path.resolve(__dirname, "dist/"),

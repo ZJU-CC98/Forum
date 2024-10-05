@@ -222,6 +222,22 @@ export const themeList: ThemeItem[] = [
       backgroundImage: "url(/static/images/header-image-thumb/spring_2023.jpg)",
     },
   },
+  {
+    order: 23,
+    name: "重阳（暗）",
+    style: {
+      backgroundColor: "rgb(7,6,24)",
+      backgroundImage: "url(/static/images/header-image-thumb/chongyang.jpg)",
+    },
+  },
+  {
+    order: 24,
+    name: "重阳（亮）",
+    style: {
+      backgroundColor: "rgb(226,191,116)",
+      backgroundImage: "url(/static/images/header-image-thumb/chongyang.jpg)",
+    },
+  },
 ];
 
 /**
@@ -247,7 +263,8 @@ export const themeDayNightGroups: ThemeDayNightGroup[] = [
   { day: "春节（亮）", night: "春节（暗）" },
   { day: "秋色之空（亮）", night: "秋色之空（暗）" },
   { day: "冬日暖雪（亮）", night: "冬日暖雪（暗）" },
-  { day: "春樱日和（亮）", night: "春樱日和（暗）" }
+  { day: "春樱日和（亮）", night: "春樱日和（暗）" },
+  { day: "重阳（亮）", night: "重阳（暗）" }
 ];
 
 let themeButtons = [];
