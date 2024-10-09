@@ -368,7 +368,7 @@ class EditForm extends RouteComponent<
           let text = await mes.text()
           alert(`发帖失败，原因：${this.handlePostErrorText(text)}`);
         }
-        if(mes.status === 403) {
+        if (mes.status === 403) {
           let text = await mes.text()
           alert(`发帖失败，原因：${this.handlePostErrorText(text)}`);
           return;
@@ -491,7 +491,7 @@ class EditForm extends RouteComponent<
         alert(`发帖失败，原因：${this.handlePostErrorText(text)}`);
       }
 
-      if(response.status === 403) {
+      if (response.status === 403) {
         let text = await response.text()
         alert(`发帖失败，原因：${this.handlePostErrorText(text)}`);
         return;
@@ -534,7 +534,7 @@ class EditForm extends RouteComponent<
       case "board_cannot_vote":
         return "版面无法投票";
       case "vote_topic_cannot_be_anonymous":
-        return"投票贴不能匿名发表";
+        return "投票贴不能匿名发表";
       case "wealth_not_enough_for_anonymous_topic":
         return "可选匿名的版面，匿名发主题所需的财富值不足";
       case "tag_id_error":
@@ -1187,7 +1187,7 @@ class EditForm extends RouteComponent<
     return (
       <div className="createTopic">
         <Category url={url} boardName={this.state.boardName} mode={mode} />
-        <TagNotice tagsV2={this.state.tagsV2} />
+        <TagNotice tagsV2={this.state.tagsV2} postInfo={this.state.postInfo} />
         {titleInput}
         {topicType}
         {noticeOption}
@@ -1203,15 +1203,17 @@ class EditForm extends RouteComponent<
     );
   }
 }
-export class TagNotice extends React.Component<{ tagsV2 }, { tagsV2 }> {
+export class TagNotice extends React.Component<{ tagsV2, postInfo }, { tagsV2, postInfo }> {
   constructor(props) {
     super(props);
     this.state = {
-      tagsV2: this.props.tagsV2
+      tagsV2: this.props.tagsV2,
+      postInfo: this.props.postInfo
     };
   }
   render() {
-    return this.props.tagsV2.layers === 2 ?
+    //发新帖时postInfo.floor===0
+    return this.props.tagsV2.layers === 2 && this.props.postInfo.floor < 2 ?
       (
         <div className="createTopicType">
           <div style={{ color: "rgb(255,0,0)" }}>
