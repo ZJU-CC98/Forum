@@ -99,7 +99,9 @@ module.exports = {
   },
 
   plugins: [
-    new CleanWebpackPlugin(["dist/static/scripts", "dist/static/content", "dist/static/index.html", "dist/static/reset.html"]),
+    new CleanWebpackPlugin(["dist/static/scripts", "dist/static/content", "dist/static/index.html", "dist/static/reset.html"], {
+      root: '../'
+    }),
 
     // generate index.html
     new HTMLWebpackPlugin({
