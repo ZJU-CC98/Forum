@@ -9,8 +9,6 @@
   <link type="text/css" rel="stylesheet" href="/static/content/font-awesome/css/font-awesome.min.css" />
   <link type="text/css" rel="stylesheet" href="/static/content/DPlayer.min.css" />
   <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
-  <link type="text/css" rel="stylesheet" href="/static/content/DPlayer.min.css" />
-  <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
   <script type="text/javascript">
     // 注册报错信息
     window.onerror = async (event, source, line, col, error) => {
@@ -112,7 +110,7 @@
             ).theme;
           }
 
-          const themeName = themeNames[userSelectedThemeIndex];
+          const themeName = themeNames[userSelectedThemeIndex] || themeNames[themeNames.length - 1];
 
           if (!themeName) {
             throw new Error("用户未选择主题");

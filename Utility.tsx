@@ -3350,6 +3350,12 @@ const useThemeKey = "use-theme";
 function changeThemeCore(theme: number) {
   // 存入实际设置值
   setLocalStorage(useThemeKey, theme);
+
+  // 防止缓存未更新导致的样式错误
+  if (theme === 0 || theme >= themeNames.length) {
+    theme = themeNames.length - 1;
+  }
+
   // 更改样式表
   $("#mainStylesheet").attr("href", `/static/content/${themeNames[theme]}`);
 }
@@ -3415,6 +3421,11 @@ export function getRealThemeNumber(
    */
   if (themeIndex === 0) {
     themeIndex = Constants.config.defaultTheme;
+
+    // 如果默认配置大于实际长度（通常是缓存未更新导致），则退回到使用最近的一个版本
+    if (themeIndex >= themeNames.length) {
+      themeIndex = themeNames.length - 1;
+    }
   }
 
   // 获取当前用户的主题设置
@@ -3425,7 +3436,9 @@ export function getRealThemeNumber(
     return themeIndex;
   }
 
+  // 获取当前主题，or 部分为防止缓存未更新而使用最新主题
   const item = themeList[themeIndex];
+
   const groupIndex = themeDayNightGroups.findIndex(
     (i) => i.day === item.name || i.night === item.name
   );
