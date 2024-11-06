@@ -135,7 +135,7 @@ export default class extends React.Component<Props, State> {
                 <List.Item.Meta
                   title={
                     item.userName ? (
-                      <a href={`https://www.cc98.org/user/${item.userId}`}>
+                      <a target="_blank" href={`/user/id/${item.userId}`}>
                         {item.userName}
                       </a>
                     ) : (
@@ -400,7 +400,7 @@ class Record extends React.Component<RecordProps, RecordState> {
             <List.Item key={item.id}>
               <List.Item.Meta
                 title={
-                  <a href={`https://www.cc98.org/topic/${item.topicId}`}>
+                  <a target="_blank" href={`/topic/${item.topicId}`}>
                     {item.content}
                   </a>
                 }

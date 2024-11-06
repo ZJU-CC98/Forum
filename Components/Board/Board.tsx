@@ -227,7 +227,7 @@ export class BList extends RouteComponent<
               <List.Item key={item.userId}>
                 <List.Item.Meta
                   title={
-                    <a href={`https://cc98.org/user/id/${item.userId}`}>
+                    <a target="_blank" href={`/user/id/${item.userId}`}>
                       {item.userName}
                     </a>
                   }
@@ -773,7 +773,7 @@ export class ListButtonAndAds extends React.Component<{ boardInfo; adsUrl }> {
         tip = (
           <div style={{ marginLeft: "1rem", color: "red" }}>
             您的帐号未认证，无法发言，请先前往{" "}
-            <a href="https://account.cc98.org">https://account.cc98.org</a>{" "}
+            <a target="_blank" href="https://account.cc98.org">https://account.cc98.org</a>{" "}
             认证激活。
           </div>
         );
