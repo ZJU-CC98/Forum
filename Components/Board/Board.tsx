@@ -227,7 +227,7 @@ export class BList extends RouteComponent<
               <List.Item key={item.userId}>
                 <List.Item.Meta
                   title={
-                    <a href={`https://cc98.org/user/${item.userId}`}>
+                    <a href={`https://cc98.org/user/id/${item.userId}`}>
                       {item.userName}
                     </a>
                   }
@@ -950,7 +950,7 @@ export class ListContent extends RouteComponent<
       return obj;
     }
     let targets = [];
-    $(".opTitleCheckboxValue").each(function() {
+    $(".opTitleCheckboxValue").each(function () {
       if ($(this).is(":checked")) {
         targets.push("id=" + getCaption($(this).attr("id")));
       }
@@ -1009,7 +1009,7 @@ export class ListContent extends RouteComponent<
       $("#hideReason1").css("display", "none");
     }
   }
-  tpList = () => {};
+  tpList = () => { };
   render() {
     const curPage = this.match.params.page
       ? parseInt(this.match.params.page)
