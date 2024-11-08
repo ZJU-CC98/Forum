@@ -30,7 +30,9 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
     }
 
     showOriginalImage(thumbnailUrl: string, idx: number = 0) {
-        let imageUrl = thumbnailUrl.replace("thumbnail/earlier/", "").replace("thumbnail/", "");
+        let imageUrl = thumbnailUrl.replace("v2-upload/thumbnail/earlier/", "v2-upload/")
+            .replace("v2-upload/thumbnail/", "v2-upload/")
+            .replace("v4-upload/t/", "v4-upload/d/");
         $(`#card_original_image_${this.props.id}`).attr('src', imageUrl);
         $(`#card_original_image_area_${this.props.id}`).show();
         $(`#card_thumbnail_area_${this.props.id}`).hide();
