@@ -30,9 +30,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
     }
 
     showOriginalImage(thumbnailUrl: string, idx: number = 0) {
-        let imageUrl = thumbnailUrl.replace("v2-upload/thumbnail/earlier/", "v2-upload/")
-            .replace("v2-upload/thumbnail/", "v2-upload/")
-            .replace("v4-upload/t/", "v4-upload/d/");
+        let imageUrl = this.getOriginalImageUrl(thumbnailUrl);
         $(`#card_original_image_${this.props.id}`).attr('src', imageUrl);
         $(`#card_original_image_area_${this.props.id}`).show();
         $(`#card_thumbnail_area_${this.props.id}`).hide();
@@ -56,8 +54,14 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
         }
     }
 
+    getOriginalImageUrl(thumbnailUrl: string): string {
+        return thumbnailUrl.replace("v2-upload/thumbnail/earlier/", "v2-upload/")
+            .replace("v2-upload/thumbnail/", "v2-upload/")
+            .replace("v4-upload/t/", "v4-upload/d/");
+    }
+
     changeMiniImage(thumbnailUrl: string, idx: number) {
-        let imageUrl = thumbnailUrl.replace("thumbnail/earlier/", "").replace("thumbnail/", "");
+        let imageUrl = this.getOriginalImageUrl(thumbnailUrl);
         $(`#card_original_image_${this.props.id}`).attr('src', imageUrl);
         $(`#card_thumbnail_mini_image_${this.props.id}_${idx}`).addClass('card-topic-thumbnail-mini-clicked');
         this.props.mediaContent.thumbnail.forEach((_, i, __) => {
