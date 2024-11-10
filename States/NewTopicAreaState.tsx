@@ -9,5 +9,6 @@ export class NewTopicAreaState {
     from: number;
     //buttonClassName: string;
     stop?: boolean;
+    showCardUser: boolean;
     //userInfo: UserInfo;
 }

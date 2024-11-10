@@ -2875,12 +2875,14 @@ a {
   .card-user-portrait {
     display: flex;
     flex-direction: row;
+    // justify-content: space-between;
 
     img {
       width: 80px;
       height: 80px;
       margin: -40px 15px 0px 15px;
       border-radius: 50%;
+      background-color: $theme_color_main;
     }
 
     a {
@@ -2891,6 +2893,25 @@ a {
         color: $theme_color_main;
       }
     }
+    i{
+      height: 80px;
+      width: 80px;
+      margin: -40px 15px 0px 15px;
+      border-radius: 50%;
+      position: absolute;
+      cursor: pointer;
+      font-size: 24px;
+      color: #d5d5d5;
+      background-color: color-mix(in srgb, $theme_color_main, #fff 40%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      &:hover {
+        opacity: 1;
+      }
+    }
+
   }
 
   .card-user-stats {

@@ -17,6 +17,7 @@ import { CardBoard } from "../Focus/CardBoard";
 import { CardRecommendTopic } from "../Focus/CardRecommendTopic";
 import store, { Actions } from "../../Store";
 import * as ErrorActions from "../../Actions/Error";
+import { Icon } from "antd";
 //import pDebounce from "p-debounce";
 
 /**
@@ -48,6 +49,7 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
     this.state = {
       data: [],
       from: 0,
+      showCardUser: true,
       //buttonClassName: "top-button",
       //userInfo: userInfo
     };
@@ -108,6 +110,10 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
     });
     //滚动条事件监听
     document.addEventListener("scroll", this.handleScroll);
+
+    let showCardUser = true;
+    showCardUser = Utility.getLocalStorage("showCardUser") === "false" ? false : true;
+    this.setState({ showCardUser: showCardUser });
   }
 
   /**
@@ -296,33 +302,47 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
                 <div className="card-user">
                   <div className="card-user-background"></div>
                   <div className="card-user-portrait">
-                    <img src={this.myInfo ? this.myInfo.portraitUrl : ""} />
+                    {/* <span> */}
+                    <img src={this.myInfo ? this.state.showCardUser? this.myInfo.portraitUrl: "/static/images/_心灵之约.png" : ""} />
+                    
                     <a href="../usercenter" target="_blank">
-                      {this.myInfo ? this.myInfo.name : ""}
+                      {this.myInfo ? this.state.showCardUser? this.myInfo.name :"匿名用户" : ""}
                     </a>
+                    {/* </span> */}
+                    {this.state.showCardUser ? (
+                      <Icon type="eye-invisible" theme="outlined"  onClick={()=>{this.setState({showCardUser:false});Utility.setLocalStorage("showCardUser",false,0)}}/>
+                    ) : (
+                      <Icon type="eye" theme="outlined" onClick={()=>{this.setState({showCardUser:true} );Utility.setLocalStorage("showCardUser",true,0)}} />
+                    )}
                   </div>
                   <div className="card-user-stats">
                     <div className="card-user-stats-item">
                       <a href="../usercenter" target="_blank">
-                        {this.myInfo ? this.getCountString(this.myInfo.postCount) : ""}
+                        {this.myInfo
+                          ? this.state.showCardUser? this.getCountString(this.myInfo.postCount) :"--"
+                          : ""}
                       </a>
                       帖数
                     </div>
                     <div className="card-user-stats-item">
                       <a href="../usercenter/myfollowings" target="_blank">
-                        {this.myInfo ? this.getCountString(this.myInfo.followCount) : ""}
+                        {this.myInfo
+                          ? this.state.showCardUser? this.getCountString(this.myInfo.followCount) :"--"
+                          : ""}
                       </a>
                       关注
                     </div>
                     <div className="card-user-stats-item">
                       <a href="../usercenter/myfans" target="_blank">
-                        {this.myInfo ? this.getCountString(this.myInfo.fanCount) : ""}
+                        {this.myInfo
+                          ? this.state.showCardUser ? this.getCountString(this.myInfo.fanCount) : "--"
+                          : ""}
                       </a>
                       粉丝
                     </div>
                     <div className="card-user-stats-item">
                       <a href="../usercenter/myposts/ishot/1/1" target="_blank">
-                        {this.myInfo ? this.getCountString(this.myInfo.receivedLikeCount) : ""}
+                        {this.myInfo ? this.state.showCardUser? this.getCountString(this.myInfo.receivedLikeCount) : "--" : ""}
                       </a>
                       获赞
                     </div>
