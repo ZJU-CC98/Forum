@@ -30,6 +30,7 @@ interface Props {
 
 interface State {
   content: string;
+  notifyAllReplier: boolean;
   mode: number;
   masters: string[];
   buttonInfo;
@@ -134,6 +135,7 @@ export class SendTopic extends React.Component<Props, State> {
     });
     this.state = {
       content: initContent,
+      notifyAllReplier: false,
       mode: 0,
       masters: [],
       buttonDisabled: false,
@@ -208,6 +210,11 @@ export class SendTopic extends React.Component<Props, State> {
       postCache: "",
     });
   };
+
+  resetNotifyAllReplier = () => {
+    $("#notifyAllReplierCheckBox").prop("checked", false);
+    this.setState({ notifyAllReplier: false });
+  }
 
   /**生成一条错误提示 */
   generateErrorNoticeMessage = (errorMessage: ErrorMessage, index: number) => {
@@ -339,6 +346,7 @@ ${newProps.content.content}[/quote]
           title: "",
           parentId: this.props.content.postId,
           isAnonymous: isAnonymous,
+          notifyAllReplier: this.state.notifyAllReplier
         };
       } else {
         bodyInfo = {
@@ -346,6 +354,7 @@ ${newProps.content.content}[/quote]
           contentType: 0,
           title: "",
           isAnonymous: isAnonymous,
+          notifyAllReplier: this.state.notifyAllReplier
         };
       }
       const body = JSON.stringify(bodyInfo);
@@ -409,6 +418,7 @@ ${newProps.content.content}[/quote]
           buttonInfo: "回复",
           anonymouslyPostButtonInfo: "匿名回复",
         });
+        this.resetNotifyAllReplier();
         this.props.onChange();
       }
       //status既不是400/402/403，也不是200（存在这种情况吗……）
@@ -448,6 +458,7 @@ ${newProps.content.content}[/quote]
         contentType: 1,
         title: "",
         isAnonymous: isAnonymous,
+        notifyAllReplier: this.state.notifyAllReplier
       };
       const contentJson = JSON.stringify(content);
       const token = Utility.getAccessToken();
@@ -502,6 +513,7 @@ ${newProps.content.content}[/quote]
           });
         }
         Utility.removeLocalStorage("temporaryContent");
+        this.resetNotifyAllReplier();
         this.props.onChange();
 
         this.setState({
@@ -610,6 +622,27 @@ ${newProps.content.content}[/quote]
         </div>
       );
     }
+
+    const isManager = Utility.isMaster(this.props.boardInfo.boardMasters);
+    let notifyAllReplier = null;
+    if (this.props.topicInfo.canNotifyAllReplier || isManager) {
+      notifyAllReplier = (
+        <div>
+          <div className="row" style={{ color: "#808080" }}>
+            <input type="checkbox" id="notifyAllReplierCheckBox" style={{ marginRight: "5px" }}
+              onChange={e => {
+                console.log(e.target.checked);
+                this.setState({ notifyAllReplier: e.target.checked });
+              }} />
+            <label htmlFor="notifyAllReplierCheckBox">通知本主题所有回复用户</label><br />
+          </div>
+          {isManager ?
+            <div className="row" style={{ color: "#808080" }}>注意：你因拥有本版面的管理权限，可以在本版面无条件使用本功能，请谨慎使用。</div>
+            : null}
+        </div>
+      )
+    }
+
     let mode, editor;
     //版面匿名状态，包括不可匿名、强制匿名（心灵）以及可选匿名
     //不可匿名为0，强制匿名为1，可选匿名为2，仅楼主可选匿名为3
@@ -791,6 +824,7 @@ ${newProps.content.content}[/quote]
       editor = (
         <div>
           {ft}
+          {notifyAllReplier}
           <UbbEditor
             update={this.update}
             value={this.state.content}
@@ -812,6 +846,7 @@ ${newProps.content.content}[/quote]
         <div>
           <div>
             {ft}
+            {notifyAllReplier}
             <ReactMde
               value={this.state.mdeState}
               onChange={this.handleValueChange}
@@ -844,7 +879,6 @@ ${newProps.content.content}[/quote]
     //管理按钮
 
     const manageItems = [];
-    const isManager = Utility.isMaster(this.props.boardInfo.boardMasters);
     const myInfo = Utility.getMyInfo();
     const isMe = myInfo && myInfo.id === this.props.topicInfo.userId;
     const hasManageFeature =

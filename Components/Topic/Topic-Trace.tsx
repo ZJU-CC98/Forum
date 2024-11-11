@@ -22,7 +22,7 @@ export class CurUserPost extends RouteComponent<
     quote;
   },
   { topicId; page; postId, userId }
-  > {
+> {
   throttling: boolean;
   replyContentInstance: SendTopic;
   constructor(props, context) {
@@ -35,7 +35,7 @@ export class CurUserPost extends RouteComponent<
       topicId: this.match.params.topicId,
       totalPage: 1,
       postId: this.match.params.postId,
-      topicInfo: { replyCount: 0 },
+      topicInfo: { replyCount: 0, notifyAllReplierPostIds: [] },
       boardInfo: { masters: [], id: 7 },
       content: '',
       shouldRender: false,
@@ -150,10 +150,10 @@ export class CurUserPost extends RouteComponent<
       topicInfo: topicInfo,
       boardInfo: boardInfo
     });
-    window.addEventListener("keyup",this.handleKeyUp); //添加键盘事件监听
+    window.addEventListener("keyup", this.handleKeyUp); //添加键盘事件监听
   }
   componentWillUnmount() {
-    window.removeEventListener("keyup",this.handleKeyUp); //移除键盘事件监听
+    window.removeEventListener("keyup", this.handleKeyUp); //移除键盘事件监听
   }
   async getTotalPage(topicId, postId) {
     console.log(postId)
@@ -166,7 +166,7 @@ export class CurUserPost extends RouteComponent<
     }
   }
   handleKeyUp = async (event: any) => {
-    if(event.target.tagName !== "BODY"){
+    if (event.target.tagName !== "BODY") {
       return; //如果焦点不在页面上，直接返回
     }
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
@@ -177,49 +177,47 @@ export class CurUserPost extends RouteComponent<
       // 如果节流标志为true，表示事件正在处理中，直接返回
       return;
     }
-    if(!this.replyContentInstance.isContentEmpty()){
+    if (!this.replyContentInstance.isContentEmpty()) {
       //输入内容不为空
-      if(!window.confirm("您的输入内容尚未提交，是否翻页？")){
-          return;
+      if (!window.confirm("您的输入内容尚未提交，是否翻页？")) {
+        return;
       }
     }
     this.throttling = true;
     let page = this.state.page;
     switch (event.key) {
-        case "ArrowLeft":
-            if (page > 1) {
-                page--;
-                const url = `/topic/${this.state.topicId}/postId/${this.state.postId}/${page}`;
-               window.scroll({
-                  top: 0,
-                  left: 0,
-              });
-                this.props.history.push(url);
-            }
-            break;
-        case "ArrowRight":
-            if (page < this.state.totalPage) {
-                page++;
-                const url =  `/topic/${this.state.topicId}/postId/${this.state.postId}/${page}`;
-                window.scroll({
-                  top: 0,
-                  left: 0,
-              });
-                this.props.history.push(url);
-            }
-            break;
-        default:
-            break;
+      case "ArrowLeft":
+        if (page > 1) {
+          page--;
+          const url = `/topic/${this.state.topicId}/postId/${this.state.postId}/${page}`;
+          window.scroll({
+            top: 0,
+            left: 0,
+          });
+          this.props.history.push(url);
+        }
+        break;
+      case "ArrowRight":
+        if (page < this.state.totalPage) {
+          page++;
+          const url = `/topic/${this.state.topicId}/postId/${this.state.postId}/${page}`;
+          window.scroll({
+            top: 0,
+            left: 0,
+          });
+          this.props.history.push(url);
+        }
+        break;
+      default:
+        break;
     }
     // 使用setTimeout来清除节流标志
     setTimeout(() => {
       this.throttling = false;
     }, 1000); // 1000毫秒是节流的时间间隔
-}
+  }
   render() {
-    const url = `/topic/${this.match.params.topicId}/postId/${
-      this.match.params.postId
-      }/`;
+    const url = `/topic/${this.match.params.topicId}/postId/${this.match.params.postId}/`;
     const pagerUrl = `/topic/${this.state.topicId}/`;
     return (
       <div className="center" style={{ width: '1140px' }}>

@@ -178,6 +178,11 @@ export class ReplyContent extends React.Component<
                 该用户今日在本版发布了{this.props.topicInfo.todayCount}个主题帖
               </Tag>
             )}
+          {this.props.topicInfo.notifyAllReplierPostIds.includes(this.props.postId) && (
+            <Tag>
+              本楼使用了“通知本主题所有回复用户”功能
+            </Tag>
+          )}
         </div>
         <div className="substance">{content}</div>
       </div>
