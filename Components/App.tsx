@@ -10,7 +10,7 @@ import { CurUserPost } from "./Topic/Topic-Trace";
 import { BoardList } from "./Board/BoardList";
 import UserCenter from "./UserCenter/UserCenter";
 import { Message } from "./Message/Message";
-import { AllNewTopic } from "./Topic/Topic-New";
+import  AllNewTopic  from "./Topic/Topic-New";
 import { AllRecommendedTopic } from "./Topic/Topic-Recommended"
 import Focus from "./Focus/Focus";
 import { Header } from "./Header";

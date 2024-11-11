@@ -12,6 +12,7 @@ import { Link, withRouter, Route } from "react-router-dom";
 import { refreshCurrentUserInfo } from "../AsyncActions/UserCenter";
 import { refreshCurrentMessageCount } from "../AsyncActions/Message";
 import { MessageInfo } from "../Reducers/Message";
+import { changeUserInfoVisible } from "../Actions/UserCenter";
 
 type props = {
   isLogOn: boolean;
@@ -21,10 +22,12 @@ type props = {
   refreshCurrentMessageCount: () => void;
   refreshUserInfo: () => void;
   messageCount: MessageInfo;
+  showCardUser: boolean;
 };
 
 type state = {
   hoverElement: string;
+  // showCardUser: boolean;
 };
 
 class DropDownConnect extends React.Component<props, state> {
@@ -33,6 +36,7 @@ class DropDownConnect extends React.Component<props, state> {
     super(props);
     this.state = {
       hoverElement: null,
+      // showCardUser: true,
     };
   }
 
@@ -60,6 +64,24 @@ class DropDownConnect extends React.Component<props, state> {
       }
     });
 
+    /**
+     * 同步是否前端隐藏用户信息
+     */
+    // window.addEventListener("storage", (e) => {
+    //   console.log("缓存变换",e);
+    //   if (e.key === "showCardUser") {
+    //     if (e.oldValue === e.newValue) return;
+    //     if (e.newValue) {
+    //       this.setState({
+    //         showCardUser: Utility.getLocalStorage("showCardUser"),
+    //       });
+    //     }
+    //   }
+    // })
+
+
+
+
     if (Utility.isLogOn()) {
       this.props.refreshCurrentMessageCount();
     }
@@ -85,6 +107,11 @@ class DropDownConnect extends React.Component<props, state> {
     this.props.logOff(); //更新redux中的状态
     window.location.href = '/';
   }
+
+  componentWillReceiveProps(nextProps: Readonly<props>, nextContext: any): void {
+      console.log("nextProps",nextProps);
+  }
+
 
   handleMouseEvent(type, className) {
     switch (type) {
@@ -176,7 +203,7 @@ class DropDownConnect extends React.Component<props, state> {
                 this.handleMouseEvent(e.type, "userName");
               }}
             >
-              <img src={this.props.userInfo.portraitUrl} />
+              <img src={this.props.showCardUser ? this.props.userInfo.portraitUrl :"/static/images/_心灵之约.png" } />
             </div>
             <div
               className="topBarUserName"
@@ -187,7 +214,7 @@ class DropDownConnect extends React.Component<props, state> {
                 this.handleMouseEvent(e.type, "userName");
               }}
             >
-              {this.props.userInfo.name}
+              {this.props.showCardUser ? this.props.userInfo.name : "匿名用户"}
             </div>
           </div>
           <div
@@ -304,6 +331,7 @@ function mapState(state: RootState) {
     userInfo: state.userInfo.currentUserInfo,
     isLogOn: state.userInfo.isLogOn,
     messageCount: state.message,
+    showCardUser: state.userInfo.showCardUser,
   };
 }
 
@@ -323,6 +351,9 @@ function mapDispatch(dispatch) {
     refreshCurrentMessageCount: () => {
       dispatch(refreshCurrentMessageCount());
     },
+    changeUserInfoVisible: (visible: boolean) => {
+      dispatch(Actions.changeUserInfoVisible(visible));
+    }
   };
 }
 

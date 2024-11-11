@@ -98,6 +98,12 @@ export class UserInfoStore {
    */
   transferSuccessUsers: string[] = [];
 
+  /**
+   * 是否显示用户信息
+   */
+  showCardUser: boolean = true;
+
+
   constructor() {
     this.totalPage.myfollowings = Math.ceil(
       this.currentUserInfo.followCount / 10
@@ -264,6 +270,8 @@ export default (
         ...state,
         hasTotal: { ...state.hasTotal, myfavoriteposts: false },
       };
+      case ActionTypes.CHANGE_USER_INFO_VISIBLE:
+        return { ...state, showCardUser: action.payload.showCardUser };
 
     default:
       return state;

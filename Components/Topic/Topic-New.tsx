@@ -15,15 +15,34 @@ import Spin from "antd/es/spin";
 import { MyInfo } from "../../States/AppState";
 import { CardBoard } from "../Focus/CardBoard";
 import { CardRecommendTopic } from "../Focus/CardRecommendTopic";
-import store, { Actions } from "../../Store";
+import store, { Actions, RootState } from "../../Store";
 import * as ErrorActions from "../../Actions/Error";
 import { Icon } from "antd";
+import { changeUserInfoVisible } from "../../Actions/UserCenter";
+import { connect } from "react-redux";
 //import pDebounce from "p-debounce";
+
+
+function mapState(state: RootState) {
+  return {
+    showCardUser: state.userInfo.showCardUser,
+  };
+}
+
+function mapDispatch(dispatch) {
+  return {
+    changeUserInfoVisible: (visible: boolean) => {
+      dispatch(Actions.changeUserInfoVisible(visible));
+      // Actions.changeUserInfoVisible(visible);
+    }
+  };
+}
+
 
 /**
  * 表示全站最新主题列表
  */
-export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
+class AllNewTopic extends React.Component<{showCardUser: boolean}, NewTopicAreaState> {
   isLoadable: boolean;
   mediaOnly: boolean;
   myInfo: MyInfo;
@@ -310,9 +329,9 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
                     </a>
                     {/* </span> */}
                     {this.state.showCardUser ? (
-                      <Icon type="eye-invisible" theme="outlined"  onClick={()=>{this.setState({showCardUser:false});Utility.setLocalStorage("showCardUser",false,0)}}/>
+                      <Icon type="eye-invisible" theme="outlined"  onClick={()=>{ debugger;changeUserInfoVisible(false);this.setState({showCardUser:false});Utility.setLocalStorage("showCardUser",false,0)}}/>
                     ) : (
-                      <Icon type="eye" theme="outlined" onClick={()=>{this.setState({showCardUser:true} );Utility.setLocalStorage("showCardUser",true,0)}} />
+                      <Icon type="eye" theme="outlined" onClick={()=>{debugger;changeUserInfoVisible(true);this.setState({showCardUser:true} );Utility.setLocalStorage("showCardUser",true,0)}} />
                     )}
                   </div>
                   <div className="card-user-stats">
@@ -389,6 +408,8 @@ export class AllNewTopic extends React.Component<{}, NewTopicAreaState> {
     );
   }
 }
+
+export default connect(mapState, mapDispatch)(AllNewTopic);
 
 /**
  * 单个主题数据转换成单个主题组件
