@@ -2,5 +2,5 @@
   "apiUrl": "https://api.cc98.org",
   "openIdUrl": "https://openid.cc98.org",
   "imageUploadUrl": "http://www.cc98.org",
-  "defaultTheme": 30
+  "defaultTheme": 4
 }

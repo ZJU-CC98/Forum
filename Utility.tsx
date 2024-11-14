@@ -704,7 +704,7 @@ export async function getFocusTopic(
     let response;
     if (boardId === -1) {
       response = await cc98Fetch(
-        `/me/followee/topic?from=${from}&size=${size}`,
+        `/me/followee/topic?from=${from}&size=${size}&order=0`,
         { headers }
       );
     } else if (boardId === 0) {
