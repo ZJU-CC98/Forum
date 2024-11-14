@@ -297,13 +297,16 @@ export class Reply extends React.Component<
       if (Id === "10") {
         Id = "0";
       }
-      //使当前楼层正好定位在浏览器窗口中间
       if (document.getElementById(Id)) {
         let top = document.getElementById(Id).offsetTop;
         let height = document.getElementById(Id).clientHeight;
         let bigHeight = window.innerHeight;
-        let delta = (bigHeight - height) / 2;
-        $(document).scrollTop(top - delta);
+        if (height > bigHeight) { // 如果元素的高度大于屏幕高度，直接滚动到元素顶部
+          $(document).scrollTop(top);
+        } else { // 否则将内容居中显示
+          let delta = (bigHeight - height) / 2;
+          $(document).scrollTop(top - delta);
+        }
       }
     }
   }
