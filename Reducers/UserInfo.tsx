@@ -270,7 +270,7 @@ export default (
         ...state,
         hasTotal: { ...state.hasTotal, myfavoriteposts: false },
       };
-      case ActionTypes.CHANGE_USER_INFO_VISIBLE:
+    case ActionTypes.CHANGE_USER_INFO_VISIBLE:
         return { ...state, showCardUser: action.payload.showCardUser };
 
     default:

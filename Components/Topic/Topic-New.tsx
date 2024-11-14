@@ -42,7 +42,7 @@ function mapDispatch(dispatch) {
 /**
  * 表示全站最新主题列表
  */
-class AllNewTopic extends React.Component<{showCardUser: boolean}, NewTopicAreaState> {
+class AllNewTopic extends React.Component<{showCardUser: boolean,changeUserInfoVisible:(showCardUser: boolean)=>void}, NewTopicAreaState> {
   isLoadable: boolean;
   mediaOnly: boolean;
   myInfo: MyInfo;
@@ -322,23 +322,23 @@ class AllNewTopic extends React.Component<{showCardUser: boolean}, NewTopicAreaS
                   <div className="card-user-background"></div>
                   <div className="card-user-portrait">
                     {/* <span> */}
-                    <img src={this.myInfo ? this.state.showCardUser? this.myInfo.portraitUrl: "/static/images/_心灵之约.png" : ""} />
+                    <img src={this.myInfo ? this.props.showCardUser? this.myInfo.portraitUrl: "/static/images/_心灵之约.png" : ""} />
                     
                     <a href="../usercenter" target="_blank">
-                      {this.myInfo ? this.state.showCardUser? this.myInfo.name :"匿名用户" : ""}
+                      {this.myInfo ? this.props.showCardUser? this.myInfo.name :"匿名用户" : ""}
                     </a>
                     {/* </span> */}
-                    {this.state.showCardUser ? (
-                      <Icon type="eye-invisible" theme="outlined"  onClick={()=>{ debugger;changeUserInfoVisible(false);this.setState({showCardUser:false});Utility.setLocalStorage("showCardUser",false,0)}}/>
+                    {this.props.showCardUser ? (
+                      <Icon type="eye-invisible" theme="outlined"  onClick={()=>{ debugger;this.props.changeUserInfoVisible(false);Utility.setLocalStorage("showCardUser",false,0)}}/>
                     ) : (
-                      <Icon type="eye" theme="outlined" onClick={()=>{debugger;changeUserInfoVisible(true);this.setState({showCardUser:true} );Utility.setLocalStorage("showCardUser",true,0)}} />
+                      <Icon type="eye" theme="outlined" onClick={()=>{debugger;this.props.changeUserInfoVisible(true);Utility.setLocalStorage("showCardUser",true,0)}} />
                     )}
                   </div>
                   <div className="card-user-stats">
                     <div className="card-user-stats-item">
                       <a href="../usercenter" target="_blank">
                         {this.myInfo
-                          ? this.state.showCardUser? this.getCountString(this.myInfo.postCount) :"--"
+                          ? this.props.showCardUser? this.getCountString(this.myInfo.postCount) :"--"
                           : ""}
                       </a>
                       帖数
@@ -346,7 +346,7 @@ class AllNewTopic extends React.Component<{showCardUser: boolean}, NewTopicAreaS
                     <div className="card-user-stats-item">
                       <a href="../usercenter/myfollowings" target="_blank">
                         {this.myInfo
-                          ? this.state.showCardUser? this.getCountString(this.myInfo.followCount) :"--"
+                          ? this.props.showCardUser? this.getCountString(this.myInfo.followCount) :"--"
                           : ""}
                       </a>
                       关注
@@ -354,14 +354,14 @@ class AllNewTopic extends React.Component<{showCardUser: boolean}, NewTopicAreaS
                     <div className="card-user-stats-item">
                       <a href="../usercenter/myfans" target="_blank">
                         {this.myInfo
-                          ? this.state.showCardUser ? this.getCountString(this.myInfo.fanCount) : "--"
+                          ? this.props.showCardUser ? this.getCountString(this.myInfo.fanCount) : "--"
                           : ""}
                       </a>
                       粉丝
                     </div>
                     <div className="card-user-stats-item">
                       <a href="../usercenter/myposts/ishot/1/1" target="_blank">
-                        {this.myInfo ? this.state.showCardUser? this.getCountString(this.myInfo.receivedLikeCount) : "--" : ""}
+                        {this.myInfo ? this.props.showCardUser? this.getCountString(this.myInfo.receivedLikeCount) : "--" : ""}
                       </a>
                       获赞
                     </div>

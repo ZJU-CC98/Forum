@@ -13,6 +13,7 @@ import { refreshCurrentUserInfo } from "../AsyncActions/UserCenter";
 import { refreshCurrentMessageCount } from "../AsyncActions/Message";
 import { MessageInfo } from "../Reducers/Message";
 import { changeUserInfoVisible } from "../Actions/UserCenter";
+import { Icon } from "antd";
 
 type props = {
   isLogOn: boolean;
@@ -21,6 +22,7 @@ type props = {
   reLogOn: (userInfo: UserInfo) => void;
   refreshCurrentMessageCount: () => void;
   refreshUserInfo: () => void;
+  changeUserInfoVisible: (visible: boolean) => void;
   messageCount: MessageInfo;
   showCardUser: boolean;
 };
@@ -67,18 +69,21 @@ class DropDownConnect extends React.Component<props, state> {
     /**
      * 同步是否前端隐藏用户信息
      */
-    // window.addEventListener("storage", (e) => {
-    //   console.log("缓存变换",e);
-    //   if (e.key === "showCardUser") {
-    //     if (e.oldValue === e.newValue) return;
-    //     if (e.newValue) {
-    //       this.setState({
-    //         showCardUser: Utility.getLocalStorage("showCardUser"),
-    //       });
-    //     }
-    //   }
-    // })
+    window.addEventListener("storage", (e) => {
+      if (e.key === "showCardUser") {
+        if (e.oldValue === e.newValue) return;
+        if (e.newValue) {
+          let showCardUser = Utility.getLocalStorage("showCardUser") === "true";
+          this.props.changeUserInfoVisible(showCardUser);
+        }
+      }
+    })
 
+
+    //组件加载时也读取一下隐藏用户信息的状态
+    let temp = Utility.getLocalStorage("showCardUser");
+    let showCardUser = temp === null ? true : temp === "true";
+    this.props.changeUserInfoVisible(showCardUser);
 
 
 
@@ -108,9 +113,9 @@ class DropDownConnect extends React.Component<props, state> {
     window.location.href = '/';
   }
 
-  componentWillReceiveProps(nextProps: Readonly<props>, nextContext: any): void {
-      console.log("nextProps",nextProps);
-  }
+  // componentWillReceiveProps(nextProps: Readonly<props>, nextContext: any): void {
+  //     console.log("nextProps",nextProps);
+  // }
 
 
   handleMouseEvent(type, className) {
@@ -203,7 +208,35 @@ class DropDownConnect extends React.Component<props, state> {
                 this.handleMouseEvent(e.type, "userName");
               }}
             >
-              <img src={this.props.showCardUser ? this.props.userInfo.portraitUrl :"/static/images/_心灵之约.png" } />
+              <img
+                className={this.props.showCardUser ? "" : "topBarUserImgHide"}
+                src={
+                  this.props.showCardUser
+                    ? this.props.userInfo.portraitUrl
+                    : "/static/images/_心灵之约.png"
+                }
+              />
+              {this.props.showCardUser ? (
+                <Icon
+                  type="eye-invisible"
+                  theme="outlined"
+                  className="topBarUserHideIcon"
+                  onClick={() => {
+                    this.props.changeUserInfoVisible(false);
+                    Utility.setLocalStorage("showCardUser", false, 0);
+                  }}
+                />
+              ) : (
+                <Icon
+                  type="eye"
+                  theme="outlined"
+                  className="topBarUserHideIcon"
+                  onClick={() => {
+                    this.props.changeUserInfoVisible(true);
+                    Utility.setLocalStorage("showCardUser", true, 0);
+                  }}
+                />
+              )}
             </div>
             <div
               className="topBarUserName"

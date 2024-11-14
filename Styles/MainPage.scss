@@ -831,6 +831,9 @@ td {
     width: 2rem;
     border-radius: 50%;
   }
+  .topBarUserImgHide{
+    background-color: color-mix(in srgb, $theme_color_main, #444444 10%);
+  }
 }
 
 .topBarUserName {
@@ -843,6 +846,26 @@ td {
   font-family: 微软雅黑;
   color: #ffffff;
   cursor: pointer;
+}
+
+.topBarUserHideIcon {
+  height: 2rem;
+  width: 2rem;
+  margin: 0px 15px 0px 15px;
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #d5d5d5;
+  background-color: color-mix(in srgb, $theme_color_main, #fff 40%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .topBarMessage {
