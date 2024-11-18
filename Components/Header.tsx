@@ -107,6 +107,7 @@ class DropDownConnect extends React.Component<props, state> {
     Utility.removeLocalStorage("refresh_token");
     Utility.removeLocalStorage("userInfo");
     Utility.removeLocalStorage("usePWA");
+    Utility.removeLocalStorage("showCardUser");
     Utility.removeStorage("all");
     Utility.changeTheme(0);
     this.props.logOff(); //更新redux中的状态
