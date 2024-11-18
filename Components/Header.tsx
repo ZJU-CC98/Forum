@@ -82,7 +82,7 @@ class DropDownConnect extends React.Component<props, state> {
 
     //组件加载时也读取一下隐藏用户信息的状态
     let temp = Utility.getLocalStorage("showCardUser");
-    let showCardUser = temp === null ? true : temp === "true";
+    let showCardUser = temp === 'false' ? false : true;
     this.props.changeUserInfoVisible(showCardUser);
 
 
