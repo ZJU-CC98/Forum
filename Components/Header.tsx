@@ -247,7 +247,7 @@ class DropDownConnect extends React.Component<props, state> {
                 this.handleMouseEvent(e.type, "userName");
               }}
             >
-              {this.props.showCardUser ? this.props.userInfo.name : "匿名用户"}
+              {this.props.showCardUser ? this.props.userInfo.name : "隐私模式"}
             </div>
           </div>
           <div
