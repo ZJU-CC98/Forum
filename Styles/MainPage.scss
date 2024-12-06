@@ -110,7 +110,8 @@
   line-height: 25px;
   cursor: pointer;
   padding-top: 3px;
-  width: 4rem;
+  min-width: 4rem;
+  max-width: 5rem;
   text-align: center;
 }
 
@@ -162,7 +163,8 @@
   line-height: 25px;
   cursor: pointer;
   padding-top: 3px;
-  width: 4rem;
+  min-width: 4rem;
+  max-width: 5rem;
   text-align: center;
 }
 
