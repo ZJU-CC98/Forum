@@ -556,15 +556,15 @@ td {
   flex-direction: column;
   width: 100%;
   margin-top: 0.75rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .recommendedFunctionContent {
   display: flex;
   flex-direction: column;
-  height: 21.25rem;
+  height: 15rem;
   margin-top: 1rem;
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   box-sizing: border-box;
   background-color: $theme_color_main;
 }
@@ -582,8 +582,8 @@ td {
 
   img {
     border-radius: 50%;
-    width: 3.125rem;
-    height: 3.125rem;
+    width: 3rem;
+    height: 3rem;
   }
 }
 
@@ -600,34 +600,33 @@ td {
   }
 }
 
-//校园新闻
-.schoolNews {
+//优惠活动
+.specialOffer {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 2rem;
-  margin-bottom: 2.5rem; //封装的广告组件没有任何margin
+  margin-bottom: 1rem;
 }
 
-.schoolNewsContent {
+.specialOfferContent {
   display: flex;
   flex-direction: column;
-  height: 20rem;
+  max-height: 20rem;
   margin-top: 1rem;
-  padding: 1.5rem 1.25rem 1rem 1.25rem;
+  padding: 1rem 1rem 0.75rem 1rem;
   box-sizing: border-box;
   background-color: $theme_color_sub;
 }
 
-.schoolNewsRow {
+.specialOfferRow {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   max-height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
+  margin-bottom: 0.25rem;
 }
 
-.schoolNewsTitle {
-  flex-grow: 1;
+.specialOfferTitle {
   font-size: 0.75rem;
   font-family: 微软雅黑;
   color: rgb(255, 255, 255);
@@ -684,15 +683,15 @@ td {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .mainPageCountContent {
   display: flex;
   flex-direction: column;
-  height: 12rem;
+  max-height: 20rem;
   margin-top: 1rem;
-  padding: 1.5rem 1.25rem 1rem 1.25rem;
+  padding: 1rem 1.25rem 0.75rem 1.25rem;
   box-sizing: border-box;
   background-color: $theme_color_main;
 }
@@ -703,6 +702,7 @@ td {
   flex-grow: 1;
   max-height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
   justify-content: space-between;
+  margin-bottom: 0.25rem;
 }
 
 .mainPageCountTitle {

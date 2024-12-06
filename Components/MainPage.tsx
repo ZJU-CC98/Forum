@@ -341,6 +341,39 @@ export class MainPageColumn {
 }
 
 /**
+ * 优惠活动组件
+ */
+export class SpecialOfferComponent extends React.Component<{ data }, {}> {
+  convertSpecialOffer(item: MainPageColumn) {
+    return (
+      <div className="specialOfferRow">
+        <div className="specialOfferTitle">
+          <a href={item.url} target="_blank">
+            • {item.title}
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    return this.props.data && this.props.data.length > 0 ? (
+      <div className="specialOffer">
+        <div className="mainPageTitle2">
+          <div className="mainPageTitleRow">
+            <i className="fa fa-volume-up"></i>
+            <div className="mainPageTitleText">优惠活动</div>
+          </div>
+        </div>
+        <div className="specialOfferContent">
+          {this.props.data.map(this.convertSpecialOffer)}
+        </div>
+      </div>
+    ) : null;
+  }
+}
+
+/**
  * 推荐功能组件
  */
 export class RecommendedFunctionComponent extends React.Component<
@@ -381,35 +414,35 @@ export class RecommendedFunctionComponent extends React.Component<
 /**
  * 校园新闻组件
  */
-export class SchoolNewsComponent extends React.Component<{ data }, {}> {
-  convertSchoolNews(item: MainPageColumn) {
-    return (
-      <div className="schoolNewsRow">
-        <div className="schoolNewsTitle">
-          <a href={item.url} target="_blank">
-            {item.title}
-          </a>
-        </div>
-      </div>
-    );
-  }
+// export class SchoolNewsComponent extends React.Component<{ data }, {}> {
+//   convertSchoolNews(item: MainPageColumn) {
+//     return (
+//       <div className="schoolNewsRow">
+//         <div className="schoolNewsTitle">
+//           <a href={item.url} target="_blank">
+//             {item.title}
+//           </a>
+//         </div>
+//       </div>
+//     );
+//   }
 
-  render() {
-    return (
-      <div className="schoolNews">
-        <div className="mainPageTitle2">
-          <div className="mainPageTitleRow">
-            <i className="fa fa-volume-up"></i>
-            <div className="mainPageTitleText">校园新闻</div>
-          </div>
-        </div>
-        <div className="schoolNewsContent">
-          {this.props.data.map(this.convertSchoolNews)}
-        </div>
-      </div>
-    );
-  }
-}
+//   render() {
+//     return (
+//       <div className="schoolNews">
+//         <div className="mainPageTitle2">
+//           <div className="mainPageTitleRow">
+//             <i className="fa fa-volume-up"></i>
+//             <div className="mainPageTitleText">校园新闻</div>
+//           </div>
+//         </div>
+//         <div className="schoolNewsContent">
+//           {this.props.data.map(this.convertSchoolNews)}
+//         </div>
+//       </div>
+//     );
+//   }
+// }
 
 /**
  * 首页广告组件
@@ -530,7 +563,7 @@ export class AdsComponent extends React.Component<
 
     return (
       <div
-        style={{ position: "relative", width: "18.75rem", height: "6.25rem" }}
+        style={{ position: "relative", width: "18.75rem", height: "6.25rem", marginBottom: "1rem" }}
       >
         <div>
           <a href={url} target="_blank">
@@ -669,7 +702,7 @@ export class QRCode extends React.Component<
         style={{
           display: "flex",
           flexDirection: "column",
-          marginTop: "2rem",
+          marginBottom: "1rem",
         }}
       >
         <div className="mainPageTitle2">
@@ -678,7 +711,7 @@ export class QRCode extends React.Component<
             <div className="mainPageTitleText">{this.props.title}</div>
           </div>
         </div>
-        <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+        <div style={{ marginTop: "1rem" }}>
           <img style={{ width: "100%" }} src={this.props.src}></img>
         </div>
       </div>
@@ -850,6 +883,7 @@ export class MainPage extends React.Component<{}, { data }> {
           <RecommendedFunctionComponent data={data.recommendationFunction} />
           {/*<SchoolNewsComponent data={data.schoolNews} />*/}
           <AdsComponent />
+          <SpecialOfferComponent data={data.specialOffer} />
           <MainPageCountComponent data={count} />
           <QRCode title="CC98小程序" src="/static/images/xiaochengxu.png" />
           <QRCode title="98淘书小程序" src="/static/images/taoshu.jpg" />
