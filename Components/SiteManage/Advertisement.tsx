@@ -12,7 +12,7 @@ const PostForumIndexColumnInfoType = [
   'Banner',
   '', //占位
   '', //占位
-  '优惠活动'
+  '福利优惠'
 ];
 
 const urls = [
@@ -28,7 +28,7 @@ const urls = [
 class PostForumIndexColumnInfo {
   id: number;
   /**
-   * 1=推荐阅读，2=推荐功能，3=校园新闻，4=Banner，7=优惠活动
+   * 1=推荐阅读，2=推荐功能，3=校园新闻，4=Banner，7=福利优惠
    */
   type: number;
   /**
@@ -56,7 +56,7 @@ class PostForumIndexColumnInfo {
    */
   enable: boolean;
   /**
-   * Banner和优惠活动需要，大于0的整数
+   * Banner和福利优惠需要，大于0的整数
    */
   days: number;
   /**
@@ -80,7 +80,7 @@ interface State {
    */
   data: PostForumIndexColumnInfo[];
   /**
-   * 1=推荐阅读，2=推荐功能，3=校园新闻，4=Banner，7=优惠活动
+   * 1=推荐阅读，2=推荐功能，3=校园新闻，4=Banner，7=福利优惠
    */
   type: number;
   /**
@@ -458,7 +458,7 @@ export default class extends React.Component<props, State> {
               disabled={this.state.type === 7}
               onClick={() => this.getInfo(urls[6])}
             >
-              优惠活动
+              福利优惠
             </Button>
           </div>
           {this.state.type > 0 ? (

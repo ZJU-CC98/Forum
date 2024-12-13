@@ -341,7 +341,7 @@ export class MainPageColumn {
 }
 
 /**
- * 优惠活动组件
+ * 福利优惠组件
  */
 export class SpecialOfferComponent extends React.Component<{ data }, {}> {
   convertSpecialOffer(item: MainPageColumn) {
@@ -362,7 +362,7 @@ export class SpecialOfferComponent extends React.Component<{ data }, {}> {
         <div className="mainPageTitle2">
           <div className="mainPageTitleRow">
             <i className="fa fa-volume-up"></i>
-            <div className="mainPageTitleText">优惠活动</div>
+            <div className="mainPageTitleText">福利优惠</div>
           </div>
         </div>
         <div className="specialOfferContent">
@@ -563,7 +563,7 @@ export class AdsComponent extends React.Component<
 
     return (
       <div
-        style={{ position: "relative", width: "18.75rem", height: "6.25rem", marginBottom: "1rem" }}
+        style={{ position: "relative", width: "18.75rem", height: "6.25rem", marginBottom: "1rem", marginTop: "0.25rem" }}
       >
         <div>
           <a href={url} target="_blank">
@@ -883,7 +883,9 @@ export class MainPage extends React.Component<{}, { data }> {
           <RecommendedFunctionComponent data={data.recommendationFunction} />
           {/*<SchoolNewsComponent data={data.schoolNews} />*/}
           <AdsComponent />
-          <SpecialOfferComponent data={data.specialOffer} />
+          {Utility.getMyInfo() ?
+            <SpecialOfferComponent data={data.specialOffer} /> :
+            null}
           <MainPageCountComponent data={count} />
           <QRCode title="CC98小程序" src="/static/images/xiaochengxu.png" />
           <QRCode title="98淘书小程序" src="/static/images/taoshu.jpg" />
