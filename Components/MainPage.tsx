@@ -563,7 +563,7 @@ export class AdsComponent extends React.Component<
 
     return (
       <div
-        style={{ position: "relative", width: "18.75rem", height: "6.25rem", marginBottom: "1rem", marginTop: "0.25rem" }}
+        style={{ position: "relative", width: "18.75rem", height: "6.25rem", marginBottom: "1rem" }}
       >
         <div>
           <a href={url} target="_blank">
