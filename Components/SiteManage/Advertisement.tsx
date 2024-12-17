@@ -9,24 +9,30 @@ const PostForumIndexColumnInfoType = [
   '推荐阅读',
   '推荐功能',
   '校园新闻',
-  '广告'
+  'Banner',
+  '', //占位
+  '', //占位
+  '福利优惠'
 ];
 
 const urls = [
   '/index/column/recommandationreading',
   '/index/column/recommandationfunction',
   '/index/column/schoolnews',
-  '/config/global/advertisement'
+  '/config/global/advertisement',
+  '', //占位
+  '', //占位
+  '/config/global/special-offer'
 ];
 
 class PostForumIndexColumnInfo {
   id: number;
   /**
-   * 1=推荐阅读，2=推荐功能，3=校园新闻，4=广告
+   * 1=推荐阅读，2=推荐功能，3=校园新闻，4=Banner，7=福利优惠
    */
   type: number;
   /**
-   * 必须，广告表示对广告的简单描述
+   * 必须，Banner表示对Banner的简单描述
    */
   title: string;
   /**
@@ -50,7 +56,7 @@ class PostForumIndexColumnInfo {
    */
   enable: boolean;
   /**
-   * 只有广告需要，大于0的整数
+   * Banner和福利优惠需要，大于0的整数
    */
   days: number;
   /**
@@ -74,7 +80,7 @@ interface State {
    */
   data: PostForumIndexColumnInfo[];
   /**
-   * 1=推荐阅读，2=推荐功能，3=校园新闻，4=广告
+   * 1=推荐阅读，2=推荐功能，3=校园新闻，4=Banner，7=福利优惠
    */
   type: number;
   /**
@@ -199,14 +205,14 @@ export default class extends React.Component<props, State> {
         width: 60
       },
       {
-        title: 'type',
+        title: '类型',
         dataIndex: 'type',
         key: 'type',
         width: 100,
         render: text => PostForumIndexColumnInfoType[text - 1]
       },
       {
-        title: 'title',
+        title: '标题',
         dataIndex: 'title',
         key: 'title',
         width: 200,
@@ -226,7 +232,7 @@ export default class extends React.Component<props, State> {
       },
       this.state.type === 1
         ? {
-          title: 'content',
+          title: '内容',
           dataIndex: 'content',
           key: 'content',
           width: 200,
@@ -249,7 +255,7 @@ export default class extends React.Component<props, State> {
         title: 'url',
         dataIndex: 'url',
         key: 'url',
-        width: 140,
+        width: 200,
         render: (text, record, index) => (
           <Input
             type="text"
@@ -264,9 +270,9 @@ export default class extends React.Component<props, State> {
           />
         )
       },
-      this.state.type !== 3
+      this.state.type !== 3 && this.state.type !== 7
         ? {
-          title: 'imageUrl',
+          title: '图片url',
           dataIndex: 'imageUrl',
           key: 'imageUrl',
           width: 200,
@@ -287,10 +293,10 @@ export default class extends React.Component<props, State> {
         : null,
       this.state.type === 1 || this.state.type === 2
         ? {
-          title: 'orderWeight',
+          title: '排序权重',
           dataIndex: 'orderWeight',
           key: 'orderWeight',
-          width: 150,
+          width: 100,
           render: (text, record, index) => (
             <Input
               type="text"
@@ -307,7 +313,7 @@ export default class extends React.Component<props, State> {
         }
         : null,
       {
-        title: 'enable',
+        title: '有效',
         dataIndex: 'enable',
         key: 'enable',
         width: 80,
@@ -324,9 +330,9 @@ export default class extends React.Component<props, State> {
           />
         )
       },
-      this.state.type === 4
+      this.state.type === 4 || this.state.type === 7
         ? {
-          title: 'days',
+          title: '天数 (新增和修改都填距现在时间)',
           dataIndex: 'days',
           key: 'days',
           render: (text, record, index) => (
@@ -344,16 +350,16 @@ export default class extends React.Component<props, State> {
           )
         }
         : null,
-      this.state.type === 4
+      this.state.type === 4 || this.state.type === 7
         ? {
-          title: 'expiredTime',
+          title: '过期时间',
           dataIndex: 'expiredTime',
           key: 'expiredTime',
           render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
         }
         : null,
       {
-        title: 'visibility',
+        title: '可见性 (0-都可见 1-仅登录 2-仅未登录)',
         dataIndex: 'visibility',
         key: 'visibility',
         render: (text, record, index) => (
@@ -371,7 +377,7 @@ export default class extends React.Component<props, State> {
         )
       },
       {
-        title: 'save',
+        title: '保存',
         dataIndex: 'save',
         key: 'save',
         width: 100,
@@ -428,7 +434,7 @@ export default class extends React.Component<props, State> {
               推荐功能
             </Button>
           </div>
-          <div>
+          {/* <div>
             <Button
               type="primary"
               disabled={this.state.type === 3}
@@ -436,14 +442,23 @@ export default class extends React.Component<props, State> {
             >
               校园新闻
             </Button>
-          </div>
+          </div> */}
           <div>
             <Button
               type="primary"
               disabled={this.state.type === 4}
               onClick={() => this.getInfo(urls[3])}
             >
-              广告
+              Banner
+            </Button>
+          </div>
+          <div>
+            <Button
+              type="primary"
+              disabled={this.state.type === 7}
+              onClick={() => this.getInfo(urls[6])}
+            >
+              福利优惠
             </Button>
           </div>
           {this.state.type > 0 ? (
