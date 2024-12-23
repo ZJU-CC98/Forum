@@ -53,7 +53,7 @@ export class CurUserPost extends RouteComponent<
     const y = $('#sendTopicInfo').offset().top;
     let page = this.state.page;
     if (!this.state.page) page = 1;
-    const url = `#sendTopicInfo`;
+    const url = `/topic/${this.state.topicId}/postId/${this.state.postId}/${page}#sendTopicInfo`;
     this.props.history.push(url);
     this.setState({
       quote: {
@@ -66,27 +66,34 @@ export class CurUserPost extends RouteComponent<
     });
   }
   async handleChange() {
-    console.log('handle')
+    console.log('handle trace post')
     //const postInfo = await Utility.getPostInfo(this.match.params.postId);
-    const userId = this.match.params.userId;
-    const postId = this.match.params.postId;
+    //const userId = this.match.params.userId;
+    //const postId = this.match.params.postId;
     const topicInfo = await Utility.getTopicInfo(this.match.params.topicId);
-    let page: number;
-    if (!this.match.params.page) {
-      page = 1;
-    } else {
-      page = parseInt(this.match.params.page);
-    }
-    const totalPage = await this.getTotalPage(
-      this.state.topicInfo.replyCount,
-      postId
-    );
-    this.setState({
-      page: page,
-      topicId: this.match.params.topicId,
-      totalPage: totalPage,
-      topicInfo: topicInfo
-    });
+    const pages = 1 + Math.floor(topicInfo.replyCount / 10);
+    const floor = (topicInfo.replyCount + 1) % 10;
+    const url = `/topic/${topicInfo.id}/${pages}#${floor}`;
+    //console.log("url:", url)
+    this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
+    Utility.noticeMessageShow('replyMessage');
+    this.props.history.push(url);
+    // let page: number;
+    // if (!this.match.params.page) {
+    //   page = 1;
+    // } else {
+    //   page = parseInt(this.match.params.page);
+    // }
+    // const totalPage = await this.getTotalPage(
+    //   this.state.topicInfo.topicId,
+    //   postId
+    // );
+    // this.setState({
+    //   page: page,
+    //   topicId: this.match.params.topicId,
+    //   totalPage: totalPage,
+    //   topicInfo: topicInfo
+    // });
   }
   async componentWillReceiveProps(newProps) {
     let page: number;
@@ -95,6 +102,7 @@ export class CurUserPost extends RouteComponent<
     } else {
       page = parseInt(newProps.match.params.page);
     }
+    //console.log("page:?", page);
     if (page != this.match.params.page) {
       console.log('will')
       const userId = newProps.match.params.userId;
