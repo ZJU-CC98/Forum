@@ -117,7 +117,7 @@ export class Reply extends React.Component<
     });
   }
   async componentWillReceiveProps(newProps) {
-    console.log("this = " + this.props.page + "new=" + newProps.page);
+    console.log("this = " + this.props.page + " new=" + newProps.page);
     if (
       newProps.page !== this.props.page ||
       newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount
@@ -156,7 +156,7 @@ export class Reply extends React.Component<
   };
 
   private generateContents(item, index: number) {
-    const id = item.floor % 10;
+    const id = this.props.isTrace ? item.floor : item.floor % 10;
     let replyId = id.toString();
     let likeInfo = {
       likeCount: item.likeCount,
@@ -379,7 +379,7 @@ export class FloorSize extends React.Component<{
  * 文章内容
  */
 export class ContentState {
-  constructor() {}
+  constructor() { }
   id: number;
   content: string;
   time: string;

@@ -40,7 +40,6 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         this.throttling = false;
     }
     quote(content, userName, replyTime, floor, postId) {
-
         const y = $("#sendTopicInfo").offset().top;
         let page = this.state.page;
         if (!this.state.page) page = 1;
@@ -49,7 +48,6 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor, postId: postId } });
     }
     update() {
-
         this.setState({});
     }
     async handleChange() {
@@ -73,33 +71,27 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
             if ((noticeSetting && noticeSetting.post === "是") || ((newPage == page + 1) && (floor == 1))) {
                 console.log("要跳转");
                 page = newPage;
-                if(!page)page=1;
+                if (!page) page = 1;
                 let url = `/topic/${topicInfo.id}/${page}#${floor}`;
                 this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } }, this.props.history.push(url));
-
-
             }
             else {
                 let url = `/topic/${topicInfo.id}/${page}`;
                 //如果是引用了某一层楼，发帖后应该跳转回这层楼
                 if (this.state.quote && this.state.quote.floor) {
                     let quoteFloor = this.state.quote.floor % 10;
-                    if(!page)page=1;
+                    if (!page) page = 1;
                     url = `/topic/${topicInfo.id}/${page}#${quoteFloor}`;
-               
                     this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } }, this.props.history.push(url));
-
                 }
                 //如果没有引用则不需要跳转，直接还是在输入框那个位置
             }
         }
         else {
-       
             page = newPage;
-            if(!page)page=1;
+            if (!page) page = 1;
             let url = `/topic/${topicInfo.id}/${page}#${floor}`;
             this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } }, this.props.history.push(url));
-
         }
         //回复成功提示
         Utility.noticeMessageShow('replyMessage');
@@ -152,72 +144,72 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         // if (Utility.isMaster(boardInfo.boardMasters))
         //   IPData = await Utility.findIP(this.match.params.topicid);
         this.setState({ isFav, page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, fetchState: topicInfo, IPData: IPData });
-        window.addEventListener("keyup",this.handleKeyUp); //添加键盘事件监听
+        window.addEventListener("keyup", this.handleKeyUp); //添加键盘事件监听
     }
     componentWillUnmount(): void {
-        window.removeEventListener("keyup",this.handleKeyUp);
+        window.removeEventListener("keyup", this.handleKeyUp);
     }
     getTotalPage(count) {
         return Utility.getTotalPageof10(count);
     }
-    handleQuoteContextChange = (context) => { 
+    handleQuoteContextChange = (context) => {
         console.log("传进topic.tsx")
         console.log(context);
         this.setState({ quote: context });
     }
     handleKeyUp = (event: any) => {
-    //   console.log(event);
-    //   debugger;
-      if(event.target.tagName !== "BODY"){
-        return; //如果焦点不在页面上，直接返回
-      }
-      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
-        return; //如果不是方向键，直接返回
-      }
-      if (this.throttling) {
-        console.info("切换过于频繁 触发节流");
-        // 如果节流标志为true，表示事件正在处理中，直接返回
-        return;
-      }
-      if(!this.replyContentInstance.isContentEmpty()){
-        //输入内容不为空
-        if(!window.confirm("您的输入内容尚未提交，是否翻页？")){
+        //   console.log(event);
+        //   debugger;
+        if (event.target.tagName !== "BODY") {
+            return; //如果焦点不在页面上，直接返回
+        }
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+            return; //如果不是方向键，直接返回
+        }
+        if (this.throttling) {
+            console.info("切换过于频繁 触发节流");
+            // 如果节流标志为true，表示事件正在处理中，直接返回
             return;
         }
-      }
-      this.throttling = true;
-      let page = this.state.page;
-    //   console.log(event);
-      switch (event.key) {
-        case "ArrowLeft":
-          if (page > 1) {
-            page--;
-            const url = `/topic/${this.state.topicid}/${page}`;
-            window.scroll({
-              top: 0,
-              left: 0,
-            });
-            this.props.history.push(url);
-          }
-          break;
-        case "ArrowRight":
-          if (page < this.state.totalPage) {
-            page++;
-            const url = `/topic/${this.state.topicid}/${page}`;
-            window.scroll({
-              top: 0,
-              left: 0,
-            });
-            this.props.history.push(url);
-          }
-          break;
-        default:
-          break;
-      }
-      // 使用setTimeout来清除节流标志
-      setTimeout(() => {
-        this.throttling = false;
-      }, 1000); // 1000毫秒是节流的时间间隔
+        if (!this.replyContentInstance.isContentEmpty()) {
+            //输入内容不为空
+            if (!window.confirm("您的输入内容尚未提交，是否翻页？")) {
+                return;
+            }
+        }
+        this.throttling = true;
+        let page = this.state.page;
+        //   console.log(event);
+        switch (event.key) {
+            case "ArrowLeft":
+                if (page > 1) {
+                    page--;
+                    const url = `/topic/${this.state.topicid}/${page}`;
+                    window.scroll({
+                        top: 0,
+                        left: 0,
+                    });
+                    this.props.history.push(url);
+                }
+                break;
+            case "ArrowRight":
+                if (page < this.state.totalPage) {
+                    page++;
+                    const url = `/topic/${this.state.topicid}/${page}`;
+                    window.scroll({
+                        top: 0,
+                        left: 0,
+                    });
+                    this.props.history.push(url);
+                }
+                break;
+            default:
+                break;
+        }
+        // 使用setTimeout来清除节流标志
+        setTimeout(() => {
+            this.throttling = false;
+        }, 1000); // 1000毫秒是节流的时间间隔
     }
     render() {
         console.log("topic render");
@@ -245,7 +237,7 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         const pagerUrl = `/topic/${this.state.topicid}/`;
         let sendTopic = null;
         if (Utility.getMyInfo())
-            sendTopic = <SendTopic onChange={this.handleChange} boardInfo={this.state.boardInfo} content={this.state.quote} topicInfo={this.state.topicInfo} ref={replyContent => this.replyContentInstance = replyContent}/>;
+            sendTopic = <SendTopic onChange={this.handleChange} boardInfo={this.state.boardInfo} content={this.state.quote} topicInfo={this.state.topicInfo} ref={replyContent => this.replyContentInstance = replyContent} />;
         else
             sendTopic = <div>您还未登录，无法发言，请先登录。</div>;
         if (Utility.getMyInfo() && !Utility.getMyInfo().isVerified)
