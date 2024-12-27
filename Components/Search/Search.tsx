@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
+// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from "react";
@@ -42,7 +42,10 @@ export class Search extends React.Component<{}, SearchState> {
     );
     //搜索结果为0
     if (!newTopic || newTopic.length === 0) {
-      this.showNoResult();
+      // 所有结果数恰好为 20n，再次增量搜索返回 []，此时应保持已有数据，不清空已有结果
+      $("#focus-topic-getMore").css("display", "none");
+      $("#focus-topic-loading").addClass("displaynone");
+      $("#focus-topic-loaddone").removeClass("displaynone");
       this.isLoadable = false;
     } else if (newTopic == -1) {
       if (from === 0) {
@@ -143,6 +146,8 @@ export class Search extends React.Component<{}, SearchState> {
         );
         $("#focus-topic-getMore").css("display", "flex");
         $("#focus-topic-loading").addClass("displaynone");
+        // 上一次搜索拉到结尾后再次进行搜索，清除没有更多帖子的显示
+        $("#focus-topic-loaddone").addClass("displaynone");
       }
     }
   }
