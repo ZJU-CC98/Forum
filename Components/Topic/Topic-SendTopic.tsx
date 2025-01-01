@@ -346,7 +346,8 @@ ${newProps.content.content}[/quote]
           title: "",
           parentId: this.props.content.postId,
           isAnonymous: isAnonymous,
-          notifyAllReplier: this.state.notifyAllReplier
+          notifyAllReplier: this.state.notifyAllReplier,
+          clientType: 1,
         };
       } else {
         bodyInfo = {
@@ -354,7 +355,8 @@ ${newProps.content.content}[/quote]
           contentType: 0,
           title: "",
           isAnonymous: isAnonymous,
-          notifyAllReplier: this.state.notifyAllReplier
+          notifyAllReplier: this.state.notifyAllReplier,
+          clientType: 1,
         };
       }
       const body = JSON.stringify(bodyInfo);
@@ -458,7 +460,8 @@ ${newProps.content.content}[/quote]
         contentType: 1,
         title: "",
         isAnonymous: isAnonymous,
-        notifyAllReplier: this.state.notifyAllReplier
+        notifyAllReplier: this.state.notifyAllReplier,
+        clientType: 1,
       };
       const contentJson = JSON.stringify(content);
       const token = Utility.getAccessToken();
