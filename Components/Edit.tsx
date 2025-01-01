@@ -318,7 +318,8 @@ class EditForm extends RouteComponent<
             tag1: tag1Id,
             type: this.state.type,
             notifyPoster: this.state.notice,
-            isAnonymous: _isAnonymous
+            isAnonymous: _isAnonymous,
+            clientType: 1
           };
         } else if (tag2Id) {
           content = {
@@ -329,7 +330,8 @@ class EditForm extends RouteComponent<
             tag2: tag2Id,
             type: this.state.type,
             notifyPoster: this.state.notice,
-            isAnonymous: _isAnonymous
+            isAnonymous: _isAnonymous,
+            clientType: 1
           };
         } else {
           content = {
@@ -338,7 +340,8 @@ class EditForm extends RouteComponent<
             title: this.state.title,
             type: this.state.type,
             notifyPoster: this.state.notice,
-            isAnonymous: _isAnonymous
+            isAnonymous: _isAnonymous,
+            clientType: 1
           };
         }
         if (this.match.params.mode === "postVoteTopic") {
@@ -440,7 +443,8 @@ class EditForm extends RouteComponent<
           tag1: tag1Id,
           type: this.state.type,
           notifyPoster: this.state.notice,
-          isAnonymous: _isAnonymous
+          isAnonymous: _isAnonymous,
+          clientType: 1
         };
       } else if (tag2Id) {
         content = {
@@ -451,7 +455,8 @@ class EditForm extends RouteComponent<
           tag2: tag2Id,
           type: this.state.type,
           notifyPoster: this.state.notice,
-          isAnonymous: _isAnonymous
+          isAnonymous: _isAnonymous,
+          clientType: 1
         };
       } else {
         content = {
@@ -460,7 +465,8 @@ class EditForm extends RouteComponent<
           title: this.state.title,
           type: this.state.type,
           notifyPoster: this.state.notice,
-          isAnonymous: _isAnonymous
+          isAnonymous: _isAnonymous,
+          clientType: 1
         };
       }
       if (this.match.params.mode === "postVoteTopic") {
