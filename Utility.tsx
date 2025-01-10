@@ -141,6 +141,23 @@ export function getThisUserInfo(userId, usersInfo) {
 }
 export function getThisUserInfobyName(userName, usersName) {
   for (let i in usersName) {
+    if (usersName[i] === undefined)
+    {
+      let indexData = {
+        id: null,
+        name: "ID不存在",
+        portraitUrl: "/static/images/default_avatar_boy.png",
+        birthday: "1993-03-25T00:00:00",
+        fanCount: 0,
+        followCount: 0,
+        gender: 0,
+        lastLogOnTime: "2007-12-26T02:26:00",
+        popularity: 0,
+        prestige: 0,
+        signatureCode: "此ID已不存在，qmd无法显示",
+      };
+      return indexData;
+    }
     if (usersName[i].name === userName) return usersName[i];
   }
   //查询失败
