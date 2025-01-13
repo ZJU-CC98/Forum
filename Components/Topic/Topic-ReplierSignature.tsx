@@ -24,7 +24,7 @@ interface Props {
   page;
 }
 interface withRouterProps extends RouteComponentProps<{}> { }
-export default withRouter(class extends React.Component<withRouterProps & Props, { likeNumber, dislikeNumber, likeState }>{
+export default withRouter(class extends React.Component<withRouterProps & Props, { likeNumber, dislikeNumber, likeState }> {
   constructor(props, content) {
     super(props, content);
     this.showManageUI = this.showManageUI.bind(this);
@@ -173,7 +173,7 @@ export default withRouter(class extends React.Component<withRouterProps & Props,
           <div id={idDislike} className={this.state.likeState === 2 ? 'downdown red-color' : 'downdown'} onClick={this.dislike.bind(this)}><i title="踩" className={this.state.likeState === 2 ? "fa fa-thumbs-down fa-lg" : "fa fa-thumbs-o-down fa-lg"}></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
           <div id="commentlike">
             {judgeIcon}
-            {window.location.pathname.indexOf('postid') === -1 ?
+            {window.location.pathname.toLowerCase().indexOf('postid') === -1 ?
               <QuoteContext.Consumer>
                 {(handleQuoteContextChange) => <div className="operation1" onClick={() => {
                   handleQuoteContextChange({ content: this.props.postInfo.content, userName: this.props.userInfo.name, replyTime: this.props.postInfo.time, floor: this.props.postInfo.floor, postId: this.props.postInfo.id });
