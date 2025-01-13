@@ -84,7 +84,6 @@ class MathComponent extends React.Component<Props, States>{
     }
 
     override async componentDidMount(): Promise<void> {
-
         MathJax.startup.defaultReady();
         await MathJax.startup.promise;
 
@@ -98,8 +97,6 @@ class MathComponent extends React.Component<Props, States>{
         if (element == null) {
             return;
         }
-
-        // 重新排版
         await MathJax.typesetPromise();
     }
 
@@ -108,7 +105,35 @@ class MathComponent extends React.Component<Props, States>{
         if (!this.state.element === null) {
             return <></>;
         }    
-        
-        return this.state.element;
+        return <MathErrorBoundary>{this.state.element}</MathErrorBoundary>;
+        // return this.state.element;
     }
 }
+
+
+interface MathErrorBoundaryState {
+    hasError: boolean;
+}
+
+class MathErrorBoundary extends React.Component<{}, MathErrorBoundaryState> {
+    constructor(props) {
+      super(props);
+      this.state = { hasError: false };
+    }
+  
+    static getDerivedStateFromError(error) {
+      return { hasError: true };
+    }
+  
+    componentDidCatch(error, errorInfo) {
+        console.error(error, errorInfo);
+    }
+  
+    render() {
+      if (this.state.hasError) {
+        return <></>
+      }
+  
+      return this.props.children; 
+    }
+  }
