@@ -85,7 +85,7 @@ export default class extends React.Component<Props, State> {
           style={{ marginLeft: '1rem', marginRight: '1rem' }}
         >
           <div>版面简介：{data.description}</div>
-          <div className="row">
+          <div className="row" style={{ flexWrap: 'wrap' }}>
             版主：{data.boardMasters.map(this.generateMasters)}
           </div>
         </div>
