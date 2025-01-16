@@ -19,7 +19,7 @@ export const getRecentTopics: ActionCreator<ThunkAction<
   try {
     dispatch(Actions.userCenterLoading());
     const recentPosts = getState().userInfo.recentTopics;
-    const hasTotal = getState().userInfo.hasTotal.mytopics;
+    const hasTotal = getState().userInfo.hasTotal.profile;
     // 如果未请求完所有帖子并且帖子总数小于请求的页数
     // 换言之，当用户向后翻页，或直接通过url定位页数时
     let shouldLoad = recentPosts.length < (page - 1) * 10 + 1 && !hasTotal;
@@ -38,6 +38,7 @@ export const getRecentTopics: ActionCreator<ThunkAction<
     if (!shouldLoad) {
       return dispatch(Actions.userCenterLoaded());
     }
+    console.log("请求最近发过的主题");
     // 请求11条信息
     const url = `/me/recent-topic?from=${(page - 1) * 10}&size=11`;
     const headers = await Utility.formAuthorizeHeader();
