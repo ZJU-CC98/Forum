@@ -64,7 +64,7 @@ export default class extends React.Component<{ data }> {
       },
     };
     return (
-      <div className="annual-review-page annual-review-page-bg-cat">
+      <div className="annual-review-page annual-review-page-bg-rabbit">
         <QueueAnim
           key="queueAnim"
           delay={100}

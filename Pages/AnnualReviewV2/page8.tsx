@@ -10,7 +10,7 @@ export default class extends React.Component<{ data }> {
     const { data } = this.props;
 
     return (
-      <div className="annual-review-page annual-review-page-bg-cat">
+      <div className="annual-review-page annual-review-page-bg-rabbit">
         <QueueAnim
           key="queueAnim"
           delay={100}

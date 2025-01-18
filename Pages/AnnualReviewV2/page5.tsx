@@ -95,13 +95,13 @@ export default class extends React.Component<{ data }> {
               还在98发言。
             </div>
           )}
-          {data.latestPostTime && (
+          {/*data.latestPostTime && (
             <img
               key="annual-page4-5"
               src="static/images/CC98/CC9810.gif"
               style={{ width: "100px", marginTop: "1rem" }}
             />
-          )}
+          )*/}
         </QueueAnim>
       </div>
     );

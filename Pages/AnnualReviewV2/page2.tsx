@@ -6,7 +6,7 @@ export default class extends React.Component<{ data }> {
   render() {
     const { data } = this.props;
     return (
-      <div className="annual-review-page annual-review-page-bg-cat">
+      <div className="annual-review-page annual-review-page-bg-rabbit">
         <QueueAnim
           key="queueAnim"
           delay={100}
@@ -22,7 +22,7 @@ export default class extends React.Component<{ data }> {
             textAlign: "center",
           }}
         >
-          <div style={{ marginTop: "1.5rem" }} key="annual-page2-1">
+          <div style={{ marginTop: "2rem" }} key="annual-page2-1">
             你一共送出了
             <span className="annual-review-page2-topicCount">
               {data.sendLikeCount}
@@ -39,7 +39,7 @@ export default class extends React.Component<{ data }> {
               <div>
                 <img
                   key="annual-page1-3"
-                  style={{ borderRadius: "50%", marginTop: "0.5rem" }}
+                  style={{ borderRadius: "50%", marginTop: "0rem" }}
                   width="60px"
                   src={`${data.mostSendLikeUser.portraitUrl}`}
                 ></img>
@@ -68,7 +68,7 @@ export default class extends React.Component<{ data }> {
               <div>
                 <img
                   key="annual-page1-3"
-                  style={{ borderRadius: "50%", marginTop: "0.5rem" }}
+                  style={{ borderRadius: "50%", marginTop: "0rem" }}
                   width="60px"
                   src={`${data.mostReceiveLikeUser.portraitUrl}`}
                 ></img>
