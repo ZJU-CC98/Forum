@@ -84,6 +84,10 @@ const config = {
     css_chongyang_dark: "./Themes/chongyang_dark.scss",
     //重阳（亮）
     css_chongyang_light: "./Themes/chongyang_light.scss",
+    //春节2025（暗）
+    css_spring_festival_2025_dark: "./Themes/spring_festival_2025_dark.scss",
+    //春节2025（亮）
+    css_spring_festival_2025_light: "./Themes/spring_festival_2025_light.scss",
   },
   output: {
     path: path.resolve(__dirname, "dist/"),
