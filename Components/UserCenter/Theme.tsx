@@ -240,7 +240,7 @@ export const themeList: ThemeItem[] = [
   },
   {
     order: 25,
-    name: "春节2025（暗）",
+    name: "金舞迎春（暗）",
     style: {
       backgroundColor: "rgb(197,61,55)",
       backgroundImage: "url(/static/images/header-image-thumb/spring_festival_2025.jpg)",
@@ -248,7 +248,7 @@ export const themeList: ThemeItem[] = [
   },
   {
     order: 26,
-    name: "春节2025（亮）",
+    name: "金舞迎春（亮）",
     style: {
       backgroundColor: "rgb(255,103,84)",
       backgroundImage: "url(/static/images/header-image-thumb/spring_festival_2025.jpg)",
@@ -281,7 +281,7 @@ export const themeDayNightGroups: ThemeDayNightGroup[] = [
   { day: "冬日暖雪（亮）", night: "冬日暖雪（暗）" },
   { day: "春樱日和（亮）", night: "春樱日和（暗）" },
   { day: "重阳（亮）", night: "重阳（暗）" },
-  { day: "春节2025（亮）", night: "春节2025（暗）" },
+  { day: "金舞迎春（亮）", night: "金舞迎春（暗）" },
 ];
 
 let themeButtons = [];
