@@ -1,5 +1,6 @@
 import QueueAnim from "rc-queue-anim";
 import { OverPack } from "rc-scroll-anim";
+import { year } from './index';
 import React from "react";
 
 export default class extends React.Component<{ data }> {
@@ -38,7 +39,7 @@ export default class extends React.Component<{ data }> {
             src={`${data.userInfo.portraitUrl}`}
           ></img>
           <div key="annual-page1-4">
-            在过去的2023年里，你有
+            在过去的{year}年里，你有
             <span className="annual-review-page2-topicCount">
               {data.postDay}
             </span>

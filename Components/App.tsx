@@ -42,7 +42,7 @@ import { Index } from "../Pages/Index/Index";
 
 // 重构
 import RBoard from "../Pages/Board/index";
-import  AnnualReview2023 from "../Pages/AnnualReview2023";
+import  AnnualReviewV2 from "../Pages/AnnualReviewV2";
 
 type Props = {
   isError: boolean;
@@ -76,7 +76,7 @@ class App extends React.Component<Props> {
 
         <Route path="/board/:id/:page?" component={RBoard} />
         {/* <Route path="/annual-review-2022" component={AnnualReview} /> */}
-        <Route path="/annual-review-2023" component={AnnualReview2023} />
+        <Route path="/annual-review-2024" component={AnnualReviewV2} />
         <Route path="/error/401" component={Status.UnauthorizedBoard} />
         <Route path="/index" component={Index} />
 

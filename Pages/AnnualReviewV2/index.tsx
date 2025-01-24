@@ -1,5 +1,5 @@
 import React from "react";
-import { getAnnualReview2023, getMyInfo } from "../../Utility";
+import { getAnnualReviewV2, getMyInfo } from "../../Utility";
 import Page1 from "./page1";
 import Page2 from "./page2";
 import Page3 from "./page3";
@@ -10,7 +10,10 @@ import Page7 from "./page7";
 import Cover from "./cover";
 import { Icon, Spin } from "antd";
 import Page8 from "./page8";
-import Page9 from "./page9";
+import Page9 from "./page9"
+
+export const year = 2024;
+
 export default class extends React.Component {
   state = {
     data: null,
@@ -18,7 +21,7 @@ export default class extends React.Component {
   };
 
   async componentDidMount() {
-    const data = await getAnnualReview2023();
+    const data = await getAnnualReviewV2(year);
     this.setState({ data });
   }
 

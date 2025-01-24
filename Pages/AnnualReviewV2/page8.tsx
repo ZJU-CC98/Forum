@@ -10,7 +10,7 @@ export default class extends React.Component<{ data }> {
     const { data } = this.props;
 
     return (
-      <div className="annual-review-page annual-review-page-bg-cat">
+      <div className="annual-review-page annual-review-page-bg-rabbit">
         <QueueAnim
           key="queueAnim"
           delay={100}
@@ -79,7 +79,7 @@ export default class extends React.Component<{ data }> {
                 财富值，
               </div>
               <div>
-                盈利了
+                赢得了
                 <span className="annual-review-page2-hotTopicCount">
                   {data.bet.profit}
                 </span>
@@ -97,7 +97,7 @@ export default class extends React.Component<{ data }> {
                 财富值
               </div>
               <div>
-                亏损了
+                损失了
                 <span className="annual-review-page2-hotTopicCount">
                   {data.bet.profit}
                 </span>

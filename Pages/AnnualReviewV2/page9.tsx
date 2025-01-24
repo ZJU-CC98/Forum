@@ -1,6 +1,8 @@
 import React from "react";
 import { Tag } from "antd";
 import QueueAnim from "rc-queue-anim";
+import { year } from './index';
+
 export default class extends React.Component<{ data }> {
   render() {
     const { data } = this.props;
@@ -62,7 +64,7 @@ export default class extends React.Component<{ data }> {
             </span>
           </div>
           <div key="annual-page8-7">
-            <span className="annual-review-page6-congratulation">幸福2024</span>
+            <span className="annual-review-page6-congratulation">幸福{year + 1}</span>
           </div>
         </QueueAnim>
       </div>
