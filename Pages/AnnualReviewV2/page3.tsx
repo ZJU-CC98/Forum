@@ -27,7 +27,7 @@ export default class extends React.Component<{ data }> {
               <div>
                 在过去的一年里，
                 <br />
-                你还没有发过主题帖...
+                你没有发过主题帖...
               </div>
             </div>
           </QueueAnim>
