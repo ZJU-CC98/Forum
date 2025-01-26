@@ -44,7 +44,7 @@ export default class extends React.Component {
         return;
       }
       if (this.state.page === 8 && !this.state.data.cardDraw) {
-        this.setState({ page: 7 });
+        this.setState({ page: 6 });
         return;
       }
 
@@ -62,10 +62,17 @@ export default class extends React.Component {
         this.setState({ page: 9 });
         return;
       }
+      //抽卡有记录
       if (this.state.page === 6 && this.state.data.cardDraw) {
         this.setState({ page: 7 });
         return;
       }
+      //抽卡无记录 竞猜有记录
+      if(this.state.page === 6 && !this.state.data.cardDraw && this.state.data.bet){
+        this.setState({ page: 8 });
+        return;
+      }
+      //抽卡有记录 竞猜无记录
       if (this.state.page === 7 && !this.state.data.bet) {
         this.setState({ page: 9 });
         return;
