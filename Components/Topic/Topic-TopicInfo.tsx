@@ -204,7 +204,7 @@ export class TopicInfo extends React.Component<
               {this.state.showImageState ? (
                 <div
                   className="followTopic"
-                  style={{ width: "6rem" }}
+                  style={{ width: "5.5rem" }}
                   onClick={this.hideAllImg}
                 >
                   收起所有图片
@@ -212,7 +212,7 @@ export class TopicInfo extends React.Component<
               ) : (
                 <div
                   className="followTopic"
-                  style={{ width: "6rem" }}
+                  style={{ width: "5.5rem" }}
                   onClick={this.showAllImg}
                 >
                   显示所有图片
@@ -220,7 +220,7 @@ export class TopicInfo extends React.Component<
               )}
               <div
                 className="followTopic"
-                style={{ width: "6rem" }}
+                style={{ width: "5.5rem" }}
                 onClick={() => this.copyTopicUrl(this.props)}
               >
                 分享帖子链接
