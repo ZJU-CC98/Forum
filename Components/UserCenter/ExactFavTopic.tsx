@@ -57,7 +57,7 @@ export default class extends React.Component<Props> {
               {this.props.userRecentTopic.title}
             </Link>
           </p>
-          <div style={{ transform: "translate(-50px, 0)" }}>
+          <div style={{ transform: "translate(-50px, 0)" ,whiteSpace:"nowrap"}}>
             <Dropdown
               overlay={
                 <Menu>
