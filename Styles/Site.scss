@@ -2592,6 +2592,7 @@ a {
         border-radius: 0.25rem;
         margin: 0 10px 0 0;
         opacity: 50%;
+        border: 1px solid #efefef;
 
         &:hover {
           cursor: pointer;
@@ -2611,6 +2612,7 @@ a {
         max-width: 270px;
         border-radius: 0.25rem;
         margin-bottom: 5px;
+        border: 1px solid #efefef;
 
         &:hover {
           cursor: zoom-in;
@@ -2622,6 +2624,7 @@ a {
         border-radius: 0.25rem;
         margin-right: 5px;
         margin-bottom: 5px;
+        border: 1px solid #efefef;
 
         &:hover {
           cursor: zoom-in;
@@ -2633,6 +2636,7 @@ a {
         border-radius: 0.25rem;
         margin-right: 5px;
         margin-bottom: 5px;
+        border: 1px solid #efefef;
 
         &:hover {
           cursor: zoom-in;
@@ -2652,6 +2656,7 @@ a {
         width: 440px;
         border-radius: 0.25rem;
         margin-bottom: 5px;
+        border: 1px solid #efefef;
 
         &:hover {
           cursor: zoom-out;
@@ -2893,7 +2898,8 @@ a {
         color: $theme_color_main;
       }
     }
-    i{
+
+    i {
       height: 80px;
       width: 80px;
       margin: -40px 15px 0px 15px;
@@ -2907,6 +2913,7 @@ a {
       align-items: center;
       justify-content: center;
       opacity: 0;
+
       &:hover {
         opacity: 1;
       }
