@@ -49,7 +49,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
                     <div className="focus-topic-userName">{userName}</div>
                 </a>
                 <div className="focus-topic-middle">
-                    <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
+                    <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.title.trim()?this.props.title:<span style={{ display: 'inline-block', width: '5rem' }}></span>}</a>
                     <div className="focus-topic-info">
                         <div>{tagInfo}</div>
                         <div><i className="fa fa-clock-o fa-lg"></i>{this.props.time}</div>
@@ -69,7 +69,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
                     <div className="focus-topic-userName">{this.props.userName}</div>
                 </a>
                 <div className="focus-topic-middle">
-                    <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
+                    <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.title.trim()?this.props.title:<span style={{ display: 'inline-block', width: '5rem' }}></span>}</a>
                     <div className="focus-topic-info">
                         <div><i className="fa fa-clock-o fa-lg"></i>{this.props.time}</div>
                         <div><i className="fa fa-eye fa-lg"></i> {this.props.hitCount}</div>

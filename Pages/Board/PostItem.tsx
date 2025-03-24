@@ -144,7 +144,12 @@ const Item: React.SFC<Props> = ({ data, order }) => {
               fontSize: '1rem'
             }}
           >
-            {`${tag1}${tag2}${data.title}`}
+            {`${tag1}${tag2}`}
+            {data.title.trim() ? (
+              data.title
+            ) : (
+              <span style={{ display: 'inline-block', width: '5rem' }}></span>
+            )}
           </Link>
 
           {/* <Tag style={{ marginLeft: '1rem' }} color="magenta">
