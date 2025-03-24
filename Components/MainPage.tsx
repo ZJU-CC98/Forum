@@ -160,7 +160,7 @@ export class HotTopicComponent extends React.Component<
         </div>
         <div className="mainPageListTitle">
           <a href={topicUrl} target="_blank">
-            {item.title}
+            {item.title.trim() ? item.title : <span style={{ display: 'inline-block', width: '5rem' }}></span>}
           </a>
         </div>
       </div>
@@ -264,7 +264,7 @@ export class MainPageTopicComponent extends React.Component<
       <div key={item.id} className="mainPageListRow">
         <div className="mainPageListTitle">
           <a href={topicUrl} target="_blank">
-            {item.title}
+          {item.title.trim() ? item.title : <span style={{ display: 'inline-block', width: '5rem' }}></span>}
           </a>
         </div>
       </div>

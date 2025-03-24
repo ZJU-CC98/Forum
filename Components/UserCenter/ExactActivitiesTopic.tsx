@@ -26,7 +26,7 @@ export default class extends React.Component<UserCenterExactActivitiesTopicProps
         <div className="user-post-content">
           <p>
             <Link to={`/topic/${this.props.userRecentTopic.id}`}>
-              {this.props.userRecentTopic.title}
+              {this.props.userRecentTopic.title.trim()  ?  this.props.userRecentTopic.title : <span style={{ display: 'inline-block', width: '5rem' }}></span> }
             </Link>
           </p>
           {/*this.props.userRecentTopic.likeCount !== undefined ? <a className="fa-thumbs-o-up">{` ${this.props.userRecentTopic.likeCount}`}</a> : null}

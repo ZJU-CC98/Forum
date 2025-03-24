@@ -137,7 +137,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
             <div className="card-topic-middle">
                 <a className="card-topic-userName" href={userUrl} target="_blank" id={`card_username_${this.props.id}`}>{userName}</a>
                 <a className="card-topic-time" href={topicUrl} target="_blank">{this.props.time}</a>
-                <a className="card-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
+                <a className="card-topic-title" href={topicUrl} target="_blank">{this.props.title.trim()?this.props.title:<span style={{ display: 'inline-block', width: '5rem' }}></span>}</a>
                 <div className="card-topic-thumbnail-mini" id={`card_thumbnail_mini_area_${this.props.id}`}>
                     {this.imageCount > 1
                         ? this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_mini_${this.props.id}_${i}`} id={`card_thumbnail_mini_image_${this.props.id}_${i}`} src={str} onClick={() => { this.changeMiniImage(str, i) }} /> })

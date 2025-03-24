@@ -32,7 +32,7 @@ export class RecommendedTopicSingle extends React.Component<RecommendedTopic> {
                 <div className="focus-topic-userName">{this.props.topic.userName}</div>
             </a>
             <div className="focus-topic-middle">
-                <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.topic.title}</a>
+                <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.topic.title.trim()?this.props.topic.title:<span style={{ display: 'inline-block', width: '5rem' }}></span>}</a>
                 <div className="focus-topic-info">
                     <div><i className="fa fa-clock-o fa-lg"></i>{this.props.topic.time}</div>
                     <div className="focus-topic-content"><i className="fa fa-commenting-o fa-lg"></i>{this.props.content}</div>
