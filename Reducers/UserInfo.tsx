@@ -101,7 +101,7 @@ export class UserInfoStore {
   /**
    * 是否显示用户信息
    */
-  showCardUser: boolean = true;
+  showCardUser: boolean = Utility.getLocalStorage("showCardUser") === "false" ? false : true;;
 
 
   constructor() {
