@@ -34,10 +34,14 @@ export default class MahjongTagHandler extends Ubb.RecursiveTagHandler {
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-        const reg = /[acf]/gi;
-        const tagName = tagData.tagName;
-        const type = tagName.match(reg)[0];
-        const mahjongId = tagName.replace(type + ":", "");
+        // const reg = /[acf]/gi;
+        // const tagName = tagData.tagName;
+        // const type = tagName.match(reg)[0];
+        // const mahjongId = tagName.replace(type + ":", "");
+        const reg = /^([acf]):(\d+)/i; 
+        const match = tagData.tagName.match(reg); 
+        const type = match ? match[1] : ""; 
+        const mahjongId = match ? match[2] : ""; 
         let url: string = "";
 
         switch (type) {

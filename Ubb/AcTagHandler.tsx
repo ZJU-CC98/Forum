@@ -15,10 +15,14 @@ export default class AcTagHandler extends Ubb.RecursiveTagHandler {
     }
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
-
-        const reg = /ac/gi;
-        const tagName = tagData.tagName;
-        const acId = tagName.replace(reg, "");
+        // debugger
+        // const reg = /ac/gi;
+        // const tagName = tagData.tagName;
+        // const acId = tagName.replace(reg, "");
+        // const url = `/static/images/ac/${acId}.png`;
+        const reg = /^ac(\d{2})/i; 
+        const match = tagData.tagName.match(reg); 
+        const acId = match ? match[1] : ""; 
         const url = `/static/images/ac/${acId}.png`;
 
         return context.options.allowEmotion ? <div style={{ display: "inline" }}><img src={url} alt="" />{innerContent}</div> : <div style={{ display: "inline" }}>{innerContent}</div>;
