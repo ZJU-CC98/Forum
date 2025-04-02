@@ -20,7 +20,7 @@ export default class AcTagHandler extends Ubb.RecursiveTagHandler {
         // const tagName = tagData.tagName;
         // const acId = tagName.replace(reg, "");
         // const url = `/static/images/ac/${acId}.png`;
-        const reg = /^ac(\d{2})/i; 
+        const reg = /^ac(\d{2,})/i; 
         const match = tagData.tagName.match(reg); 
         const acId = match ? match[1] : ""; 
         const url = `/static/images/ac/${acId}.png`;
