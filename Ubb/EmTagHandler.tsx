@@ -7,7 +7,7 @@ import * as Ubb from './Core';
 
 export default class EmTagHandler extends Ubb.RecursiveTagHandler {
     get supportedTagNames(): RegExp {
-        return /em\d{2}/i;
+        return /^em\d{2}$/i;
     }   //正则表达式，意为em+两位数字,i表示区分大小写
 
     getTagMode(tagData: Ubb.UbbTagData): Ubb.UbbTagMode {
@@ -18,6 +18,11 @@ export default class EmTagHandler extends Ubb.RecursiveTagHandler {
 
         const tagName = tagData.tagName;
         const emoticonId = tagName.match(/\d{2}/).toString();
+        const emoticonNum = parseInt(emoticonId, 10);
+        if (isNaN(emoticonNum) || !(emoticonNum >= 0 && emoticonNum <= 91)) {
+            console.warn(`Invalid emoticonId: ${emoticonId}`); // 如果emoticonId不在范围内，打印警告
+            return <>{"["+tagName+"]"}</>; // 返回原始内容
+        }
         const url = `/static/images/em/em${emoticonId}.gif`;
 
         return context.options.allowEmotion ? <div style={{ display: "inline" }}><img src={url} alt="" />{innerContent}</div> : <div style={{ display: "inline" }}>{innerContent}</div>;

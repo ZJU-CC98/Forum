@@ -7,7 +7,7 @@ import * as Ubb from './Core';
 
 export default class AcTagHandler extends Ubb.RecursiveTagHandler {
     get supportedTagNames(): RegExp {
-        return /ms\d{2}/i;
+        return /^ms\d{2}$/i;
     }
 
     getTagMode(tagData: Ubb.UbbTagData): Ubb.UbbTagMode {
@@ -15,14 +15,14 @@ export default class AcTagHandler extends Ubb.RecursiveTagHandler {
     }
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
-
-        // const reg = /ms/gi;
-        // const tagName = tagData.tagName;
-        // const id = tagName.replace(reg, "");
-        const reg = /^ms(\d{2})/i;
-        const match = tagData.tagName.match(reg); 
-        const id = match ? match[1] : ""; 
-        const url = `/static/images/ms/ms${id}.png`;
+        const tagName = tagData.tagName;
+        const msId = tagName.replace("ms", "");
+        const msNum = parseInt(msId, 10);
+        if (isNaN(msNum) || !(msNum >= 1 && msNum <= 54)) {
+            console.warn(`Invalid msId: ${msId}`); // 如果msId不在范围内，打印警告
+            return <>{"["+tagName+"]"}</>; // 返回原始内容
+        }
+        const url = `/static/images/ms/ms${msId}.png`;
 
         return context.options.allowEmotion ? <div style={{ display: "inline" }}><img src={url} alt="" />{innerContent}</div> : <div style={{ display: "inline" }}>{innerContent}</div>;
     }

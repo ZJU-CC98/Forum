@@ -7,7 +7,7 @@ import * as Ubb from './Core';
 
 export default class MahjongTagHandler extends Ubb.RecursiveTagHandler {
     get supportedTagNames(): RegExp {
-        return /[acf]:/i;
+        return /^([acf]):(\d{3})$/i;
     }
 
     getTagMode(tagData: Ubb.UbbTagData): Ubb.UbbTagMode {
@@ -38,11 +38,27 @@ export default class MahjongTagHandler extends Ubb.RecursiveTagHandler {
         // const tagName = tagData.tagName;
         // const type = tagName.match(reg)[0];
         // const mahjongId = tagName.replace(type + ":", "");
-        const reg = /^([acf]):(\d+)/i; 
+        const reg = /^([acf]):(\d{3})$/i; 
         const match = tagData.tagName.match(reg); 
         const type = match ? match[1] : ""; 
         const mahjongId = match ? match[2] : ""; 
         let url: string = "";
+        const mahjongNum = parseInt(mahjongId,10)
+        let isValid = true;
+        if(type === "a" && !(mahjongNum>=1 && mahjongNum<=16)){
+            isValid = false;
+        }
+        if(type === "c" && !(mahjongNum === 3 || mahjongNum === 18 || mahjongNum === 19 || mahjongNum === 46 || mahjongNum === 49 || mahjongNum === 59 || mahjongNum === 96 || mahjongNum === 134 || mahjongNum === 189 || mahjongNum === 217)){
+            isValid = false;
+        }
+
+        if(type === "f" && !(mahjongNum>=1 && mahjongNum<=208)){
+            isValid = false;
+        }
+        if(!isValid) {
+            console.warn(`Invalid mahjongId: ${mahjongId}`); // 如果mahjongId不在范围内，打印警告
+            return <>{"["+tagData.tagName+"]"}</>; // 返回原始内容
+        }
 
         switch (type) {
             case "a": url = this.getAnimalUrl(mahjongId); break
