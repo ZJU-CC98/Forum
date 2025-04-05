@@ -1046,5 +1046,9 @@ export const boardInfo: { id: number; name: string; }[] = [
   {
     "id": 747,
     "name": "Banner申请"
+  },
+  {
+    "id":788,
+    "name": "车马行空"
   }
 ]
