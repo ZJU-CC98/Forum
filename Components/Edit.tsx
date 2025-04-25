@@ -927,6 +927,7 @@ class EditForm extends RouteComponent<
           <div>
             <div className="createTopicContent">
               <div className="createTopicListName">主题内容</div>
+              <div style={{ color: "darkgray" }}>提示：CC98微信小程序现已支持上传时长不超过6分钟的视频。</div>
               <div
                 id="post-topic-changeMode"
                 onClick={this.changeEditor}
@@ -949,6 +950,7 @@ class EditForm extends RouteComponent<
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div className="createTopicContent">
               <div className="createTopicListName">主题内容</div>
+              <div style={{ color: "darkgray" }}>提示：CC98微信小程序现已支持上传时长不超过6分钟的视频。</div>
               <div
                 id="post-topic-changeMode"
                 onClick={this.changeEditor}
@@ -989,6 +991,7 @@ class EditForm extends RouteComponent<
           <div>
             <div className="createTopicContent">
               <div className="createTopicListName">主题内容</div>
+              <div style={{ color: "darkgray" }}>提示：CC98微信小程序现已支持上传时长不超过6分钟的视频。</div>
               <div
                 id="post-topic-changeMode"
                 onClick={this.changeEditor}
@@ -1019,6 +1022,7 @@ class EditForm extends RouteComponent<
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div className="createTopicContent">
               <div className="createTopicListName">主题内容</div>
+              <div style={{ color: "darkgray" }}>提示：CC98微信小程序现已支持上传时长不超过6分钟的视频。</div>
               <div
                 id="post-topic-changeMode"
                 onClick={this.changeEditor}
