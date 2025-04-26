@@ -580,6 +580,7 @@ export async function getAllNewTopic(from: number, mediaOnly: boolean = false) {
       url = `/topic/new-media?from=${from}&size=${size}`;
     } else {
       url = `/topic/new?from=${from}&size=${size}`;
+      //url = `/board/245/topic?from=${from}&size=${size}`; // for dev
     }
     const response = await cc98Fetch(url, {
       headers,
