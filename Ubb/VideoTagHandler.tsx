@@ -7,18 +7,18 @@ const DPlayer = require('dplayer');
  * 处理 [video] 标签的处理器。
  */
 export class VideoTagHandler extends Ubb.TextTagHandler {
-	get supportedTagNames(): string {
-		return 'video';
-	}
+    get supportedTagNames(): string {
+        return 'video';
+    }
 
-	execCore(innerContent: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+    execCore(innerContent: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
         //不允许显示媒体内容
         if (context.options.allowMediaContent === false) {
             return innerContent;
-        } 
+        }
 
         return <VideoComponent src={innerContent} />;
-	}
+    }
 }
 
 interface IProps {
@@ -59,7 +59,7 @@ class VideoComponent extends React.Component<IProps, IState> {
             try {
                 new Hls()
                 this.initPlayer('hls')
-            } catch(e) {
+            } catch (e) {
                 const script = document.createElement('script')
                 script.src = '/static/content/hls.min.js'
                 document.getElementsByTagName('head')[0].appendChild(script)
@@ -76,6 +76,7 @@ class VideoComponent extends React.Component<IProps, IState> {
     initPlayer = (type?: string) => {
         try {
             this.dp = new DPlayer({
+                lang: 'zh-cn',
                 element: this.div,
                 autoplay: false,
                 preload: 'metadata',
@@ -84,11 +85,11 @@ class VideoComponent extends React.Component<IProps, IState> {
                     type,
                 },
             });
-        } catch(e) {
+        } catch (e) {
             console.log(e, 'new Dplayer Error.')
         }
 
-        if(!this.dp) {
+        if (!this.dp) {
             return
         }
 
@@ -103,14 +104,14 @@ class VideoComponent extends React.Component<IProps, IState> {
     }
 
     componentWillUnmount() {
-        if(!this.dp) {
+        if (!this.dp) {
             return
         }
 
         this.dp.destroy();
         this.div.innerHTML = '';
     }
-    
+
     render() {
         //重置继承自article的whiteSpace
         return <div style={{ display: 'flex' }}><div className="dplayer" style={{ whiteSpace: 'normal', height: this.state.height }} ref={it => this.div = it}></div></div>;

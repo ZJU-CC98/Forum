@@ -4,7 +4,9 @@ import * as Utility from '../../Utility';
 import Focus from './Focus';
 
 var APlayer = require('aplayer');
-var playerCount = 0;
+var audioPlayerCount = 0;
+var DPlayer = require('dplayer');
+var videoPlayerCount = 0;
 
 /**
  * 卡片模式的单个主题
@@ -137,7 +139,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
             <div className="card-topic-middle">
                 <a className="card-topic-userName" href={userUrl} target="_blank" id={`card_username_${this.props.id}`}>{userName}</a>
                 <a className="card-topic-time" href={topicUrl} target="_blank">{this.props.time}</a>
-                <a className="card-topic-title" href={topicUrl} target="_blank">{this.props.title.trim()?this.props.title:<span style={{ display: 'inline-block', width: '5rem' }}></span>}</a>
+                <a className="card-topic-title" href={topicUrl} target="_blank">{this.props.title.trim() ? this.props.title : <span style={{ display: 'inline-block', width: '5rem' }}></span>}</a>
                 <div className="card-topic-thumbnail-mini" id={`card_thumbnail_mini_area_${this.props.id}`}>
                     {this.imageCount > 1
                         ? this.props.mediaContent.thumbnail.map((str, i) => { return <img key={`thumbnail_mini_${this.props.id}_${i}`} id={`card_thumbnail_mini_image_${this.props.id}_${i}`} src={str} onClick={() => { this.changeMiniImage(str, i) }} /> })
@@ -148,6 +150,7 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
                 </div>
                 <div className="card-topic-thumbnail" id={`card_thumbnail_area_${this.props.id}`}>{thumbnailContent}</div>
                 {this.props.contentType === 3 ? convertAudioPlayer(this.props) : null}
+                {this.props.contentType === 2 ? convertVideoPlayer(this.props) : null}
                 <div className="card-topic-board">
                     <div className="card-topic-boardName"><a href={boardUrl} target="_blank">{this.props.boardName}</a></div>
                     {this.props.tag1 ? <div className="card-topic-tag">{this.props.tag1}</div> : null}
@@ -167,6 +170,90 @@ export class CardTopicSingle extends React.Component<FocusTopic> {
     }
 }
 
+interface IVideoProps {
+    src: string;
+    pic: string;
+    isLandscape: boolean;
+}
+
+class VideoPlayer extends React.Component<IVideoProps> {
+    div: HTMLDivElement;
+    dp: any;
+
+    componentDidMount(): void {
+        try {
+            videoPlayerCount += 1;
+            this.dp = new DPlayer({
+                lang: 'zh-cn',
+                element: this.div,
+                autoplay: false,
+                preload: 'metadata',
+                loop: false,
+                video: {
+                    url: this.props.src,
+                    pic: this.props.pic,
+                    type: 'auto'
+                },
+            });
+        } catch { }
+
+        this.dp.on('abort', e => null);
+
+        // 对全屏下高度的调整
+        this.dp.on('fullscreen', e => this.setState({ height: 'auto' }));
+        this.dp.on('fullscreen_cancel', e => this.setState({ height: '28.8984375rem' }));
+        this.dp.on('webfullscreen', e => this.setState({ height: '100%' }));
+        this.dp.on('webfullscreen_cancel', e => this.setState({ height: '28.8984375rem' }));
+        this.div.getElementsByClassName('dplayer-menu')[0].innerHTML = '<div class="dplayer-menu-item"><a target="_blank" href="https://github.com/MoePlayer/DPlayer">关于 DPlayer 播放器</a></div>';
+
+        let fullIn = this.div.getElementsByClassName('dplayer-full-in-icon')[0];
+        if (fullIn) {
+            fullIn.remove();
+        }
+
+        //竖屏视频的设置和全屏按钮会与时间重叠，移除
+        if (!this.props.isLandscape) {
+            let setting = this.div.getElementsByClassName('dplayer-setting')[0];
+            if (setting) {
+                setting.remove();
+            }
+            let full = this.div.getElementsByClassName('dplayer-full')[0];
+            if (full) {
+                full.remove();
+            }
+        }
+    }
+
+    componentWillUnmount() {
+        this.dp && this.dp.destroy();
+    }
+
+    render() {
+        if (this.props.isLandscape) {
+            return <div className="dplayer"
+                style={{ whiteSpace: 'normal', width: '380px', margin: '0 0 15px 0' }}
+                ref={it => this.div = it}>
+            </div>
+        } else {
+            return <div className="dplayer"
+                style={{ whiteSpace: 'normal', width: '210px', margin: '0 0 15px 0' }}
+                ref={it => this.div = it}>
+            </div>;
+        }
+    }
+}
+
+function convertVideoPlayer(item: FocusTopic) {
+    return (
+        <VideoPlayer
+            key={`card_video_${item.id}`}
+            src={item.mediaContent.video}
+            pic={item.mediaContent.thumbnail[0]}
+            isLandscape={item.mediaContent.width >= item.mediaContent.height}
+        />
+    );
+}
+
 interface IAudioProps {
     src: string;
     title: string;
@@ -180,8 +267,8 @@ class AudioPlayer extends React.Component<IAudioProps> {
 
     componentDidMount() {
         try {
-            playerCount += 1;
-            //console.log(`player count: ${playerCount}`);
+            audioPlayerCount += 1;
+            //console.log(`player count: ${audioPlayerCount}`);
             this.ap = new APlayer({
                 element: this.div,
                 autoplay: false,
