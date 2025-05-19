@@ -23,7 +23,7 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
     let { allowImage, allowExternalImage, allowToolbox } = context.options;
 
     //不允许外链图片
-    if (!allowExternalImage && !parse(imageUri).hostname.includes("cc98.org")) {
+    if (!allowExternalImage && !parse(imageUri).hostname.endsWith("cc98.org")) {
       allowImage = false;
     }
 
