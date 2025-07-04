@@ -3,6 +3,7 @@ import * as Utility from "../Utility";
 import { UbbEditor } from "./UbbEditor";
 import { withRouter } from "react-router-dom";
 import * as moment from "moment";
+import ResignCalendar from "./ReSignCalendar";
 export class Signin extends React.Component<{ history }, { signinInfo; content }> {
   constructor(props) {
     super(props);
@@ -39,6 +40,10 @@ export class Signin extends React.Component<{ history }, { signinInfo; content }
 
     window.location.reload();
   }
+  updateSigninInfo = (lastSignInCount) => {
+    this.setState({ signinInfo: { ...this.state.signinInfo, lastSignInCount } });
+  };
+
   render() {
     let info;
     // 是否开启双倍签到
@@ -118,6 +123,7 @@ export class Signin extends React.Component<{ history }, { signinInfo; content }
           </div>
         </div>
         {info}
+        <ResignCalendar updateSigninInfo={this.updateSigninInfo} />
       </div>
     );
   }
