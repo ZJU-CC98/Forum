@@ -400,6 +400,10 @@ export class UserInfo {
    * 用户被版面TP的数量。
    */
   stopPostBoardCount: number;
+  /**
+   * 用户拥有的补签卡
+   */
+  signInCardCount: number;
 }
 
 /**
