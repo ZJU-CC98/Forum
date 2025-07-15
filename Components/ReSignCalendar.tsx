@@ -174,7 +174,7 @@ const ResignCalendar: React.FC<ResignCalendarProps> = (props) => {
   );
 
   return (
-    <div style={{ minHeight: "700px" ,marginTop: "40px"}}>
+    <div style={{ minHeight: "700px", marginTop: "40px" }}>
       <div className="cc98-calendar-header">
         补签卡：{signInCardCount}张
         <div>
@@ -215,8 +215,10 @@ const ResignCalendar: React.FC<ResignCalendarProps> = (props) => {
             fetchSigninInfo(date?.year(), date?.month() + 1);
           }}
           disabledDate={(date) => {
-            // 禁止选择2016年6月之前的时间
-            return date.isBefore(moment("2016-06", "YYYY-MM"));
+            // 只能选择2016年6月~当前月份
+            const minDate = moment("2016-06", "YYYY-MM");
+            const maxDate = moment().endOf('month'); // 本月最后一天
+            return date.isBefore(minDate) || date.isAfter(maxDate);
           }}
         />
 
