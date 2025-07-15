@@ -1,4 +1,4 @@
-import moment from "moment";
+import * as moment from "moment";
 import React, { useEffect } from "react";
 import CC98Calendar from "./CC98Calendar";
 import { Button, DatePicker, Icon, message, Popover, Radio } from "antd";
