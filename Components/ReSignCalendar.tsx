@@ -129,7 +129,9 @@ const ResignCalendar: React.FC<ResignCalendarProps> = (props) => {
         return (
           <div className="cc98-calendar-cell cc98-calendar-cell-checked">
             {momentDate.date()}
-            <div className="cc98-signin-info calendar-tag calendar-makeup-tag">补</div>
+            <div className="cc98-signin-info calendar-tag calendar-makeup-tag">
+              补
+            </div>
           </div>
         );
       } else {
@@ -153,7 +155,9 @@ const ResignCalendar: React.FC<ResignCalendarProps> = (props) => {
       return (
         <div className="cc98-calendar-cell">
           {momentDate.date()}
-          <div className="cc98-signin-info calendar-tag calendar-not-signin-tag">未</div>
+          <div className="cc98-signin-info calendar-tag calendar-not-signin-tag">
+            未
+          </div>
         </div>
       );
     }
@@ -209,6 +213,7 @@ const ResignCalendar: React.FC<ResignCalendarProps> = (props) => {
           style={{ marginRight: 8 }}
           placeholder="选择月份"
           value={datePicker}
+          allowClear={false}
           onChange={(date) => {
             setDatePicker(date);
 
@@ -217,9 +222,14 @@ const ResignCalendar: React.FC<ResignCalendarProps> = (props) => {
           disabledDate={(date) => {
             // 只能选择2016年6月~当前月份
             const minDate = moment("2016-06", "YYYY-MM");
-            const maxDate = moment().endOf('month'); // 本月最后一天
+            const maxDate = dateNow.clone().endOf("month"); // 本月最后一天
             return date.isBefore(minDate) || date.isAfter(maxDate);
           }}
+          renderExtraFooter={() => (
+            <div style={{ textAlign: "center"}}>
+              <a onClick={() => setDatePicker(dateNow)}>本月</a>
+            </div>
+          )}
         />
 
         <Button.Group>
@@ -230,7 +240,7 @@ const ResignCalendar: React.FC<ResignCalendarProps> = (props) => {
               fetchSigninInfo(newDate.year(), newDate.month() + 1);
             }}
             disabled={
-              datePicker &&
+              !datePicker ||
               datePicker.isSameOrBefore(moment("2016-07", "YYYY-MM"))
             }
           >
@@ -244,8 +254,8 @@ const ResignCalendar: React.FC<ResignCalendarProps> = (props) => {
               fetchSigninInfo(newDate.year(), newDate.month() + 1);
             }}
             disabled={
-              datePicker &&
-              datePicker.isSameOrAfter(moment().startOf('month'))
+              !datePicker ||
+              datePicker.isSameOrAfter(dateNow.clone().startOf("month"))
             }
           >
             下月
