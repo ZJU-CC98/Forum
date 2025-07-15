@@ -231,7 +231,7 @@ const ResignCalendar: React.FC<ResignCalendarProps> = (props) => {
             }}
             disabled={
               datePicker &&
-              datePicker.isSameOrBefore(moment("2016-06", "YYYY-MM"))
+              datePicker.isSameOrBefore(moment("2016-07", "YYYY-MM"))
             }
           >
             <Icon type="left" />
@@ -243,6 +243,10 @@ const ResignCalendar: React.FC<ResignCalendarProps> = (props) => {
               setDatePicker(newDate);
               fetchSigninInfo(newDate.year(), newDate.month() + 1);
             }}
+            disabled={
+              datePicker &&
+              datePicker.isSameOrAfter(moment().startOf('month'))
+            }
           >
             下月
             <Icon type="right" />
