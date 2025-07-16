@@ -65,6 +65,7 @@ class EditForm extends RouteComponent<
     isAnonymous;
     /** 用户当前财富值 */
     wealth: number | string;
+    contentTooLongModalVisible: boolean;
   },
   { mode: string; id: number }
 > {
@@ -78,6 +79,8 @@ class EditForm extends RouteComponent<
     this.changeActivityType = this.changeActivityType.bind(this);
     this.changeNormalType = this.changeNormalType.bind(this);
     this.onVoteInfoChange = this.onVoteInfoChange.bind(this);
+    this.openContentTooLongModal = this.openContentTooLongModal.bind(this);
+    this.closeContentTooLongModal = this.closeContentTooLongModal.bind(this);
     this.converter = new Showdown.Converter({
       tables: true,
       simplifiedAutoLink: true
@@ -110,9 +113,18 @@ class EditForm extends RouteComponent<
       houseTmpVisible: false,
       anonymousState: 0,
       isAnonymous: false,
-      wealth: ""
+      wealth: "",
+      contentTooLongModalVisible: false
     };
   }
+
+  openContentTooLongModal() {
+    this.setState({ contentTooLongModalVisible: true });
+  }
+  closeContentTooLongModal() {
+    this.setState({ contentTooLongModalVisible: false });
+  }
+
 
   async componentDidMount() {
     const mode = this.match.params.mode;
@@ -298,6 +310,10 @@ class EditForm extends RouteComponent<
         return null;
       }
     }
+    if (this.state.mdeState.length > 8000) {
+      this.openContentTooLongModal();
+      return;
+    }
     //检查标题
     if (this.state.title == "") {
       alert("请输入标题!");
@@ -425,6 +441,12 @@ class EditForm extends RouteComponent<
         return null;
       }
     }
+
+    if (this.state.content.length > 8000) {
+      this.openContentTooLongModal();
+      return;
+    }
+
     //检查标题
     if (this.state.title == "") {
       alert("请输入标题！");
@@ -602,6 +624,11 @@ class EditForm extends RouteComponent<
    *  最好应该无法提交，弹选标签的提示框。
    */
   async editUBB() {
+    if (this.state.content.length > 8000) {
+      this.openContentTooLongModal();
+      return;
+    }
+
     const url = `/post/${this.match.params.id}`;
     let tag1Id, tag2Id, content;
     //console.log(this.state);
@@ -660,6 +687,11 @@ class EditForm extends RouteComponent<
    *  最好应该无法提交，弹选标签的提示框。
   */
   async editMd() {
+    if (this.state.mdeState.length > 8000) {
+      this.openContentTooLongModal();
+      return;
+    }
+
     const url = `/post/${this.match.params.id}`;
     let c = this.state.mdeState;
     let content, tag1Id, tag2Id;
@@ -1196,6 +1228,16 @@ class EditForm extends RouteComponent<
 
     return (
       <div className="createTopic">
+        <Modal
+          title="错误提示"
+          visible={this.state.contentTooLongModalVisible}
+          onCancel={this.closeContentTooLongModal}
+          onOk={this.closeContentTooLongModal}
+          cancelButtonProps={{ style: { display: 'none' } }}
+          maskClosable={false}
+        >
+          内容过长，不应超过8000个字符。<br />当前字符数：{this.state.mode === 0 ? this.state.content.length : this.state.mdeState.length}。
+        </Modal>
         <Category url={url} boardName={this.state.boardName} mode={mode} />
         <TagNotice tagsV2={this.state.tagsV2} postInfo={this.state.postInfo} />
         {titleInput}
