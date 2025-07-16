@@ -9,6 +9,7 @@ import ManageHistory from "./Topic-ManageHistory";
 import { NoticeMessage, SendTopicNoticeMessage } from "../NoticeMessage";
 import { Prompt } from "react-router-dom";
 import Button from "antd/es/button";
+import Modal from "antd/es/modal";
 import * as moment from "moment";
 import ReactMde, {
   ReactMdeTypes,
@@ -43,6 +44,7 @@ interface State {
   anonymouslyPostButtonInfo;
   manageHistoryVisible;
   wealth: number | string;
+  contentTooLongModalVisible: boolean;
 }
 
 interface ErrorMessage {
@@ -58,6 +60,12 @@ interface ErrorMessage {
  * POST失败返回的错误说明集合
  */
 const errorMessageSet: ErrorMessage[] = [
+  {
+    statusCode: 400,
+    errorMessageText: "content_too_long",
+    errorMessageDescription:
+      "内容过长，不应超过8000个字符。",
+  },
   {
     statusCode: 400,
     errorMessageText: "wealth_not_enough_for_anonymous_post",
@@ -119,6 +127,10 @@ export class SendTopic extends React.Component<Props, State> {
     this.onChange = this.onChange.bind(this);
     this.close = this.close.bind(this);
     this.update = this.update.bind(this);
+
+    this.openContentTooLongModal = this.openContentTooLongModal.bind(this);
+    this.closeContentTooLongModal = this.closeContentTooLongModal.bind(this);
+
     let initContent = "";
     if (
       Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id)
@@ -148,6 +160,7 @@ export class SendTopic extends React.Component<Props, State> {
       anonymouslyPostButtonInfo: "匿名回复",
       manageHistoryVisible: false,
       wealth: "",
+      contentTooLongModalVisible: false,
     };
   }
   // handleValueChange = (mdeState: ReactMdeTypes.MdeState) => {
@@ -165,6 +178,13 @@ export class SendTopic extends React.Component<Props, State> {
   };
   update(value) {
     this.setState({ content: value });
+  }
+
+  openContentTooLongModal() {
+    this.setState({ contentTooLongModalVisible: true });
+  }
+  closeContentTooLongModal() {
+    this.setState({ contentTooLongModalVisible: false });
   }
 
   onChange() {
@@ -338,6 +358,17 @@ ${newProps.content.content}[/quote]
     });
     const url = `/topic/${this.props.topicInfo.id}/post`;
     let bodyInfo;
+
+    if (this.state.content.length > 8000) {
+      this.openContentTooLongModal();
+      this.setState({
+        buttonDisabled: false,
+        buttonInfo: "回复",
+        anonymouslyPostButtonInfo: "匿名回复",
+      });
+      return;
+    }
+
     try {
       if (Utility.quoteJudger(this.state.content)) {
         bodyInfo = {
@@ -452,6 +483,17 @@ ${newProps.content.content}[/quote]
       anonymouslyPostButtonInfo: "...",
     });
     const url = `/topic/${this.props.topicInfo.id}/post`;
+
+    if (this.state.mdeState.length > 8000) {
+      this.openContentTooLongModal();
+      this.setState({
+        buttonDisabled: false,
+        buttonInfo: "回复",
+        anonymouslyPostButtonInfo: "匿名回复",
+      });
+      return;
+    }
+
     try {
       let c = this.state.mdeState;
       //console.log(c);
@@ -1028,6 +1070,17 @@ ${newProps.content.content}[/quote]
               : true
           }
         />
+
+        <Modal
+          title="错误提示"
+          visible={this.state.contentTooLongModalVisible}
+          onCancel={this.closeContentTooLongModal}
+          onOk={this.closeContentTooLongModal}
+          cancelButtonProps={{ style: { display: 'none' } }}
+          maskClosable={false}
+        >
+          内容过长，不应超过8000个字符。<br />当前字符数：{this.state.mode === 0 ? this.state.content.length : this.state.mdeState.length}。
+        </Modal>
       </div>
     );
   }
