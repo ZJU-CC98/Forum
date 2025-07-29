@@ -26,7 +26,8 @@ export default function CC98Calendar({ year, month, renderDateCell }) {
   const startWeekday = startOfMonth.weekday();
 
   // Weekday labels (Sunday to Saturday)
-  const weekdays = moment.weekdaysShort();
+  let weekdays = moment.weekdaysShort();
+  weekdays =  weekdays.slice(1).concat(weekdays[0]); 
 
   // Generate array for grid cells: empty slots then days
   const cells = [];
