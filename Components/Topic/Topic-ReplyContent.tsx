@@ -6,7 +6,7 @@ import { PostManagement } from "./Topic-PostManagement";
 import { UbbContainer } from "../UbbContainer";
 import { UbbCodeOptions } from "../../Ubb/UbbCodeExtension";
 import { VoteContent, voteInfo } from "./VoteInfo";
-import { Tag } from "antd";
+import { Tag, Card } from "antd";
 var remark = require("remark");
 var reactRenderer = require("remark-react");
 const showdown = require("showdown"),
@@ -156,6 +156,10 @@ export class ReplyContent extends React.Component<
       content = mdMode;
     }
 
+    const drawingTimeStr = this.props.topicInfo.lotteryTopicDetail ?
+      this.props.topicInfo.lotteryTopicDetail.drawingTime.slice(0, 16).replace('T', ' ') :
+      "";
+
     return (
       <div className="reply-content">
         {this.state.vote ? (
@@ -182,6 +186,20 @@ export class ReplyContent extends React.Component<
             <Tag>
               本楼使用了“通知本主题所有回复用户”功能
             </Tag>
+          )}
+          {this.props.topicInfo.lotteryTopicDetail && this.props.floor === 1 && (
+            <Card size="small" style={{ width: 400 }}>
+              <p style={{ fontWeight: "bold", color: "red", margin: "3px 0px", textAlign: "center", fontSize: "16px" }}>该主题帖启用了抽奖功能</p>
+              <p style={{ color: "red", margin: "3px 0px", textAlign: "center" }}>在开奖前回复即可参与</p>
+              <p style={{ margin: "3px 0px", fontSize: "12px" }}>抽取数量：{this.props.topicInfo.lotteryTopicDetail.drawingCount}</p>
+              {this.props.topicInfo.lotteryTopicDetail.mode === 1 && (<p style={{ margin: "3px 0px", fontSize: "12px" }}>抽奖模式：同一个CC98账号最多中奖一次</p>)}
+              {this.props.topicInfo.lotteryTopicDetail.mode === 2 && (<p style={{ margin: "3px 0px", fontSize: "12px" }}>抽奖模式：同一个浙大通行证下的CC98账号最多中奖一次</p>)}
+              <p style={{ margin: "3px 0px", fontSize: "12px" }}>　　　　（注意：多次回复不会增加中奖概率）</p>
+              <p style={{ margin: "3px 0px", fontSize: "12px" }}>开奖时间：{drawingTimeStr}</p>
+              {this.props.topicInfo.lotteryTopicDetail.status === 1 && (<p style={{ margin: "3px 0px", fontSize: "12px" }}>当前状态：等待开奖</p>)}
+              {this.props.topicInfo.lotteryTopicDetail.status === 2 && (<p style={{ margin: "3px 0px", fontSize: "12px" }}>当前状态：已开奖，中奖名单见{this.props.topicInfo.lotteryTopicDetail.resultFloor}楼</p>)}
+              {this.props.topicInfo.lotteryTopicDetail.status === 3 && (<p style={{ margin: "3px 0px", fontSize: "12px" }}>当前状态：异常，已中止本次抽奖</p>)}
+            </Card>
           )}
         </div>
         <div className="substance">{content}</div>
