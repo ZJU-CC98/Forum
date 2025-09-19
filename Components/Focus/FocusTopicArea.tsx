@@ -117,7 +117,7 @@ export class FocusTopicArea extends React.Component<
        * 查看新帖数目大于200条时不再继续加载
        * 或者加载时已经加载完了
        */
-      if (this.state.stop || this.state.from > 199) {
+      if (this.state.stop || this.state.from > 499) {
         $("#focus-topic-loading").addClass("displaynone");
         $("#focus-topic-loaddone").removeClass("displaynone");
         return;
@@ -199,7 +199,7 @@ export class FocusTopicArea extends React.Component<
             无法加载更多了，小水怡情，可不要沉迷哦~
           </div>
           <button type="button" id="scroll-to-top-button" className={"top-button"} onClick={this.scrollToTop}>
-            <div style={{display:"flex"}}>回到顶部</div>
+            <div style={{ display: "flex" }}>回到顶部</div>
           </button>
         </div>
       </div>
