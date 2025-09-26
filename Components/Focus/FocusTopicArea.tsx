@@ -199,7 +199,7 @@ export class FocusTopicArea extends React.Component<
             无法加载更多了，小水怡情，可不要沉迷哦~
           </div>
           <button type="button" id="scroll-to-top-button" className={"top-button"} onClick={this.scrollToTop}>
-            <div style={{display:"flex"}}>回到顶部</div>
+            <div style={{ display: "flex" }}>回到顶部</div>
           </button>
         </div>
       </div>

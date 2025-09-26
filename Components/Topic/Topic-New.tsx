@@ -179,9 +179,9 @@ class AllNewTopic extends React.Component<{ showCardUser: boolean, changeUserInf
     //控制获取新帖
     if (Utility.isBottom() && this.isLoadable) {
       /**
-       *查看新帖数目大于100条时不再继续加载
+       *查看新帖数目大于X00条时不再继续加载
        */
-      if (this.state.from > 199) {
+      if (this.state.from > 499) {
         $("#focus-topic-loading").addClass("displaynone");
         $("#focus-topic-loaddone").removeClass("displaynone");
         return;
