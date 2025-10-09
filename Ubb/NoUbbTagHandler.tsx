@@ -11,6 +11,10 @@ import * as Ubb from './Core';
 export class NoUbbTagHandler extends Ubb.TextTagHandler {
 	get supportedTagNames(): string { return 'noubb' };
 
+	getTagMode(tagData: Ubb.UbbTagData): Ubb.UbbTagMode {
+		return Ubb.UbbTagMode.Text;
+	}
+
 	execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 		if (context.options.compatibility !== Ubb.UbbCompatiblityMode.Transitional) {
 			return <code>{content}</code>;
