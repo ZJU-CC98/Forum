@@ -5,6 +5,73 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const fs = require("fs");
+const isDevServer = process.argv.some((arg) => arg.includes("webpack-dev-server"));
+
+const plugins = [
+  new HTMLWebpackPlugin({
+    template: "Template.ejs",
+    // place index.html at '/'
+    filename: "index.html",
+    inject: false,
+    templateParameters: {
+      errorTemplate: fs.readFileSync("error.html").toString(),
+      unsupportedTemplate: fs.readFileSync("unsupported.html").toString(),
+    },
+  }),
+  new ExtractTextPlugin("static/content/[name].css"),
+  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+];
+
+// Skip heavy clean/copy work while running the dev server to shorten startup time.
+if (!isDevServer) {
+  plugins.unshift(
+    new CleanWebpackPlugin(
+      ["dist/static/scripts", "dist/static/content", "dist/static/index.html", "dist/static/reset.html"],
+      {
+        root: "../",
+      }
+    ),
+    new CopyWebpackPlugin([
+      // copy static/config file
+      { from: "dist/static", to: "static" },
+
+      { from: "node_modules/jquery/dist", to: "static/scripts/lib/jquery/" },
+      { from: "node_modules/bootstrap/dist", to: "static/scripts/lib/bootstrap/" },
+      { from: "node_modules/bootstrap-icons", to: "static/scripts/lib/bootstrap-icons/" },
+      { from: "node_modules/frowser/build", to: "static/scripts/lib/frowser/" },
+      { from: "node_modules/font-awesome", to: "static/content/font-awesome/" },
+      { from: "node_modules/mathjax-full", to: "static/scripts/lib/mathjax-full" },
+      {
+        from: "node_modules/spectrum-colorpicker/spectrum.js",
+        to: "static/scripts/lib/spectrum/spectrum.js",
+      },
+      {
+        from: "node_modules/dplayer/dist/DPlayer.min.css",
+        to: "static/content/DPlayer.min.css",
+      },
+      {
+        from: "node_modules/dplayer/dist/DPlayer.min.css.map",
+        to: "static/content/DPlayer.min.css.map",
+      },
+      {
+        from: "node_modules/aplayer/dist/APlayer.min.css",
+        to: "static/content/APlayer.min.css",
+      },
+      {
+        from: "node_modules/aplayer/dist/APlayer.min.css.map",
+        to: "static/content/APlayer.min.css.map",
+      },
+      {
+        from: "node_modules/hls.js/dist/hls.min.js",
+        to: "static/content/hls.min.js",
+      },
+      {
+        from: "reset.html",
+        to: "static/reset.html",
+      },
+    ])
+  );
+}
 module.exports = {
   mode: "development",
 
@@ -18,7 +85,18 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              // speed up incremental builds; run typechecks separately
+              transpileOnly: true,
+              experimentalWatchApi: true,
+              happyPackMode: true,
+            },
+          },
+        ],
       },
       {
         test: /\.scss$/,
@@ -96,73 +174,16 @@ module.exports = {
     filename: "static/scripts/[name].js",
   },
 
-  devtool: "source-map",
+  devtool: "eval-cheap-module-source-map",
+
+  // enable webpack's in-memory cache for faster rebuilds
+  cache: true,
 
   externals: {
     jquery: "$",
   },
 
-  plugins: [
-    new CleanWebpackPlugin(["dist/static/scripts", "dist/static/content", "dist/static/index.html", "dist/static/reset.html"], {
-      root: '../'
-    }),
-
-    // generate index.html
-    new HTMLWebpackPlugin({
-      template: "Template.ejs",
-      // place index.html at '/'
-      filename: "index.html",
-      inject: false,
-      templateParameters: {
-        errorTemplate: fs.readFileSync("error.html").toString(),
-        unsupportedTemplate: fs.readFileSync("unsupported.html").toString(),
-      },
-    }),
-
-    new CopyWebpackPlugin([
-      // copy static/config file
-      { from: "dist/static", to: "static" },
-
-      { from: "node_modules/jquery/dist", to: "static/scripts/lib/jquery/" },
-      { from: "node_modules/bootstrap/dist", to: "static/scripts/lib/bootstrap/" },
-      { from: "node_modules/bootstrap-icons", to: "static/scripts/lib/bootstrap-icons/" },
-      { from: "node_modules/frowser/build", to: "static/scripts/lib/frowser/" },
-      { from: "node_modules/font-awesome", to: "static/content/font-awesome/" },
-      { from: "node_modules/mathjax-full", to: "static/scripts/lib/mathjax-full" },
-      {
-        from: "node_modules/spectrum-colorpicker/spectrum.js",
-        to: "static/scripts/lib/spectrum/spectrum.js",
-      },
-      {
-        from: "node_modules/dplayer/dist/DPlayer.min.css",
-        to: "static/content/DPlayer.min.css",
-      },
-      {
-        from: "node_modules/dplayer/dist/DPlayer.min.css.map",
-        to: "static/content/DPlayer.min.css.map",
-      },
-      {
-        from: "node_modules/aplayer/dist/APlayer.min.css",
-        to: "static/content/APlayer.min.css",
-      },
-      {
-        from: "node_modules/aplayer/dist/APlayer.min.css.map",
-        to: "static/content/APlayer.min.css.map",
-      },
-      {
-        from: "node_modules/hls.js/dist/hls.min.js",
-        to: "static/content/hls.min.js",
-      },
-      {
-        from: "reset.html",
-        to: "static/reset.html",
-      },
-    ]),
-
-    new ExtractTextPlugin("static/content/[name].css"),
-
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-  ],
+  plugins,
 
   // webpack-dev-server config
   // "--hot" and "--inline" should be passed in package.json to enable HMR
