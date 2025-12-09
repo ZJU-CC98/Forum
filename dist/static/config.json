@@ -1,6 +1,6 @@
 {
-  "apiUrl": "https://api.cc98.org",
-  "openIdUrl": "https://openid.cc98.org",
-  "imageUploadUrl": "http://www.cc98.org",
+  "apiUrl": "https://qsh.api.cc98.top",
+  "openIdUrl": "https://qsh.openid.cc98.top",
+  "imageUploadUrl": "https://cdn-bs-file.cc98.top",
   "defaultTheme": 4
 }
