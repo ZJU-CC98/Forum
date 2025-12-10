@@ -4,9 +4,12 @@ const fs = require("fs");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const { loadEnv } = require("./env");
 
 const { context, entries, resolve, makeTsRule, makeScssRule } = require("./common");
 const copyPatterns = require("./copyPatterns");
+
+const envConfig = loadEnv();
 
 module.exports = {
     mode: "development",
@@ -64,6 +67,9 @@ module.exports = {
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // Always copy vendor assets so externals resolve in dev server.
         new CopyWebpackPlugin(copyPatterns),
+        new webpack.DefinePlugin({
+            __APP_CONFIG__: JSON.stringify(envConfig),
+        }),
     ],
 
     // webpack-dev-server config

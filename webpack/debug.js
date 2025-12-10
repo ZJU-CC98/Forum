@@ -5,9 +5,12 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const { loadEnv } = require("./env");
 
 const { context, entries, resolve, makeTsRule, makeScssRule } = require("./common");
 const copyPatterns = require("./copyPatterns");
+
+const envConfig = loadEnv();
 
 module.exports = {
     mode: "development",
@@ -65,6 +68,9 @@ module.exports = {
         new CopyWebpackPlugin(copyPatterns),
         new ExtractTextPlugin("static/content/[name].css"),
         new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /(zh-cn)\.js/),
+        new webpack.DefinePlugin({
+            __APP_CONFIG__: JSON.stringify(envConfig),
+        }),
     ],
     optimization: {
         splitChunks: {

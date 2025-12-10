@@ -15,6 +15,12 @@ npm i
 npm run dev
 ```
 
+## Configuration
+
+- Required env vars: `API_URL`, `OPENID_URL`, `IMAGE_UPLOAD_URL`, `DEFAULT_THEME` (number).
+- Local: copy `env.example` to `.env` (and optionally `.env.local` for overrides); they are loaded at build time.
+- Vercel: set the same keys in Project Settings → Environment Variables for Preview/Production.
+
 ### Notes
 
 - 推荐使用 `node@20`（最低 `node@18`）进行构建，推荐使用 [`nvm`](https://github.com/nvm-sh/nvm) 或 [`nvm-windows`](https://github.com/coreybutler/nvm-windows) 管理和切换 `node` 版本；
@@ -32,9 +38,10 @@ npm run dev
   - /scripts 网站的所有脚本
   - /boardInfo.json 版面信息表
   - /98icon.ico 网站标识
-  - /config.json 项目配置
   - /index.html 网站文件
   - /portrait.json 头饰配置
+
+> 配置现由环境变量注入，构建不再依赖 `/dist/static/config.json`。
 
 ### ./Actions
 
