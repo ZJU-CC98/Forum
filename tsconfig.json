@@ -10,6 +10,7 @@
     "jsx": "react",
     "lib": ["dom", "es5", "es6"],
     "allowSyntheticDefaultImports": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "skipLibCheck": true
   }
 }
