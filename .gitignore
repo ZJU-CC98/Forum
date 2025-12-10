@@ -300,3 +300,6 @@ dist/static/config.production.json
 .env.local
 .env.production
 .env.*.local
+
+# Cursor
+.cursor/plans
