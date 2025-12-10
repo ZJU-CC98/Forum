@@ -8,7 +8,7 @@ _[Auser](https://github.com/sgjsakura), [Madridista](https://github.com/Tsukiko1
 
 ## How To Run
 
-```
+```bash
 git clone https://github.com/ZJU-CC98/Forum.git
 cd Forum
 npm i
@@ -17,7 +17,7 @@ npm run dev
 
 ### Notes
 
-- 请使用 `node@16` 或更早的版本进行构建，推荐使用 [`nvm`](https://github.com/nvm-sh/nvm) 或 [`nvm-windows`](https://github.com/coreybutler/nvm-windows) 管理和切换 `node` 版本；
+- 推荐使用 `node@20`（最低 `node@18`）进行构建，推荐使用 [`nvm`](https://github.com/nvm-sh/nvm) 或 [`nvm-windows`](https://github.com/coreybutler/nvm-windows) 管理和切换 `node` 版本；
 - 包管理工具请使用 `npm`；
 - PR 请提交至默认 `main` 分支，其余皆为开发用分支。
 

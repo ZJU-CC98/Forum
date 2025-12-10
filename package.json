@@ -2,11 +2,14 @@
   "version": "1.0.0",
   "name": "cc98-forum",
   "private": true,
+  "engines": {
+    "node": "^18.19.0 || ^20.11.0"
+  },
   "scripts": {
-    "dev": "set NODE_OPTIONS=\"--openssl-legacy-provider\" && webpack-dev-server --progress --hot --inline --config vscodeConfig/webpack.config.vscode.js",
-    "bundle-analyze": "webpack --config vscodeConfig/webpack.config.bundle.js",
-    "build:debug": "webpack --config webpack.config.debug.js",
-    "build:release": "set NODE_OPTIONS=\"--openssl-legacy-provider\" && webpack --config webpack.config.release.js",
+    "dev": "webpack-dev-server --progress --hot --inline --config webpack/dev.js",
+    "bundle-analyze": "webpack --config webpack/analyze.js",
+    "build:debug": "webpack --config webpack/debug.js",
+    "build:release": "webpack --config webpack/prod.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
