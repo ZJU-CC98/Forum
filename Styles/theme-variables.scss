@@ -1,0 +1,31 @@
+:root {
+  /* Default to the summer theme so the UI has stable colors before switches. */
+  --theme-color-main: #5198d8;
+  --theme-color-sub: #6b7178;
+  --theme-color-topbar: rgba(81, 153, 216, 0.8);
+  --background-image: url(/static/images/header-image/summer.jpg);
+  --background-image-card: url(/static/images/header-image-card/summer.jpg);
+  --background-color-page: #e6e7ec;
+  --background-color-textarea: #ffffff;
+  --font-color-text: #000000;
+}
+
+$theme-color-main-default: #5198d8;
+$theme-color-sub-default: #6b7178;
+$theme-color-topbar-default: rgba(81, 153, 216, 0.8);
+$background-image-default: url(/static/images/header-image/summer.jpg);
+$background-image-card-default: url(/static/images/header-image-card/summer.jpg);
+$background-color-page-default: #e6e7ec;
+$background-color-textarea-default: #ffffff;
+$font-color-text-default: #000000;
+
+/* Map legacy SCSS variables to CSS variables for all downstream imports. */
+$theme_color_main: var(--theme-color-main, $theme-color-main-default);
+$theme_color_sub: var(--theme-color-sub, $theme-color-sub-default);
+$theme_color_topbar: var(--theme-color-topbar, $theme-color-topbar-default);
+$background_image: var(--background-image, $background-image-default);
+$background_image_card: var(--background-image-card, $background-image-card-default);
+$background_color_page: var(--background-color-page, $background-color-page-default);
+$background_color_textarea: var(--background-color-textarea, $background-color-textarea-default);
+$font_color_text: var(--font-color-text, $font-color-text-default);
+

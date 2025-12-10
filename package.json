@@ -88,6 +88,7 @@
     "katex": "0.16.9",
     "mathjax-full": "4.0.0-beta.4",
     "null-loader": "^4.0.1",
+    "mini-css-extract-plugin": "^1.6.2",
     "sass-loader": "^10.0.0",
     "style-loader": "^0.23.0",
     "terser-webpack-plugin": "^4.2.3",

@@ -12,10 +12,11 @@ import App from "./Components/App";
 import ErrorBoundary from "./Components/ErrorBoundary";
 import { IndexedDB } from "./IndexedDB/IndexedDB";
 import { shouldUseIndexedDb } from "./config";
+import "./Styles/Site.scss";
 import zh_CN from "antd/lib/locale-provider/zh_CN";
 import { LocaleProvider } from "antd";
 import moment from "moment";
-import { checkThemeToChange } from "./Utility";
+import { checkThemeToChange, initializeTheme } from "./Utility";
 moment.locale("zh-cn");
 
 /**
@@ -52,6 +53,7 @@ export function addTimerCallback(callback: () => void) {
  */
 async function initialize() {
   await Constants.loadConfig();
+  await initializeTheme();
   if (shouldUseIndexedDb) await IndexedDB.start();
 
   // 输出一些没用的东西

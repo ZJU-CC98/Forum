@@ -12,6 +12,7 @@ import * as React from "react";
 import * as $ from "jquery";
 
 import * as moment from "moment";
+import { loadThemeStyles, getThemeCount } from "./Themes/themeLoader";
 
 // -------- TBC --------
 
@@ -3344,24 +3345,46 @@ const userSetThemeKey = "user-set-theme";
  */
 const useThemeKey = "use-theme";
 
+const clampThemeIndex = (theme: number): number => {
+  const maxThemeIndex = getThemeCount() - 1;
+  if (Number.isNaN(theme) || theme === 0 || theme > maxThemeIndex || theme < 0) {
+    return maxThemeIndex;
+  }
+  return theme;
+};
+
 /**
  * 执行更新主题的核心操作。
  * @param {number} theme 要更新的主题编号。
  */
-function changeThemeCore(theme: number) {
+async function changeThemeCore(theme: number) {
+  const normalizedTheme = clampThemeIndex(theme);
+
   // 存入实际设置值
-  setLocalStorage(useThemeKey, theme);
+  setLocalStorage(useThemeKey, normalizedTheme);
 
-  // 防止缓存未更新导致的样式错误
-  if (theme === 0 || theme >= themeNames.length) {
-    theme = themeNames.length - 1;
-  }
-
-  // 更改样式表
-  $("#mainStylesheet").attr("href", `/static/content/${themeNames[theme]}`);
+  await loadThemeStyles(normalizedTheme);
 }
 
-declare let themeNames: string[];
+/**
+ * 初始化页面时设置主题。
+ */
+export async function initializeTheme(): Promise<void> {
+  const storedUserTheme = parseInt(getLocalStorage<string>(userSetThemeKey), 10);
+  const storedUsedTheme = parseInt(getLocalStorage<string>(useThemeKey), 10);
+
+  const targetTheme = getRealThemeNumber(
+    Number.isNaN(storedUserTheme) ? Constants.config.defaultTheme : storedUserTheme
+  );
+
+  const normalizedTheme = clampThemeIndex(
+    Number.isNaN(targetTheme) ? storedUsedTheme : targetTheme
+  );
+
+  setLocalStorage(useThemeKey, normalizedTheme);
+  await loadThemeStyles(normalizedTheme);
+}
+
 /**
  * 切换主题。
  * @param {number} theme 要更换的主题。
@@ -3374,7 +3397,7 @@ export function changeTheme(theme: number) {
   const realTheme = getRealThemeNumber(theme);
 
   // 执行更新主题操作。
-  changeThemeCore(realTheme);
+  void changeThemeCore(realTheme);
 }
 
 /**
@@ -3400,7 +3423,7 @@ export function checkThemeToChange(): void {
   }
 
   // 执行更新主题操作
-  changeThemeCore(newTheme);
+  void changeThemeCore(newTheme);
 }
 
 /**
@@ -3417,16 +3440,22 @@ export function getRealThemeNumber(
   themeIndex: number,
   setting?: State.ThemeSetting
 ): number {
+  const maxThemeIndex = getThemeCount() - 1;
+
+  if (Number.isNaN(themeIndex)) {
+    return maxThemeIndex;
+  }
+
   /**
    * 用户选择默认主题，则使用系统定义的实际主题值。
    */
   if (themeIndex === 0) {
     themeIndex = Constants.config.defaultTheme;
+  }
 
     // 如果默认配置大于实际长度（通常是缓存未更新导致），则退回到使用最近的一个版本
-    if (themeIndex >= themeNames.length) {
-      themeIndex = themeNames.length - 1;
-    }
+  if (themeIndex >= maxThemeIndex || themeIndex < 0) {
+    themeIndex = maxThemeIndex;
   }
 
   // 获取当前用户的主题设置
@@ -3438,7 +3467,7 @@ export function getRealThemeNumber(
   }
 
   // 获取当前主题，or 部分为防止缓存未更新而使用最新主题
-  const item = themeList[themeIndex];
+  const item = themeList[themeIndex] ?? themeList[maxThemeIndex];
 
   const groupIndex = themeDayNightGroups.findIndex(
     (i) => i.day === item.name || i.night === item.name

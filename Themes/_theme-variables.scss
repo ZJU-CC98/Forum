@@ -1,0 +1,13 @@
+@mixin emitThemeVariables() {
+  :root {
+    --theme-color-main: #{$theme_color_main};
+    --theme-color-sub: #{$theme_color_sub};
+    --theme-color-topbar: #{$theme_color_topbar};
+    --background-image: #{$background_image};
+    --background-image-card: #{$background_image_card};
+    --background-color-page: #{$background_color_page};
+    --background-color-textarea: #{$background_color_textarea};
+    --font-color-text: #{$font_color_text};
+  }
+}
+

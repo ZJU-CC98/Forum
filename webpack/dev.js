@@ -3,10 +3,9 @@ const path = require("path");
 const fs = require("fs");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const { loadEnv } = require("./env");
 
-const { context, entries, resolve, makeTsRule, makeScssRule } = require("./common");
+const { context, resolve, makeTsRule, makeScssRule, getEntries } = require("./common");
 const copyPatterns = require("./copyPatterns");
 
 const envConfig = loadEnv();
@@ -14,7 +13,7 @@ const envConfig = loadEnv();
 module.exports = {
     mode: "development",
     context,
-    entry: entries,
+    entry: getEntries({ includeThemes: false }),
     output: {
         path: path.resolve(context, "dist/"),
         // should use absolute path
@@ -63,7 +62,6 @@ module.exports = {
                 unsupportedTemplate: fs.readFileSync(path.resolve(context, "unsupported.html")).toString(),
             },
         }),
-        new ExtractTextPlugin("static/content/[name].css"),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // Always copy vendor assets so externals resolve in dev server.
         new CopyWebpackPlugin(copyPatterns),

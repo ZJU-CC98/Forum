@@ -10,6 +10,9 @@
   <link type="text/css" rel="stylesheet" href="/static/content/font-awesome/css/font-awesome.min.css" />
   <link type="text/css" rel="stylesheet" href="/static/content/DPlayer.min.css" />
   <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
+  <% (htmlWebpackPlugin.files.css || []).forEach((cssFile)=> { %>
+    <link type="text/css" rel="stylesheet" href="/<%= cssFile %>" />
+  <% }) %>
   <script type="text/javascript">
     // 注册报错信息
     window.onerror = async (event, source, line, col, error) => {
@@ -80,55 +83,6 @@
       }
     </script>
 
-    <% const themeNames=["default_theme_placeholder"]; htmlWebpackPlugin.files.css.forEach((cssFile)=> themeNames.push(cssFile.split("/").pop())); %>
-      <script type="text/javascript">
-        // 动态载入样式
-        const themeNames = <%= JSON.stringify(themeNames) %>;
-
-        try {
-          const refreshTokenExpirationTime = localStorage.getItem(
-            "refresh_token_expirationTime"
-          );
-          const isLogOn =
-            refreshTokenExpirationTime &&
-            parseInt(refreshTokenExpirationTime, 10) * 1000 > Date.now();
-          if (!isLogOn) {
-            throw new Error("用户未登录");
-          }
-
-          let userSelectedThemeIndex = -1;
-
-          // 是否已经记录了上次更新的主题，如果有，则使用上次主题
-          const useTheme = localStorage.getItem("use-theme");
-          if (useTheme !== null) {
-            userSelectedThemeIndex = parseInt(localStorage.getItem("use-theme").slice(4));
-          }
-
-          // 如果未记录之前的主题主题，则从用户信息中提取主题
-          if (isNaN(userSelectedThemeIndex)) {
-            userSelectedThemeIndex = JSON.parse(
-              localStorage.getItem("userInfo").slice(4)
-            ).theme;
-          }
-
-          const themeName = themeNames[userSelectedThemeIndex] || themeNames[themeNames.length - 1];
-
-          if (!themeName) {
-            throw new Error("用户未选择主题");
-          }
-          document.head.insertAdjacentHTML(
-            "beforeend",
-            `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeName}">`
-          );
-        } catch (e) {
-          window.addEventListener("configload", ({ detail: config }) => {
-            document.head.insertAdjacentHTML(
-              "beforeend",
-              `<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/${themeNames[config.defaultTheme]}">`
-            );
-          })
-        }
-      </script>
 </body>
 
 </html>

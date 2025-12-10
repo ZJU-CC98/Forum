@@ -4,13 +4,19 @@ const fs = require("fs/promises");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const WebpackChunkHash = require("webpack-chunk-hash");
 const { minify } = require("html-minifier-terser");
 const { loadEnv } = require("./env");
 
-const { context, entries, resolve, makeTsRule, makeScssRule } = require("./common");
+const {
+    context,
+    resolve,
+    makeTsRule,
+    makeScssRule,
+    getEntries,
+    MiniCssExtractPlugin,
+} = require("./common");
 const copyPatterns = require("./copyPatterns");
 
 const minifyOptions = {
@@ -27,11 +33,11 @@ module.exports = async () => {
         module: {
             rules: [
                 makeTsRule(),
-                makeScssRule({ minimize: true }),
+                makeScssRule({ minimize: true, extract: true }),
             ],
         },
         resolve,
-        entry: entries,
+        entry: getEntries(),
         output: {
             path: path.resolve(context, "dist/"),
             publicPath: "/",
@@ -62,7 +68,10 @@ module.exports = async () => {
                 }
             ),
             new CopyWebpackPlugin(copyPatterns),
-            new ExtractTextPlugin("static/content/[name]-[chunkhash:8].css"),
+            new MiniCssExtractPlugin({
+                filename: "static/content/[name]-[contenthash:8].css",
+                chunkFilename: "static/content/[name]-[contenthash:8].css",
+            }),
             new WebpackChunkHash({ algorithm: "md5" }),
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
             new webpack.DefinePlugin({
