@@ -98,6 +98,10 @@ const config = (async () => ({
     css_spring_festival_2025_dark: "./Themes/spring_festival_2025_dark.scss",
     //金舞迎春（亮）
     css_spring_festival_2025_light: "./Themes/spring_festival_2025_light.scss",
+    // 新岁花朝（暗）
+    css_new_year_2026_dark: "./Themes/new_year_2026_dark.scss",
+    // 新岁花朝（亮）
+    css_new_year_2026_light: "./Themes/new_year_2026_light.scss",
   },
   output: {
     path: path.resolve(__dirname, "dist/"),

@@ -254,6 +254,22 @@ export const themeList: ThemeItem[] = [
       backgroundImage: "url(/static/images/header-image-thumb/spring_festival_2025.jpg)",
     },
   },
+  {
+    order: 27,
+    name: "新岁花朝（暗）",
+    style: {
+      backgroundColor: "rgba(180, 84, 71, 1)",
+      backgroundImage: "url(/static/images/header-image-thumb/new_year_2026_dark.jpg)",
+    },
+  },
+  {
+    order: 28,
+    name: "新岁花朝（亮）",
+    style: {
+      backgroundColor: "rgba(223, 108, 93, 1)",
+      backgroundImage: "url(/static/images/header-image-thumb/new_year_2026.jpg)",
+    },
+  },
 ];
 
 /**
@@ -282,6 +298,7 @@ export const themeDayNightGroups: ThemeDayNightGroup[] = [
   { day: "春樱日和（亮）", night: "春樱日和（暗）" },
   { day: "重阳（亮）", night: "重阳（暗）" },
   { day: "金舞迎春（亮）", night: "金舞迎春（暗）" },
+  { day: "新岁花朝（亮）", night: "新岁花朝（暗）" },
 ];
 
 let themeButtons = [];
