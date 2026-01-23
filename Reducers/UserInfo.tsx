@@ -42,6 +42,10 @@ export class UserInfoStore {
    */
   recentTopics: Appstate.UserRecentTopic[] = [];
   /**
+   *  用户我的足迹的主题
+   */
+  currentMyHistoryTopics: Appstate.UserRecentTopic[] = [];
+  /**
    * 用户最近发过的回复
    */
   recentPosts: Appstate.UserRecentPost[] = [];
@@ -92,6 +96,7 @@ export class UserInfoStore {
     | "myfavoriteposts"
     | "myfavoriteboards"
     | "myfollowings"
+    | "myhistory"
     | "myfans" = "profile";
   /**
    * 转账成功的用户名数组
@@ -115,6 +120,7 @@ export class UserInfoStore {
 class hasTotal {
   profile: boolean = false;
   mytopics: boolean = false;
+  myhistory: boolean = false;
   myposts: boolean = true;
   myfavoriteposts: boolean = false;
   myfollowings: boolean = true;
@@ -125,6 +131,7 @@ class TotalPage {
   profile: number = 1;
   mytopics: number = 1;
   myposts: number = 1;
+  myhistory: number = 1;
   myfavoriteposts: number = 1;
   myfollowings: number;
   myfans: number;
