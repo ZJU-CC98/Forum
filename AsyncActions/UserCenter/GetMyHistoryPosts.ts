@@ -6,7 +6,7 @@ import { RootState, RootAction } from "../../Store";
 import * as Utility from "../../Utility";
 
 /**
- * 获取用户收藏的主题
+ * 获取用户我的足迹的主题
  * @param page 当前页数
  * @author XSYangtuo
  */
@@ -22,7 +22,6 @@ export const getHistoryPosts: ActionCreator<ThunkAction<Promise<Action>, RootSta
     dispatch(Actions.userCenterLoading());
     const userInfo = getState().userInfo;
     const historyPosts = getState().userInfo.currentMyHistoryTopics;
-    console.log(historyPosts);
     const hasTotal = getState().userInfo.hasTotal.myhistory;
     // debugger;
     if (!forceLoad) {
@@ -45,10 +44,21 @@ export const getHistoryPosts: ActionCreator<ThunkAction<Promise<Action>, RootSta
     // 请求11条信息
     const headers = await Utility.formAuthorizeHeader();
     const res = await Utility.cc98Fetch(url, { headers });
+    if(res.status === 403) {
+      alert("你刷新的太快啦！可以晚些刷新");
+    }
     if (res.status !== 200) {
       throw new Error(res.statusText);
     }
-    const posts: Appstate.UserRecentTopic[] = (await res.json()).data;
+    const resJSON:any|undefined|null = await res.json();
+    const posts: Appstate.UserRecentTopic[]|undefined|null = resJSON?.data;
+
+    if(!posts || posts.length === 0) {
+      console.log("no posts");
+      historyPosts.splice(0, historyPosts.length);
+      return dispatch(Actions.userCenterLoaded());
+    }
+    getState().userInfo.totalPage.myhistory = Math.ceil((resJSON.count)/ 10) || page+1;
     let i = posts.length === 11 ? 10 : posts.length;
     // 如果小于11条则总数加载完毕
     if (posts.length !== 11) {
@@ -65,3 +75,26 @@ export const getHistoryPosts: ActionCreator<ThunkAction<Promise<Action>, RootSta
     return dispatch(Actions.userCenterError(e.message));
   }
 };
+/**
+ * 更改用户开关历史记录功能
+ * @param enabled 是否开启历史记录功能
+ * @author XSYangtuo
+ */
+export const setBrowsingHistoryEnabled: ActionCreator<ThunkAction<Promise<Action>, RootState, void, RootAction>> = (
+  enabled: boolean
+) => async (dispatch, getState) => {
+  const url = `/me/browsing-history?enabled=${enabled?'true':'false'}`;
+  const headers = await Utility.formAuthorizeHeader();
+  const res = await Utility.cc98Fetch(url, { method: "PUT",headers });
+  if (res.status !== 200) {
+    throw new Error(res.statusText);
+  }
+  getState().userInfo.browsingHistoryEnabled = enabled;
+  if(enabled){
+    return dispatch(getHistoryPosts(1, true));
+  } else {
+    getState().userInfo.currentMyHistoryTopics = [];
+    return dispatch(Actions.userCenterLoaded());
+  }
+}
+  
