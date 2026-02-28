@@ -22,6 +22,8 @@ export class MessageWindow extends React.Component<
     this.getNewMessage = this.getNewMessage.bind(this);
     this.postMessage = this.postMessage.bind(this);
     this.getMoreMessage = this.getMoreMessage.bind(this);
+    this.triggerImageUpload = this.triggerImageUpload.bind(this);
+    this.handleImageUpload = this.handleImageUpload.bind(this);
   }
 
   async componentDidMount() {
@@ -277,6 +279,37 @@ export class MessageWindow extends React.Component<
   }
 
   /**
+   * 触发图片上传按钮点击
+   */
+  async triggerImageUpload() {
+    $("#upload-files").click();
+  }
+
+  /**
+   * 处理图片上传
+   */
+  async handleImageUpload(e) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const res = await Utility.uploadFile(files[0]);
+
+    if (res.isSuccess) {
+      // 将图片 URL 插入到文本框
+      const textarea = document.getElementById('postContent') as HTMLTextAreaElement;
+      const url = `[img]${res.content}[/img]`;
+      textarea.value += url;
+      // 清除提示文字
+      $('#wPostNotice').addClass('displaynone');
+    } else {
+      alert('图片上传失败：' + res.content);
+    }
+
+    // 清空 input
+    e.target.value = '';
+  }
+
+  /**
    *发送私信内容的函数
    */
   async postMessage() {
@@ -365,12 +398,29 @@ export class MessageWindow extends React.Component<
             >
               发送失败，可能的原因有：发送太快；受到全站禁言或以上的处罚；服务器故障或者正在维护。
             </div>
-            <button
-              className="message-message-wPostBtn"
-              onClick={this.postMessage}
-            >
-              发送
-            </button>
+            <input
+              id="upload-files"
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={this.handleImageUpload}
+            />
+            <div className="message-message-wPostBtn-wrapper">
+              <button
+                className="message-message-wPostBtn"
+                onClick={this.triggerImageUpload}
+                type="button"
+                style={{ marginRight: '10px' }}
+              >
+                上传图片
+              </button>
+              <button
+                className="message-message-wPostBtn"
+                onClick={this.postMessage}
+              >
+                发送
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -420,12 +470,29 @@ export class MessageWindow extends React.Component<
             >
               发送失败，可能的原因有：发送太快；受到全站禁言或以上的处罚；服务器故障或者正在维护。
             </div>
-            <button
-              className="message-message-wPostBtn"
-              onClick={this.postMessage}
-            >
-              发送
-            </button>
+            <input
+              id="upload-files"
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={this.handleImageUpload}
+            />
+            <div className="message-message-wPostBtn-wrapper">
+              <button
+                className="message-message-wPostBtn"
+                onClick={this.triggerImageUpload}
+                type="button"
+                style={{ marginRight: '10px' }}
+              >
+                上传图片
+              </button>
+              <button
+                className="message-message-wPostBtn"
+                onClick={this.postMessage}
+              >
+                发送
+              </button>
+            </div>
           </div>
         </div>
       );
