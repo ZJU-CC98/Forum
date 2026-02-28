@@ -10,7 +10,7 @@ import { CurUserPost } from "./Topic/Topic-Trace";
 import { BoardList } from "./Board/BoardList";
 import UserCenter from "./UserCenter/UserCenter";
 import { Message } from "./Message/Message";
-import  AllNewTopic  from "./Topic/Topic-New";
+import AllNewTopic from "./Topic/Topic-New";
 import { AllRecommendedTopic } from "./Topic/Topic-Recommended"
 import Focus from "./Focus/Focus";
 import { Header } from "./Header";
@@ -42,7 +42,7 @@ import { Index } from "../Pages/Index/Index";
 
 // 重构
 import RBoard from "../Pages/Board/index";
-import  AnnualReviewV2 from "../Pages/AnnualReviewV2";
+import AnnualReviewV2 from "../Pages/AnnualReviewV2";
 
 type Props = {
   isError: boolean;
@@ -76,7 +76,7 @@ class App extends React.Component<Props> {
 
         <Route path="/board/:id/:page?" component={RBoard} />
         {/* <Route path="/annual-review-2022" component={AnnualReview} /> */}
-        <Route path="/annual-review-2024" component={AnnualReviewV2} />
+        <Route path="/annual-review-2025" component={AnnualReviewV2} />
         <Route path="/error/401" component={Status.UnauthorizedBoard} />
         <Route path="/index" component={Index} />
 
