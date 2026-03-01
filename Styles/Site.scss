@@ -1899,7 +1899,35 @@ a {
     }
 
     .message-message-wPostBtn {
-      margin: 0px 29px 19px 580px;
+      width: 100px;
+      height: 30px;
+      background-color: $theme_color_main;
+      color: $color-post;
+      border: 0px;
+      border-radius: 3px;
+      font-size: 12px;
+      text-align: center;
+
+      &:hover {
+        filter: brightness(1.1); //亮度
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &:active {
+        filter: brightness(1.2);
+        position: relative;
+        top: 1px;
+        left: 1px;
+      }
+    }
+
+    .message-message-wPostBtn-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0px 29px 19px 0px;
     }
   }
 }

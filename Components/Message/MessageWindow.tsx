@@ -11,6 +11,7 @@ import * as Utility from "../../Utility";
 import DocumentTitle from "../DocumentTitle";
 import Store from "../../Store";
 import { refreshCurrentMessageCount } from "../../AsyncActions/Message";
+import * as $ from "jquery";
 
 export class MessageWindow extends React.Component<
   MessageWindowProps,
@@ -22,10 +23,36 @@ export class MessageWindow extends React.Component<
     this.getNewMessage = this.getNewMessage.bind(this);
     this.postMessage = this.postMessage.bind(this);
     this.getMoreMessage = this.getMoreMessage.bind(this);
+    this.triggerImageUpload = this.triggerImageUpload.bind(this);
+    this.handleImageUpload = this.handleImageUpload.bind(this);
+    this.handlePaste = this.handlePaste.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
+    this.handleDragOver = this.handleDragOver.bind(this);
+    this.uploadAndInsertImage = this.uploadAndInsertImage.bind(this);
   }
 
   async componentDidMount() {
     this.getData(this.props);
+    // 手动绑定事件到 textarea
+    const textarea = document.getElementById('postContent');
+    if (textarea) {
+      textarea.addEventListener('paste', this.handlePaste as any);
+      textarea.addEventListener('drop', this.handleDrop as any);
+      textarea.addEventListener('dragover', this.handleDragOver as any);
+    }
+  }
+
+  async componentDidUpdate() {
+    // 组件更新后重新绑定事件
+    const textarea = document.getElementById('postContent');
+    if (textarea) {
+      textarea.removeEventListener('paste', this.handlePaste as any);
+      textarea.removeEventListener('drop', this.handleDrop as any);
+      textarea.removeEventListener('dragover', this.handleDragOver as any);
+      textarea.addEventListener('paste', this.handlePaste as any);
+      textarea.addEventListener('drop', this.handleDrop as any);
+      textarea.addEventListener('dragover', this.handleDragOver as any);
+    }
   }
 
   async getData(props) {
@@ -277,6 +304,90 @@ export class MessageWindow extends React.Component<
   }
 
   /**
+   * 触发图片上传按钮点击
+   */
+  async triggerImageUpload() {
+    $("#upload-files").click();
+  }
+
+  /**
+   * 处理图片上传
+   */
+  async handleImageUpload(e) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    await this.uploadAndInsertImage(files[0]);
+
+    // 清空 input
+    $("#upload-files").val('');
+  }
+
+  /**
+   * 上传图片并插入到文本框
+   */
+  async uploadAndInsertImage(file: File) {
+    if (!file.type.startsWith('image/')) {
+      alert('请选择图片文件');
+      return;
+    }
+
+    const res = await Utility.uploadFile(file);
+
+    if (res.isSuccess) {
+      // 将图片 URL 插入到文本框
+      const textarea = document.getElementById('postContent') as HTMLTextAreaElement;
+      const url = `[img]${res.content}[/img]`;
+      textarea.value += url;
+      // 清除提示文字
+      $('#wPostNotice').addClass('displaynone');
+    } else {
+      alert('图片上传失败：' + res.content);
+    }
+  }
+
+  /**
+   * 处理粘贴事件
+   */
+  async handlePaste(e: ClipboardEvent) {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.startsWith('image/')) {
+        e.preventDefault();
+        const file = items[i].getAsFile();
+        if (file) {
+          await this.uploadAndInsertImage(file);
+        }
+        break;
+      }
+    }
+  }
+
+  /**
+   * 处理拖拽放置事件
+   */
+  async handleDrop(e: DragEvent) {
+    e.preventDefault();
+    const files = e.dataTransfer?.files;
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].type.startsWith('image/')) {
+          await this.uploadAndInsertImage(files[i]);
+        }
+      }
+    }
+  }
+
+  /**
+   * 处理拖拽进入事件，阻止默认行为
+   */
+  async handleDragOver(e: DragEvent) {
+    e.preventDefault();
+  }
+
+  /**
    *发送私信内容的函数
    */
   async postMessage() {
@@ -365,12 +476,29 @@ export class MessageWindow extends React.Component<
             >
               发送失败，可能的原因有：发送太快；受到全站禁言或以上的处罚；服务器故障或者正在维护。
             </div>
-            <button
-              className="message-message-wPostBtn"
-              onClick={this.postMessage}
-            >
-              发送
-            </button>
+            <input
+              id="upload-files"
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={this.handleImageUpload}
+            />
+            <div className="message-message-wPostBtn-wrapper">
+              <button
+                className="message-message-wPostBtn"
+                onClick={this.triggerImageUpload}
+                type="button"
+                style={{ marginRight: '10px' }}
+              >
+                上传图片
+              </button>
+              <button
+                className="message-message-wPostBtn"
+                onClick={this.postMessage}
+              >
+                发送
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -420,12 +548,29 @@ export class MessageWindow extends React.Component<
             >
               发送失败，可能的原因有：发送太快；受到全站禁言或以上的处罚；服务器故障或者正在维护。
             </div>
-            <button
-              className="message-message-wPostBtn"
-              onClick={this.postMessage}
-            >
-              发送
-            </button>
+            <input
+              id="upload-files"
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={this.handleImageUpload}
+            />
+            <div className="message-message-wPostBtn-wrapper">
+              <button
+                className="message-message-wPostBtn"
+                onClick={this.triggerImageUpload}
+                type="button"
+                style={{ marginRight: '10px' }}
+              >
+                上传图片
+              </button>
+              <button
+                className="message-message-wPostBtn"
+                onClick={this.postMessage}
+              >
+                发送
+              </button>
+            </div>
           </div>
         </div>
       );
