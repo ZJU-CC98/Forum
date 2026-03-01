@@ -47,6 +47,9 @@ type Props = RouteComponentProps<ownMatch> & ownProps;
  * 用户中心我收藏的帖子组件
  */
 class Posts extends React.Component<Props> {
+  state: Readonly<{ showEnableCheckBoxModal: boolean }> = {
+    showEnableCheckBoxModal: false,
+  };
   componentWillReceiveProps(newProps: Props) {
     if (this.props.match.params.page !== newProps.match.params.page) {
       const curPage = parseInt(newProps.match.params.page) || 1;
@@ -73,10 +76,36 @@ class Posts extends React.Component<Props> {
         没有主题
       </div>
     );
+    const enableCheckBoxModal = (
+      <Modal
+          visible={this.state.showEnableCheckBoxModal}
+          title=  {this.props.browsingHistoryEnabled ? "确定要关闭浏览历史吗？" : "确定要开启浏览历史吗？"}
+          okText="确认"
+          cancelText="取消"
+          onOk={() => { 
+            this.setState({ showEnableCheckBoxModal: false }); 
+            this.props.setLocalBrowsingHistoryEnabled(!this.props.browsingHistoryEnabled);
+          }}
+          onCancel={() => { this.setState({ showEnableCheckBoxModal: false }); }}
+          width={"50rem"}
+        >
+          <div style={{ display: this.props.browsingHistoryEnabled ? "none" : "block" }}>
+            <p>
+              该设置将在网页版和小程序中同步。开启后，将保存最近30天的主题帖浏览历史。
+            </p>
+          </div>
+          <div style={{ display: this.props.browsingHistoryEnabled ? "block" : "none" }}>
+            <p>
+              该设置将在网页版和小程序中同步。关闭期间，不保存主题帖浏览历史。
+            </p>
+          </div>
+      </Modal>
+    );
     const enableCheckbox = (
+      
       <Checkbox
         indeterminate={false}
-        onChange={() => { this.props.setLocalBrowsingHistoryEnabled(!this.props.browsingHistoryEnabled); }}
+        onChange={() => { this.setState({ showEnableCheckBoxModal: true }); }}
         checked={this.props.browsingHistoryEnabled}
       >
         开启历史记录功能
@@ -98,8 +127,8 @@ class Posts extends React.Component<Props> {
       userRecentPosts.splice(i, 0, <hr key={i} />);
     }
     return (
-
       <div className="user-posts">
+        {enableCheckBoxModal}
         {enableCheckbox}
         {/* <Button
           onClick={() => {
