@@ -320,7 +320,7 @@ export class MessageWindow extends React.Component<
     await this.uploadAndInsertImage(files[0]);
 
     // 清空 input
-    e.target.value = '';
+    $("#upload-files").val('');
   }
 
   /**
