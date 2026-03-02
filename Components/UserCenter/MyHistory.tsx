@@ -96,7 +96,7 @@ class Posts extends React.Component<Props> {
           </div>
           <div style={{ display: this.props.browsingHistoryEnabled ? "block" : "none" }}>
             <p>
-              该设置将在网页版和小程序中同步。关闭期间，不保存主题帖浏览历史。
+              该设置将在网页版和小程序中同步。关闭期间不记录。
             </p>
           </div>
       </Modal>
