@@ -48,6 +48,10 @@ export const changeUserRecentTopics = createAction(ActionTypes.CHANGE_USER_RECEN
     type: ActionTypes.CHANGE_USER_RECENT_TOPICS,
     payload: { posts }
 }));
+export const changeUserHistoryPosts = createAction(ActionTypes.CHANGE_USER_HISTORY_POSTS, (posts: Appstate.UserRecentTopic[]) => ({
+    type: ActionTypes.CHANGE_USER_HISTORY_POSTS,
+    payload: { posts }
+}));
 
 interface PostsAndTotal {
     posts: Appstate.UserRecentPost[]
@@ -79,7 +83,7 @@ export const changeUserFollowingsInfo = createAction(ActionTypes.CHANGE_USER_FOL
     payload: { followingsInfo }
 }));
 
-export const changeUserCenterPage = createAction(ActionTypes.CHNAGE_USER_CENTER_PAGE, (page: 'profile' | 'config' | 'mytopics' |'myposts' | 'myfavoriteposts' | 'myfavoriteboards' | 'myfollowings' | 'myfans') => ({
+export const changeUserCenterPage = createAction(ActionTypes.CHNAGE_USER_CENTER_PAGE, (page: 'profile' | 'config' | 'mytopics' |'myposts' | 'myfavoriteposts' | 'myfavoriteboards' | 'myfollowings' | 'myfans' | 'myhistory') => ({
     type: ActionTypes.CHNAGE_USER_CENTER_PAGE,
     payload: { page }
 }));
