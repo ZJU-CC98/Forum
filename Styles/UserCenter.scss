@@ -162,15 +162,26 @@
       height: 3.5rem;
       display: flex;
       align-items: center;
-      font-family: FontAwesome;
 
       a {
         display: inline-flex;
         align-items: center;
         padding-left: 0.65rem;
 
-        p {
-          margin-left: 0.65rem;
+        &:before {
+          font-family: FontAwesome;
+          margin-right: 0.1rem;
+          width: 1.2rem;
+          text-align: center;
+          display: inline-block;
+          line-height: 1;
+          vertical-align: middle;
+        }
+
+        .center-nav-item {
+          text-align: left;
+          white-space: nowrap;
+          vertical-align: middle;
         }
       }
     }
