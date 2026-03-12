@@ -15,6 +15,7 @@ import MyFavoritesBoards from "./MyFavoritesBoards";
 import MyFavoritesPosts from "./MyFavoritesPosts";
 import Wealth from "./TransferWealth";
 import Theme from "./Theme";
+import MyHistory from "./MyHistory";
 
 /**
  * 用户中心主体
@@ -27,6 +28,7 @@ export default class extends React.Component {
         <Route path="/usercenter/myfollowings/:page?" component={MyFollowings} />
         <Route path="/usercenter/myfans/:page?" component={MyFans} />
         <Route path="/usercenter/mytopics/:page?" component={MyTopics} />
+        <Route path="/usercenter/myhistory/:page?" component={MyHistory} />
         <Switch>
           <Route path="/usercenter/myposts/ishot/:ishot/:page?" component={MyPosts} />
           <Route path="/usercenter/myposts">
