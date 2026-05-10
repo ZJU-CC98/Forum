@@ -79,6 +79,12 @@ export default class extends React.Component<props, UserCenterNavigationState> {
           </li>
           <hr />
           <li>
+            <NavLink to="/usercenter/myhistory" activeClassName="user-center-navigation-active" className="fa-history">
+              <div className="center-nav-item">我的足迹</div>
+            </NavLink>
+          </li>
+          <hr />
+          <li>
             <NavLink to="/usercenter/myfavorites" activeClassName="user-center-navigation-active" className="fa-star">
               <div className="center-nav-item">我的收藏</div>
             </NavLink>

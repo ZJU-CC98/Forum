@@ -12,7 +12,7 @@ import { Icon, Spin } from "antd";
 import Page8 from "./page8";
 import Page9 from "./page9"
 
-export const year = 2024;
+export const year = 2025;
 
 export default class extends React.Component {
   state = {
@@ -68,7 +68,7 @@ export default class extends React.Component {
         return;
       }
       //抽卡无记录 竞猜有记录
-      if(this.state.page === 6 && !this.state.data.cardDraw && this.state.data.bet){
+      if (this.state.page === 6 && !this.state.data.cardDraw && this.state.data.bet) {
         this.setState({ page: 8 });
         return;
       }

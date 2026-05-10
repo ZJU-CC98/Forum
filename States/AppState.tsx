@@ -404,6 +404,10 @@ export class UserInfo {
    * 用户拥有的补签卡
    */
   signInCardCount: number;
+  /**
+   * 用户是否开启我的足迹功能
+   */
+  browsingHistoryEnabled: boolean;
 }
 
 /**

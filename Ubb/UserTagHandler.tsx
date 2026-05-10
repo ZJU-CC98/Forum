@@ -13,10 +13,10 @@ export class UserTagHandler extends Ubb.TextTagHandler {
 
 	execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
         const userName = content;
-        const style = {
+        /*const style = {
             cursor: 'pointer'
-        };
+        };*/
 
-        return <a href={`/user/name${encodeURI(userName)}`} style={style}>{userName}</a>;
+        return <a href={`/user/name/${encodeURI(userName)}`} className='urlStyle'>{userName}</a>;
 	}
 }
