@@ -254,6 +254,14 @@ export const themeList: ThemeItem[] = [
       backgroundImage: "url(/static/images/header-image-thumb/spring_festival_2025.jpg)",
     },
   },
+  {
+    order: 27,
+    name: "坛庆2026",
+    style: {
+      backgroundColor: "rgb(57,70,118)",
+      backgroundImage: "url(/static/images/header-image-thumb/cc98_23rd_light.jpg)",
+    },
+  },
 ];
 
 /**

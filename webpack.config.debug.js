@@ -88,6 +88,8 @@ const config = {
     css_spring_festival_2025_dark: "./Themes/spring_festival_2025_dark.scss",
     //金舞迎春（亮）
     css_spring_festival_2025_light: "./Themes/spring_festival_2025_light.scss",
+    //CC98 23rd dawntime light
+    css_cc98_23rd_light: "./Themes/cc98_23rd_light.scss",
   },
   output: {
     path: path.resolve(__dirname, "dist/"),
