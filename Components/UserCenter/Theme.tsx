@@ -272,7 +272,7 @@ export const themeList: ThemeItem[] = [
   },
   {
     order: 29,
-    name: "坛庆2026",
+    name: "沧海启明",
     style: {
       backgroundColor: "rgb(57,70,118)",
       backgroundImage: "url(/static/images/header-image-thumb/cc98_23rd_light.jpg)",
