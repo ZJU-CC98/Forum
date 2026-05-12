@@ -577,11 +577,15 @@ class Theme extends React.Component<ThemeProps> {
   };
 
   render() {
+    // 后端可能返回前端暂不识别的主题编号，未命中时沿用最后一个可用主题。
+    const currentTheme =
+      themeList[this.props.userInfo.theme] || themeList[themeList.length - 1];
+
     return (
       <div className="user-theme">
         <div className="user-theme-info">
           <h2>切换皮肤</h2>
-          <p>当前皮肤：{themeList[this.props.userInfo.theme].name}</p>
+          <p>当前皮肤：{currentTheme.name}</p>
         </div>
 
         <div>
