@@ -299,7 +299,7 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
             width: '15rem',
             position: 'absolute',
             top: '-2rem',
-            left: '-1.75rem'
+            left: '-2rem'
           }
         })
       }
