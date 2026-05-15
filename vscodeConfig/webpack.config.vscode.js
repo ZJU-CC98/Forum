@@ -91,6 +91,8 @@ module.exports = {
     css_new_year_2026_dark: "./Themes/new_year_2026_dark.scss",
     // 新岁花朝（亮）
     css_new_year_2026_light: "./Themes/new_year_2026_light.scss",
+    //CC98 23rd dawntime light
+    css_cc98_23rd_light: "./Themes/cc98_23rd_light.scss",
   },
 
   output: {

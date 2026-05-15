@@ -3353,7 +3353,7 @@ function changeThemeCore(theme: number) {
   setLocalStorage(useThemeKey, theme);
 
   // 防止缓存未更新导致的样式错误
-  if (theme === 0 || theme >= themeNames.length) {
+  if (theme === 0 || !themeNames[theme]) {
     theme = themeNames.length - 1;
   }
 
@@ -3439,6 +3439,9 @@ export function getRealThemeNumber(
 
   // 获取当前主题，or 部分为防止缓存未更新而使用最新主题
   const item = themeList[themeIndex];
+  if (!item) {
+    return themeList.length - 1;
+  }
 
   const groupIndex = themeDayNightGroups.findIndex(
     (i) => i.day === item.name || i.night === item.name

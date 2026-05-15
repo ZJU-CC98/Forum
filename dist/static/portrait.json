@@ -130,5 +130,16 @@
     },
     "imageUrl": "/static/images/相框/认证用户.png",
     "portraitShadow": true
+  },
+  "年度用户": {
+    "style": {
+      "width": "7.5rem",
+      "position": "absolute",
+      "left": "-3.7rem",
+      "top": "-3.5rem",
+      "zIndex": "150"
+    },
+    "imageUrl": "/static/images/相框/年度用户.png",
+    "portraitShadow": true
   }
 }

@@ -233,6 +233,10 @@ export class Replier extends RouteComponent<
           style = data.认证用户.style;
           imageUrl = data.认证用户.imageUrl;
           break;
+        case 104:
+          style = data.年度用户.style;
+          imageUrl = data.年度用户.imageUrl;
+          break;
         default:
           imageUrl = data.普通.imageUrl;
       }

@@ -1,0 +1,10 @@
+$theme_color_main: rgb(57, 70, 118);
+$theme_color_sub: rgb(218, 180, 77);
+$theme_color_topbar: rgba(57, 70, 118, 0.82);
+$background_image: url(/static/images/header-image/cc98_23rd_light.jpg);
+$background_image_card: url(/static/images/header-image-card/cc98_23rd_light.jpg);
+$background_color_page: rgb(238, 243, 247);
+$background_color_textarea: #ffffff;
+$font_color_text: #000000;
+
+@import '../Styles/Site.scss';

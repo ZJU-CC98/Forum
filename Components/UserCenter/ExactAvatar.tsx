@@ -291,6 +291,18 @@ export default class extends React.Component<UserCenterExactAvatarProps, State> 
           }
         })
       }
+      else if (this.props.userInfo.displayTitleId === 104) {
+        imageUrl = data.年度用户.imageUrl;
+        this.setState({
+          url: imageUrl,
+          photoFrameStyle: {
+            width: '15rem',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-2rem'
+          }
+        })
+      }
     }
   }
 
