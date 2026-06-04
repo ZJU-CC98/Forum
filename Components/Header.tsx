@@ -589,7 +589,8 @@ export class Header extends React.Component<{}, AppState> {
     let pathname = location.pathname;
     if (pathname === "/") {
       return (
-        <div className="header">
+        <div className="headerShell headerShell-mainPage">
+          <div className="header" />
           {/*<Redirect />*/}
           <div className="topBar-mainPage">
             <div className="topBarRow">
@@ -631,7 +632,8 @@ export class Header extends React.Component<{}, AppState> {
       );
     } else {
       return (
-        <div className="headerWithoutImage">
+        <div className="headerShell headerShell-normal">
+          <div className="headerWithoutImage" />
           {/*<Redirect />*/}
           <div className="topBar">
             <div className="topBarRow">
