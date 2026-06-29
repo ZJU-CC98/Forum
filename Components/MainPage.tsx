@@ -264,7 +264,7 @@ export class MainPageTopicComponent extends React.Component<
       <div key={item.id} className="mainPageListRow">
         <div className="mainPageListTitle">
           <a href={topicUrl} target="_blank">
-          {item.title.trim() ? item.title : <span style={{ display: 'inline-block', width: '5rem' }}></span>}
+            {item.title.trim() ? item.title : <span style={{ display: 'inline-block', width: '5rem' }}></span>}
           </a>
         </div>
       </div>
@@ -689,6 +689,23 @@ export class MainPageCountProps {
   }
 }
 
+export class SchoolSuggestionBox extends React.Component<{}, {}> {
+  render() {
+    return (<div
+      style={{ position: "relative", width: "18.75rem", height: "6.25rem", marginBottom: "1rem" }}
+    >
+      <div>
+        <a href="https://zju.aliwork.com/s/mailto?corpid=ding2c6bcab1e41b0242&ddtab=true" target="_blank">
+          <img
+            src="/static/images/xyyjx.jpg"
+            style={{ width: "18.75rem", height: "6.25rem" }}
+          />
+        </a>
+      </div>
+    </div>);
+  }
+}
+
 /**
  * 小程序二维码
  */
@@ -883,6 +900,7 @@ export class MainPage extends React.Component<{}, { data }> {
           <RecommendedFunctionComponent data={data.recommendationFunction} />
           {/*<SchoolNewsComponent data={data.schoolNews} />*/}
           <AdsComponent />
+          <SchoolSuggestionBox />
           {Utility.getMyInfo() ?
             <SpecialOfferComponent data={data.specialOffer} /> :
             null}
