@@ -720,6 +720,21 @@ td {
 //------------------------- 首页就到此为止啦 ----------------------
 
 //------------------------- 以下是新头部的样式 ---------------------
+.headerShell {
+  position: relative;
+  width: 100%;
+  min-width: 71.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.headerShell-mainPage {
+  height: 12rem;
+}
+
+.headerShell-normal {
+  height: 3rem;
+}
+
 .header {
   display: flex;
   flex-direction: row;
@@ -727,7 +742,6 @@ td {
   width: 100%;
   min-width: 71.25rem;
   height: 12rem;
-  margin-bottom: 1.25rem;
   padding: 0px;
   background: $background_image no-repeat center;
   z-index: 2;
@@ -741,10 +755,24 @@ td {
   width: 100%;
   min-width: 71.25rem;
   height: 3rem;
-  margin-bottom: 1.25rem;
   padding: 0px;
   z-index: 2;
   opacity: 1.25;
+}
+
+.headerShell > .header,
+.headerShell > .headerWithoutImage {
+  position: absolute;
+  inset: 0;
+}
+
+.headerShell > .topBar,
+.headerShell > .topBar-mainPage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
 }
 
 .topBar {
