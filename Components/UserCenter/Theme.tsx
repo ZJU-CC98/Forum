@@ -76,18 +76,18 @@ export const themeList: ThemeItem[] = [
   },
   {
     order: 5,
-    name: "秋季（橙）",
+    name: "秋季（亮）",
     style: {
       backgroundColor: "#F4A460",
-      backgroundImage: "url(/static/images/header-image-thumb/autumn.jpg)",
+      backgroundImage: "url(/static/images/header-image-thumb/autumn_2026_light.jpg)",
     },
   },
   {
     order: 6,
-    name: "秋季（红）",
+    name: "秋季（暗）",
     style: {
-      backgroundColor: "#B22222",
-      backgroundImage: "url(/static/images/header-image-thumb/autumn.jpg)",
+      backgroundColor: "rgb(190, 119, 55)",
+      backgroundImage: "url(/static/images/header-image-thumb/autumn_2026_dark.jpg)",
     },
   },
   {
@@ -298,6 +298,7 @@ export interface ThemeDayNightGroup {
  * 具有日夜关系的主题列表。
  */
 export const themeDayNightGroups: ThemeDayNightGroup[] = [
+  { day: "秋季（亮）", night: "秋季（暗）" },
   { day: "中秋（亮）", night: "中秋（暗）" },
   { day: "小雪（亮）", night: "小雪（暗）" },
   { day: "春节（亮）", night: "春节（暗）" },
