@@ -141,5 +141,16 @@
     },
     "imageUrl": "/static/images/相框/年度用户.png",
     "portraitShadow": true
+  },
+  "西迁记忆": {
+    "style": {
+      "width": "7.5rem",
+      "position": "absolute",
+      "left": "-3.69rem",
+      "top": "-3.75rem",
+      "zIndex": "150"
+    },
+    "imageUrl": "/static/images/相框/西迁记忆.png",
+    "portraitShadow": false
   }
 }

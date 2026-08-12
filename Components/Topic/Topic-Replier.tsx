@@ -237,6 +237,10 @@ export class Replier extends RouteComponent<
           style = data.年度用户.style;
           imageUrl = data.年度用户.imageUrl;
           break;
+        case 106:
+          style = data.西迁记忆.style;
+          imageUrl = data.西迁记忆.imageUrl;
+          break;
         default:
           imageUrl = data.普通.imageUrl;
       }
@@ -264,7 +268,8 @@ export class Replier extends RouteComponent<
         displayTitleId === 86 ||
         displayTitleId === 96 ||
         displayTitleId === 99 ||
-        displayTitleId === 91
+        displayTitleId === 91 ||
+        displayTitleId === 106
       )
         shadow = { boxShadow: "0 0 0" }; //目前的头像框暂时没有阴影
 
