@@ -17,7 +17,9 @@ export class AudioTagHandler extends Ubb.TextTagHandler {
       return innerContent;
     }
     const title = tagData.value('title');
-    return <AudioComponent src={innerContent} title={title} />;
+    const author = tagData.value('author');
+    const poster = tagData.value('poster');
+    return <AudioComponent src={innerContent} title={title} author={author} poster={poster} />;
   }
 }
 
@@ -30,6 +32,14 @@ interface IProps {
   * 音频文件标题
   */
   title: string | null;
+  /**
+   * 艺术家名称
+   */
+  author: string | null;
+  /**
+   * 封面URL
+   */
+  poster: string | null;
 }
 class AudioComponent extends React.Component<IProps> {
   /**
@@ -52,12 +62,14 @@ class AudioComponent extends React.Component<IProps> {
         music: {
           url: encodeURI(this.props.src),
           title: this.props.title ? this.props.title : encodeURI(this.props.src),
-          author: '',
-          pic: '/static/images/audio_cover.png'
+          author: this.props.author ? this.props.author:'',
+          pic: this.props.poster ? this.props.poster: '/static/images/audio_cover.png',
         }
       });
-      //去掉文件名后面的横杠
-      this.div.getElementsByClassName('aplayer-author')[0].innerHTML = '';
+      if (!this.props.author){
+          //如果作者为空，则去掉文件名后面的横杠
+          this.div.getElementsByClassName('aplayer-author')[0].innerHTML = '';
+      }
 
     } catch (e) {
       // IE 11 下会抛一个 InvalidStateError 的错误，忽略
