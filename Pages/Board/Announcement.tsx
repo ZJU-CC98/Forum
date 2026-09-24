@@ -119,7 +119,7 @@ export default class extends React.Component<Props, State> {
                   borderBottomRightRadius: 0
                 }}
               >
-                今日贴数
+                今日帖数
               </Tag>
               <Tag
                 className="board-head-information"

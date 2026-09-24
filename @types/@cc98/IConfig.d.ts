@@ -55,7 +55,7 @@ declare module '@cc98/api' {
      */
     study: IBasicTopic[]
     /**
-     * 今日贴数
+     * 今日帖数
      */
     todayCount: number
     /**
