@@ -37,10 +37,18 @@ export class UrlTagHandler extends Ubb.RecursiveTagHandler {
         }
     }
 
-    execCore(innerContent: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
-        
+    exec(tagSegment: Ubb.UbbTagSegment, context: Ubb.UbbCodeContext): React.ReactNode {
+        // [url=xxx]yyy[/url]：正常渲染
+        if (tagSegment.tagData.value('url')) {
+            return super.exec(tagSegment, context);
+        }
 
-        const url = parse(tagData.value('url') || innerContent, {});
+        // [url]xxx[/url]：整段内容就是 URL，直接取原始文本渲染。
+        return this.execCore(tagSegment.getContentText(), tagSegment.tagData, context);
+    }
+
+    execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+        const url = parse(tagData.value('url') || (innerContent as string), {});
 
         // 是否存在xss问题
         if(!UrlTagHandler.isSafe(url)) {
