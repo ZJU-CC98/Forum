@@ -587,11 +587,11 @@ export class SearchBeforeConnent extends React.Component<any, any> {
       <div className="userSearchDrop" onClick={(e) => e.stopPropagation()}>
         {empty && <div className="userSearchEmpty">没有找到相关用户</div>}
         {hasExact && (
-          <div className="userSearchItem" onClick={() => this.goUser(exact.id)}>
+          <div className="userSearchItem" onClick={() => this.goUser(exact.id)} title={exact.name}>
             <img className="userSearchAvatar" src={exact.portraitUrl} alt="" />
             <div className="userSearchMeta">
               <div className="userSearchName">
-                {exact.name}
+                <span className="userSearchNameText">{exact.name}</span>
                 <span className="userSearchExact">精确匹配</span>
               </div>
               {(exact.introduction || "").trim() !== "" && (
@@ -601,7 +601,7 @@ export class SearchBeforeConnent extends React.Component<any, any> {
           </div>
         )}
         {userResults.map((u) => (
-          <div className="userSearchItem" key={u.id} onClick={() => this.goUser(u.id)}>
+          <div className="userSearchItem" key={u.id} onClick={() => this.goUser(u.id)} title={u.name}>
             <img className="userSearchAvatar" src={u.portraitUrl} alt="" />
             <div className="userSearchMeta">
               <div className="userSearchName">{u.name}</div>
@@ -634,7 +634,7 @@ export class SearchBeforeConnent extends React.Component<any, any> {
     if (flag) {
       return (
         <div id="search">
-          <div className="box" style={{ position: "relative" }}>
+          <div className="box">
             <div className="searchBoxSelect">主题</div>
             <div className="caret-down">
               <i className="fa fa-caret-down" />
@@ -662,7 +662,7 @@ export class SearchBeforeConnent extends React.Component<any, any> {
     } else {
       return (
         <div id="search">
-          <div className="box" style={{ position: "relative" }}>
+          <div className="box">
             <div className="searchBoxSelect">版内</div>
             <div className="caret-down">
               <i className="fa fa-caret-down" />

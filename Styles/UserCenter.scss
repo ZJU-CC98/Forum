@@ -922,41 +922,260 @@
 
     .user-center-transfer-wealth {
 
-      h2,
-      p {
-        margin: 0;
+      h2 {
+        font-size: 1.25rem;
+        line-height: 1.4;
+        margin: 0 0 1.25rem 0;
       }
 
-      .transfer-wealth-input {
-        display: flex;
-        margin: 1rem 0;
-        align-items: center;
-
-        p {
-          margin: 0 1rem;
-          width: 5rem;
-        }
-
-        input {
-          padding: 0.5rem;
-        }
+      p {
+        margin: 0;
       }
 
       form {
         display: flex;
         flex-direction: column;
-        margin-top: 2rem;
+        margin-top: 0;
       }
 
-      form button {
+      .transfer-wealth-input {
+        display: flex;
+        margin: 0.75rem 0;
+        align-items: center;
+
+        p {
+          margin: 0 1rem;
+          width: 5rem;
+          flex-shrink: 0;
+        }
+
+        input {
+          height: 2rem;
+          padding: 0 0.625rem;
+          border: 1px solid #d9d9d9;
+          border-radius: 3px;
+          background-color: #fff;
+          box-sizing: border-box;
+          font-family: inherit;
+          font-size: 0.88rem;
+          color: #333;
+          transition: border-color 0.2s;
+
+          &:focus {
+            border-color: $theme_color_main;
+            outline: none;
+          }
+
+          &::placeholder {
+            color: #bfbfbf;
+          }
+        }
+
+        input[name="wealth"] {
+          width: 10rem;
+        }
+      }
+
+      .transfer-wealth-tips {
+        align-items: flex-start;
+        margin-top: 1rem;
+
+        p {
+          padding-top: 0.1rem;
+        }
+
+        ul {
+          margin: 0 0 0 2.5rem;
+          padding: 0;
+          list-style: disc;
+        }
+
+        li {
+          line-height: 1.65;
+        }
+      }
+
+      form button[type="submit"] {
         width: 5rem;
         height: 2rem;
         align-self: center;
-        margin-top: 2rem;
+        margin-top: 1.25rem;
+        border: 0;
+        border-radius: 3px;
+        background-color: $theme_color_main;
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.88rem;
+        cursor: pointer;
+        transition: opacity 0.2s;
+
+        &:hover {
+          opacity: 0.85;
+        }
+
+        &:active {
+          opacity: 0.7;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        &:focus {
+          outline: none;
+        }
       }
 
       .transfer-wealth-info {
-        margin: 1rem;
+        margin: 1rem 0 0 0;
+        color: #666;
+      }
+
+      .transfer-records {
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px dashed #e9e9e9;
+      }
+
+      .transfer-record-filter {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .transfer-record-type {
+        width: 7.5rem;
+        flex-shrink: 0;
+      }
+
+      .transfer-record-username {
+        width: 18rem;
+        height: 2rem;
+        margin-left: 1rem;
+        padding: 0 0.625rem;
+        border: 1px solid #d9d9d9;
+        border-radius: 3px;
+        background-color: #fff;
+        box-sizing: border-box;
+        font-family: inherit;
+        font-size: 0.88rem;
+        color: #333;
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: $theme_color_main;
+          outline: none;
+        }
+
+        &::placeholder {
+          color: #bfbfbf;
+        }
+      }
+
+      .transfer-record-search {
+        height: 2rem;
+        min-width: 4.5rem;
+        margin-left: 1rem;
+        padding: 0 1rem;
+        border: 1px solid #d9d9d9;
+        border-radius: 3px;
+        background-color: #fff;
+        color: #333;
+        font-family: inherit;
+        font-size: 0.88rem;
+        cursor: pointer;
+        transition: color 0.2s, border-color 0.2s;
+
+        &:hover {
+          color: $theme_color_main;
+          border-color: $theme_color_main;
+        }
+
+        &:active {
+          opacity: 0.7;
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .transfer-record-tip {
+        margin: 1.5rem 0;
+        color: #999;
+        text-align: center;
+      }
+
+      .transfer-record-list {
+        .ant-list-item {
+          padding: 0.75rem 0;
+          align-items: center;
+        }
+
+        .ant-list-item-meta {
+          min-width: 0;
+        }
+
+        .ant-list-item-meta-title {
+          margin-bottom: 0.125rem;
+          font-size: 0.88rem;
+          font-weight: normal;
+          line-height: 1.4;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .ant-list-item-meta-description {
+          font-size: 0.75rem;
+          color: #999;
+          line-height: 1.4;
+        }
+
+        .transfer-record-amount {
+          flex-shrink: 0;
+          margin-left: 1rem;
+          font-size: 1rem;
+          font-weight: bold;
+          font-variant-numeric: tabular-nums;
+          color: $font_color_text;
+        }
+
+        .transfer-record-amount-in {
+          color: #f0ad4e;
+        }
+
+        .transfer-record-user:hover {
+          color: $theme_color_main;
+          text-decoration: none;
+        }
+
+        //antd 分页在 .user-center a:link 的黑色规则下会丢掉主题色，这里按局部恢复
+        .ant-pagination-item a {
+          color: rgba(0, 0, 0, 0.65);
+        }
+
+        .ant-pagination-item:hover {
+          border-color: $theme_color_main;
+
+          a {
+            color: $theme_color_main;
+          }
+        }
+
+        .ant-pagination-item-active {
+          border-color: $theme_color_main;
+
+          a {
+            color: $theme_color_main;
+          }
+        }
+
+        .ant-list-pagination {
+          margin-top: 1rem;
+          text-align: right;
+        }
       }
     }
   }

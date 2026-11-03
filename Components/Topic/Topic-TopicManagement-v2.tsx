@@ -360,7 +360,6 @@ export default Form.create<FormProps>()(
           })(
             <AutoComplete
               style={{ width: "100%" }}
-              dropdownMatchSelectWidth={false}
               filterOption={false}
               optionLabelProp="value"
               placeholder="可输入理由，或从候选中选择"

@@ -6,6 +6,7 @@ import * as Appstate from '../../States/AppState';
 import { sendWealthTo } from '../../AsyncActions/UserCenter';
 import { UserInfo } from '../../States/AppState';
 import { List, Select } from 'antd';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import * as Utility from '../../Utility';
 
@@ -248,9 +249,8 @@ class Wealth extends React.Component<Props, State> {
                     <div className="transfer-wealth-input"><p>收款人</p><input style={{ width: '30rem'}} type="text" name="user-names" value={this.state.userNames} onChange={e => this.handleWealthChange(this.state.wealth, e.target.value)} /></div>
                     <div className="transfer-wealth-input"><p>金额</p><input type="text" name="wealth" value={this.state.wealth} onChange={e => this.handleWealthChange(e.target.value, this.state.userNames)}/></div>
                     <div className="transfer-wealth-input"><p>理由</p><input style={{ width: '30rem'}} type="text" name="reason" value={this.state.reason} onChange={e => this.setState({ reason: e.target.value })}></input></div>
-                    <div className="transfer-wealth-input">
-                        <p>说明</p>
-                        <ul style={{marginLeft: '2.5rem'}}>
+                    <div className="transfer-wealth-input transfer-wealth-tips"><p>说明</p>
+                        <ul>
                             <li>转账需要收取一定的手续费，手续费金额为<strong>10% 或者 10 中的较大值</strong>。</li>
                             <li>转账手续费从转账金额中收取，因此对方实际收到的金额会少于您输入的金额。</li>
                             <li>转账的最小金额不能小于 <strong>10</strong></li>
@@ -259,7 +259,7 @@ class Wealth extends React.Component<Props, State> {
                     </div>
                     <button type="submit" disabled={this.props.isLoading}>转账</button>
                 </form>
-                <p className="transfer-wealth-info">{this.state.info}</p>
+                {this.state.info && <p className="transfer-wealth-info">{this.state.info}</p>}
                 {this.renderRecords()}
             </div>
         );
@@ -272,17 +272,19 @@ class Wealth extends React.Component<Props, State> {
     renderRecords() {
         const { records, recordCount, recordPage, recordLoading, recordError, recordType, recordUsername } = this.state;
         const myInfo = Utility.getMyInfo();
+        //请求失败且没有旧数据时只显示提示，避免「加载失败 + 暂无转账记录 + 页码 0」三连
+        const showList = !recordError || records.length > 0;
         return (
             <div className="transfer-records">
                 <h2>转账记录</h2>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                    <Select value={recordType} onChange={this.handleRecordTypeChange} style={{ width: '8rem' }}>
+                <div className="transfer-record-filter">
+                    <Select className="transfer-record-type" value={recordType} onChange={this.handleRecordTypeChange}>
                         <Select.Option value={0}>全部</Select.Option>
                         <Select.Option value={1}>转入</Select.Option>
                         <Select.Option value={2}>转出</Select.Option>
                     </Select>
                     <input
-                        style={{ width: '16rem', marginLeft: '1rem', height: '32px', boxSizing: 'border-box' }}
+                        className="transfer-record-username"
                         type="text"
                         name="record-username"
                         placeholder="按对方用户名筛选（可空）"
@@ -291,44 +293,49 @@ class Wealth extends React.Component<Props, State> {
                         onKeyPress={e => { if (e.key === 'Enter') this.handleRecordSearch(); }}
                     />
                     <button
-                        style={{ marginLeft: '1rem', height: '32px', boxSizing: 'border-box', lineHeight: '1' }}
+                        className="transfer-record-search"
                         type="button"
                         onClick={this.handleRecordSearch}
                     >
                         查询
                     </button>
                 </div>
-                {recordError && <p className="transfer-wealth-info">{recordError}</p>}
-                <List
-                    dataSource={records}
-                    rowKey={item => item.id.toString()}
-                    loading={recordLoading}
-                    locale={{ emptyText: (recordType !== 0 || recordUsername) ? '没有相关记录' : '暂无转账记录' }}
-                    pagination={{
-                        pageSize: TRANSFER_RECORD_PAGE_SIZE,
-                        total: recordCount,
-                        current: recordPage + 1,
-                        onChange: this.handleRecordPageChange
-                    }}
-                    renderItem={(item: WealthTransferRecord) => {
-                        //转入显示我实收的 getAmount，转出显示我实付的 payAmount
-                        const isIn = !!myInfo && item.toUserId === myInfo.id;
-                        const otherId = isIn ? item.fromUserId : item.toUserId;
-                        const otherName = isIn ? item.fromUserName : item.toUserName;
-                        const amount = isIn ? item.getAmount : item.payAmount;
-                        return (
-                            <List.Item>
-                                <List.Item.Meta
-                                    title={<a target="_blank" href={`/user/id/${otherId}`}>{otherName}</a>}
-                                    description={moment(item.time).format('YYYY-MM-DD HH:mm:ss')}
-                                />
-                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: isIn ? '#f0ad4e' : 'inherit' }}>
-                                    {isIn ? '+' : '-'}{amount}
-                                </div>
-                            </List.Item>
-                        );
-                    }}
-                />
+                {recordError && <p className="transfer-record-tip">{recordError}</p>}
+                {showList && (
+                    <List
+                        className="transfer-record-list"
+                        dataSource={records}
+                        rowKey={item => item.id.toString()}
+                        loading={recordLoading}
+                        locale={{ emptyText: (recordType !== 0 || recordUsername) ? '没有相关记录' : '暂无转账记录' }}
+                        pagination={{
+                            pageSize: TRANSFER_RECORD_PAGE_SIZE,
+                            total: recordCount,
+                            current: recordPage + 1,
+                            onChange: this.handleRecordPageChange,
+                            //只有一页（含无记录）时不显示页码
+                            hideOnSinglePage: true
+                        }}
+                        renderItem={(item: WealthTransferRecord) => {
+                            //转入显示我实收的 getAmount，转出显示我实付的 payAmount
+                            const isIn = !!myInfo && item.toUserId === myInfo.id;
+                            const otherId = isIn ? item.fromUserId : item.toUserId;
+                            const otherName = isIn ? item.fromUserName : item.toUserName;
+                            const amount = isIn ? item.getAmount : item.payAmount;
+                            return (
+                                <List.Item>
+                                    <List.Item.Meta
+                                        title={<Link className="transfer-record-user" to={`/user/id/${otherId}`} title={otherName}>{otherName}</Link>}
+                                        description={moment(item.time).format('YYYY-MM-DD HH:mm:ss')}
+                                    />
+                                    <div className={'transfer-record-amount' + (isIn ? ' transfer-record-amount-in' : '')}>
+                                        {isIn ? '+' : '-'}{amount}
+                                    </div>
+                                </List.Item>
+                            );
+                        }}
+                    />
+                )}
             </div>
         );
     }

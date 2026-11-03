@@ -342,10 +342,13 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                                 key={u.id}
                                 className={'ubb-at-item' + (i === this.state.atIndex ? ' ubb-at-item-active' : '')}
                                 onMouseDown={() => this.pickAtUser(u)}
+                                title={u.name}
                             >
                                 <img className="ubb-at-avatar" src={u.portraitUrl} alt="" />
-                                <span className="ubb-at-name">{u.name}</span>
-                                <span className="ubb-at-level">{u.levelTitle}</span>
+                                <div className="ubb-at-meta">
+                                    <div className="ubb-at-name">{u.name}</div>
+                                    <div className="ubb-at-level">{u.levelTitle}</div>
+                                </div>
                             </div>
                         ))}
                     </div>
