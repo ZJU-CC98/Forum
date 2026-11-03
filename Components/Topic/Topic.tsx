@@ -245,8 +245,12 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         if (Utility.getMyInfo() && Utility.getMyInfo().lockState !== 0)
             sendTopic = <div>您的帐号被全站禁言。</div>;
         let tip = null;
-        if (this.state.topicInfo && this.state.topicInfo.state === 1)
-            tip = <div style={{ color: "red", margin: "0.5rem" }}>该帖已被锁定</div>;
+        if (this.state.topicInfo && this.state.topicInfo.state === 1) {
+            //锁定原因非空时直接追加在锁定提示后（与小程序一致；小程序版计划 2027 年起显示，网页版当前不设时间门控）
+            const lockReason = this.state.topicInfo.lockReason;
+            const lockReasonText = lockReason && lockReason.trim() !== "" ? `（锁定原因：${lockReason}）` : "";
+            tip = <div style={{ color: "red", margin: "0.5rem" }}>该帖已被锁定{lockReasonText}</div>;
+        }
         let topicHtml = <div className="center" >
             <DocumentTitle title={`${this.state.topicInfo.title || "帖子"} - CC98论坛`} />
             <div className="column" style={{ width: "100%" }}>

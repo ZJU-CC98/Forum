@@ -5,6 +5,9 @@ import * as Actions from '../../Actions/UserCenter';
 import * as Appstate from '../../States/AppState';
 import { sendWealthTo } from '../../AsyncActions/UserCenter';
 import { UserInfo } from '../../States/AppState';
+import { List, Select } from 'antd';
+import moment from 'moment';
+import * as Utility from '../../Utility';
 
 interface Props {
     userInfo: Appstate.UserInfo;
@@ -22,6 +25,23 @@ interface Props {
     solveError: () => void;
 }
 
+/** 单条转账记录（接口 /me/recent-wealth-transfer） */
+interface WealthTransferRecord {
+    id: number;
+    fromUserId: number;
+    toUserId: number;
+    fromUserName: string;
+    toUserName: string;
+    time: string;
+    /** 付款方实付 */
+    payAmount: number;
+    /** 收款方实收 */
+    getAmount: number;
+}
+
+/** 转账记录每页条数，须与请求的 size 一致 */
+const TRANSFER_RECORD_PAGE_SIZE = 20;
+
 interface State {
     userNames: string;
     wealth: string;
@@ -30,6 +50,20 @@ interface State {
      * 提示信息
      */
     info: string;
+    /** 转账记录筛选类型：0-全部 1-转入 2-转出 */
+    recordType: number;
+    /** 转账记录的用户名筛选，空表示全部 */
+    recordUsername: string;
+    /** 转账记录列表数据 */
+    records: WealthTransferRecord[];
+    /** 转账记录总数 */
+    recordCount: number;
+    /** 当前页码（从 0 开始的偏移页） */
+    recordPage: number;
+    /** 转账记录加载中 */
+    recordLoading: boolean;
+    /** 转账记录加载错误信息 */
+    recordError: string;
 }
 
 /**
@@ -42,10 +76,77 @@ class Wealth extends React.Component<Props, State> {
             userNames: '',
             wealth: '',
             reason: '',
-            info: ''
+            info: '',
+            recordType: 0,
+            recordUsername: '',
+            records: [],
+            recordCount: 0,
+            recordPage: 0,
+            recordLoading: false,
+            recordError: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleWealthChange = this.handleWealthChange.bind(this);
+        this.loadRecords = this.loadRecords.bind(this);
+        this.handleRecordTypeChange = this.handleRecordTypeChange.bind(this);
+        this.handleRecordUsernameChange = this.handleRecordUsernameChange.bind(this);
+        this.handleRecordPageChange = this.handleRecordPageChange.bind(this);
+    }
+
+    componentDidMount() {
+        this.loadRecords(0, this.state.recordType, this.state.recordUsername);
+    }
+
+    /**
+     * 加载转账记录列表（只读接口）
+     * @param page 页码，从 0 开始
+     * @param type 覆盖筛选类型（筛选变化后回第一页时传入）
+     * @param username 覆盖用户名筛选
+     */
+    async loadRecords(page: number, type?: number, username?: string) {
+        if (!Utility.getMyInfo()) {
+            this.setState({ recordError: '登录后可查看转账记录' });
+            return;
+        }
+        const recordType = type !== undefined ? type : this.state.recordType;
+        const recordUsername = username !== undefined ? username : this.state.recordUsername;
+        this.setState({ recordLoading: true, recordError: '' });
+        try {
+            const res = await Utility.getRecentWealthTransfers(
+                page * TRANSFER_RECORD_PAGE_SIZE,
+                TRANSFER_RECORD_PAGE_SIZE,
+                recordType,
+                recordUsername
+            );
+            const list: WealthTransferRecord[] = Array.isArray(res && res.data) ? res.data : [];
+            this.setState({
+                records: list,
+                recordCount: res && typeof res.count === 'number' ? res.count : list.length,
+                recordPage: page,
+                recordLoading: false
+            });
+        } catch (e) {
+            this.setState({ recordLoading: false, recordError: '转账记录加载失败' });
+        }
+    }
+
+    /** 切换转入/转出筛选后回到第一页 */
+    handleRecordTypeChange(value: number) {
+        this.setState({ recordType: value });
+        this.loadRecords(0, value);
+    }
+
+    handleRecordUsernameChange(e) {
+        this.setState({ recordUsername: e.target.value });
+    }
+
+    /** 回车或点击查询按钮时按当前筛选回到第一页 */
+    handleRecordSearch = () => {
+        this.loadRecords(0);
+    }
+
+    handleRecordPageChange(page: number) {
+        this.loadRecords(page - 1);
     }
 
     //提交时调用的函数
@@ -159,6 +260,75 @@ class Wealth extends React.Component<Props, State> {
                     <button type="submit" disabled={this.props.isLoading}>转账</button>
                 </form>
                 <p className="transfer-wealth-info">{this.state.info}</p>
+                {this.renderRecords()}
+            </div>
+        );
+    }
+
+    /**
+     * 转账记录列表：置于转账表单下方，含类型/用户名筛选与分页。
+     * 接口与筛选语义与小程序版转账记录页一致（0-全部 1-转入 2-转出）。
+     */
+    renderRecords() {
+        const { records, recordCount, recordPage, recordLoading, recordError, recordType, recordUsername } = this.state;
+        const myInfo = Utility.getMyInfo();
+        return (
+            <div className="transfer-records">
+                <h2>转账记录</h2>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                    <Select value={recordType} onChange={this.handleRecordTypeChange} style={{ width: '8rem' }}>
+                        <Select.Option value={0}>全部</Select.Option>
+                        <Select.Option value={1}>转入</Select.Option>
+                        <Select.Option value={2}>转出</Select.Option>
+                    </Select>
+                    <input
+                        style={{ width: '16rem', marginLeft: '1rem', height: '32px', boxSizing: 'border-box' }}
+                        type="text"
+                        name="record-username"
+                        placeholder="按对方用户名筛选（可空）"
+                        value={recordUsername}
+                        onChange={this.handleRecordUsernameChange}
+                        onKeyPress={e => { if (e.key === 'Enter') this.handleRecordSearch(); }}
+                    />
+                    <button
+                        style={{ marginLeft: '1rem', height: '32px', boxSizing: 'border-box', lineHeight: '1' }}
+                        type="button"
+                        onClick={this.handleRecordSearch}
+                    >
+                        查询
+                    </button>
+                </div>
+                {recordError && <p className="transfer-wealth-info">{recordError}</p>}
+                <List
+                    dataSource={records}
+                    rowKey={item => item.id.toString()}
+                    loading={recordLoading}
+                    locale={{ emptyText: (recordType !== 0 || recordUsername) ? '没有相关记录' : '暂无转账记录' }}
+                    pagination={{
+                        pageSize: TRANSFER_RECORD_PAGE_SIZE,
+                        total: recordCount,
+                        current: recordPage + 1,
+                        onChange: this.handleRecordPageChange
+                    }}
+                    renderItem={(item: WealthTransferRecord) => {
+                        //转入显示我实收的 getAmount，转出显示我实付的 payAmount
+                        const isIn = !!myInfo && item.toUserId === myInfo.id;
+                        const otherId = isIn ? item.fromUserId : item.toUserId;
+                        const otherName = isIn ? item.fromUserName : item.toUserName;
+                        const amount = isIn ? item.getAmount : item.payAmount;
+                        return (
+                            <List.Item>
+                                <List.Item.Meta
+                                    title={<a target="_blank" href={`/user/id/${otherId}`}>{otherName}</a>}
+                                    description={moment(item.time).format('YYYY-MM-DD HH:mm:ss')}
+                                />
+                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: isIn ? '#f0ad4e' : 'inherit' }}>
+                                    {isIn ? '+' : '-'}{amount}
+                                </div>
+                            </List.Item>
+                        );
+                    }}
+                />
             </div>
         );
     }

@@ -3770,6 +3770,35 @@ export async function getManageHistory(topicId, from) {
 }
 
 /**
+ * 获取当前用户的转账记录列表（与小程序版 myTransfer 同一接口）
+ * @param from 起始位置（分页偏移）
+ * @param size 每页条数
+ * @param type 转账类型：0-全部 1-转入 2-转出
+ * @param username 按对方用户名筛选，空字符串表示全部
+ * @returns { count, data: { id, fromUserId, toUserId, fromUserName, toUserName, time, payAmount, getAmount }[] }
+ */
+export async function getRecentWealthTransfers(from: number, size: number, type: number = 0, username: string = "") {
+  const url = `/me/recent-wealth-transfer?from=${from}&size=${size}&type=${type}&username=${encodeURIComponent(username)}`;
+  const headers = await formAuthorizeHeader();
+  const response = await cc98Fetch(url, { headers });
+  return await response.json();
+}
+
+/**
+ * 按关键词模糊搜索用户（与小程序版同一接口，返回多结果）
+ * @param keyword 用户名关键词
+ * @param from 起始位置（分页偏移）
+ * @param size 每页条数
+ * @returns { count, data: 用户基本信息列表 }
+ */
+export async function searchUsersByName(keyword: string, from: number = 0, size: number = 20) {
+  const url = `/user/search?keyword=${encodeURIComponent(keyword)}&from=${from}&size=${size}`;
+  const headers = await formAuthorizeHeader();
+  const response = await cc98Fetch(url, { headers });
+  return await response.json();
+}
+
+/**
  * 返回用户当前财富值
  */
 export async function getUserWealth() {

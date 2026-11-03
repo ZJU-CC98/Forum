@@ -40,6 +40,11 @@ declare module '@cc98/api' {
 
     state: number
 
+    /**
+     * 锁定原因，仅锁定状态下可能存在，可能为 null 或空字符串
+     */
+    lockReason?: string | null
+
     type: number
     /**
      * 回复数

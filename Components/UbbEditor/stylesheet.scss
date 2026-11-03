@@ -224,3 +224,49 @@
 #color {
     display: none;
 }
+// @ 用户自动补全候选（贴头部用户搜索下拉同风格）
+.ubb-editor .ubb-at-drop {
+    position: absolute;
+    left: 0;
+    bottom: 2.5rem;
+    width: 20rem;
+    max-height: 16rem;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+}
+
+.ubb-editor .ubb-at-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+}
+
+.ubb-editor .ubb-at-item:hover,
+.ubb-editor .ubb-at-item-active {
+    background-color: #f2f2f2;
+}
+
+.ubb-editor .ubb-at-avatar {
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-right: 0.5rem;
+}
+
+.ubb-editor .ubb-at-name {
+    font-size: 0.85rem;
+    color: #333;
+    margin-right: 0.5rem;
+}
+
+.ubb-editor .ubb-at-level {
+    font-size: 0.7rem;
+    color: #999;
+}
