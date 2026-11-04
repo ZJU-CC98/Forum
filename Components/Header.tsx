@@ -395,10 +395,42 @@ let DropDown = connect(mapState, mapDispatch)(DropDownConnect);
 
 //到此结束
 
-export class SearchBeforeConnent extends React.Component<any, AppState> {
+export class SearchBeforeConnent extends React.Component<any, any> {
   //搜索框组件
+  state = {
+    /** 用户搜索请求进行中 */
+    userSearching: false,
+    /** 用户搜索的精确命中（置顶展示），未命中为 null */
+    userSearchExact: null as any,
+    /** 用户搜索的模糊结果列表；null 表示下拉收起 */
+    userResults: null as any[] | null,
+  };
+
+  /** 点击页面其他位置时收起用户搜索下拉（#search 内部的点击不收起） */
+  closeUserDrop = (e) => {
+    if ($(e.target).closest("#search").length) return;
+    this.setState({ userResults: null, userSearchExact: null });
+  };
+
+  /** 搜索框按 Esc 收起用户搜索下拉 */
+  onSearchInputKeyDown = (e) => {
+    if (e.key === "Escape") {
+      this.setState({ userResults: null, userSearchExact: null });
+    }
+  };
+
+  /** 收起下拉并跳转到用户主页 */
+  goUser = (id) => {
+    this.setState({ userResults: null, userSearchExact: null });
+    this.props.history.push(`/user/id/${id}`);
+  };
+
+  componentWillUnmount() {
+    document.removeEventListener("click", this.closeUserDrop);
+  }
 
   async componentDidMount() {
+    const comp = this;
     const searchBoxSelect = $(".searchBoxSelect");
     const downArrow = $(".caret-down");
     const searchBoxSub = $(".searchBoxSub");
@@ -425,6 +457,8 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
 
     searchBoxLi.click(function () {
       searchBoxSelect.text($(this).text());
+      //切换搜索类型时收起用户搜索下拉
+      comp.setState({ userResults: null, userSearchExact: null });
     });
 
     searchBoxLi.mouseover(function () {
@@ -437,8 +471,12 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
 
     //获取搜索关键词
     let self = this;
+    //点击 #search 以外区域时收起用户搜索下拉
+    document.addEventListener("click", this.closeUserDrop);
     searchIco.click(async () => {
       let val: any = $("#searchText").val();
+      //非用户搜索一律收起用户下拉
+      this.setState({ userResults: null, userSearchExact: null });
       if (val && val != "") {
         if (
           searchBoxSelect.text() === "主题" ||
@@ -479,12 +517,31 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
             `/search?boardId=${boardId}&keyword=${encodeURI(encodeURI(val))}`
           );
         } else if (searchBoxSelect.text() === "用户") {
-          let data = await Utility.getUserInfoByName(val);
-          if (data) {
-            this.props.history.push(`/user/id/${data.id}`);
-          } else {
-            this.props.history.push("/search");
+          //与小程序版用户搜索逻辑一致：精确命中置顶 + 模糊搜索列表，点选跳用户主页
+          let keyword = (val as string).trim();
+          this.setState({ userSearching: true, userResults: [], userSearchExact: null });
+          let exact: any = null;
+          let list: any[] = [];
+          try {
+            exact = await Utility.getUserInfoByName(keyword);
+          } catch (e) {
+            exact = null;
           }
+          try {
+            const res = await Utility.searchUsersByName(keyword, 0, 20);
+            list = Array.isArray(res && res.data) ? res.data : [];
+          } catch (e) {
+            list = [];
+          }
+          //模糊列表去掉与精确命中重复的项
+          if (exact) {
+            list = list.filter((u) => u.id !== exact.id);
+          }
+          this.setState({
+            userSearching: false,
+            userSearchExact: exact,
+            userResults: list,
+          });
         } else if (searchBoxSelect.text() === "版面") {
           // notification.warning({
           //   message: '非常抱歉',
@@ -508,6 +565,54 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
       //提高浏览器兼容性
       $(".searchIco").click();
     }
+  }
+
+  /**
+   * 用户搜索下拉：精确命中置顶（带标记），模糊结果跟在后面。
+   * 样式贴头部搜索框既有风格（白底、细边框、小字号）。
+   */
+  renderUserDrop() {
+    const { userSearching, userSearchExact: exact, userResults } = this.state;
+    if (userSearching) {
+      return (
+        <div className="userSearchDrop">
+          <div className="userSearchEmpty">搜索中…</div>
+        </div>
+      );
+    }
+    if (userResults === null) return null;
+    const hasExact = !!exact;
+    const empty = !hasExact && userResults.length === 0;
+    return (
+      <div className="userSearchDrop" onClick={(e) => e.stopPropagation()}>
+        {empty && <div className="userSearchEmpty">没有找到相关用户</div>}
+        {hasExact && (
+          <div className="userSearchItem" onClick={() => this.goUser(exact.id)} title={exact.name}>
+            <img className="userSearchAvatar" src={exact.portraitUrl} alt="" />
+            <div className="userSearchMeta">
+              <div className="userSearchName">
+                <span className="userSearchNameText">{exact.name}</span>
+                <span className="userSearchExact">精确匹配</span>
+              </div>
+              {(exact.introduction || "").trim() !== "" && (
+                <div className="userSearchSub">{exact.introduction}</div>
+              )}
+            </div>
+          </div>
+        )}
+        {userResults.map((u) => (
+          <div className="userSearchItem" key={u.id} onClick={() => this.goUser(u.id)} title={u.name}>
+            <img className="userSearchAvatar" src={u.portraitUrl} alt="" />
+            <div className="userSearchMeta">
+              <div className="userSearchName">{u.name}</div>
+              {(u.introduction || "").trim() !== "" && (
+                <div className="userSearchSub">{u.introduction}</div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   render() {
@@ -539,10 +644,12 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
               type="text"
               placeholder="请输入搜索内容"
               onKeyPress={this.keypress_submit}
+              onKeyDown={this.onSearchInputKeyDown}
             />
             <div className="searchIco">
               <i className="fa fa-search" />
             </div>
+            {this.renderUserDrop()}
           </div>
           <ul className="searchBoxSub">
             <li>主题</li>
@@ -565,10 +672,12 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {
               type="text"
               placeholder="请输入搜索内容"
               onKeyPress={this.keypress_submit}
+              onKeyDown={this.onSearchInputKeyDown}
             />
             <div className="searchIco">
               <i className="fa fa-search" />
             </div>
+            {this.renderUserDrop()}
           </div>
           <ul className="searchBoxSub">
             <li>版内</li>

@@ -224,3 +224,65 @@
 #color {
     display: none;
 }
+// @ 用户自动补全候选（贴头部用户搜索下拉同风格）
+.ubb-editor .ubb-at-drop {
+    position: absolute;
+    left: 0;
+    bottom: 2.5rem;
+    width: 20rem;
+    max-height: 14rem;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    z-index: 1000;
+}
+
+.ubb-editor .ubb-at-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.45rem 0.7rem;
+    cursor: pointer;
+}
+
+.ubb-editor .ubb-at-item:hover {
+    background-color: #f5f5f5;
+}
+
+.ubb-editor .ubb-at-item-active {
+    background-color: rgba($theme_color_main, 0.08);
+}
+
+.ubb-editor .ubb-at-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-right: 0.6rem;
+    object-fit: cover;
+}
+
+.ubb-editor .ubb-at-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.ubb-editor .ubb-at-name {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ubb-editor .ubb-at-level {
+    font-size: 0.7rem;
+    line-height: 1.4;
+    color: #999;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

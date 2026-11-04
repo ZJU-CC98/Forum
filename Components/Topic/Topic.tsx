@@ -26,6 +26,14 @@ const initQuoteContext = {
     postId: ""
 }
 export const QuoteContext = React.createContext((context) => { });
+
+/**
+ * 锁定原因展示的起始发帖时间（含当天）：
+ * 仅 2026-11-04 00:00（北京时间）及之后发布的帖子显示锁定原因，
+ * 更早的锁定帖只显示「该帖已被锁定」。
+ */
+const LOCK_REASON_SHOW_SINCE = new Date("2026-11-04T00:00:00+08:00").getTime();
+
 export class Post extends RouteComponent<{ history }, { topicid, page, totalPage, userName, boardId, topicInfo, boardInfo, fetchState, quote, shouldRender, isFav, IPData }, { topicid, page, userName }> {
     throttling: boolean;
     replyContentInstance: SendTopic;
@@ -245,8 +253,14 @@ export class Post extends RouteComponent<{ history }, { topicid, page, totalPage
         if (Utility.getMyInfo() && Utility.getMyInfo().lockState !== 0)
             sendTopic = <div>您的帐号被全站禁言。</div>;
         let tip = null;
-        if (this.state.topicInfo && this.state.topicInfo.state === 1)
-            tip = <div style={{ color: "red", margin: "0.5rem" }}>该帖已被锁定</div>;
+        if (this.state.topicInfo && this.state.topicInfo.state === 1) {
+            //锁定原因仅对 2026-11-04 及之后发布的帖子展示；更早的锁定帖只显示锁定提示
+            const lockReason = this.state.topicInfo.lockReason;
+            const topicTime = this.state.topicInfo.time ? new Date(this.state.topicInfo.time).getTime() : NaN;
+            const showLockReason = !isNaN(topicTime) && topicTime >= LOCK_REASON_SHOW_SINCE;
+            const lockReasonText = showLockReason && lockReason && lockReason.trim() !== "" ? `（锁定原因：${lockReason}）` : "";
+            tip = <div style={{ color: "red", margin: "0.5rem" }}>该帖已被锁定{lockReasonText}</div>;
+        }
         let topicHtml = <div className="center" >
             <DocumentTitle title={`${this.state.topicInfo.title || "帖子"} - CC98论坛`} />
             <div className="column" style={{ width: "100%" }}>

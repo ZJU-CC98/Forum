@@ -1078,6 +1078,7 @@ td {
 
 //搜索框
 #search .box {
+  position: relative;
   display: flex;
   flex-direction: row;
   height: 1.5rem;
@@ -1162,6 +1163,92 @@ td {
 
 #search .searchBoxSub li:hover {
   background-color: rgb(107, 113, 120);
+}
+
+//用户搜索下拉（精确命中置顶 + 模糊列表，贴搜索框既有风格）
+#search .userSearchDrop {
+  position: absolute;
+  top: 2rem;
+  left: 1rem;
+  right: 1rem;
+  max-height: 24rem;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+}
+
+#search .userSearchItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+}
+
+#search .userSearchItem:hover {
+  background-color: #f5f5f5;
+}
+
+#search .userSearchAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 0.6rem;
+  object-fit: cover;
+}
+
+#search .userSearchMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+#search .userSearchName {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font-size: 0.8rem;
+  font-family: 微软雅黑;
+  line-height: 1.4;
+  color: #333;
+}
+
+#search .userSearchNameText {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#search .userSearchSub {
+  font-size: 0.7rem;
+  font-family: 微软雅黑;
+  color: #999;
+  margin-top: 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#search .userSearchExact {
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  line-height: 1.5;
+  color: #fff;
+  background-color: $theme_color_main;
+  border-radius: 2px;
+  padding: 0 0.3rem;
+  margin-left: 0.4rem;
+}
+
+#search .userSearchEmpty {
+  padding: 1.2rem 0.8rem;
+  font-size: 0.8rem;
+  color: #999;
+  text-align: center;
 }
 
 //头部中未读数的样式
