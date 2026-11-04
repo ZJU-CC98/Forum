@@ -57,6 +57,15 @@ function saveReasonHistory(key: string, reason: string): void {
 }
 
 /**
+ * 理由候选筛选：只在「完整理由内容」里找输入文本（不匹配简称），大小写不敏感。
+ * 输入为空时返回 true，由调用方决定空输入展示哪些分组。
+ */
+function matchReasonContent(content: string, query: string): boolean {
+  if (!query) return true;
+  return (content || "").toLowerCase().indexOf(query.toLowerCase()) !== -1;
+}
+
+/**
  * 控件属性。
  */
 interface FormProps extends FormComponentProps<any> {
@@ -85,6 +94,8 @@ interface FormStates {
   indeterminate;
   days;
   boardsData;
+  /** 理由输入框当前文本，用于筛选历史/预置候选 */
+  reasonSearchText: string;
 }
 const plainOptions = ["加粗", "斜体"];
 const defaultCheckedList = [];
@@ -107,6 +118,7 @@ export default Form.create<FormProps>()(
         checkAll: false,
         days: 0,
         boardsData: [],
+        reasonSearchText: "",
       };
     }
     onCreate = () => {
@@ -121,8 +133,8 @@ export default Form.create<FormProps>()(
               .filter((item: string) => typeof item === "string" && item.trim() !== "")
               .pop() || ""
           : values.reason || "";
-        if ((reason || "").trim() === "" && this.reasonSearchText.trim() !== "") {
-          reason = this.reasonSearchText.trim();
+        if ((reason || "").trim() === "" && this.state.reasonSearchText.trim() !== "") {
+          reason = this.state.reasonSearchText.trim();
         }
         const reasonKey = this.getReasonKey();
         let days = parseInt(this.state.days);
@@ -280,8 +292,6 @@ export default Form.create<FormProps>()(
     handleChangeComplete = (color) => {
       this.setState({ background: color.hex });
     };
-    /** 理由下拉框中已输入但尚未回车的文本（确认时兜底收集，避免丢字） */
-    reasonSearchText = "";
     /** 当前操作对应的理由历史 key */
     getReasonKey = () => {
       switch (this.state.current) {
@@ -309,11 +319,19 @@ export default Form.create<FormProps>()(
     /**
      * 理由输入项：文本输入框（AutoComplete），点选候选后整体替换为完整理由文本，
      * 与小程序版一致——候选列表显示简称，插入的完整文本可继续编辑（如填写「【】」占位）。
-     * 预置分组仅在锁定操作时展示；非锁定操作只展示历史。
+     * 预置分组仅在锁定操作时展示；历史仅在输入框有内容时展示。
+     * 有输入时，历史与预置都按「完整理由内容包含输入文本」筛选（简称不参与匹配）。
      */
     reasonFormItem = () => {
       const { getFieldDecorator } = this.props.form;
-      const history = getReasonHistory(this.getReasonKey());
+      //优先用表单里的实际输入值（含点选后回填的完整理由）；state 作为尚未收集到表单值时的兜底
+      const formReason = this.props.form.getFieldValue("reason");
+      const formValue = typeof formReason === "string" ? formReason : "";
+      const query = (formValue || this.state.reasonSearchText || "").trim();
+      // 历史只在有输入内容时出现，并和预置一样按完整理由内容筛选
+      const history = query
+        ? getReasonHistory(this.getReasonKey()).filter((item) => matchReasonContent(item, query))
+        : [];
       const presets =
         this.state.current === "1" && this.props.topicInfo.state !== 1
           ? getLockReasonPresets(this.props.boardId)
@@ -331,26 +349,32 @@ export default Form.create<FormProps>()(
         );
       }
       if (presets && presets.board.length > 0) {
-        groups.push(
-          <Select.OptGroup key="board" label="本版预置">
-            {presets.board.map((preset) => (
-              <Option key={preset.label} value={preset.content}>
-                {preset.label}
-              </Option>
-            ))}
-          </Select.OptGroup>
-        );
+        const boardPresets = presets.board.filter((preset) => matchReasonContent(preset.content, query));
+        if (boardPresets.length > 0) {
+          groups.push(
+            <Select.OptGroup key="board" label="本版预置">
+              {boardPresets.map((preset) => (
+                <Option key={preset.label} value={preset.content}>
+                  {preset.label}
+                </Option>
+              ))}
+            </Select.OptGroup>
+          );
+        }
       }
       if (presets) {
-        groups.push(
-          <Select.OptGroup key="general" label="通用预置">
-            {presets.general.map((preset) => (
-              <Option key={preset.label} value={preset.content}>
-                {preset.label}
-              </Option>
-            ))}
-          </Select.OptGroup>
-        );
+        const generalPresets = presets.general.filter((preset) => matchReasonContent(preset.content, query));
+        if (generalPresets.length > 0) {
+          groups.push(
+            <Select.OptGroup key="general" label="通用预置">
+              {generalPresets.map((preset) => (
+                <Option key={preset.label} value={preset.content}>
+                  {preset.label}
+                </Option>
+              ))}
+            </Select.OptGroup>
+          );
+        }
       }
       return (
         <FormItem label="理由">
@@ -364,7 +388,10 @@ export default Form.create<FormProps>()(
               optionLabelProp="value"
               placeholder="可输入理由，或从候选中选择"
               onSearch={(v) => {
-                this.reasonSearchText = v;
+                //驱动候选按输入内容实时筛选；输入为空时历史分组不展示
+                if (v !== this.state.reasonSearchText) {
+                  this.setState({ reasonSearchText: v });
+                }
               }}
             >
               {/* antd3 AutoComplete 的 children 类型声明未覆盖 OptGroup 数组，运行时直通 rc-select 支持 */}
@@ -399,11 +426,11 @@ export default Form.create<FormProps>()(
     };
     handleClick = (e) => {
       console.log("click ", e);
-      //切换操作类型时清掉上一步留下的理由输入与未回车文本
-      this.reasonSearchText = "";
+      //切换操作类型时清掉上一步留下的理由输入与筛选文本
       this.props.form.resetFields();
       this.setState({
         current: e.key,
+        reasonSearchText: "",
       });
     };
     onChange = (checkedList) => {
