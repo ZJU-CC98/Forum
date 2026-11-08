@@ -11,7 +11,7 @@ import { SketchPicker } from "react-color";
 import { FormComponentProps } from "antd/es/form";
 import Carousel from "antd/es/carousel";
 import { setLocalStorage, getLocalStorage } from "../../Utility/storageUtility";
-import { getLockReasonPresets, matchesLockReasonPreset } from "../../Utility/lockReasonPresets";
+import { containsUnfilledPlaceholder, getLockReasonPresets, loadLockReasonPresets, matchesLockReasonPreset } from "../../Utility/lockReasonPresets";
 const FormItem = Form.Item;
 const Option = Select.Option;
 const Item = Menu.Item;
@@ -96,6 +96,8 @@ interface FormStates {
   boardsData;
   /** 理由输入框当前文本，用于筛选历史/预置候选 */
   reasonSearchText: string;
+  /** 预置理由加载完成后的重渲染触发计数（候选来自 Utility/lockReasonPresets 的模块缓存） */
+  lockReasonVersion: number;
 }
 const plainOptions = ["加粗", "斜体"];
 const defaultCheckedList = [];
@@ -119,8 +121,30 @@ export default Form.create<FormProps>()(
         days: 0,
         boardsData: [],
         reasonSearchText: "",
+        lockReasonVersion: 0,
       };
     }
+    /**
+     * 组件是否仍挂载：预置理由拉回来时避免对已卸载组件 setState
+     * 注意不能叫 isMounted——React 的 Component.prototype 上有个只读 getter isMounted（deprecated API 警告），
+     * 同名赋值在 dev 构建下会抛 "Cannot set property isMounted of #<Component> which has only a getter"
+     */
+    private isComponentMounted = true;
+    componentWillUnmount() {
+      this.isComponentMounted = false;
+    }
+    /**
+     * 预置理由来自服务端（通用 + 本版），弹窗打开时按需拉取；
+     * 拉到后靠 lockReasonVersion 触发一次重渲染，让候选列表就地长出来。
+     */
+    refreshLockReasonPresets = async () => {
+      await loadLockReasonPresets(this.props.boardId);
+      if (this.isComponentMounted) {
+        this.setState({
+          lockReasonVersion: this.state.lockReasonVersion + 1,
+        });
+      }
+    };
     onCreate = () => {
       const form = this.props.form;
       form.validateFields(async (err, values) => {
@@ -135,6 +159,11 @@ export default Form.create<FormProps>()(
           : values.reason || "";
         if ((reason || "").trim() === "" && this.state.reasonSearchText.trim() !== "") {
           reason = this.state.reasonSearchText.trim();
+        }
+        // 预置理由中的「【】」是待填写占位（与小程序版一致）：补全前不允许提交
+        if (containsUnfilledPlaceholder(reason)) {
+          alert("理由中有未填写的【】，请补全后再提交");
+          return;
         }
         const reasonKey = this.getReasonKey();
         let days = parseInt(this.state.days);
@@ -380,7 +409,19 @@ export default Form.create<FormProps>()(
         <FormItem label="理由">
           {getFieldDecorator("reason", {
             initialValue: "",
-            rules: [{ required: true, message: "请输入理由" }],
+            rules: [
+              { required: true, message: "请输入理由" },
+              {
+                // 点选带「【】」占位的预置后即给出内联提示，补全后自动消失
+                validator: (rule, value, callback) => {
+                  if (value && containsUnfilledPlaceholder(value)) {
+                    callback("理由中有未填写的【】，请补全后再提交");
+                  } else {
+                    callback();
+                  }
+                },
+              },
+            ],
           })(
             <AutoComplete
               style={{ width: "100%" }}
@@ -459,6 +500,8 @@ export default Form.create<FormProps>()(
       }
       const boardsData = await Utility.getBoards();
       this.setState({ boardsData });
+      // 与小程序版一致：打开管理弹窗即按需拉取锁定理由预置（通用层 + 本版层）
+      this.refreshLockReasonPresets();
     }
 
     render() {
